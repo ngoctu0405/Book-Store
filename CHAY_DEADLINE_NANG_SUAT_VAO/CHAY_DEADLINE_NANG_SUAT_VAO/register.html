@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng ký</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<header class="header">
+  <div class="logo"><img src="images/Logo.png" alt="Logo"></div>
+  <div class="search-bar">
+    <input id="q" placeholder="Tìm tên sách..." />
+    <button onclick="doSearch()">Tìm</button>
+  </div>
+  <nav class="nav">
+    <ul id="menu"></ul>
+  </nav>
+</header>
+
+<main class="container auth">
+  <h2>Đăng ký</h2>
+  <form id="regForm">
+    <label>Họ tên
+      <input name="name" required>
+    </label>
+    <label>Email
+      <input name="email" type="email" required>
+    </label>
+    <label>Mật khẩu
+      <input name="password" type="password" required>
+    </label>
+    <label>Địa chỉ
+      <input name="address" required>
+    </label>
+    <label>Số điện thoại
+      <input name="phone" type="tel" pattern="[0-9]{9,11}" required placeholder="Ví dụ: 0987654321">
+    </label>
+    <button class="btn" type="submit">Tạo tài khoản</button>
+  </form>
+
+  <p id="regMessage" style="color:green; font-weight:bold; display:none; margin-top:15px;">
+    🎉 Đăng ký thành công! Bạn có thể <a href="login.html">đăng nhập</a> ngay.
+  </p>
+</main>
+
+<footer class="footer">
+  <p>© 2025 Nhà Sách Online</p>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+  document.getElementById("regForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const userData = {
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      password: form.password.value.trim(),
+      address: form.address.value.trim(),
+      phone: form.phone.value.trim()
+    };
+
+    if (!userData.name || !userData.email || !userData.password || !userData.address || !userData.phone) {
+      alert("Vui lòng nhập đầy đủ thông tin!");
+      return;
+    }
+
+    // Lưu user vào localStorage
+    localStorage.setItem("user", JSON.stringify(userData));
+
+    // Hiện thông báo thành công
+    document.getElementById("regMessage").style.display = "block";
+
+    // Reset form
+    form.reset();
+  });
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
