@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nhà Sách Online</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="logo">
+      <a href="index.html"><img src="images/Logo.png" alt="Logo"> </a>
+    </div>
+    <div class="search-center">
+      <input id="topSearch" class="search-input" placeholder="Tìm sách, tác giả hoặc ISBN..." />
+    </div>
+    <div class="auth-cart">
+      <div id="authArea">
+        <button class="btn-auth" onclick="window.location.href='login.html'">Đăng nhập</button>
+        <button class="btn-auth btn-signup" onclick="window.location.href='register.html'">Đăng ký</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar" id="mainNav">
+    <ul class="menu" id="mainMenu">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="about.html">Giới thiệu</a></li>
+      <div class="category-menu">
+        <button class="category-btn" onclick="window.location.href='category.html'">
+          Danh mục sách ▾
+        </button>
+        <ul class="book-filter">
+
+          <!-- Văn học -->
+          <li class="dropdown">
+            <a href="category.html?category=Văn học" data-category="Văn học">Văn học ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
+                  data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
+                  data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
+                  data-subcategory="Thơ">Thơ</a></li>
+            </ul>
+          </li>
+
+          <!-- Kinh tế -->
+          <li class="dropdown">
+            <a href="category.html?category=Kinh tế" data-category="Kinh tế">Kinh tế ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
+                  data-subcategory="Quản trị">Quản trị</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
+                  data-subcategory="Tài chính">Tài chính</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
+                  data-subcategory="Marketing">Marketing</a></li>
+            </ul>
+          </li>
+
+          <!-- Thiếu nhi -->
+          <li class="dropdown">
+            <a href="category.html?category=Thiếu nhi" data-category="Thiếu nhi">Thiếu nhi ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
+                  data-subcategory="Truyện tranh">Truyện tranh</a></li>
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
+                  data-subcategory="Giáo dục">Giáo dục</a></li>
+            </ul>
+          </li>
+
+          <!-- Giáo khoa -->
+          <li class="dropdown">
+            <a href="category.html?category=Giáo khoa" data-category="Giáo khoa">Giáo khoa ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
+                  data-subcategory="Cấp 1">Cấp 1</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
+                  data-subcategory="Cấp 2">Cấp 2</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
+                  data-subcategory="Cấp 3">Cấp 3</a></li>
+            </ul>
+        </ul>
+      </div>
+      </div>
+
+
+      <div class="dropdown" id="catDropdown"></div>
+      </li>
+      <li><a href="news.html">Tin tức</a></li>
+    </ul>
+    <div class="cart-float" id="cartFloat"><button id="cartBtnFloat" class="btn"><span class="cart-icon">🛒</span> <span
+          id="cart-count" class="cart-count">0</span></button></div>
+  </nav>
+  </header>
+
+  <body>
+    <header class="header">
+      <div class="logo"><img src="images/Logo.png" alt="Logo"></div>
+      <div class="search-bar"><input id="q" placeholder="Tìm tên sách..." /><button onclick="doSearch()">Tìm</button>
+      </div>
+      <nav class="nav">
+        <ul id="menu"></ul>
+    </header>
+    <main class="container">
+      <h2>Đơn hàng của tôi</h2>
+      <div id='orders-list'></div>
+    </main>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Về Chúng tôi</h3>
+          <ul>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="#">Tuyển dụng</a></li>
+            <li><a href="#">Chính sách bảo mật</a></li>
+            <li><a href="#">Điều khoản sử dụng</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Hỗ trợ khách hàng</h3>
+          <ul>
+            <li><a href="#">Hướng dẫn mua hàng</a></li>
+            <li><a href="#">Chính sách đổi trả</a></li>
+            <li><a href="#">Bảo hành</a></li>
+            <li><a href="#">Câu hỏi thường gặp</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Chính sách</h3>
+          <ul>
+            <li><a href="#">Chính sách thanh toán</a></li>
+            <li><a href="#">Chính sách vận chuyển</a></li>
+            <li><a href="#">Chính sách bảo hành</a></li>
+            <li><a href="#">Chính sách đổi trả</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section contact-info">
+          <h3>Liên hệ</h3>
+          <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
+          <p>📞 Hotline: 1900 xxxx</p>
+          <p>✉️ Email: support@bookstore.vn</p>
+          <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
+          <div class="social-links">
+            <a href="#">f</a>
+            <a href="#">📷</a>
+            <a href="#">▶️</a>
+            <a href="#">💼</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
+      </div>
+    </footer>
+    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+
+</html>

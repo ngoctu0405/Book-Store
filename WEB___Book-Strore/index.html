@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nhà Sách Online</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+  .container {
+    height: 160rem;
+  }
+
+/* Card sản phẩm: kiểu dáng và bóng */
+.product-card {
+    /* nền gradient nhẹ */
+    background: linear-gradient(145deg, #ffffff 0%, #f5f2e8 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    min-height: 430px;
+    box-shadow: 0 8px 32px rgba(79, 157, 166, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(130, 192, 154, 0.2);
+    
+    position: relative;
+    overflow: hidden;
+    
+    display: flex;
+    flex-direction: column;
+    /* Dùng flex-start để kiểm soát vị trí giá và nút bằng margin-top: auto */
+    justify-content: flex-start;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Hiệu ứng Hover cho card */
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(79, 157, 166, 0.2);
+    border-color: rgba(130, 192, 154, 0.4);
+    background: linear-gradient(145deg, #ffffff 0%, #f5f2e8 100%);
+}
+
+/* Ảnh trong card */
+.product-card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Tiêu đề sản phẩm */
+.product-card h3 {
+    color: #2c3e50;
+    margin-top: -0.3rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Mô tả sản phẩm */
+.product-card p {
+    color: #293c70;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* Giá sản phẩm */
+.product-card .price {
+    color: #ff0404;
+    font-size: 1.2rem;
+    font-weight: 700; /* Đảm bảo giá nổi bật */
+    margin-bottom: 1rem;
+    /* BỎ position: absolute nếu muốn nó nằm ngay trên nút */
+    /* position: absolute; bottom: 60px; */
+}
+
+/* Hàng chứa các nút action */
+.product-card .button-row { /* ✨ Sử dụng class này cho container nút trong HTML */
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: auto; /* ✨ Đẩy container nút xuống đáy card */
+    padding-top: 0.5rem;
+}
+
+.product-card .btn {
+    font-size: 0.85rem;
+}
+
+/* Thanh viền động trên card (Pseudo-element) */
+.product-card:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #4f9da6, #82c09a, #7fb3d3);
+    transition: left 0.6s ease;
+}
+
+.product-card:hover:before {
+    left: 100%;
+}
+
+
+/* ========================================================= */
+/* 5. NÚT ĐIỀU KHIỂN CAROUSEL */
+/* ========================================================= */
+
+/* Nút Điều Khiển Cơ Bản (Hình tròn và Chuyển động) */
+.carousel-control-prev,
+.carousel-control-next {
+    border-radius: 50%;
+    width: 50px; 
+    height: 50px;
+    opacity: 0.8;
+    transition: all 0.2s ease-in-out;
+    
+    /* VỊ TRÍ: Đẩy ra ngoài lề -2rem */
+    top: 50%; 
+    transform: translateY(-50%);
+}
+
+.carousel-control-prev {
+    left: -2rem !important; 
+}
+.carousel-control-next {
+    right: -2rem !important; 
+}
+
+/* Icon mũi tên SVG */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(100%); /* Màu icon trắng/đen */
+    width: 1.25em;
+    height: 1.25em;
+}
+
+/* Hiệu ứng Hover */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    width: 4rem; /* 64px */
+    height: 4rem; /* 64px */
+    background-color: #535353;
+    opacity: 1;
+}
+
+/* Hiệu ứng Active (Nhấn) */
+.carousel-control-prev:active,
+.carousel-control-next:active {
+    width: 4rem; 
+    height: 4rem;
+    background-color: #0f6e86; /* Màu xanh đậm */
+    opacity: 1;
+}
+
+/* ========================================================= */
+/* 6. GIỎ HÀNG & THANH LỌC (TÙY CHỈNH) */
+/* ========================================================= */
+
+.products-top {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0 3rem 0;
+    flex-wrap: wrap;
+}
+
+.cart-heading {
+    display: inline-block;
+    background: linear-gradient(135deg, #82c09a 0%, #7fb3d3 100%);
+    padding: 10px 20px;
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(250, 248, 248, 0.007);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+  </style>
+</head>
+
+
+<body>
+  <header class="topbar">
+    <div class="logo">
+      <a href="index.html"><img src="images/Logo.png" alt="Logo"> </a>
+    </div>
+    <div class="search-center">
+      <input id="topSearch" class="search-input" placeholder="Tìm sách, tác giả hoặc ISBN..." />
+    </div>
+    <div class="auth-cart">
+      <div id="authArea">
+        <button class="btn-auth" onclick="window.location.href='login.html'">Đăng nhập</button>
+        <button class="btn-auth btn-signup" onclick="window.location.href='register.html'">Đăng ký</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar" id="mainNav">
+    <ul class="menu" id="mainMenu">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="about.html">Giới thiệu</a></li>
+      <div class="category-menu">
+        <button class="category-btn" onclick="window.location.href='category.html'">
+          Danh mục sách ▾
+        </button>
+
+        <ul class="book-filter">
+
+          <!-- Văn học -->
+          <li class="dropdown">
+            <a href="category.html?category=Văn học" data-category="Văn học">Văn học ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
+                  data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
+                  data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
+                  data-subcategory="Thơ">Thơ</a></li>
+            </ul>
+          </li>
+
+          <!-- Kinh tế --> 
+          <li class="dropdown">
+            <a href="category.html?category=Kinh tế" data-category="Kinh tế">Kinh tế ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
+                  data-subcategory="Quản trị">Quản trị</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
+                  data-subcategory="Tài chính">Tài chính</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
+                  data-subcategory="Marketing">Marketing</a></li>
+            </ul>
+          </li>
+
+          <!-- Thiếu nhi -->
+          <li class="dropdown">
+            <a href="category.html?category=Thiếu nhi" data-category="Thiếu nhi">Thiếu nhi ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
+                  data-subcategory="Truyện tranh">Truyện tranh</a></li>
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
+                  data-subcategory="Giáo dục">Giáo dục</a></li>
+            </ul>
+          </li>
+
+          <!-- Giáo khoa -->
+          <li class="dropdown">
+            <a href="category.html?category=Giáo khoa" data-category="Giáo khoa">Giáo khoa ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
+                  data-subcategory="Cấp 1">Cấp 1</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
+                  data-subcategory="Cấp 2">Cấp 2</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
+                  data-subcategory="Cấp 3">Cấp 3</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="dropdown" id="catDropdown"></div>
+      </li>
+      <li><a href="news.html">Tin tức</a></li>
+    </ul>
+    <div class="cart-float" id="cartFloat"><button id="cartBtnFloat" class="btn"><span class="cart-icon">🛒</span> <span
+          id="cart-count" class="cart-count">0</span></button></div>
+  </nav>
+
+  <main class="container">
+    <section class="banner">
+      <div class="banner-content">
+        <h1>Literary Haven xin chào!</h1>
+        <h2>"The Home, All Tomes"</h2>
+        <p>Hàng ngàn tựa sách hay đang chờ bạn</p>
+  <div class="all-books">
+    <a href="#" data-category="all" class="active">Tất cả Sách</a>
+  </div>
+      </div>  
+    </section>
+
+
+<!-- Phần Bán chạy -->
+<div class="hot_sale_selection">
+    <h1 class="hot-sale">Top sách bán chạy</h1>
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+            
+            <div class="carousel-item active">
+                <div class="d-flex justify-content-between"> 
+
+                    <div class="product-card">
+                        <div class="card-img">
+                            <img src="https://picsum.photos/300/420?random=27" alt="Đắc Nhân Tâm" class="img-fluid">
+                        </div>
+                        <h4 class="card-title">Đắc Nhân Tâm</h4>
+                        <div class="price">85.000đ</div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-info">Xem</button>
+                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="card-img">
+                            <img src="https://picsum.photos/300/420?random=28" alt="Tuổi Trẻ Đáng Giá Bao Nhiêu" class="img-fluid">
+                        </div>
+                        <h4 class="card-title">Tuổi Trẻ Đáng Giá Bao Nhiêu</h4>
+                        <div class="price">90.000đ</div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-info">Xem</button>
+                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="card-img">
+                            <img src="https://picsum.photos/300/420?random=29" alt="Truyện Kiều" class="img-fluid">
+                        </div>
+                        <h4 class="card-title">Truyện Kiều</h4>
+                        <div class="price">70.000đ</div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-info">Xem</button>
+                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="d-flex justify-content-between">
+
+                    <div class="product-card">
+                        <div class="card-img">
+                            <img src="https://picsum.photos/300/420?random=31" alt="Lão Hạc" class="img-fluid">
+                        </div>
+                        <h4 class="card-title">Lão Hạc</h4>
+                        <div class="price">60.000đ</div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-info">Xem</button>
+                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="card-img">
+                            <img src="https://picsum.photos/300/420?random=32" alt="Nhật Ký Trong Tù" class="img-fluid">
+                        </div>
+                        <h4 class="card-title">Nhật Ký Trong Tù</h4>
+                        <div class="price">80.000đ</div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-info">Xem</button>
+                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="card-img">
+                            <img src="https://picsum.photos/300/420?random=33" alt="Số Đỏ" class="img-fluid">
+                        </div>
+                        <h4 class="card-title">Số Đỏ</h4>
+                        <div class="price">95.000đ</div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-info">Xem</button>
+                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                        </div>
+                      </div>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="d-flex justify-content-between">
+
+                    <div class="product-card">
+                        <div class="card-img">
+                            <img src="https://picsum.photos/300/420?random=35" alt="Tôi Thấy Hoa Vàng Trên Cỏ Xanh" class="img-fluid">
+                        </div>
+                        <h4 class="card-title">Tôi Thấy Hoa Vàng Trên Cỏ Xanh</h4>
+                        <div class="price">100.000đ</div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-info">Xem</button>
+                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="card-img">
+                            <img src="https://picsum.photos/300/420?random=36" alt="Người Lái Đò Sông Đà" class="img-fluid">
+                        </div>
+                        <h4 class="card-title">Người Lái Đò Sông Đà</h4>
+                        <div class="price">72.000đ</div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-info">Xem</button>
+                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="card-img">
+                            <img src="https://picsum.photos/300/420?random=37" alt="Nhật Ký Đặng Thùy Trâm" class="img-fluid">
+                        </div>
+                        <h4 class="card-title">Nhật Ký Đặng Thùy Trâm</h4>
+                        <div class="price">85.000đ</div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-info">Xem</button>
+                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+</main>
+
+
+</body>
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Về Chúng tôi</h3>
+      <ul>
+        <li><a href="about.html">Giới thiệu</a></li>
+        <li><a href="#">Tuyển dụng</a></li>
+        <li><a href="#">Chính sách bảo mật</a></li>
+        <li><a href="#">Điều khoản sử dụng</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Hỗ trợ khách hàng</h3>
+      <ul>
+        <li><a href="#">Hướng dẫn mua hàng</a></li>
+        <li><a href="#">Chính sách đổi trả</a></li>
+        <li><a href="#">Bảo hành</a></li>
+        <li><a href="#">Câu hỏi thường gặp</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Chính sách</h3>
+      <ul>
+        <li><a href="#">Chính sách thanh toán</a></li>
+        <li><a href="#">Chính sách vận chuyển</a></li>
+        <li><a href="#">Chính sách bảo hành</a></li>
+        <li><a href="#">Chính sách đổi trả</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section contact-info">
+      <h3>Liên hệ</h3>
+      <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
+      <p>📞 Hotline: 1900 xxxx</p>
+      <p>✉️ Email: support@bookstore.vn</p>
+      <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
+      <div class="social-links">
+        <a href="#">f</a>
+        <a href="#">📷</a>
+        <a href="#">▶️</a>
+        <a href="#">💼</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
+  </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>

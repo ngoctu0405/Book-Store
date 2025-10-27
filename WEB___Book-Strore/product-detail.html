@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Sản Phẩm - Literary Haven</title>
+   
+   <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f2e8 0%, #e8d5b7 50%, #7fb3d3 100%);
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: linear-gradient(90deg, #ffffff 0%, #7fb3d3 100%);
+            padding: 0 2rem;
+            box-shadow: 0 4px 20px rgba(79, 157, 166, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #82c09a;
+            height: 120px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #4f9da6;
+            text-decoration: none;
+        }
+
+        .logo span:first-child {
+            font-size: 2.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .search-center {
+            flex: 1;
+            max-width: 900px;
+            margin: 0 3rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid rgba(130, 192, 154, 0.3);
+            border-radius: 12px;
+            background: rgba(245, 242, 232, 0.9);
+            color: #2c3e50;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4f9da6;
+            background: #fff;
+            box-shadow: 0 0 20px rgba(79, 157, 166, 0.2);
+        }
+
+        .auth-cart {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-auth {
+            background: linear-gradient(135deg, #4f9da6 0%, #7fb3d3 100%);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 157, 166, 0.3);
+        }
+
+        .navbar {
+            background: #fff;
+            padding: 0.8rem 2rem;
+            border-bottom: 1px solid #eef2f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cart-float {
+            position: absolute;
+            right: 2rem;
+        }
+
+        .btn-cart-float {
+            background: linear-gradient(135deg, #ff7f50 0%, #ff4500 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
+            font-size: 1.1rem;
+        }
+
+        .btn-cart-float:hover {
+            background: linear-gradient(135deg, #ff6347 0%, #e63900 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 99, 71, 0.4);
+        }
+
+        .cart-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .cart-count {
+            background: white;
+            color: #ff4500;
+            padding: 0.3rem 0.6rem;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: 800;
+            min-width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu a {
+            display: inline-block;
+            padding: 0.7rem 1.3rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .menu a:hover {
+            background: linear-gradient(135deg, #7fb3d3 0%, #82c09a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #4f9da6 0%, #7fb3d3 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(79, 157, 166, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(79, 157, 166, 0.4);
+        }
+
+        .back-button-arrow {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .breadcrumb a {
+            color: #4f9da6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: #82c09a;
+        }
+
+        .breadcrumb span {
+            color: #7f8c8d;
+        }
+
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background: linear-gradient(145deg, #ffffff 0%, #f5f2e8 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(79, 157, 166, 0.15);
+            border: 1px solid rgba(130, 192, 154, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-layout:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #4f9da6, #82c09a, #7fb3d3);
+        }
+
+        .image-gallery {
+            position: sticky;
+            top: 140px;
+            height: fit-content;
+        }
+
+        .main-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(79, 157, 166, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main-image:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(79, 157, 166, 0.2);
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(130, 192, 154, 0.3);
+        }
+
+        .product-price {
+            font-size: 2.5rem;
+            color: #e74c3c;
+            font-weight: 700;
+        }
+
+        .shipping-info {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f0f8f7 0%, #e6f4f1 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(130, 192, 154, 0.2);
+        }
+
+        .shipping-row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(130, 192, 154, 0.1);
+        }
+
+        .shipping-row:last-child {
+            border-bottom: none;
+        }
+
+        .shipping-label {
+            color: #4f9da6;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .shipping-value {
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 2px solid #82c09a;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .qty-btn:hover {
+            background: linear-gradient(135deg, #7fb3d3 0%, #82c09a 100%);
+        }
+
+        .qty-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .stock-status {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-add-cart {
+            background: linear-gradient(135deg, #ff7f50 0%, #ff4500 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
+        }
+
+        .btn-add-cart:hover {
+            background: linear-gradient(135deg, #ff6347 0%, #e63900 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 99, 71, 0.4);
+        }
+
+        .btn-buy-now {
+            background: linear-gradient(135deg, #4f9da6 0%, #7fb3d3 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 157, 166, 0.3);
+        }
+
+        .btn-buy-now:hover {
+            background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(79, 157, 166, 0.4);
+        }
+
+        .guarantee-section {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(127, 179, 211, 0.2);
+        }
+
+        .guarantee-item {
+            display: flex;
+            gap: 0.8rem;
+            padding: 0.6rem 0;
+            font-size: 0.95rem;
+            color: #2c3e50;
+        }
+
+        .guarantee-icon {
+            color: #82c09a;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .details-section {
+            margin-top: 3rem;
+            background: linear-gradient(145deg, #ffffff 0%, #f5f2e8 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(79, 157, 166, 0.15);
+            border: 1px solid rgba(130, 192, 154, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .details-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #4f9da6, #82c09a, #7fb3d3);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(130, 192, 154, 0.2);
+        }
+
+        .info-table {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            padding: 1rem;
+            background: rgba(245, 242, 232, 0.4);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .info-row:hover {
+            background: rgba(245, 242, 232, 0.7);
+            transform: translateX(5px);
+        }
+
+        .info-label {
+            color: #4f9da6;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .info-value {
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .description-section {
+            margin-top: 2rem;
+            line-height: 1.8;
+        }
+
+        .description-section p {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .footer {
+            background: linear-gradient(90deg, #4f9da6 0%, #7fb3d3 100%);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid #82c09a;
+            color: #fff;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            margin: 3rem auto;
+            max-width: 600px;
+        }
+
+        .error-container h2 {
+            color: #e74c3c;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .error-container p {
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .error-container a {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #4f9da6 0%, #7fb3d3 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .error-container a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 157, 166, 0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .product-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .image-gallery {
+                position: relative;
+                top: 0;
+            }
+
+            .topbar {
+                height: auto;
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .search-center {
+                max-width: 100%;
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .info-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .product-title {
+                font-size: 1.5rem;
+            }
+
+            .product-price {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="topbar">
+        <a href="index.html" class="logo">
+            <span>📚</span>
+            <span>Literary Haven</span>
+        </a>
+        <div class="search-center">
+            <form action="search-results.html" method="get">
+                <input type="text" class="search-input" name="q" placeholder="Tìm sách, tác giả hoặc ISBN...">
+            </form>
+        </div>
+        <div class="auth-cart">
+            <button class="btn-auth" onclick="window.location.href='login.html'">Đăng nhập</button>
+            <button class="btn-auth" onclick="window.location.href='register.html'">Đăng ký</button>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <ul class="menu">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="category.html">Danh mục sách</a></li>
+            <li><a href="news.html">Tin tức</a></li>
+        </ul>
+        <div class="cart-float">
+            <button class="btn-cart-float" onclick="window.location.href='cart.html'">
+                <span class="cart-icon">🛒</span>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container" id="mainContent">
+        <!-- Nội dung được load bằng JavaScript -->
+    </div>
+
+    <footer class="footer">
+        © 2025 Literary Haven - "The Home, All Tomes"
+    </footer>
+</body>
+<script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</html>

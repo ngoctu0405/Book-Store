@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nhà Sách Online</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  
+<header class="topbar">
+  <div class="logo">
+    <a href="index.html"><img src="images/Logo.png" alt="Logo"> </a>
+  </div>
+  <div class="search-center">
+    <input id="topSearch" class="search-input" placeholder="Tìm sách, tác giả hoặc ISBN..." />
+  </div>
+  <div class="auth-cart">
+     <div id="authArea">
+        <button class="btn-auth" onclick="window.location.href='login.html'">Đăng nhập</button>
+        <button class="btn-auth btn-signup" onclick="window.location.href='register.html'">Đăng ký</button>
+      </div>
+  </div>
+</header>
+
+<nav class="navbar" id="mainNav">
+  <ul class="menu" id="mainMenu">
+    <li><a href="index.html">Trang chủ</a></li>
+    <li><a href="about.html">Giới thiệu</a></li> 
+     <div class="category-menu">
+ <button class="category-btn" onclick="window.location.href='category.html'">
+  Danh mục sách ▾
+</button>
+  <ul class="book-filter">
+
+    <!-- Văn học -->
+            <li class="dropdown">
+              <a href="category.html?category=Văn học" data-category="Văn học">Văn học ▸</a>
+              <ul class="dropdown-content">
+                <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học" data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
+                <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học" data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
+                <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học" data-subcategory="Thơ">Thơ</a></li>
+              </ul>
+            </li>
+
+            <!-- Kinh tế -->
+            <li class="dropdown">
+              <a href="category.html?category=Kinh tế" data-category="Kinh tế">Kinh tế ▸</a>
+              <ul class="dropdown-content">
+                <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế" data-subcategory="Quản trị">Quản trị</a></li>
+                <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế" data-subcategory="Tài chính">Tài chính</a></li>
+                <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế" data-subcategory="Marketing">Marketing</a></li>
+              </ul>
+            </li>
+
+            <!-- Thiếu nhi -->
+            <li class="dropdown">
+              <a href="category.html?category=Thiếu nhi" data-category="Thiếu nhi">Thiếu nhi ▸</a>
+              <ul class="dropdown-content">
+                <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi" data-subcategory="Truyện tranh">Truyện tranh</a></li>
+                <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi" data-subcategory="Giáo dục">Giáo dục</a></li>
+              </ul>
+            </li>
+
+            <!-- Giáo khoa -->
+            <li class="dropdown">
+              <a href="category.html?category=Giáo khoa" data-category="Giáo khoa">Giáo khoa ▸</a>
+              <ul class="dropdown-content">
+                <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa" data-subcategory="Cấp 1">Cấp 1</a></li>
+                <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa" data-subcategory="Cấp 2">Cấp 2</a></li>
+                <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa" data-subcategory="Cấp 3">Cấp 3</a></li>
+              </ul>
+    </li>
+  </ul>
+</div>
+</div>
+      <div class="dropdown" id="catDropdown"></div>
+    </li>
+    <li><a href="news.html">Tin tức</a></li>
+  </ul>
+  <div class="cart-float" id="cartFloat"><button id="cartBtnFloat" class="btn"><span class="cart-icon">🛒</span> <span id="cart-count" class="cart-count">0</span></button></div>
+</nav>
+  </header>
+<body>
+  <header class="profile-header">
+    <div class="container flex-between">
+      <div style="display:flex;align-items:center;gap:12px"><img src="images/Logo.png" width="44" style="border-radius:8px"/><h2>Bookly</h2></div>
+      <div><a href="index.html" class="btn">Về trang chủ</a></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h3>Hồ sơ của bạn: <span id="usernameDisplay"></span></h3>
+    <div id="profileInfo" class="profile-info"></div>
+
+    <section>
+      <h4>Đơn hàng của bạn</h4>
+      <div id="ordersContainer" class="orders-list"></div>
+    </section>
+  </main>
+
+<script>
+const storage = { get(k,def){try{return JSON.parse(localStorage.getItem(k)) ?? def}catch(e){return def}}, set(k,v){localStorage.setItem(k,JSON.stringify(v))} };
+let session = storage.get('session', null);
+const users = storage.get('users', {});
+
+function renderProfile(){
+  const user = session;
+  document.getElementById('usernameDisplay').textContent = user || '(chưa đăng nhập)';
+  if(!user){ document.getElementById('profileInfo').innerHTML = '<a href="login.html" class="btn">Đăng nhập</a> <a href="register.html" class="btn ghost">Đăng ký</a>'; return; }
+  const u = users[user] || {orders:[]};
+  document.getElementById('profileInfo').innerHTML = '<div>Email: '+user+' (demo)</div>';
+  const cont = document.getElementById('ordersContainer'); cont.innerHTML='';
+  if(!u.orders || u.orders.length===0){ cont.innerHTML='<p>Bạn chưa có đơn hàng.</p>'; return; }
+  u.orders.slice().reverse().forEach(o=>{
+    const box = document.createElement('div'); box.className='order-box';
+    const meta = document.createElement('div'); meta.className='order-meta';
+    const left = document.createElement('div'); left.innerHTML = '<strong>Đơn #'+o.id+'</strong><div style="color:#6b7280">'+ (new Date(o.created)).toLocaleString() +'</div>';
+    const right = document.createElement('div'); right.innerHTML = '<span class="status-badge status-'+o.status.replace(/\s/g,'\\ ')+'">'+o.status+'</span>';
+    meta.appendChild(left); meta.appendChild(right);
+    const items = document.createElement('div'); items.className='order-items';
+    o.items.forEach(it=>{ const p = {title: 'Sản phẩm '+it.id}; items.innerHTML += '<div>- ID:'+it.id+' x'+it.qty+'</div>'; });
+    box.appendChild(meta); box.appendChild(items);
+    cont.appendChild(box);
+  });
+}
+
+renderProfile();
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giới thiệu - Literary Haven</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">
+      <a href="index.html"><img src="images/Logo.png" alt="Logo"> </a>
+    </div>
+    <div class="search-center">
+      <input id="topSearch" class="search-input" placeholder="Tìm sách, tác giả hoặc ISBN..." />
+    </div>
+    <div class="auth-cart">
+      <div id="authArea">
+        <button class="btn-auth" onclick="window.location.href='login.html'">Đăng nhập</button>
+        <button class="btn-auth btn-signup" onclick="window.location.href='register.html'">Đăng ký</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar" id="mainNav">
+    <ul class="menu" id="mainMenu">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="about.html">Giới thiệu</a></li>
+      <div class="category-menu">
+        <button class="category-btn" onclick="window.location.href='category.html'">
+          Danh mục sách ▾
+        </button>
+        <ul class="book-filter">
+
+          <!-- Văn học -->
+          <li class="dropdown">
+            <a href="category.html?category=Văn học" data-category="Văn học">Văn học ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
+                  data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
+                  data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
+                  data-subcategory="Thơ">Thơ</a></li>
+            </ul>
+          </li>
+
+          <!-- Kinh tế -->
+          <li class="dropdown">
+            <a href="category.html?category=Kinh tế" data-category="Kinh tế">Kinh tế ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
+                  data-subcategory="Quản trị">Quản trị</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
+                  data-subcategory="Tài chính">Tài chính</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
+                  data-subcategory="Marketing">Marketing</a></li>
+            </ul>
+          </li>
+
+          <!-- Thiếu nhi -->
+          <li class="dropdown">
+            <a href="category.html?category=Thiếu nhi" data-category="Thiếu nhi">Thiếu nhi ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
+                  data-subcategory="Truyện tranh">Truyện tranh</a></li>
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
+                  data-subcategory="Giáo dục">Giáo dục</a></li>
+            </ul>
+          </li>
+
+          <!-- Giáo khoa -->
+          <li class="dropdown">
+            <a href="category.html?category=Giáo khoa" data-category="Giáo khoa">Giáo khoa ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
+                  data-subcategory="Cấp 1">Cấp 1</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
+                  data-subcategory="Cấp 2">Cấp 2</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
+                  data-subcategory="Cấp 3">Cấp 3</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      </div>
+      <div class="dropdown" id="catDropdown"></div>
+      </li>
+      <li><a href="news.html">Tin tức</a></li>
+    </ul>
+    <div class="cart-float" id="cartFloat"><button id="cartBtnFloat" class="btn"><span class="cart-icon">🛒</span>
+        <span id="cart-count" class="cart-count">0</span></button></div>
+  </nav>
+  <main>
+    <!-- Phần giới thiệu -->
+    <section class="intro-section text-center py-5">
+      <h1 class="fw-bold">Literary Haven – <span class="text-danger">Thế Giới Sách Dành Cho Mọi Độc Giả</span></h1>
+      <p class="mt-3 px-5">
+        Literary Haven không chỉ là một cửa hàng sách thông thường, mà còn là điểm đến lý tưởng dành cho
+        những ai đam mê tri thức và yêu thích việc khám phá qua từng trang sách.
+        Được thành lập với sứ mệnh mang đến cho độc giả những cuốn sách chất lượng nhất cùng dịch vụ tuyệt vời,
+        Literary Haven đã và đang trở thành một trong những địa chỉ mua sách uy tín nhất tại Việt Nam.
+      </p>
+    </section>
+
+    <!-- Phần tầm nhìn - sứ mệnh -->
+    <section class="vision-mission py-5" style="background-color: #fff6f2;">
+      <div class="container d-flex flex-wrap align-items-center justify-content-between">
+        <div class="col-md-6 mb-4 mb-md-0 text-center">
+          <img src="images/Vision.jpg" alt="Hình minh họa Literary Haven" class="img-fluid rounded shadow">
+        </div>
+        <div class="col-md-5">
+          <h2 class="fw-bold mb-3">Tầm Nhìn - Sứ Mệnh</h2>
+          <h5 class="text-danger fw-semibold">Sứ Mệnh</h5>
+          <p>
+            Literary Haven được thành lập với mong muốn trở thành cầu nối giữa tri thức và độc giả,
+            mang đến những cuốn sách chất lượng cao từ các nhà xuất bản uy tín trong và ngoài nước,
+            cùng trải nghiệm mua sắm tiện lợi, an toàn và thú vị.
+          </p>
+          <h5 class="text-danger fw-semibold mt-4">Tầm Nhìn</h5>
+          <p>
+            Hướng đến việc trở thành hệ thống bán lẻ sách hàng đầu tại Việt Nam, không chỉ là nơi mua sách,
+            mà còn là không gian văn hóa gắn kết cộng đồng yêu sách, truyền cảm hứng đọc và học hỏi suốt đời.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phần liên hệ -->
+    <section class="contact-section py-5" style="background-color: #ffe5d2;">
+      <div class="container d-flex flex-wrap align-items-center justify-content-between">
+        <div class="col-md-5">
+          <h2 class="fw-bold mb-3">Thông Tin Liên Hệ</h2>
+          <p>
+            Với sự tận tâm trong từng cuốn sách và dịch vụ khách hàng chuyên nghiệp,
+            Literary Haven mong muốn trở thành người bạn đồng hành trong hành trình khám phá tri thức.
+          </p>
+          <ul class="list-unstyled mt-3">
+            <li><strong>📞 Hotline:</strong> 1900 6750</li>
+            <li><strong>✉️ Email:</strong> support@sapo.vn</li>
+            <li><strong>📍 Địa chỉ:</strong> 70 Lữ Gia, P.15, Q.11, TP. Hồ Chí Minh</li>
+            <li><strong>🌐 Website:</strong> sapo.vn</li>
+          </ul>
+        </div>
+        <div class="col-md-6 text-center">
+          <img src="images/Contact.webp" alt="Liên hệ Literary Haven" class="img-fluid rounded shadow">
+        </div>
+      </div>
+    </section>
+  </main>
+
+</body>
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Về chúng tôi</h3>
+      <ul>
+        <li><a href="about.html">Giới thiệu</a></li>
+        <li><a href="#">Tuyển dụng</a></li>
+        <li><a href="#">Chính sách bảo mật</a></li>
+        <li><a href="#">Điều khoản sử dụng</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Hỗ trợ khách hàng</h3>
+      <ul>
+        <li><a href="#">Hướng dẫn mua hàng</a></li>
+        <li><a href="#">Chính sách đổi trả</a></li>
+        <li><a href="#">Bảo hành</a></li>
+        <li><a href="#">Câu hỏi thường gặp</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Chính sách</h3>
+      <ul>
+        <li><a href="#">Chính sách thanh toán</a></li>
+        <li><a href="#">Chính sách vận chuyển</a></li>
+        <li><a href="#">Chính sách bảo hành</a></li>
+        <li><a href="#">Chính sách đổi trả</a></li>
+      </ul>
+    </div>
+    <div class="footer-section contact-info">
+      <h3>Liên hệ</h3>
+      <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
+      <p>📞 Hotline: 1900 xxxx</p>
+      <p>✉️ Email: support@bookstore.vn</p>
+      <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
+      <div class="social-links">
+        <a href="#">f</a>
+        <a href="#">📷</a>
+        <a href="#">▶️</a>
+        <a href="#">💼</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
+  </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+>>>>>>> 300d162 (Beautiful và Danh mục sách)
+</html>
