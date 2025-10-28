@@ -896,3 +896,51 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+
+// Thêm vào cuối file main.js
+
+// Xử lý tìm kiếm từ thanh search trên header
+function handleTopSearch() {
+  const searchInput = document.getElementById('topSearch');
+  if (!searchInput) return;
+  
+  const query = searchInput.value.trim();
+  if (!query) {
+    alert('Vui lòng nhập từ khóa tìm kiếm');
+    return;
+  }
+  
+  window.location.href = 'search-results.html?q=' + encodeURIComponent(query);
+}
+
+// Giữ từ khóa tìm kiếm trong ô input
+function loadSearchQuery() {
+  const topSearch = document.getElementById('topSearch');
+  if (!topSearch) return;
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get('q');
+  
+  if (query) {
+    topSearch.value = query;
+  }
+}
+
+// Thêm sự kiện khi DOM load
+document.addEventListener('DOMContentLoaded', function() {
+  const topSearch = document.getElementById('topSearch');
+  
+  if (topSearch) {
+    // Xử lý khi nhấn Enter
+    topSearch.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleTopSearch();
+      }
+    });
+    
+    // Giữ từ khóa tìm kiếm trong ô input
+    loadSearchQuery();
+  }
+});

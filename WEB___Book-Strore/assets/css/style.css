@@ -2135,3 +2135,56 @@ footer {
     font-size: 1rem;
   }
 }
+/* Cập nhật CSS cho thanh tìm kiếm */
+
+.search-center {
+  position: relative;
+  flex: 1;
+  max-width: 600px;
+  margin: 0 20px;
+}
+
+.search-center::before {
+  content: "🔍";
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 45px 12px 45px;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+  .search-center {
+    margin: 10px 0;
+    max-width: 100%;
+  }
+  
+  .search-input {
+    font-size: 14px;
+    padding: 10px 40px 10px 40px;
+  }
+}
