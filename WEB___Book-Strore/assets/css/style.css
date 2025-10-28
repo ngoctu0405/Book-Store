@@ -2188,3 +2188,103 @@ footer {
     padding: 10px 40px 10px 40px;
   }
 }
+/* PHẦN GIỚI THIỆU */
+.about-section {
+  position: relative;
+  top: 8rem;
+  border-radius: 4rem;
+  background-color: #fffaf4; /* nền nhẹ nhàng */
+  min-height: 30rem;
+}
+
+/* Giới hạn chiều rộng thay container */
+.about-us-index {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Tiêu đề viết tay */
+.intro-title {
+  font-family: "Pacifico", cursive;
+  font-size: 2.2rem;
+  color: #e76f51;
+  margin-bottom: 1rem;
+}
+
+.intro-title span {
+  font-family: "Pacifico", cursive;
+  color: #e76f51;
+}
+
+/* VÙNG CHA CHỨA ẢNH */
+.image-stack {
+  position: relative; /* cần để các ảnh position absolute dựa vào */
+  width: 400px; /* kích thước cố định (m có thể chỉnh theo layout) */
+  height: 260px; /* chiều cao khung chứa */
+  margin: 0 auto; /* căn giữa */
+}
+
+/* CÁC ẢNH TRONG STACK */
+.image-stack img {
+  position: absolute;
+  width: 220px; /* kích thước ảnh */
+  height: 260px;
+  object-fit: cover; /* cắt ảnh vừa khung */
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+/* ĐỊNH VỊ 3 ẢNH - CHỒNG NHẸ */
+.image-stack .img-1 {
+  top: 0;
+  left: -1em;
+  z-index: 1;
+}
+
+.image-stack .img-2 {
+  top: 0;
+  left: 4rem; /* đè 1 phần ảnh 1 */
+  z-index: 2;
+}
+
+.image-stack .img-3 {
+  top: 0;
+  left: 120px; /* đè nhẹ lên ảnh 2 */
+  z-index: 3;
+}
+
+/* Hover nổi bật ảnh đang chọn */
+.image-stack img:hover {
+  transform: scale(1.08);
+  z-index: 10; /* nổi lên trên cùng */
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+  .image-stack {
+    gap: 15px;
+  }
+
+  .image-stack img {
+    width: 100%;
+    max-width: 350px; /* tránh ảnh quá to */
+  }
+}
+
+/* Hover phóng to nhẹ */
+.image-stack img:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+/* Nút Xem Thêm */
+.btn-warning {
+  background-color: #ff7f32;
+  border: none;
+}
+
+.btn-warning:hover {
+  background-color: #ff6022;
+}

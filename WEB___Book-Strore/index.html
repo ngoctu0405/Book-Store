@@ -8,15 +8,115 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-  .container {
+    .container {
     height: 160rem;
   }
+.title-hot-sale {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  width: 30rem;
+}
+.Top-sale{
+  display: flex;
+  justify-content: center;
+}
+/* ========================================================= */
+/* 5. HOT SALE SECTION */
+/* ========================================================= */
+
+.hot_sale_selection {
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    margin: 2rem 0;
+}
+
+
+
+/* Product Card */
+.product-card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin: 0 0.75rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+    max-width: 280px;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.card-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.75rem;
+    min-height: 50px;
+}
+
+.price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #e74c3c;
+    margin-bottom: 1rem;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-small {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: #5dade2;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-small:hover {
+    background: #3498db;
+}
+
+.btn-cart {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: #ff6b4a;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-cart:hover {
+    background: #e74c3c;
+}
 
 /* ========================================================= */
-/* 5. NÚT ĐIỀU KHIỂN CAROUSEL */
+/* 6. NÚT ĐIỀU KHIỂN CAROUSEL */
 /* ========================================================= */
 
-/* Nút Điều Khiển Cơ Bản (Hình tròn và Chuyển động) */
 .carousel-control-prev,
 .carousel-control-next {
     border-radius: 50%;
@@ -24,8 +124,6 @@
     height: 50px;
     opacity: 0.8;
     transition: all 0.2s ease-in-out;
-    
-    /* VỊ TRÍ: Đẩy ra ngoài lề -2rem */
     top: 50%; 
     transform: translateY(-50%);
 }
@@ -37,34 +135,31 @@
     right: -2rem !important; 
 }
 
-/* Icon mũi tên SVG */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: invert(100%); /* Màu icon trắng/đen */
+    filter: invert(100%);
     width: 1.25em;
     height: 1.25em;
 }
 
-/* Hiệu ứng Hover */
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
-    width: 4rem; /* 64px */
-    height: 4rem; /* 64px */
+    width: 4rem;
+    height: 4rem;
     background-color: #535353;
     opacity: 1;
 }
 
-/* Hiệu ứng Active (Nhấn) */
 .carousel-control-prev:active,
 .carousel-control-next:active {
     width: 4rem; 
     height: 4rem;
-    background-color: #0f6e86; /* Màu xanh đậm */
+    background-color: #0f6e86;
     opacity: 1;
 }
 
 /* ========================================================= */
-/* 6. GIỎ HÀNG & THANH LỌC (TÙY CHỈNH) */
+/* 7. GIỎ HÀNG & THANH LỌC */
 /* ========================================================= */
 
 .products-top {
@@ -100,10 +195,10 @@
         autocomplete="off" />
     </div>
     <div class="auth-cart">
-        <div id="authArea">
+      <div id="authArea">
         <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
         <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
-      </div>  
+      </div>
     </div>
   </header>
 
@@ -131,7 +226,7 @@
             </ul>
           </li>
 
-          <!-- Kinh tế --> 
+          <!-- Kinh tế -->
           <li class="dropdown">
             <a href="category.html?category=Kinh tế" data-category="Kinh tế">Kinh tế ▸</a>
             <ul class="dropdown-content">
@@ -183,155 +278,194 @@
         <h1>Literary Haven xin chào!</h1>
         <h2>"The Home, All Tomes"</h2>
         <p>Hàng ngàn tựa sách hay đang chờ bạn</p>
-  <div class="all-books">
-    <a href="#" data-category="all" class="active">Tất cả Sách</a>
-  </div>
-      </div>  
+        <div class="all-books">
+          <a href="#" data-category="all" class="active">Tất cả Sách</a>
+        </div>
+      </div>
     </section>
 
+<!-- Phần about us -->
+ <section class="about-section py-5">
+  <div class="about-us-index">
+    <div class="row align-items-center">
+      
+      <!-- CỘT TRÁI: ẢNH -->
+      <div class="col-md-6 mb-4 mb-md-0">
+      <div class="image-stack position-relative">
+        <a href="./about.html">
+          <img src="https://picsum.photos/400/250?random=1" class="img-fluid img-1" alt="Ảnh 1">
+          <img src="https://picsum.photos/400/250?random=2" class="img-fluid img-2" alt="Ảnh 2">
+          <img src="https://picsum.photos/400/250?random=3" class="img-fluid img-3" alt="Ảnh 3">
+        </a>
+      </div>
+      </div>
 
-<!-- Phần Bán chạy -->
-<div class="hot_sale_selection">
-    <h1 class="hot-sale">Top sách bán chạy</h1>
-
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-        <div class="carousel-inner">
-            
-            <div class="carousel-item active">
-                <div class="d-flex justify-content-between"> 
-
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img src="https://picsum.photos/300/420?random=27" alt="Đắc Nhân Tâm" class="img-fluid">
-                        </div>
-                        <h4 class="card-title">Đắc Nhân Tâm</h4>
-                        <div class="price">85.000đ</div>
-                        <div class="card-actions">
-                            <button class="btn btn-small">Xem</button>
-                            <button class="btn btn-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img src="https://picsum.photos/300/420?random=28" alt="Tuổi Trẻ Đáng Giá Bao Nhiêu" class="img-fluid">
-                        </div>
-                        <h4 class="card-title">Tuổi Trẻ Đáng Giá Bao Nhiêu</h4>
-                        <div class="price">90.000đ</div>
-                        <div class="card-actions">
-                            <button class="btn btn-small">Xem</button>
-                            <button class="btn btn-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img src="https://picsum.photos/300/420?random=29" alt="Truyện Kiều" class="img-fluid">
-                        </div>
-                        <h4 class="card-title">Truyện Kiều</h4>
-                        <div class="price">70.000đ</div>
-                        <div class="card-actions">
-                            <button class="btn btn-small">Xem</button>
-                            <button class="btn btn-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="carousel-item">
-                <div class="d-flex justify-content-between">
-
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img src="https://picsum.photos/300/420?random=31" alt="Lão Hạc" class="img-fluid">
-                        </div>
-                        <h4 class="card-title">Lão Hạc</h4>
-                        <div class="price">60.000đ</div>
-                        <div class="card-actions">
-                            <button class="btn btn-small">Xem</button>
-                            <button class="btn btn-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img src="https://picsum.photos/300/420?random=32" alt="Nhật Ký Trong Tù" class="img-fluid">
-                        </div>
-                        <h4 class="card-title">Nhật Ký Trong Tù</h4>
-                        <div class="price">80.000đ</div>
-                        <div class="card-actions">
-                            <button class="btn btn-small">Xem</button>
-                            <button class="btn btn-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img src="https://picsum.photos/300/420?random=33" alt="Số Đỏ" class="img-fluid">
-                        </div>
-                        <h4 class="card-title">Số Đỏ</h4>
-                        <div class="price">95.000đ</div>
-                        <div class="card-actions">
-                            <button class="btn btn-small">Xem</button>
-                            <button class="btn btn-cart">Thêm vào giỏ</button>
-                        </div>
-                      </div>
-                </div>
-            </div>
-
-            <div class="carousel-item">
-                <div class="d-flex justify-content-between">
-
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img src="https://picsum.photos/300/420?random=35" alt="Tôi Thấy Hoa Vàng Trên Cỏ Xanh" class="img-fluid">
-                        </div>
-                        <h4 class="card-title">Tôi Thấy Hoa Vàng Trên Cỏ Xanh</h4>
-                        <div class="price">100.000đ</div>
-                        <div class="card-actions">
-                            <button class="btn btn-small">Xem</button>
-                            <button class="btn btn-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img src="https://picsum.photos/300/420?random=36" alt="Người Lái Đò Sông Đà" class="img-fluid">
-                        </div>
-                        <h4 class="card-title">Người Lái Đò Sông Đà</h4>
-                        <div class="price">72.000đ</div>
-                        <div class="card-actions">
-                            <button class="btn btn-small">Xem</button>
-                            <button class="btn btn-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img src="https://picsum.photos/300/420?random=37" alt="Nhật Ký Đặng Thùy Trâm" class="img-fluid">
-                        </div>
-                        <h4 class="card-title">Nhật Ký Đặng Thùy Trâm</h4>
-                        <div class="price">85.000đ</div>
-                        <div class="card-actions">
-                            <button class="btn btn-small">Xem</button>
-                            <button class="btn btn-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+      <!-- CỘT PHẢI: NỘI DUNG -->
+      <div class="col-md-6">
+        <h2 class="intro-title">Giới thiệu <span>Literary Haven!</span></h2>
+        <p class="text-secondary">
+          Literary Haven được biết đến là một trong những thương hiệu hàng đầu về dòng sách quản trị kinh doanh, phát triển kỹ năng, tài chính, đầu tư... với các cuốn sách hướng dẫn khởi nghiệp, các bài học, phương pháp và kinh nghiệm quản trị của các chuyên gia, và các tập đoàn nổi tiếng trên thế giới.
+        </p>
+        <p class="text-secondary">
+          Sau nhiều năm hình thành và phát triển, Literary Haven đã từng bước khẳng định tên tuổi của mình, đặc biệt đối với các thế hệ doanh nhân, nhà quản lý và những người trẻ luôn khát khao xây dựng sự nghiệp thành công.
+        </p>
+      <a href="./about.html" class="btn btn-warning text-white rounded-pill px-4 py-2">
+          XEM THÊM →
+      </a>
+      </div>
     </div>
+  </div>
+</section>
+  
+    <!-- Phần Bán chạy -->
+    <div class="hot_sale_selection">
+<div class="Top-sale">
+        <div class="title-hot-sale">
+          <h1 class="hot-sale">Top sách bán chạy</h1>
+        </div>
 </div>
-</main>
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+
+          <div class="carousel-item active">
+            <div class="d-flex justify-content-between">
+
+              <div class="product-card">
+                <div class="card-img">
+                  <img src="https://picsum.photos/300/420?random=27" alt="Đắc Nhân Tâm" class="img-fluid">
+                </div>
+                <h4 class="card-title">Đắc Nhân Tâm</h4>
+                <div class="price">85.000đ</div>
+                <div class="card-actions">
+                  <button class="btn btn-small">Xem</button>
+                  <button class="btn btn-cart">Thêm vào giỏ</button>
+                </div>
+              </div>
+
+              <div class="product-card">
+                <div class="card-img">
+                  <img src="https://picsum.photos/300/420?random=28" alt="Tuổi Trẻ Đáng Giá Bao Nhiêu"
+                    class="img-fluid">
+                </div>
+                <h4 class="card-title">Tuổi Trẻ Đáng Giá Bao Nhiêu</h4>
+                <div class="price">90.000đ</div>
+                <div class="card-actions">
+                  <button class="btn btn-small">Xem</button>
+                  <button class="btn btn-cart">Thêm vào giỏ</button>
+                </div>
+              </div>
+
+              <div class="product-card">
+                <div class="card-img">
+                  <img src="https://picsum.photos/300/420?random=29" alt="Truyện Kiều" class="img-fluid">
+                </div>
+                <h4 class="card-title">Truyện Kiều</h4>
+                <div class="price">70.000đ</div>
+                <div class="card-actions">
+                  <button class="btn btn-small">Xem</button>
+                  <button class="btn btn-cart">Thêm vào giỏ</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="d-flex justify-content-between">
+
+              <div class="product-card">
+                <div class="card-img">
+                  <img src="https://picsum.photos/300/420?random=31" alt="Lão Hạc" class="img-fluid">
+                </div>
+                <h4 class="card-title">Lão Hạc</h4>
+                <div class="price">60.000đ</div>
+                <div class="card-actions">
+                  <button class="btn btn-small">Xem</button>
+                  <button class="btn btn-cart">Thêm vào giỏ</button>
+                </div>
+              </div>
+
+              <div class="product-card">
+                <div class="card-img">
+                  <img src="https://picsum.photos/300/420?random=32" alt="Nhật Ký Trong Tù" class="img-fluid">
+                </div>
+                <h4 class="card-title">Nhật Ký Trong Tù</h4>
+                <div class="price">80.000đ</div>
+                <div class="card-actions">
+                  <button class="btn btn-small">Xem</button>
+                  <button class="btn btn-cart">Thêm vào giỏ</button>
+                </div>
+              </div>
+
+              <div class="product-card">
+                <div class="card-img">
+                  <img src="https://picsum.photos/300/420?random=33" alt="Số Đỏ" class="img-fluid">
+                </div>
+                <h4 class="card-title">Số Đỏ</h4>
+                <div class="price">95.000đ</div>
+                <div class="card-actions">
+                  <button class="btn btn-small">Xem</button>
+                  <button class="btn btn-cart">Thêm vào giỏ</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="d-flex justify-content-between">
+
+              <div class="product-card">
+                <div class="card-img">
+                  <img src="https://picsum.photos/300/420?random=35" alt="Tôi Thấy Hoa Vàng Trên Cỏ Xanh"
+                    class="img-fluid">
+                </div>
+                <h4 class="card-title">Tôi Thấy Hoa Vàng Trên Cỏ Xanh</h4>
+                <div class="price">100.000đ</div>
+                <div class="card-actions">
+                  <button class="btn btn-small">Xem</button>
+                  <button class="btn btn-cart">Thêm vào giỏ</button>
+                </div>
+              </div>
+
+              <div class="product-card">
+                <div class="card-img">
+                  <img src="https://picsum.photos/300/420?random=36" alt="Người Lái Đò Sông Đà" class="img-fluid">
+                </div>
+                <h4 class="card-title">Người Lái Đò Sông Đà</h4>
+                <div class="price">72.000đ</div>
+                <div class="card-actions">
+                  <button class="btn btn-small">Xem</button>
+                  <button class="btn btn-cart">Thêm vào giỏ</button>
+                </div>
+              </div>
+
+              <div class="product-card">
+                <div class="card-img">
+                  <img src="https://picsum.photos/300/420?random=37" alt="Nhật Ký Đặng Thùy Trâm" class="img-fluid">
+                </div>
+                <h4 class="card-title">Nhật Ký Đặng Thùy Trâm</h4>
+                <div class="price">85.000đ</div>
+                <div class="card-actions">
+                  <button class="btn btn-small">Xem</button>
+                  <button class="btn btn-cart">Thêm vào giỏ</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </main>
 </body>
 <footer>
   <div class="footer-content">
@@ -389,12 +523,12 @@
   <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
   <div class="auth-modal-content">
     <button class="auth-modal-close" onclick="closeLoginModal()">&times;</button>
-    
+
     <div class="auth-modal-header">
       <h2>Đăng Nhập</h2>
       <p>Chào mừng bạn trở lại!</p>
     </div>
-    
+
     <form id="login-form" class="auth-modal-form">
       <div class="form-group">
         <label for="login-username">Tài khoản</label>
@@ -404,21 +538,21 @@
         </div>
         <span id="error-login-username" class="error-msg"></span>
       </div>
-      
+
       <div class="form-group">
         <label for="login-password">Mật khẩu</label>
         <div class="input-with-icon">
           <span class="input-icon">🔐</span>
           <input type="password" id="login-password" placeholder="Nhập mật khẩu">
-          <span class="password-toggle" id="toggle-login-password" 
-                onclick="togglePassword('login-password', 'toggle-login-password')">👁️‍🗨️</span>
+          <span class="password-toggle" id="toggle-login-password"
+            onclick="togglePassword('login-password', 'toggle-login-password')">👁️‍🗨️</span>
         </div>
         <span id="error-login-password" class="error-msg"></span>
       </div>
-      
+
       <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
     </form>
-    
+
     <div class="auth-modal-footer">
       Chưa có tài khoản? <a href="#" onclick="switchToRegister()">Đăng ký ngay</a>
     </div>
@@ -430,12 +564,12 @@
   <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
   <div class="auth-modal-content">
     <button class="auth-modal-close" onclick="closeRegisterModal()">&times;</button>
-    
+
     <div class="auth-modal-header">
       <h2>Đăng Ký</h2>
       <p>Tạo tài khoản mới của bạn</p>
     </div>
-    
+
     <form id="register-form" class="auth-modal-form" style="max-height: 450px; overflow-y: auto;">
       <div class="form-group">
         <label for="reg-fullname">Họ và tên</label>
@@ -445,7 +579,7 @@
         </div>
         <span id="error-fullname" class="error-msg"></span>
       </div>
-      
+
       <div class="form-group">
         <label for="reg-username">Tài khoản</label>
         <div class="input-with-icon">
@@ -454,29 +588,29 @@
         </div>
         <span id="error-username" class="error-msg"></span>
       </div>
-      
+
       <div class="form-group">
         <label for="reg-password">Mật khẩu</label>
         <div class="input-with-icon">
           <span class="input-icon">🔐</span>
           <input type="password" id="reg-password" placeholder="Nhập mật khẩu">
-          <span class="password-toggle" id="toggle-reg-password" 
-                onclick="togglePassword('reg-password', 'toggle-reg-password')">👁️‍🗨️</span>
+          <span class="password-toggle" id="toggle-reg-password"
+            onclick="togglePassword('reg-password', 'toggle-reg-password')">👁️‍🗨️</span>
         </div>
         <span id="error-password" class="error-msg"></span>
       </div>
-      
+
       <div class="form-group">
         <label for="reg-confirm-password">Nhập lại mật khẩu</label>
         <div class="input-with-icon">
           <span class="input-icon">🔐</span>
           <input type="password" id="reg-confirm-password" placeholder="Nhập lại mật khẩu">
-          <span class="password-toggle" id="toggle-reg-confirm" 
-                onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')">👁️‍🗨️</span>
+          <span class="password-toggle" id="toggle-reg-confirm"
+            onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')">👁️‍🗨️</span>
         </div>
         <span id="error-confirm-password" class="error-msg"></span>
       </div>
-      
+
       <div class="form-group">
         <label for="reg-email">Email</label>
         <div class="input-with-icon">
@@ -485,7 +619,7 @@
         </div>
         <span id="error-email" class="error-msg"></span>
       </div>
-      
+
       <div class="form-group">
         <label for="reg-phone">Số điện thoại</label>
         <div class="input-with-icon">
@@ -494,7 +628,7 @@
         </div>
         <span id="error-phone" class="error-msg"></span>
       </div>
-      
+
       <div class="form-group">
         <label for="reg-address">Địa chỉ</label>
         <div class="input-with-icon">
@@ -503,10 +637,10 @@
         </div>
         <span id="error-address" class="error-msg"></span>
       </div>
-      
+
       <button type="submit" class="btn-auth-submit">Đăng Ký</button>
     </form>
-    
+
     <div class="auth-modal-footer">
       Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập</a>
     </div>
@@ -518,13 +652,13 @@
   <div class="auth-modal-overlay" onclick="closeProfileModal()"></div>
   <div class="auth-modal-content">
     <button class="auth-modal-close" onclick="closeProfileModal()">&times;</button>
-    
+
     <div class="auth-modal-header">
       <div class="profile-avatar-small">👤</div>
       <h2 id="profile-fullname">Xin chào!</h2>
       <p>Thông tin tài khoản của bạn</p>
     </div>
-    
+
     <div class="profile-info-modal">
       <div class="info-row">
         <span class="info-label">👤 Họ và tên:</span>
@@ -547,10 +681,11 @@
         <span class="info-value" id="profile-address-value"></span>
       </div>
     </div>
-    
+
     <button class="btn-logout-modal" onclick="handleLogoutModal()">Đăng xuất</button>
   </div>
 </div>
 <script src="assets/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </html>
