@@ -2121,15 +2121,15 @@ footer {
     padding: 1.5rem;
     width: 95%;
   }
-  
+
   .auth-modal-header h2 {
     font-size: 1.5rem;
   }
-  
+
   .auth-modal-form input {
     padding: 0.8rem 0.8rem 0.8rem 2.5rem;
   }
-  
+
   .input-icon {
     left: 0.8rem;
     font-size: 1rem;
@@ -2167,7 +2167,7 @@ footer {
 
 .search-input:focus {
   outline: none;
-  border-color: #4CAF50;
+  border-color: #4caf50;
   background-color: white;
   box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
 }
@@ -2182,7 +2182,7 @@ footer {
     margin: 10px 0;
     max-width: 100%;
   }
-  
+
   .search-input {
     font-size: 14px;
     padding: 10px 40px 10px 40px;

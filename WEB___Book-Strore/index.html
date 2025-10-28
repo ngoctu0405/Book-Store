@@ -12,106 +12,6 @@
     height: 160rem;
   }
 
-/* Card sản phẩm: kiểu dáng và bóng */
-.product-card {
-    /* nền gradient nhẹ */
-    background: linear-gradient(145deg, #ffffff 0%, #f5f2e8 100%);
-    border-radius: 16px;
-    padding: 2rem;
-    min-height: 430px;
-    box-shadow: 0 8px 32px rgba(79, 157, 166, 0.1);
-    transition: all 0.3s ease;
-    border: 1px solid rgba(130, 192, 154, 0.2);
-    
-    position: relative;
-    overflow: hidden;
-    
-    display: flex;
-    flex-direction: column;
-    /* Dùng flex-start để kiểm soát vị trí giá và nút bằng margin-top: auto */
-    justify-content: flex-start;
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-/* Hiệu ứng Hover cho card */
-.product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 16px 40px rgba(79, 157, 166, 0.2);
-    border-color: rgba(130, 192, 154, 0.4);
-    background: linear-gradient(145deg, #ffffff 0%, #f5f2e8 100%);
-}
-
-/* Ảnh trong card */
-.product-card img {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease;
-}
-
-.product-card:hover img {
-    transform: scale(1.05);
-}
-
-/* Tiêu đề sản phẩm */
-.product-card h3 {
-    color: #2c3e50;
-    margin-top: -0.3rem;
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-
-/* Mô tả sản phẩm */
-.product-card p {
-    color: #293c70;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-    line-height: 1.4;
-}
-
-/* Giá sản phẩm */
-.product-card .price {
-    color: #ff0404;
-    font-size: 1.2rem;
-    font-weight: 700; /* Đảm bảo giá nổi bật */
-    margin-bottom: 1rem;
-    /* BỎ position: absolute nếu muốn nó nằm ngay trên nút */
-    /* position: absolute; bottom: 60px; */
-}
-
-/* Hàng chứa các nút action */
-.product-card .button-row { /* ✨ Sử dụng class này cho container nút trong HTML */
-    display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-    margin-top: auto; /* ✨ Đẩy container nút xuống đáy card */
-    padding-top: 0.5rem;
-}
-
-.product-card .btn {
-    font-size: 0.85rem;
-}
-
-/* Thanh viền động trên card (Pseudo-element) */
-.product-card:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, #4f9da6, #82c09a, #7fb3d3);
-    transition: left 0.6s ease;
-}
-
-.product-card:hover:before {
-    left: 100%;
-}
-
-
 /* ========================================================= */
 /* 5. NÚT ĐIỀU KHIỂN CAROUSEL */
 /* ========================================================= */
@@ -307,8 +207,8 @@
                         <h4 class="card-title">Đắc Nhân Tâm</h4>
                         <div class="price">85.000đ</div>
                         <div class="card-actions">
-                            <button class="btn btn-sm btn-info">Xem</button>
-                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                            <button class="btn btn-small">Xem</button>
+                            <button class="btn btn-cart">Thêm vào giỏ</button>
                         </div>
                     </div>
                     
@@ -319,8 +219,8 @@
                         <h4 class="card-title">Tuổi Trẻ Đáng Giá Bao Nhiêu</h4>
                         <div class="price">90.000đ</div>
                         <div class="card-actions">
-                            <button class="btn btn-sm btn-info">Xem</button>
-                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                            <button class="btn btn-small">Xem</button>
+                            <button class="btn btn-cart">Thêm vào giỏ</button>
                         </div>
                     </div>
 
@@ -331,8 +231,8 @@
                         <h4 class="card-title">Truyện Kiều</h4>
                         <div class="price">70.000đ</div>
                         <div class="card-actions">
-                            <button class="btn btn-sm btn-info">Xem</button>
-                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                            <button class="btn btn-small">Xem</button>
+                            <button class="btn btn-cart">Thêm vào giỏ</button>
                         </div>
                     </div>
                 </div>
@@ -348,8 +248,8 @@
                         <h4 class="card-title">Lão Hạc</h4>
                         <div class="price">60.000đ</div>
                         <div class="card-actions">
-                            <button class="btn btn-sm btn-info">Xem</button>
-                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                            <button class="btn btn-small">Xem</button>
+                            <button class="btn btn-cart">Thêm vào giỏ</button>
                         </div>
                     </div>
 
@@ -360,8 +260,8 @@
                         <h4 class="card-title">Nhật Ký Trong Tù</h4>
                         <div class="price">80.000đ</div>
                         <div class="card-actions">
-                            <button class="btn btn-sm btn-info">Xem</button>
-                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                            <button class="btn btn-small">Xem</button>
+                            <button class="btn btn-cart">Thêm vào giỏ</button>
                         </div>
                     </div>
 
@@ -372,8 +272,8 @@
                         <h4 class="card-title">Số Đỏ</h4>
                         <div class="price">95.000đ</div>
                         <div class="card-actions">
-                            <button class="btn btn-sm btn-info">Xem</button>
-                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                            <button class="btn btn-small">Xem</button>
+                            <button class="btn btn-cart">Thêm vào giỏ</button>
                         </div>
                       </div>
                 </div>
@@ -389,8 +289,8 @@
                         <h4 class="card-title">Tôi Thấy Hoa Vàng Trên Cỏ Xanh</h4>
                         <div class="price">100.000đ</div>
                         <div class="card-actions">
-                            <button class="btn btn-sm btn-info">Xem</button>
-                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                            <button class="btn btn-small">Xem</button>
+                            <button class="btn btn-cart">Thêm vào giỏ</button>
                         </div>
                     </div>
 
@@ -401,8 +301,8 @@
                         <h4 class="card-title">Người Lái Đò Sông Đà</h4>
                         <div class="price">72.000đ</div>
                         <div class="card-actions">
-                            <button class="btn btn-sm btn-info">Xem</button>
-                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                            <button class="btn btn-small">Xem</button>
+                            <button class="btn btn-cart">Thêm vào giỏ</button>
                         </div>
                     </div>
 
@@ -413,8 +313,8 @@
                         <h4 class="card-title">Nhật Ký Đặng Thùy Trâm</h4>
                         <div class="price">85.000đ</div>
                         <div class="card-actions">
-                            <button class="btn btn-sm btn-info">Xem</button>
-                            <button class="btn btn-sm btn-warning">Thêm vào giỏ</button>
+                            <button class="btn btn-small">Xem</button>
+                            <button class="btn btn-cart">Thêm vào giỏ</button>
                         </div>
                     </div>
                 </div>
