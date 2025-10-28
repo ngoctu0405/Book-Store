@@ -150,7 +150,7 @@ body {
 /* Banner chính: phần hero */
 .banner {
   position: relative;
-  top: 5rem;
+  top: 3.5rem;
   /* nền gradient cho banner */
   background: linear-gradient(135deg, #75b7d1 0%, #269de7 50%, #3571c0 100%);
   /* chiếm toàn chiều ngang viewport */
@@ -1781,12 +1781,14 @@ footer {
   display: flex;
   justify-content: center;
 }
+
 .hot_sale_selection {
   position: relative;
   top: 10rem;
+  max-width: 100rem;
   background-color: rgba(79, 157, 166, 0.3);
   padding: 2rem;
-  border-radius: 16px;
+  border-radius: 3rem;
 }
 
 /* Đặt màu cho các mũi tên điều khiển */

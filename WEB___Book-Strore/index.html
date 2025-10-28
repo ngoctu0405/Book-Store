@@ -10,6 +10,7 @@
   <style>
     .container {
     height: 160rem;
+
   }
 .title-hot-sale {
   background-color: #ffffff;
@@ -40,7 +41,7 @@
     margin: 0 0.75rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     transition: transform 0.3s ease;
-    max-width: 280px;
+    max-width: 20rem;
 }
 
 .product-card:hover {
@@ -129,10 +130,10 @@
 }
 
 .carousel-control-prev {
-    left: -2rem !important; 
+    left: -1rem !important; 
 }
 .carousel-control-next {
-    right: -2rem !important; 
+    right: -1rem !important; 
 }
 
 .carousel-control-prev-icon,
@@ -272,7 +273,11 @@
           id="cart-count" class="cart-count">0</span></button></div>
   </nav>
 
+  <!-- Banner -->
+
+
   <main class="container">
+    
     <section class="banner">
       <div class="banner-content">
         <h1>Literary Haven xin chào!</h1>
@@ -293,9 +298,9 @@
       <div class="col-md-6 mb-4 mb-md-0">
       <div class="image-stack position-relative">
         <a href="./about.html">
-          <img src="https://picsum.photos/400/250?random=1" class="img-fluid img-1" alt="Ảnh 1">
-          <img src="https://picsum.photos/400/250?random=2" class="img-fluid img-2" alt="Ảnh 2">
-          <img src="https://picsum.photos/400/250?random=3" class="img-fluid img-3" alt="Ảnh 3">
+          <img src="./images/library1.jpg" class="img-fluid img-1" alt="Ảnh 1">
+          <img src="./images/library2.jpg" class="img-fluid img-2" alt="Ảnh 2">
+          <img src="./images/library3.jpg" class="img-fluid img-3" alt="Ảnh 3">
         </a>
       </div>
       </div>
@@ -318,153 +323,155 @@
 </section>
   
     <!-- Phần Bán chạy -->
-    <div class="hot_sale_selection">
-<div class="Top-sale">
-        <div class="title-hot-sale">
-          <h1 class="hot-sale">Top sách bán chạy</h1>
-        </div>
-</div>
-      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-        <div class="carousel-inner">
-
-          <div class="carousel-item active">
-            <div class="d-flex justify-content-between">
-
-              <div class="product-card">
-                <div class="card-img">
-                  <img src="https://picsum.photos/300/420?random=27" alt="Đắc Nhân Tâm" class="img-fluid">
-                </div>
-                <h4 class="card-title">Đắc Nhân Tâm</h4>
-                <div class="price">85.000đ</div>
-                <div class="card-actions">
-                  <button class="btn btn-small">Xem</button>
-                  <button class="btn btn-cart">Thêm vào giỏ</button>
-                </div>
-              </div>
-
-              <div class="product-card">
-                <div class="card-img">
-                  <img src="https://picsum.photos/300/420?random=28" alt="Tuổi Trẻ Đáng Giá Bao Nhiêu"
-                    class="img-fluid">
-                </div>
-                <h4 class="card-title">Tuổi Trẻ Đáng Giá Bao Nhiêu</h4>
-                <div class="price">90.000đ</div>
-                <div class="card-actions">
-                  <button class="btn btn-small">Xem</button>
-                  <button class="btn btn-cart">Thêm vào giỏ</button>
-                </div>
-              </div>
-
-              <div class="product-card">
-                <div class="card-img">
-                  <img src="https://picsum.photos/300/420?random=29" alt="Truyện Kiều" class="img-fluid">
-                </div>
-                <h4 class="card-title">Truyện Kiều</h4>
-                <div class="price">70.000đ</div>
-                <div class="card-actions">
-                  <button class="btn btn-small">Xem</button>
-                  <button class="btn btn-cart">Thêm vào giỏ</button>
-                </div>
-              </div>
-            </div>
+<div class= "Center-hot-sale">
+  <div class="hot_sale_selection">
+    <div class="Top-sale">
+          <div class="title-hot-sale">
+            <h1 class="hot-sale">Top sách bán chạy</h1>
           </div>
-
-          <div class="carousel-item">
-            <div class="d-flex justify-content-between">
-
-              <div class="product-card">
-                <div class="card-img">
-                  <img src="https://picsum.photos/300/420?random=31" alt="Lão Hạc" class="img-fluid">
-                </div>
-                <h4 class="card-title">Lão Hạc</h4>
-                <div class="price">60.000đ</div>
-                <div class="card-actions">
-                  <button class="btn btn-small">Xem</button>
-                  <button class="btn btn-cart">Thêm vào giỏ</button>
-                </div>
-              </div>
-
-              <div class="product-card">
-                <div class="card-img">
-                  <img src="https://picsum.photos/300/420?random=32" alt="Nhật Ký Trong Tù" class="img-fluid">
-                </div>
-                <h4 class="card-title">Nhật Ký Trong Tù</h4>
-                <div class="price">80.000đ</div>
-                <div class="card-actions">
-                  <button class="btn btn-small">Xem</button>
-                  <button class="btn btn-cart">Thêm vào giỏ</button>
-                </div>
-              </div>
-
-              <div class="product-card">
-                <div class="card-img">
-                  <img src="https://picsum.photos/300/420?random=33" alt="Số Đỏ" class="img-fluid">
-                </div>
-                <h4 class="card-title">Số Đỏ</h4>
-                <div class="price">95.000đ</div>
-                <div class="card-actions">
-                  <button class="btn btn-small">Xem</button>
-                  <button class="btn btn-cart">Thêm vào giỏ</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="carousel-item">
-            <div class="d-flex justify-content-between">
-
-              <div class="product-card">
-                <div class="card-img">
-                  <img src="https://picsum.photos/300/420?random=35" alt="Tôi Thấy Hoa Vàng Trên Cỏ Xanh"
-                    class="img-fluid">
-                </div>
-                <h4 class="card-title">Tôi Thấy Hoa Vàng Trên Cỏ Xanh</h4>
-                <div class="price">100.000đ</div>
-                <div class="card-actions">
-                  <button class="btn btn-small">Xem</button>
-                  <button class="btn btn-cart">Thêm vào giỏ</button>
-                </div>
-              </div>
-
-              <div class="product-card">
-                <div class="card-img">
-                  <img src="https://picsum.photos/300/420?random=36" alt="Người Lái Đò Sông Đà" class="img-fluid">
-                </div>
-                <h4 class="card-title">Người Lái Đò Sông Đà</h4>
-                <div class="price">72.000đ</div>
-                <div class="card-actions">
-                  <button class="btn btn-small">Xem</button>
-                  <button class="btn btn-cart">Thêm vào giỏ</button>
-                </div>
-              </div>
-
-              <div class="product-card">
-                <div class="card-img">
-                  <img src="https://picsum.photos/300/420?random=37" alt="Nhật Ký Đặng Thùy Trâm" class="img-fluid">
-                </div>
-                <h4 class="card-title">Nhật Ký Đặng Thùy Trâm</h4>
-                <div class="price">85.000đ</div>
-                <div class="card-actions">
-                  <button class="btn btn-small">Xem</button>
-                  <button class="btn btn-cart">Thêm vào giỏ</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-          data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-          data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
     </div>
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+          <div class="carousel-inner">
+  
+            <div class="carousel-item active">
+              <div class="d-flex justify-content-between">
+  
+                <div class="product-card">
+                  <div class="card-img">
+                    <img src="https://picsum.photos/300/420?random=27" alt="Đắc Nhân Tâm" class="img-fluid">
+                  </div>
+                  <h4 class="card-title">Đắc Nhân Tâm</h4>
+                  <div class="price">85.000đ</div>
+                  <div class="card-actions">
+                    <button class="btn btn-small">Xem</button>
+                    <button class="btn btn-cart">Thêm vào giỏ</button>
+                  </div>
+                </div>
+  
+                <div class="product-card">
+                  <div class="card-img">
+                    <img src="https://picsum.photos/300/420?random=28" alt="Tuổi Trẻ Đáng Giá Bao Nhiêu"
+                      class="img-fluid">
+                  </div>
+                  <h4 class="card-title">Tuổi Trẻ Đáng Giá Bao Nhiêu</h4>
+                  <div class="price">90.000đ</div>
+                  <div class="card-actions">
+                    <button class="btn btn-small">Xem</button>
+                    <button class="btn btn-cart">Thêm vào giỏ</button>
+                  </div>
+                </div>
+  
+                <div class="product-card">
+                  <div class="card-img">
+                    <img src="https://picsum.photos/300/420?random=29" alt="Truyện Kiều" class="img-fluid">
+                  </div>
+                  <h4 class="card-title">Truyện Kiều</h4>
+                  <div class="price">70.000đ</div>
+                  <div class="card-actions">
+                    <button class="btn btn-small">Xem</button>
+                    <button class="btn btn-cart">Thêm vào giỏ</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="carousel-item">
+              <div class="d-flex justify-content-between">
+  
+                <div class="product-card">
+                  <div class="card-img">
+                    <img src="https://picsum.photos/300/420?random=31" alt="Lão Hạc" class="img-fluid">
+                  </div>
+                  <h4 class="card-title">Lão Hạc</h4>
+                  <div class="price">60.000đ</div>
+                  <div class="card-actions">
+                    <button class="btn btn-small">Xem</button>
+                    <button class="btn btn-cart">Thêm vào giỏ</button>
+                  </div>
+                </div>
+  
+                <div class="product-card">
+                  <div class="card-img">
+                    <img src="https://picsum.photos/300/420?random=32" alt="Nhật Ký Trong Tù" class="img-fluid">
+                  </div>
+                  <h4 class="card-title">Nhật Ký Trong Tù</h4>
+                  <div class="price">80.000đ</div>
+                  <div class="card-actions">
+                    <button class="btn btn-small">Xem</button>
+                    <button class="btn btn-cart">Thêm vào giỏ</button>
+                  </div>
+                </div>
+  
+                <div class="product-card">
+                  <div class="card-img">
+                    <img src="https://picsum.photos/300/420?random=33" alt="Số Đỏ" class="img-fluid">
+                  </div>
+                  <h4 class="card-title">Số Đỏ</h4>
+                  <div class="price">95.000đ</div>
+                  <div class="card-actions">
+                    <button class="btn btn-small">Xem</button>
+                    <button class="btn btn-cart">Thêm vào giỏ</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="carousel-item">
+              <div class="d-flex justify-content-between">
+  
+                <div class="product-card">
+                  <div class="card-img">
+                    <img src="https://picsum.photos/300/420?random=35" alt="Tôi Thấy Hoa Vàng Trên Cỏ Xanh"
+                      class="img-fluid">
+                  </div>
+                  <h4 class="card-title">Tôi Thấy Hoa Vàng Trên Cỏ Xanh</h4>
+                  <div class="price">100.000đ</div>
+                  <div class="card-actions">
+                    <button class="btn btn-small">Xem</button>
+                    <button class="btn btn-cart">Thêm vào giỏ</button>
+                  </div>
+                </div>
+  
+                <div class="product-card">
+                  <div class="card-img">
+                    <img src="https://picsum.photos/300/420?random=36" alt="Người Lái Đò Sông Đà" class="img-fluid">
+                  </div>
+                  <h4 class="card-title">Người Lái Đò Sông Đà</h4>
+                  <div class="price">72.000đ</div>
+                  <div class="card-actions">
+                    <button class="btn btn-small">Xem</button>
+                    <button class="btn btn-cart">Thêm vào giỏ</button>
+                  </div>
+                </div>
+  
+                <div class="product-card">
+                  <div class="card-img">
+                    <img src="https://picsum.photos/300/420?random=37" alt="Nhật Ký Đặng Thùy Trâm" class="img-fluid">
+                  </div>
+                  <h4 class="card-title">Nhật Ký Đặng Thùy Trâm</h4>
+                  <div class="price">85.000đ</div>
+                  <div class="card-actions">
+                    <button class="btn btn-small">Xem</button>
+                    <button class="btn btn-cart">Thêm vào giỏ</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+</div>
   </main>
 </body>
 <footer>
