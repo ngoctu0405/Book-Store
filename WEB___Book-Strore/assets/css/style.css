@@ -164,7 +164,7 @@ body {
   /* relative để chứa pseudo */
   position: relative;
   /* bo góc cho banner */
-  border-radius: 12px;
+  border-radius: 2rem;
   /* ẩn tràn ở một số thành phần con */
   overflow: hidden;
 }
@@ -2220,8 +2220,8 @@ footer {
 /* VÙNG CHA CHỨA ẢNH */
 .image-stack {
   position: relative; /* cần để các ảnh position absolute dựa vào */
-  width: 400px; /* kích thước cố định (m có thể chỉnh theo layout) */
-  height: 260px; /* chiều cao khung chứa */
+  width: 400px; /* kích thước cố định (có thể chỉnh theo layout) */
+  height: 300px; /* chiều cao khung chứa */
   margin: 0 auto; /* căn giữa */
 }
 
@@ -2239,19 +2239,19 @@ footer {
 /* ĐỊNH VỊ 3 ẢNH - CHỒNG NHẸ */
 .image-stack .img-1 {
   top: 0;
-  left: -1em;
+  left: -3em;
   z-index: 1;
 }
 
 .image-stack .img-2 {
-  top: 0;
+  top: 4rem;
   left: 4rem; /* đè 1 phần ảnh 1 */
   z-index: 2;
 }
 
 .image-stack .img-3 {
-  top: 0;
-  left: 120px; /* đè nhẹ lên ảnh 2 */
+  top: 8rem;
+  left: 12rem; /* đè nhẹ lên ảnh 2 */
   z-index: 3;
 }
 
