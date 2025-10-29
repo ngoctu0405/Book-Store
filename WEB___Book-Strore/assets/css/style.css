@@ -2598,31 +2598,34 @@ footer {
 }
 
 /* Nút bock to top */
-html {
-  scroll-behavior: smooth;
-}
-
 .back-to-top {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+  background-color: #007bff;
   color: white;
-  border-radius: 8px;
-  padding: 10px 12px;
-  text-decoration: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: background 0.3s ease, transform 0.2s ease;
+  font-size: 1.4rem;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
   z-index: 999;
-  min-width: 3rem;
-  min-height: 3rem;
 }
 
 .back-to-top:hover {
-  background-color: #e74c3c;
-  transform: translateY(-3px);
+  background-color: #0056b3;
+  transform: translateY(-4px);
+}
+
+.back-to-top i {
+  transition: transform 0.2s ease;
+}
+
+.back-to-top:hover i {
+  transform: translateY(-2px);
 }
