@@ -657,7 +657,65 @@
         <ul class="menu">
             <li><a href="index.html">Trang chủ</a></li>
             <li><a href="about.html">Giới thiệu</a></li>
-            <li><a href="category.html">Danh mục sách</a></li>
+            <div class="category-menu">
+        <button class="category-btn" onclick="window.location.href='category.html'">
+          Danh mục sách ▾
+        </button>
+
+        <ul class="book-filter">
+
+          <!-- Văn học -->
+          <li class="dropdown">
+            <a href="category.html?category=Văn học" data-category="Văn học">Văn học ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
+                  data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
+                  data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
+                  data-subcategory="Thơ">Thơ</a></li>
+            </ul>
+          </li>
+
+          <!-- Kinh tế -->
+          <li class="dropdown">
+            <a href="category.html?category=Kinh tế" data-category="Kinh tế">Kinh tế ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
+                  data-subcategory="Quản trị">Quản trị</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
+                  data-subcategory="Tài chính">Tài chính</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
+                  data-subcategory="Marketing">Marketing</a></li>
+            </ul>
+          </li>
+
+          <!-- Thiếu nhi -->
+          <li class="dropdown">
+            <a href="category.html?category=Thiếu nhi" data-category="Thiếu nhi">Thiếu nhi ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
+                  data-subcategory="Truyện tranh">Truyện tranh</a></li>
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
+                  data-subcategory="Giáo dục">Giáo dục</a></li>
+            </ul>
+          </li>
+
+          <!-- Giáo khoa -->
+          <li class="dropdown">
+            <a href="category.html?category=Giáo khoa" data-category="Giáo khoa">Giáo khoa ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
+                  data-subcategory="Cấp 1">Cấp 1</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
+                  data-subcategory="Cấp 2">Cấp 2</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
+                  data-subcategory="Cấp 3">Cấp 3</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
             <li><a href="news.html">Tin tức</a></li>
         </ul>
         <div class="cart-float">
