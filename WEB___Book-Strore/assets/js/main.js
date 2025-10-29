@@ -121,23 +121,57 @@ function renderPagination(totalPages){
 function changePage(p){ renderProductList(p) }
 
 // ===== CHỈNH LẠI LOGIC PHẦN TÌM KIẾM =================================================================================================
+// ===== LOGIC TÌM KIẾM =================================
+document.addEventListener('DOMContentLoaded', function() {
+  // Lấy nút tìm kiếm
+  const searchBtn = document.querySelector('.search-btn');
+  if (searchBtn) {
+    searchBtn.addEventListener('click', function() {
+      doSearch();
+    });
+  }
+  
+  // Cho phép nhấn Enter trên input để tìm kiếm
+  const searchInput = document.getElementById('topSearch');
+  if (searchInput) {
+    searchInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        doSearch();
+      }
+    });
+  }
+});
+
 function doSearch(){ 
-  const q=(document.getElementById('q')?.value||'').trim(); 
-  if(!q){ alert('Nhập từ khóa'); return; } 
-  window.location.href='search-results.html?q='+encodeURIComponent(q); 
+  const q = (document.getElementById('topSearch')?.value || '').trim(); 
+  if (!q) { 
+    alert('Vui lòng nhập từ khóa tìm kiếm'); 
+    return; 
+  } 
+  window.location.href = 'search-results.html?q=' + encodeURIComponent(q); 
 }
 
 function renderSearchResults(){ 
-  const wrap=document.getElementById('search-results'); 
-  if(!wrap) return; 
-// ========================================================================================================================================
-  const q=new URLSearchParams(location.search).get('q')||''; 
-  const res = getData().products.filter(p=>p.name.toLowerCase().includes(q.toLowerCase())); 
+  const wrap = document.getElementById('search-results'); 
+  if (!wrap) return; 
+  
+  const q = (new URLSearchParams(location.search).get('q') || '').trim(); 
+  if (!q) { 
+    wrap.innerHTML = '<p class="no-results">Không có từ khóa tìm kiếm</p>'; 
+    return; 
+  }
+  
+  // Tách từ khóa thành mảng và tìm kiếm (AND logic)
+  const keywords = q.toLowerCase().split(/\s+/).filter(k => k);
+  
+  const res = getData().products.filter(p => 
+    keywords.every(k => p.name.toLowerCase().includes(k))
+  ); 
 
   wrap.innerHTML = res.length 
-    ? res.map(it =>`
+    ? res.map(it => `
       <div class="product-card"> 
-        <img src="${it.img}" alt=""> 
+        <img src="${it.img}" alt="${it.name}"> 
         <h3>${it.name}</h3>
         <div class="price">${it.price.toLocaleString('vi-VN')}đ</div>
         <div class="button-row">
@@ -145,7 +179,7 @@ function renderSearchResults(){
           <button class="btn btn-cart" onclick="addToCart(${it.id},1)">Thêm vào giỏ</button>
         </div>
       </div>`).join('') 
-    : '<p>Không tìm thấy</p>'; 
+    : `<p class="no-results">Không tìm thấy sản phẩm nào với từ khóa "<strong>${q}</strong>"</p>`; 
 }
 
 function renderProductDetail(){  
