@@ -2344,7 +2344,7 @@ footer {
 .user-dropdown-menu li {
   list-style: none;
   position: relative;
-   padding-left: 0 !important;
+  padding-left: 0 !important;
   margin-left: 0 !important;
 }
 
@@ -2354,7 +2354,7 @@ footer {
   align-items: center;
   gap: 10px;
   padding: 10px 10px;
-  padding-left: 0 !important; 
+  padding-left: 0 !important;
   margin-left: 0 !important;
   color: #2c3e50;
   text-decoration: none;
@@ -2419,10 +2419,9 @@ footer {
 }
 
 .user-submenu-content li {
-  list-style: none; 
-   padding-left: 0 !important;
+  list-style: none;
+  padding-left: 0 !important;
   margin-left: 0 !important;
-  
 }
 
 .user-submenu-content li a {
@@ -2506,7 +2505,7 @@ footer {
     right: -20px;
     min-width: 200px;
   }
-  
+
   /* SỬA: Trên mobile, submenu vẫn xổ sang phải */
   .user-submenu-content {
     right: 100%;
@@ -2514,17 +2513,47 @@ footer {
     margin-right: 0;
     margin-left: 0;
   }
-  
+
   .user-submenu > .dropdown-item::after {
     content: "\25C0"; /* Giữ mũi tên trái */
   }
 }
 
 .logout-link {
-  color: red !important; 
+  color: red !important;
   font-weight: bold;
 }
 
 .logout-link:hover {
   color: rgb(223, 7, 7) !important;
+}
+
+/* Nút bock to top */
+html {
+  scroll-behavior: smooth;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+  color: white;
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, transform 0.2s ease;
+  z-index: 999;
+  min-width: 3rem;
+  min-height: 3rem;
+}
+
+.back-to-top:hover {
+  background-color: #e74c3c;
+  transform: translateY(-3px);
 }
