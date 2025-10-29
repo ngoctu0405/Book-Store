@@ -3,14 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+
     <title>Chính Sách Thanh Toán - Literary Haven</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+
     <style>
       .container_1 {
-        height: 70rem;
+        height: 110rem;
       }
-      /* CHÍNH SÁCH THANH TOÁN PAGE */
       section {
         padding: 1rem 1rem;
       }
@@ -71,11 +72,46 @@
       .policy-container a:hover {
         text-decoration: underline;
       }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 0.75rem;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f5f5f5;
+      }
     </style>
+      <!-- Nút back to top -->
+   <script>
+  // Khi cuộn xuống 300px thì hiện nút
+  window.onscroll = function() {
+    const btn = document.getElementById("backToTop");
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
+  };
+
+  // Khi click thì cuộn lên đầu trang
+  document.getElementById("backToTop").addEventListener("click", function() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
   </head>
 
   <body>
-    <!-- HEADER GIỮ NGUYÊN -->
+      <a id="top"></a>
+    <!-- HEADER -->
     <header class="topbar">
       <div class="logo">
         <a href="index.html"><img src="images/Logo.png" alt="Logo" /></a>
@@ -99,94 +135,231 @@
       </div>
     </header>
 
-    <!-- NAV GIỮ NGUYÊN -->
-    <nav class="navbar" id="mainNav">
-      <ul class="menu" id="mainMenu">
-        <li><a href="index.html">Trang chủ</a></li>
-        <li><a href="about.html">Giới thiệu</a></li>
-        <li><a href="category.html">Danh mục sách</a></li>
-        <li><a href="news.html">Tin tức</a></li>
-      </ul>
-    </nav>
+<a id="top"></a>
+  <header class="topbar">
+    <div class="logo">
+      <a href="index.html"><img src="images/Logo.png" alt="Logo"> </a>
+    </div>
+    <div class="search-center">
+      <input id="topSearch" class="search-input" type="text" placeholder="Nhập tên cuốn sách bạn đang tìm ..."
+        autocomplete="off" />
+    </div>
+    <div class="auth-cart">
+      <div id="authArea">
+        <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
+        <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
+      </div>
+    </div>
+  </header>
 
-    <!-- PHẦN CHÍNH SÁCH THANH TOÁN -->
+  <nav class="navbar" id="mainNav">
+    <ul class="menu" id="mainMenu">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="about.html">Giới thiệu</a></li>
+      <div class="category-menu">
+        <button class="category-btn" onclick="window.location.href='category.html'">
+          Danh mục sách ▾
+        </button>
+
+        <ul class="book-filter">
+
+          <!-- Văn học -->
+          <li class="dropdown">
+            <a href="category.html?category=Văn học" data-category="Văn học">Văn học ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
+                  data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
+                  data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
+                  data-subcategory="Thơ">Thơ</a></li>
+            </ul>
+          </li>
+
+          <!-- Kinh tế -->
+          <li class="dropdown">
+            <a href="category.html?category=Kinh tế" data-category="Kinh tế">Kinh tế ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
+                  data-subcategory="Quản trị">Quản trị</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
+                  data-subcategory="Tài chính">Tài chính</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
+                  data-subcategory="Marketing">Marketing</a></li>
+            </ul>
+          </li>
+
+          <!-- Thiếu nhi -->
+          <li class="dropdown">
+            <a href="category.html?category=Thiếu nhi" data-category="Thiếu nhi">Thiếu nhi ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
+                  data-subcategory="Truyện tranh">Truyện tranh</a></li>
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
+                  data-subcategory="Giáo dục">Giáo dục</a></li>
+            </ul>
+          </li>
+
+          <!-- Giáo khoa -->
+          <li class="dropdown">
+            <a href="category.html?category=Giáo khoa" data-category="Giáo khoa">Giáo khoa ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
+                  data-subcategory="Cấp 1">Cấp 1</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
+                  data-subcategory="Cấp 2">Cấp 2</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
+                  data-subcategory="Cấp 3">Cấp 3</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="dropdown" id="catDropdown"></div>
+      </li>
+      <li><a href="news.html">Tin tức</a></li>
+    </ul>
+    <div class="cart-float" id="cartFloat"><button id="cartBtnFloat" class="btn"><span class="cart-icon">🛒</span> <span
+          id="cart-count" class="cart-count">0</span></button></div>
+  </nav>
+
+
+    <!-- CHÍNH SÁCH ĐỔI TRẢ HÀNG -->
     <div class="container_1">
       <main class="policy-container container py-5">
         <header class="policy-header text-center mb-5">
-          <h1>CHÍNH SÁCH THANH TOÁN</h1>
+          <h1>CHÍNH SÁCH ĐỔI TRẢ HÀNG</h1>
           <p class="lead text-muted">
-            Cập nhật cho khách hàng về các phương thức và quy định thanh toán
-            tại Literary Haven.
+            Quy định về đổi, trả và hoàn tiền cho khách hàng tại Literary Haven.
           </p>
         </header>
 
         <section class="policy-section mb-4">
-          <h2>1. Phương thức thanh toán</h2>
+          <h2>1. Giới thiệu và mục đích</h2>
           <p>
-            Literary Haven hỗ trợ nhiều hình thức thanh toán linh hoạt để thuận
-            tiện cho khách hàng, bao gồm:
+            Chính sách đổi trả hàng của Literary Haven được xây dựng nhằm đảm
+            bảo quyền lợi tối đa cho khách hàng. Chúng tôi cam kết hỗ trợ đổi
+            hàng hoặc hoàn tiền trong các trường hợp sản phẩm lỗi, giao nhầm
+            hoặc khách hàng thay đổi quyết định, đồng thời hướng dẫn rõ ràng quy
+            trình thực hiện để khách hàng dễ dàng thực hiện.
           </p>
+        </section>
+
+        <section class="policy-section mb-4">
+          <h2>2. Thời gian hỗ trợ đổi trả</h2>
           <ul>
+            <li>Hỗ trợ trong 30 ngày kể từ ngày nhận hàng.</li>
             <li>
-              <strong>Thanh toán khi nhận hàng (COD):</strong> Khách hàng thanh
-              toán trực tiếp cho nhân viên giao hàng khi nhận sản phẩm.
-            </li>
-            <li>
-              <strong>Chuyển khoản ngân hàng:</strong> Thực hiện chuyển khoản
-              theo thông tin tài khoản được cung cấp trên trang thanh toán.
-            </li>
-            <li>
-              <strong>Thanh toán qua ví điện tử:</strong> Hỗ trợ các ví phổ biến
-              như Momo, ZaloPay, ShopeePay, Viettel Money, v.v.
-            </li>
-            <li>
-              <strong>Thanh toán qua thẻ:</strong> Hỗ trợ thẻ nội địa (ATM) và
-              thẻ quốc tế (Visa, MasterCard).
+              Không áp dụng cho các sản phẩm hạn chế, sách giảm giá, sách cũ,
+              hoặc sách đặt riêng.
             </li>
           </ul>
         </section>
 
         <section class="policy-section mb-4">
-          <h2>2. Quy định về xác nhận đơn hàng</h2>
-          <p>
-            Sau khi khách hàng hoàn tất đặt hàng, hệ thống sẽ gửi email hoặc tin
-            nhắn xác nhận đơn hàng. Đơn hàng chỉ được xử lý sau khi thanh toán
-            được xác nhận thành công (đối với hình thức thanh toán trực tuyến).
-          </p>
+          <h2>3. Điều kiện đổi trả</h2>
+          <table>
+            <tr>
+              <th>Lý do</th>
+              <th>Điều kiện</th>
+            </tr>
+            <tr>
+              <td>Sách lỗi kỹ thuật</td>
+              <td>Thiếu trang, mờ, sai nội dung, nhòe mực, đảo trang</td>
+            </tr>
+            <tr>
+              <td>Giao nhầm/sai tựa/sai số lượng</td>
+              <td>Sách chưa sử dụng, còn nguyên tem, bao bì</td>
+            </tr>
+            <tr>
+              <td>Khách đổi ý</td>
+              <td>Sách nguyên mới, chưa bọc, chưa ghi chú, chưa sử dụng</td>
+            </tr>
+            <tr>
+              <td>Hư hỏng trong vận chuyển</td>
+              <td>Cần có video mở kiện và hình ảnh sản phẩm</td>
+            </tr>
+          </table>
         </section>
 
         <section class="policy-section mb-4">
-          <h2>3. Bảo mật thông tin thanh toán</h2>
-          <p>
-            Literary Haven cam kết bảo mật tuyệt đối thông tin thanh toán của
-            khách hàng. Toàn bộ dữ liệu được mã hóa và chỉ sử dụng cho mục đích
-            giao dịch.
-          </p>
-        </section>
-
-        <section class="policy-section mb-4">
-          <h2>4. Hoàn tiền và xử lý giao dịch</h2>
-          <p>
-            Trong trường hợp giao dịch không thành công hoặc đơn hàng bị hủy,
-            khoản tiền của bạn sẽ được hoàn lại trong vòng 3–7 ngày làm việc tùy
-            theo phương thức thanh toán.
-          </p>
-        </section>
-
-        <section class="policy-section mb-4">
-          <h2>5. Liên hệ hỗ trợ</h2>
-          <p>
-            Nếu có bất kỳ thắc mắc nào liên quan đến việc thanh toán, vui lòng
-            liên hệ:
-          </p>
+          <h2>4. Danh mục không áp dụng đổi trả</h2>
           <ul>
-            <li>Hotline: <strong>1900 xxxx</strong></li>
-            <li>Email: <strong>support@bookstore.vn</strong></li>
+            <li>Sách giảm giá, sách thanh lý, sách cũ, sách đặt riêng.</li>
+            <li>Báo, tạp chí, băng đĩa, sản phẩm điện tử đi kèm.</li>
+            <li>Sản phẩm đã bọc bookcare hoặc dán nhãn cá nhân hóa.</li>
+          </ul>
+        </section>
+
+        <section class="policy-section mb-4">
+          <h2>5. Quy trình đổi trả chi tiết</h2>
+          <ul>
+            <li>
+              <strong>Bước 1:</strong> Liên hệ hotline hoặc email để thông báo
+              về nhu cầu đổi trả.
+            </li>
+            <li>
+              <strong>Bước 2:</strong> Cung cấp thông tin đơn hàng, hình ảnh
+              hoặc video sản phẩm lỗi.
+            </li>
+            <li>
+              <strong>Bước 3:</strong> Gửi trả hàng qua vận chuyển hoặc mang
+              trực tiếp đến cửa hàng.
+            </li>
+            <li>
+              <strong>Bước 4:</strong> Literary Haven xác nhận và thực hiện đổi
+              hàng hoặc hoàn tiền theo đúng thỏa thuận.
+            </li>
+          </ul>
+        </section>
+
+        <section class="policy-section mb-4">
+          <h2>6. Ví dụ minh họa</h2>
+          <ul>
+            <li>
+              Nếu khách nhận sách bị nhòe mực hoặc thiếu trang, khách hàng có
+              thể gửi hình ảnh minh chứng, và chúng tôi sẽ gửi sách mới trong
+              vòng 1–2 ngày.
+            </li>
+            <li>
+              Khách đổi ý mua một cuốn sách nhưng chưa mở ra có thể gửi trả và
+              chọn cuốn khác hoặc nhận hoàn tiền.
+            </li>
+          </ul>
+        </section>
+
+        <section class="policy-section mb-4">
+          <h2>7. Lưu ý và mẹo thực hiện</h2>
+          <ul>
+            <li>
+              Kiểm tra sách kỹ lưỡng ngay khi nhận hàng để kịp thời phát hiện
+              lỗi.
+            </li>
+            <li>
+              Giữ nguyên bao bì, tem và sách ở trạng thái nguyên vẹn trước khi
+              gửi trả.
+            </li>
+            <li>
+              Thực hiện theo quy trình hướng dẫn để được hỗ trợ nhanh chóng và
+              thuận tiện.
+            </li>
+          </ul>
+        </section>
+
+        <section class="policy-section mb-4">
+          <h2>8. Liên hệ đổi trả</h2>
+          <ul>
+            <li>
+              <strong>Địa chỉ:</strong> 123 Nguyễn Văn Linh, Quận 7, TP.HCM
+            </li>
+            <li><strong>Hotline:</strong> 1900 xxxx</li>
+            <li><strong>Email:</strong> support@bookstore.vn</li>
+            <li><strong>Giờ làm việc:</strong> 8:00 – 22:00</li>
           </ul>
         </section>
       </main>
     </div>
-    <!-- FOOTER GIỮ NGUYÊN -->
+
+    <!-- FOOTER -->
     <footer>
       <div class="footer-content">
         <div class="footer-section">
@@ -212,10 +385,10 @@
         <div class="footer-section">
           <h3>Chính sách</h3>
           <ul>
-            <li><a href="#">Chính sách thanh toán</a></li>
-            <li><a href="#">Chính sách vận chuyển</a></li>
-            <li><a href="#">Chính sách bảo hành</a></li>
-            <li><a href="#">Chính sách đổi trả</a></li>
+            <li><a href="./payment-policy.html">Chính sách thanh toán</a></li>
+            <li><a href="./shipping-policy.html">Chính sách vận chuyển</a></li>
+            <li><a href="./warranty-policy.html">Chính sách bảo hành</a></li>
+            <li><a href="./exchange-policy.html">Chính sách đổi trả</a></li>
           </ul>
         </div>
 
@@ -405,6 +578,178 @@
   </div>
 </div>
     <script src="assets/js/main.js"></script>
-    <script src="bootstrap-5.3.2-dist/css/bootstrap.min.js"></script>
+      <a href="#top" class="back-to-top" title="Lên đầu trang">
+  <i class="bi bi-chevron-up"></i>
+</a>
+
   </body>
+  <!-- Modal Đăng Nhập -->
+<div id="loginModal" class="auth-modal">
+  <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
+  <div class="auth-modal-content">
+    <button class="auth-modal-close" onclick="closeLoginModal()">&times;</button>
+
+    <div class="auth-modal-header">
+      <h2>Đăng Nhập</h2>
+      <p>Chào mừng bạn trở lại!</p>
+    </div>
+
+    <form id="login-form" class="auth-modal-form">
+      <div class="form-group">
+        <label for="login-username">Tài khoản</label>
+        <div class="input-with-icon">
+          <span class="input-icon">👤</span>
+          <input type="text" id="login-username" placeholder="Nhập tài khoản">
+        </div>
+        <span id="error-login-username" class="error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="login-password">Mật khẩu</label>
+        <div class="input-with-icon">
+          <span class="input-icon">🔐</span>
+          <input type="password" id="login-password" placeholder="Nhập mật khẩu">
+          <span class="password-toggle" id="toggle-login-password"
+            onclick="togglePassword('login-password', 'toggle-login-password')">👁️‍🗨️</span>
+        </div>
+        <span id="error-login-password" class="error-msg"></span>
+      </div>
+
+      <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
+    </form>
+
+    <div class="auth-modal-footer">
+      Chưa có tài khoản? <a href="#" onclick="switchToRegister()">Đăng ký ngay</a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Đăng Ký -->
+<div id="registerModal" class="auth-modal">
+  <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
+  <div class="auth-modal-content">
+    <button class="auth-modal-close" onclick="closeRegisterModal()">&times;</button>
+
+    <div class="auth-modal-header">
+      <h2>Đăng Ký</h2>
+      <p>Tạo tài khoản mới của bạn</p>
+    </div>
+
+    <form id="register-form" class="auth-modal-form" style="max-height: 450px; overflow-y: auto;">
+      <div class="form-group">
+        <label for="reg-fullname">Họ và tên</label>
+        <div class="input-with-icon">
+          <span class="input-icon">👤</span>
+          <input type="text" id="reg-fullname" placeholder="Nhập họ và tên">
+        </div>
+        <span id="error-fullname" class="error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-username">Tên tài khoản</label>
+        <div class="input-with-icon">
+          <span class="input-icon">🔑</span>
+          <input type="text" id="reg-username" placeholder="Nhập tên tài khoản">
+        </div>
+        <span id="error-username" class="error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-password">Mật khẩu</label>
+        <div class="input-with-icon">
+          <span class="input-icon">🔐</span>
+          <input type="password" id="reg-password" placeholder="Nhập mật khẩu">
+          <span class="password-toggle" id="toggle-reg-password"
+            onclick="togglePassword('reg-password', 'toggle-reg-password')">👁️‍🗨️</span>
+        </div>
+        <span id="error-password" class="error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-confirm-password">Nhập lại mật khẩu</label>
+        <div class="input-with-icon">
+          <span class="input-icon">🔐</span>
+          <input type="password" id="reg-confirm-password" placeholder="Nhập lại mật khẩu">
+          <span class="password-toggle" id="toggle-reg-confirm"
+            onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')">👁️‍🗨️</span>
+        </div>
+        <span id="error-confirm-password" class="error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-email">Email</label>
+        <div class="input-with-icon">
+          <span class="input-icon">📧</span>
+          <input type="email" id="reg-email" placeholder="Nhập email">
+        </div>
+        <span id="error-email" class="error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-phone">Số điện thoại</label>
+        <div class="input-with-icon">
+          <span class="input-icon">📱</span>
+          <input type="tel" id="reg-phone" placeholder="Nhập số điện thoại">
+        </div>
+        <span id="error-phone" class="error-msg"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-address">Địa chỉ</label>
+        <div class="input-with-icon">
+          <span class="input-icon">📍</span>
+          <input type="text" id="reg-address" placeholder="Nhập địa chỉ">
+        </div>
+        <span id="error-address" class="error-msg"></span>
+      </div>
+
+      <button type="submit" class="btn-auth-submit">Đăng Ký</button>
+    </form>
+
+    <div class="auth-modal-footer">
+      Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập</a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Profile (Hiển thị khi đã đăng nhập) -->
+<div id="profileModal" class="auth-modal">
+  <div class="auth-modal-overlay" onclick="closeProfileModal()"></div>
+  <div class="auth-modal-content">
+    <button class="auth-modal-close" onclick="closeProfileModal()">&times;</button>
+
+    <div class="auth-modal-header">
+      <div class="profile-avatar-small">👤</div>
+      <h2 id="profile-fullname">Xin chào!</h2>
+      <p>Thông tin tài khoản của bạn</p>
+    </div>
+
+    <div class="profile-info-modal">
+      <div class="info-row">
+        <span class="info-label">👤 Họ và tên:</span>
+        <span class="info-value" id="profile-name-value"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">🔐 Tài khoản:</span>
+        <span class="info-value" id="profile-username-value"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">📧 Email:</span>
+        <span class="info-value" id="profile-email-value"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">📱 Số điện thoại:</span>
+        <span class="info-value" id="profile-phone-value"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">📍 Địa chỉ:</span>
+        <span class="info-value" id="profile-address-value"></span>
+      </div>
+    </div>
+
+    <button class="btn-logout-modal" onclick="handleLogoutModal()">Đăng xuất</button>
+  </div>
+</div>
+<script src="assets/js/main.js"></script>
+<script src="bootstrap-5.3.2-dist/css/bootstrap.min.js"></script>
 </html>
