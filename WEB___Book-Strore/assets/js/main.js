@@ -1,4 +1,4 @@
- const SAMPLE = {
+const SAMPLE = {
   products: [ 
   // ================= Văn học =================
   { id: 1, sku: "VH001", name: "Đắc Nhân Tâm", author: "Dale Carnegie", price: 85000, category: "Văn học", subcategory: "Tiểu thuyết", desc: "Tác phẩm kinh điển về nghệ thuật giao tiếp.", img: "https://picsum.photos/300/420?random=27" },
@@ -12,7 +12,7 @@
   { id: 9, sku: "VH009", name: "Tôi Thấy Hoa Vàng Trên Cỏ Xanh", author: "Nguyễn Nhật Ánh", price: 100000, category: "Văn học", subcategory: "Tiểu thuyết", desc: "Câu chuyện tuổi thơ đầy xúc động.", img: "https://picsum.photos/300/420?random=35" },
   { id: 10, sku: "VH010", name: "Người Lái Đò Sông Đà", author: "Nguyễn Tuân", price: 72000, category: "Văn học", subcategory: "Truyện ngắn", desc: "Tác phẩm tiêu biểu cho phong cách tùy bút độc đáo.", img: "https://picsum.photos/300/420?random=36" },
   { id: 11, sku: "VH011", name: "Nhật Ký Đặng Thùy Trâm", author: "Đặng Thùy Trâm", price: 85000, category: "Văn học", subcategory: "Tiểu thuyết", desc: "Tấm gương sáng của một nữ bác sĩ trong chiến tranh.", img: "https://picsum.photos/300/420?random=37" },
-  { id: 12, sku: "VH012", name: "Ánh Trăng", author: "Nguyễn Duy", price: 55000, category: "Văn học", subcategory: "Thơ", desc: "Tập thơ nổi tiếng với nhiều bài thơ sâu sắc.", img: "https://picsum.photos/300/420?random=38" },
+{ id: 12, sku: "VH012", name: "Ánh Trăng", author: "Nguyễn Duy", price: 55000, category: "Văn học", subcategory: "Thơ", desc: "Tập thơ nổi tiếng với nhiều bài thơ sâu sắc.", img: "https://picsum.photos/300/420?random=38" },
   { id: 13, sku: "VH013", name: "Harry Potter và Hòn Đá Phù Thủy", author: "J. K. Rowling", price: 120000, category: "Văn học", subcategory: "Tiểu thuyết", desc: "Tập đầu tiên của loạt Harry Potter.", img: "https://picsum.photos/300/420?random=53" },
 
   // ================= Kinh tế =================
@@ -25,7 +25,7 @@
   { id: 20, sku: "KT007", name: "Marketing 4.0", author: "Philip Kotler", price: 140000, category: "Kinh tế", subcategory: "Marketing", desc: "Xu hướng marketing hiện đại.", img: "https://picsum.photos/300/420?random=45" },
   { id: 21, sku: "KT008", name: "Nghĩ Giàu Làm Giàu", author: "Napoleon Hill", price: 125000, category: "Kinh tế", subcategory: "Tài chính", desc: "Sách làm giàu kinh điển.", img: "https://picsum.photos/300/420?random=46" },
   { id: 22, sku: "KT009", name: "Chiến Lược Đại Dương Xanh", author: "W. Chan Kim", price: 170000, category: "Kinh tế", subcategory: "Quản trị", desc: "Mô hình chiến lược kinh doanh đột phá.", img: "https://picsum.photos/300/420?random=47" },
-  { id: 23, sku: "KT010", name: "Kinh Tế Học Dành Cho Người Bận Rộn", author: "Tyler Cowen", price: 110000, category: "Kinh tế", subcategory: "Tài chính", desc: "Kinh tế học giản lược, dễ hiểu.", img: "https://picsum.photos/300/420?random=48" },
+{ id: 23, sku: "KT010", name: "Kinh Tế Học Dành Cho Người Bận Rộn", author: "Tyler Cowen", price: 110000, category: "Kinh tế", subcategory: "Tài chính", desc: "Kinh tế học giản lược, dễ hiểu.", img: "https://picsum.photos/300/420?random=48" },
   { id: 24, sku: "KT011", name: "Influence - Tâm Lý Học Thuyết Phục", author: "Robert Cialdini", price: 160000, category: "Kinh tế", subcategory: "Marketing", desc: "Cuốn sách kinh điển về nghệ thuật thuyết phục.", img: "https://picsum.photos/300/420?random=49" },
   { id: 25, sku: "KT012", name: "Lãnh Đạo Không Chức Danh", author: "Robin Sharma", price: 145000, category: "Kinh tế", subcategory: "Quản trị", desc: "Nghệ thuật lãnh đạo bản thân và tổ chức.", img: "https://picsum.photos/300/420?random=50" },
 
@@ -40,7 +40,7 @@
   // ================= Giáo khoa =================
   { id: 32, sku: "GK001", name: "Toán Lớp 1", author: "Nhiều tác giả", price: 18000, category: "Giáo khoa", subcategory: "Cấp 1", desc: "Sách giáo khoa Toán lớp 1.", img: "https://picsum.photos/300/420?random=58" },
   { id: 33, sku: "GK002", name: "Tiếng Việt Lớp 2", author: "Nhiều tác giả", price: 20000, category: "Giáo khoa", subcategory: "Cấp 1", desc: "Sách giáo khoa Tiếng Việt lớp 2.", img: "https://picsum.photos/300/420?random=59" },
-  { id: 34, sku: "GK003", name: "Toán Lớp 6", author: "Nhiều tác giả", price: 25000, category: "Giáo khoa", subcategory: "Cấp 2", desc: "Sách giáo khoa Toán lớp 6.", img: "https://picsum.photos/300/420?random=60" },
+{ id: 34, sku: "GK003", name: "Toán Lớp 6", author: "Nhiều tác giả", price: 25000, category: "Giáo khoa", subcategory: "Cấp 2", desc: "Sách giáo khoa Toán lớp 6.", img: "https://picsum.photos/300/420?random=60" },
   { id: 35, sku: "GK004", name: "Ngữ Văn Lớp 7", author: "Nhiều tác giả", price: 28000, category: "Giáo khoa", subcategory: "Cấp 2", desc: "Sách giáo khoa Ngữ văn lớp 7.", img: "https://picsum.photos/300/420?random=61" },
   { id: 36, sku: "GK005", name: "Lịch Sử Lớp 8", author: "Nhiều tác giả", price: 27000, category: "Giáo khoa", subcategory: "Cấp 2", desc: "Sách giáo khoa Lịch sử lớp 8.", img: "https://picsum.photos/300/420?random=62" },
   { id: 37, sku: "GK006", name: "Toán Lớp 10", author: "Nhiều tác giả", price: 32000, category: "Giáo khoa", subcategory: "Cấp 3", desc: "Sách giáo khoa Toán lớp 10.", img: "https://picsum.photos/300/420?random=63" },
@@ -92,7 +92,7 @@ function renderProductList(page=1){
     <div class="price">${it.price.toLocaleString('vi-VN')}đ</div>
   <div class="button-row">
   <a class="btn btn-small" href="product-detail.html?id=${it.id}">Xem</a>
-  <button class="btn btn-cart" onclick="addToCart(${it.id},1)">Thêm vào giỏ</button>
+<button class="btn btn-cart" onclick="addToCart(${it.id},1)">Thêm vào giỏ</button>
 </div>
   </div>`).join('');
 
@@ -167,7 +167,7 @@ function renderProductDetail(){
 
 function addToCart(id, qty=1){ 
   // require login
-  const user = localStorage.getItem('bs_user');
+const user = localStorage.getItem('bs_user');
   if(!user){ window.location.href = "login.html?next=product-"+id; return; }
   const cart = getCart(); 
   const ex = cart.find(i=>i.id===id); 
@@ -255,8 +255,7 @@ function renderProductDetailPage(product) {
   if (!mainContent) return;
   
   document.title = `${product.name} - Literary Haven`;
-
-  mainContent.innerHTML = `
+mainContent.innerHTML = `
     <button class="back-button" onclick="goBack()">
       <span class="back-button-arrow">←</span> Quay Lại
     </button>
@@ -329,8 +328,7 @@ function renderProductDetailPage(product) {
         </div>
       </div>
     </div>
-
-    <div class="details-section">
+<div class="details-section">
       <h2 class="section-title">📋 Thông tin chi tiết</h2>
 
       <div class="info-table">
@@ -426,7 +424,7 @@ function buyNow(productId) {
 
   // Add to cart first
   const cart = getCart(); 
-  const ex = cart.find(i=>i.id===productId); 
+const ex = cart.find(i=>i.id===productId); 
   if(ex) ex.qty += Number(qty); 
   else cart.push({id:productId, qty:Number(qty)}); 
   saveCart(cart); 
@@ -520,7 +518,7 @@ document.addEventListener('DOMContentLoaded', function () {
           breadcrumbBtn.innerHTML = ' Tất cả sách';
           currentList = allBooks;
         } else if (subcategory) {
-          breadcrumbBtn.innerHTML = ` Danh mục sách > ${category} > ${subcategory}`;
+breadcrumbBtn.innerHTML = ` Danh mục sách > ${category} > ${subcategory}`;
           currentList = allBooks.filter(
             b => b.category === category && b.subcategory === subcategory
           );
@@ -586,7 +584,7 @@ function updateCategoryBreadcrumb() {
   if (!category) {
     breadcrumbBtn.textContent = 'Danh mục sách';
   } else if (subcategory) {
-    breadcrumbBtn.textContent = `Danh mục sách > ${category} > ${subcategory}`;
+breadcrumbBtn.textContent = `Danh mục sách > ${category} > ${subcategory}`;
   } else {
     breadcrumbBtn.textContent = `Danh mục sách > ${category}`;
   }
@@ -684,7 +682,7 @@ function togglePassword(inputId, iconId) {
     input.type = 'text';
     icon.textContent = '👁️';
   } else {
-    input.type = 'password';
+input.type = 'password';
     icon.textContent = '👁️‍🗨️';
   }
 }
@@ -784,7 +782,7 @@ function handleRegister(e) {
     document.getElementById('error-password').textContent = 'Vui lòng nhập mật khẩu';
     hasError = true;
   } else if (password.length < 6) {
-    document.getElementById('error-password').textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
+document.getElementById('error-password').textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
     hasError = true;
   }
   
@@ -851,6 +849,8 @@ function handleLogoutModal() {
 }
 
 // Cập nhật giao diện auth
+// Cập nhật giao diện auth
+// CHỖ SỬA: Cập nhật hàm updateAuthUI() để hiển thị dropdown thay vì modal
 function updateAuthUI() {
   const authArea = document.getElementById('authArea');
   if (!authArea) return;
@@ -859,17 +859,112 @@ function updateAuthUI() {
   
   if (userStr) {
     const user = JSON.parse(userStr);
+    // SỬA: Thay đổi HTML để tạo dropdown menu
     authArea.innerHTML = `
-      <button class="btn-auth" onclick="openProfileModal()">👤 ${user.fullName}</button>
-      <button class="btn-auth btn-signup" onclick="handleLogoutModal()">Đăng xuất</button>
+      <div class="user-profile-dropdown">
+        <button class="user-profile-btn">
+          <span class="dropdown-icon">👤</span>
+          <span>${user.fullName}</span>
+          <span class="user-dropdown-icon">▼</span>
+        </button>
+        
+        <ul class="user-dropdown-menu">
+          <li>
+            <a href="#" onclick="viewProfile(event)">
+              <span class="dropdown-icon"></span>
+              Thông tin cá nhân
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="viewOrderHistory(event)">
+              <span class="dropdown-icon"></span>
+Lịch sử mua hàng
+            </a>
+          </li>
+          <li class="user-submenu">
+            <div class="dropdown-item">
+              <span class="dropdown-icon"></span>
+              Tùy chọn
+            </div>
+            <ul class="user-submenu-content">
+              <li>
+                <a href="#" onclick="editProfile(event)">
+                  <span class="dropdown-icon"></span>
+                  Sửa thông tin cá nhân
+                </a>
+              </li>
+              <li>
+                <a href="#" onclick="changePassword(event)">
+                  <span class="dropdown-icon"></span>
+                  Đổi mật khẩu
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+          <a href="#" onclick="handleLogoutDropdown(event)" class="logout-link">
+              <span class="dropdown-icon"></span>
+              Đăng xuất
+            </a>
+          </li>
+        </ul>
+      </div>
     `;
-  } else {
+  }
+  else {
     authArea.innerHTML = `
       <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
       <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
     `;
   }
 }
+
+//  CHỖ SỬA: Thêm các function mới cho dropdown menu
+
+// Xem thông tin cá nhân
+function viewProfile(e) {
+  if (e) e.preventDefault();
+  openProfileModal(); // Có thể giữ modal hoặc chuyển sang trang mới
+}
+
+// Xem lịch sử mua hàng
+function viewOrderHistory(e) {
+  if (e) e.preventDefault();
+  alert('Chức năng đang phát triển: Lịch sử mua hàng');
+  // window.location.href = 'order-history.html';
+}
+
+// Sửa thông tin cá nhân
+function editProfile(e) {
+  if (e) e.preventDefault();
+  alert('Chức năng đang phát triển: Sửa thông tin cá nhân');
+  // Có thể mở modal edit hoặc chuyển sang trang edit
+}
+
+// Đổi mật khẩu
+function changePassword(e) {
+  if (e) e.preventDefault();
+  alert('Chức năng đang phát triển: Đổi mật khẩu');
+  // Có thể mở modal đổi mật khẩu
+}
+
+// Đăng xuất từ dropdown
+function handleLogoutDropdown(e) {
+  if (e) e.preventDefault();
+  if (confirm('Bạn có chắc muốn đăng xuất?')) {
+    localStorage.removeItem('bs_user');
+    updateAuthUI();
+    location.reload();
+  }
+}
+
+//  CHỖ SỬA: Thêm event listener để đóng dropdown khi click bên ngoài
+document.addEventListener('click', function(e) {
+  const dropdown = document.querySelector('.user-profile-dropdown');
+  if (dropdown && !dropdown.contains(e.target)) {
+    // Dropdown sẽ tự đóng khi hover ra ngoài, không cần xử lý thêm
+  }
+}); 
 
 // Khởi tạo
 document.addEventListener('DOMContentLoaded', function() {
@@ -890,15 +985,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Đóng modal khi nhấn ESC
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      closeLoginModal();
+closeLoginModal();
       closeRegisterModal();
       closeProfileModal();
     }
   });
 });
-
-
-// Thêm vào cuối file main.js
 
 // Xử lý tìm kiếm từ thanh search trên header
 function handleTopSearch() {
