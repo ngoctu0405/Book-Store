@@ -638,11 +638,13 @@
             <span>📚</span>
             <span>Literary Haven</span>
         </a>
-        <div class="search-center">
-            <form action="search-results.html" method="get">
-                <input type="text" class="search-input" name="q" placeholder="Nhập tên cuốn sách bạn đang tìm ...">
-            </form>
-        </div>
+        <!-- nút tìm kiếm -->
+    <div class="search-center">
+  <input id="topSearch" class="search-input" type="text" 
+    placeholder="Nhập tên cuốn sách bạn đang tìm ..." autocomplete="off" />
+  <button class="search-btn" type="button">Tìm kiếm</button> 
+</div>
+<!-------------------------------------------------------------------------->
         <div class="auth-cart">
      <div id="authArea">
         <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>

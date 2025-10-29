@@ -2140,7 +2140,7 @@ footer {
 
 .search-input {
   width: 100%;
-  padding: 12px 45px 12px 45px;
+  padding: 12px 120px 12px 45px; /* Tăng padding bên phải để chừa chỗ cho button */
   border: 2px solid #e0e0e0;
   border-radius: 25px;
   font-size: 15px;
@@ -2159,6 +2159,51 @@ footer {
   color: #999;
 }
 
+/* Style cho nút tìm kiếm */
+.search-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-btn:hover {
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+  box-shadow: 0 3px 8px rgba(76, 175, 80, 0.4);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.search-btn:active {
+  transform: translateY(-50%) scale(0.98);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Style cho thông báo không tìm thấy */
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-size: 16px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.no-results strong {
+  color: #4caf50;
+}
+
 /* Responsive cho mobile */
 @media (max-width: 768px) {
   .search-center {
@@ -2168,7 +2213,31 @@ footer {
 
   .search-input {
     font-size: 14px;
-    padding: 10px 40px 10px 40px;
+    padding: 10px 100px 10px 40px;
+  }
+
+  .search-btn {
+    padding: 6px 15px;
+    font-size: 13px;
+    border-radius: 18px;
+  }
+}
+
+/* Responsive cho màn hình rất nhỏ */
+@media (max-width: 480px) {
+  .search-input {
+    padding: 8px 90px 8px 35px;
+    font-size: 13px;
+  }
+
+  .search-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+
+  .search-center::before {
+    font-size: 16px;
+    left: 12px;
   }
 }
 /* PHẦN GIỚI THIỆU */

@@ -14,10 +14,13 @@
     <div class="logo">
       <a href="index.html"><img src="images/Logo.png" alt="Logo"> </a>
     </div>
+    <!-- nút tìm kiếm -->
     <div class="search-center">
-      <input id="topSearch" class="search-input" type="text" placeholder="Nhập tên cuốn sách bạn đang tìm ..."
-        autocomplete="off" />
-    </div>
+  <input id="topSearch" class="search-input" type="text" 
+    placeholder="Nhập tên cuốn sách bạn đang tìm ..." autocomplete="off" />
+  <button class="search-btn" type="button">Tìm kiếm</button> 
+</div>
+<!-------------------------------------------------------------------------->
     <div class="auth-cart">
        <div id="authArea">
         <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
@@ -170,10 +173,10 @@
     
     <form id="login-form" class="auth-modal-form">
       <div class="form-group">
-        <label for="login-username">Tài khoản</label>
+        <label for="login-username">Tên tài khoản</label>
         <div class="input-with-icon">
           <span class="input-icon">👤</span>
-          <input type="text" id="login-username" placeholder="Nhập tài khoản">
+          <input type="text" id="login-username" placeholder="Nhập tên tài khoản">
         </div>
         <span id="error-login-username" class="error-msg"></span>
       </div>
