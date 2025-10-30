@@ -56,22 +56,23 @@ if(!localStorage.getItem('bs_orders')) localStorage.setItem('bs_orders', JSON.st
 function getData(){ return JSON.parse(localStorage.getItem('bs_data')) }
 function getCart(){ return JSON.parse(localStorage.getItem('bs_cart')) }
 function saveCart(c){ localStorage.setItem('bs_cart', JSON.stringify(c)) }
+// Sửa lại hàm updateCartCount để hiển thị số lượng chính xác trên giỏ hàng
+function updateCartCount() {
+  // 1. Tính tổng số lượng từ giỏ hàng.
+  // Giả định hàm getCart() đã được định nghĩa và trả về mảng giỏ hàng [{id: X, qty: Y}]
+  const count = getCart().reduce((s, i) => s + i.qty, 0);
 
-function updateCartCount(){
-  const nav = document.querySelector('.nav');
-  if(!nav) return;
-  const count = getCart().reduce((s,i)=>s + i.qty,0);
-  let span = document.getElementById('cart-count');
-  if(!span){ 
-    span = document.createElement('span'); 
-    span.id='cart-count'; 
-    span.style.marginLeft='6px'; 
-    const a = nav.querySelector('a[href="cart.html"]'); 
-    if(a) a.appendChild(span); 
-  }
-  span.textContent = count;
+  // 2. Lấy thẻ span đã có sẵn trong HTML bằng ID
+  // Thẻ này nằm trong nút giỏ hàng nổi trên header
+  const span = document.getElementById('cart-count');
+
+  // 3. Cập nhật nội dung của thẻ span
+  if (span) {
+    span.textContent = count;
+  } 
+  // Không cần logic tạo mới vì element đã có sẵn trong HTML (từ file cart.html)
 }
-
+//-----------------------------------------------------------------------------------------------------------------
 let currentPage = 1; 
 const perPage = 8;
 let currentList = getData().products; 
@@ -198,23 +199,43 @@ function renderProductDetail(){
       <button class="btn" onclick="addToCart(${p.id}, document.getElementById('qty').value)">Thêm vào giỏ</button>
     </div>`; 
 }
-
-function addToCart(id, qty=1){ 
-  // require login
-const user = localStorage.getItem('bs_user');
-  if(!user){ window.location.href = "login.html?next=product-"+id; return; }
+ // chỉnh thành vẫn thêm vào giỏ được dù chưa đăng nhập--------------------------------------------------------------------------
+function addToCart(id, qty = 1) {
+  // --------------------------------------------------------------------------------------------------
+  // Đã xóa bỏ dòng kiểm tra đăng nhập: if(!user){ window.location.href = "login.html?next=product-"+id; return; }
+  // Sản phẩm sẽ được thêm thẳng vào localStorage, nơi giỏ hàng được lưu trữ (dù có user hay không).
+  // --------------------------------------------------------------------------------------------------
+  
   const cart = getCart(); 
-  const ex = cart.find(i=>i.id===id); 
-  if(ex) ex.qty += Number(qty); 
-  else cart.push({id:id, qty:Number(qty)}); 
-  saveCart(cart); updateCartCount(); alert('Đã thêm vào giỏ'); renderCart(); 
+  
+  // Kiểm tra xem sản phẩm đã có trong giỏ chưa
+  const ex = cart.find(i => i.id === id); 
+  
+  if (ex) {
+    // Nếu có, tăng số lượng
+    ex.qty += Number(qty); 
+  } else {
+    // Nếu chưa, thêm mới sản phẩm
+    cart.push({ id: id, qty: Number(qty) }); 
+  }
+  
+  // Lưu giỏ hàng đã cập nhật vào LocalStorage
+  saveCart(cart); 
+  
+  // Cập nhật số lượng hiển thị trên icon giỏ hàng
+  if (typeof updateCartCount === 'function') updateCartCount();
+  
+  alert('✅ Đã thêm sản phẩm vào giỏ hàng thành công!'); 
+  
+  // Nếu bạn đang ở trang giỏ hàng (cart.html), renderCart sẽ cập nhật lại danh sách
+  if (typeof renderCart === 'function') renderCart();
 }
-
+//--------------------------------------------------------------------------------------------------------------------------
 function renderCart(){ 
   const wrap=document.getElementById('cart-contents'); if(!wrap) return; 
   const cart=getCart(); if(!cart.length){ wrap.innerHTML='<p>Giỏ hàng rỗng</p>'; return; } 
   const data=getData().products; 
-  wrap.innerHTML = cart.map(i=>{ 
+  wrap.innerHTML = cart.map(i=>{ x  
     const p = data.find(x=>x.id===i.id); 
     return `<div class="cart-item-card"><h4>${p.name}</h4><p>Số lượng: ${i.qty}</p><p>Giá: ${(p.price*i.qty).toLocaleString('vi-VN')}đ</p></div>` 
   }).join('') + `<p style="font-weight:700;margin-top:12px">Tổng: ${cart.reduce((s,i)=>{const p=getData().products.find(x=>x.id===i.id);return s + p.price*i.qty},0).toLocaleString('vi-VN')}đ</p>`; 
