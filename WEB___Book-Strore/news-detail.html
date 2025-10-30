@@ -1,0 +1,673 @@
+<!-- news-detail.html -->
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chi tiết Tin tức</title>
+
+    <!-- CSS chính -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css" />
+
+    <style>
+      /* Nền & chữ */
+      body {
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Khung tổng */
+      #page {
+        position: relative;
+        top: 4rem;
+        max-width: 900px;
+        min-height: 100rem;
+        margin: 60px auto;
+        background: #fff;
+        padding: 40px 50px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+        animation: fadeIn 0.6s ease;
+      }
+
+      /* Tiêu đề */
+      #title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #222;
+        line-height: 1.4;
+        border-left: 5px solid #007bff;
+        padding-left: 12px;
+        margin-bottom: 15px;
+      }
+
+      /* Thông tin phụ */
+      #meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        font-size: 0.95rem;
+        color: #777;
+        margin-bottom: 20px;
+      }
+
+      #category::before {
+        content: "📚 ";
+      }
+      #date::before {
+        content: "🗓️ ";
+      }
+      #author::before {
+        content: "✍️ ";
+      }
+
+      /* Ảnh chính */
+      #image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+      }
+
+      /* Nội dung bài */
+      #content {
+        font-size: 1.05rem;
+        color: #444;
+        text-align: justify;
+        white-space: pre-line;
+        margin-top: 15px;
+        line-height: 1.8;
+      }
+
+      /* Nút quay lại */
+      #back {
+        display: inline-block;
+        margin-top: 35px;
+        background: #007bff;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        transition: 0.25s ease;
+      }
+
+      #back:hover {
+        background: #0056b3;
+        color: #fff;
+      }
+
+      /* Hiệu ứng mượt */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a id="top"></a>
+
+    <!-- HEADER -->
+    <header class="topbar">
+      <div class="logo">
+        <a href="index.html"><img src="images/Logo.png" alt="Logo" /> </a>
+      </div>
+
+      <div class="search-center">
+        <input
+          id="topSearch"
+          class="search-input"
+          type="text"
+          placeholder="Nhập tên cuốn sách bạn đang tìm ..."
+          autocomplete="off"
+        />
+        <button class="search-btn" type="button">Tìm kiếm</button>
+      </div>
+
+      <div class="auth-cart">
+        <div id="authArea">
+          <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
+          <button class="btn-auth btn-signup" onclick="openRegisterModal()">
+            Đăng ký
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- NAV -->
+    <nav class="navbar" id="mainNav">
+      <ul class="menu" id="mainMenu">
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="about.html">Giới thiệu</a></li>
+        <div class="category-menu">
+          <button
+            class="category-btn"
+            onclick="window.location.href='category.html'"
+          >
+            Danh mục sách ▾
+          </button>
+
+          <ul class="book-filter">
+            <li class="dropdown">
+              <a href="category.html?category=Văn học" data-category="Văn học"
+                >Văn học ▸</a
+              >
+              <ul class="dropdown-content">
+                <li>
+                  <a
+                    href="category.html?category=Văn học&subcategory=Tiểu thuyết"
+                    >Tiểu thuyết</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="category.html?category=Văn học&subcategory=Truyện ngắn"
+                    >Truyện ngắn</a
+                  >
+                </li>
+                <li>
+                  <a href="category.html?category=Văn học&subcategory=Thơ"
+                    >Thơ</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="category.html?category=Kinh tế">Kinh tế ▸</a>
+              <ul class="dropdown-content">
+                <li>
+                  <a href="category.html?category=Kinh tế&subcategory=Quản trị"
+                    >Quản trị</a
+                  >
+                </li>
+                <li>
+                  <a href="category.html?category=Kinh tế&subcategory=Tài chính"
+                    >Tài chính</a
+                  >
+                </li>
+                <li>
+                  <a href="category.html?category=Kinh tế&subcategory=Marketing"
+                    >Marketing</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="category.html?category=Thiếu nhi">Thiếu nhi ▸</a>
+              <ul class="dropdown-content">
+                <li>
+                  <a
+                    href="category.html?category=Thiếu nhi&subcategory=Truyện tranh"
+                    >Truyện tranh</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="category.html?category=Thiếu nhi&subcategory=Giáo dục"
+                    >Giáo dục</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="category.html?category=Giáo khoa">Giáo khoa ▸</a>
+              <ul class="dropdown-content">
+                <li>
+                  <a href="category.html?category=Giáo khoa&subcategory=Cấp 1"
+                    >Cấp 1</a
+                  >
+                </li>
+                <li>
+                  <a href="category.html?category=Giáo khoa&subcategory=Cấp 2"
+                    >Cấp 2</a
+                  >
+                </li>
+                <li>
+                  <a href="category.html?category=Giáo khoa&subcategory=Cấp 3"
+                    >Cấp 3</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <li><a href="news.html">Tin tức</a></li>
+      </ul>
+      <div class="cart-float" id="cartFloat">
+        <button id="cartBtnFloat" class="btn">
+          <span class="cart-icon">🛒</span>
+          <span id="cart-count" class="cart-count">0</span>
+        </button>
+      </div>
+    </nav>
+
+    <div id="page">
+      <a id="back" href="index.html">&larr; Quay lại</a>
+
+      <h1 id="title"></h1>
+
+      <div id="meta">
+        <span id="category"></span>
+        <span id="date"></span>
+        <span id="author"></span>
+      </div>
+
+      <img id="image" alt="Ảnh bài viết" />
+
+      <p id="content"></p>
+    </div>
+
+    <script>
+      // Lấy ID từ URL (?id=3)
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+
+      // Dữ liệu bài viết
+      const newsData = [
+        {
+          id: "1",
+          title: "‘Mãi mãi tuổi hai mươi’ - nhật ký vượt thời gian",
+          image: "https://via.placeholder.com/800x400?text=Tin+1",
+          content: `
+“Mãi mãi tuổi hai mươi” là cuốn nhật ký xúc động của liệt sĩ Nguyễn Văn Thạc – một sinh viên Hà Nội lên đường ra trận khi tuổi đời còn rất trẻ. Từng dòng chữ trong nhật ký không chỉ ghi lại những suy nghĩ, cảm xúc của một người lính, mà còn là tấm gương phản chiếu cả một thế hệ thanh niên Việt Nam thời chiến – đầy nhiệt huyết, dũng cảm và tình yêu Tổ quốc sâu sắc.
+
+Cuốn sách không chỉ đơn thuần là hồi ký, mà là lời nhắc nhở về giá trị của hòa bình, của những hi sinh thầm lặng đã giúp đất nước có được ngày hôm nay. Mỗi trang đều chan chứa tinh thần sống đẹp, sống có lý tưởng, sống trọn vẹn từng phút giây.
+
+Hơn cả một tác phẩm văn học, “Mãi mãi tuổi hai mươi” là tiếng nói vượt thời gian – chạm đến trái tim của những người trẻ hôm nay, để mỗi người tự hỏi: “Mình đã sống xứng đáng với tuổi trẻ này chưa?”.
+    `,
+        },
+        {
+          id: "2",
+          title: "Tư Duy Phản Biện Thông Minh – Rèn Kỹ Năng Phân Tích",
+          image: "https://via.placeholder.com/800x400?text=Tin+2",
+          content: `
+“Tư duy phản biện” không chỉ là khả năng đặt câu hỏi, mà là nghệ thuật suy nghĩ sâu, đánh giá thông tin khách quan và ra quyết định sáng suốt. Trong kỷ nguyên dữ liệu tràn ngập, người có tư duy phản biện luôn giữ được tỉnh táo giữa biển thông tin hỗn độn.
+
+Cuốn “Tư Duy Phản Biện Thông Minh” giúp người đọc hiểu rõ cách nhìn nhận vấn đề đa chiều, tránh rơi vào bẫy định kiến hay tin giả. Thông qua các ví dụ thực tế, bạn sẽ học được cách đặt câu hỏi “tại sao” và “nếu thì sao” đúng cách để phân tích vấn đề sâu hơn.
+
+Việc rèn luyện tư duy phản biện không chỉ giúp học tập hiệu quả mà còn giúp mỗi người trưởng thành trong cách nhìn nhận cuộc sống, công việc và các mối quan hệ xung quanh.
+    `,
+        },
+        {
+          id: "3",
+          title: "TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ TRONG NĂM 2023",
+          image: "https://via.placeholder.com/800x400?text=Tin+3",
+          content: `
+Năm 2023 được xem là thời kỳ đầy biến động của ngành nhân sự Việt Nam. Sự chuyển mình mạnh mẽ của công nghệ, đặc biệt là trí tuệ nhân tạo (AI), đã làm thay đổi cách doanh nghiệp tuyển dụng và quản trị nhân sự.
+
+Nhiều công ty bắt đầu ưu tiên nhân lực có kỹ năng số, kỹ năng mềm và khả năng thích ứng nhanh. Trong khi đó, nhu cầu về nhân viên hành chính, kế toán cơ bản lại giảm mạnh do tự động hóa. Điều này tạo ra sự chuyển dịch đáng kể trong thị trường lao động.
+
+Đối mặt với thay đổi, các chuyên gia nhân sự cho rằng doanh nghiệp cần đầu tư mạnh hơn vào đào tạo nội bộ, tạo môi trường linh hoạt để giữ chân người tài – yếu tố then chốt trong bối cảnh cạnh tranh nhân lực toàn cầu.
+    `,
+        },
+        {
+          id: "4",
+          title: "Phong trào đọc sách đang quay trở lại mạnh mẽ",
+          image: "https://via.placeholder.com/800x400?text=Tin+4",
+          content: `
+Sau thời gian dài bị lấn át bởi mạng xã hội và các nền tảng giải trí, phong trào đọc sách đang dần trở lại – đặc biệt là trong giới trẻ. Các hội sách, workshop về đọc hiểu, và chiến dịch “book challenge” lan truyền mạnh mẽ trên mạng đã góp phần khơi dậy niềm yêu thích sách.
+
+Các nhà xuất bản cũng nhanh chóng nắm bắt xu hướng bằng cách cho ra mắt nhiều ấn phẩm đa dạng, từ sách tâm lý, phát triển bản thân, đến tiểu thuyết, truyện tranh. Nhiều tác giả trẻ Việt Nam cũng bắt đầu được chú ý hơn nhờ viết những câu chuyện gần gũi, mang hơi thở đương đại.
+
+Đọc sách giờ đây không chỉ là thói quen tri thức mà còn là phong cách sống – thể hiện sự sâu sắc và cá tính của người trẻ trong thời đại số.
+    `,
+        },
+        {
+          id: "5",
+          title: "Talkshow cuối năm: Hành trình tới sao Hỏa & tương lai",
+          image: "https://via.placeholder.com/800x400?text=Tin+5",
+          content: `
+Talkshow “Hành trình tới sao Hỏa” quy tụ các chuyên gia hàng đầu trong lĩnh vực khoa học vũ trụ, công nghệ và triết học hiện đại. Chương trình mang đến góc nhìn thú vị về tương lai của loài người khi bước ra khỏi Trái Đất.
+
+Buổi trò chuyện không chỉ nói về kỹ thuật – mà còn về triết lý sống, sự tò mò, và khát vọng chinh phục không gian. Diễn giả nhấn mạnh: “Khám phá vũ trụ không chỉ để đi xa hơn, mà để hiểu rõ hơn về chính mình.”
+
+Với sự tham gia của nhiều bạn trẻ yêu thích công nghệ, talkshow đã tạo nên làn sóng thảo luận sôi nổi về ước mơ và giới hạn của con người trong thế kỷ 21.
+    `,
+        },
+        {
+          id: "6",
+          title: "Hội sách mùa hè 2024 – Kết nối tri thức",
+          image: "https://via.placeholder.com/800x400?text=Tin+6",
+          content: `
+Hội sách mùa hè 2024 thu hút hàng ngàn độc giả từ khắp nơi đổ về. Không chỉ là nơi mua sách giảm giá, sự kiện còn là không gian gặp gỡ giữa độc giả, tác giả và các nhà xuất bản hàng đầu.
+
+Điểm đặc biệt của năm nay là khu vực “đổi sách cũ – lấy sách mới”, giúp lan tỏa tinh thần chia sẻ tri thức và bảo vệ môi trường. Nhiều hoạt động bên lề như tọa đàm, ký tặng, và giao lưu cùng tác giả trẻ cũng tạo nên không khí sôi động.
+
+Hội sách đã trở thành biểu tượng của văn hóa đọc hiện đại – nơi mọi người cùng nhau nuôi dưỡng tình yêu sách và niềm đam mê học hỏi không ngừng.
+    `,
+        },
+        {
+          id: "7",
+          title: "Tình hình nhân sự Việt Nam 2024: Cơ hội và thách thức",
+          image: "https://via.placeholder.com/800x400?text=Tin+7",
+          content: `
+Bước sang năm 2024, thị trường nhân sự Việt Nam tiếp tục trải qua nhiều biến động đáng chú ý. Các ngành nghề liên quan đến công nghệ, năng lượng xanh và dữ liệu lớn đang bùng nổ, trong khi những lĩnh vực truyền thống dần thu hẹp.
+
+Sự dịch chuyển này tạo ra cơ hội lớn cho những ai sẵn sàng học hỏi và cập nhật kỹ năng mới. Tuy nhiên, nó cũng là thách thức cho người lao động không kịp thích ứng với xu thế chuyển đổi số.
+
+Giới chuyên môn nhận định, chìa khóa thành công của nhân sự Việt trong giai đoạn tới nằm ở “tư duy linh hoạt” – biết tự làm mới mình, không ngại học hỏi và thay đổi.
+    `,
+        },
+        {
+          id: "8",
+          title: "Workshop: Sáng tạo trong công nghệ & xu hướng mới",
+          image: "https://via.placeholder.com/800x400?text=Tin+8",
+          content: `
+Workshop “Sáng tạo trong công nghệ” là nơi hội tụ các lập trình viên, nhà thiết kế và startup trẻ để cùng chia sẻ ý tưởng đột phá. Sự kiện tập trung vào việc ứng dụng trí tuệ nhân tạo và công nghệ XR trong đời sống.
+
+Bên cạnh phần chia sẻ chuyên môn, các nhóm tham dự còn được tham gia thử thách “Hackathon Mini” – nơi họ phải hoàn thiện ý tưởng công nghệ chỉ trong 48 giờ. Không khí sôi động, sáng tạo và đầy cảm hứng lan tỏa khắp không gian sự kiện.
+
+Kết thúc chương trình, nhiều dự án ấn tượng đã được vinh danh, mở ra cơ hội hợp tác đầu tư thực tế – chứng minh rằng sáng tạo công nghệ không chỉ là lý thuyết mà là hành trình biến ý tưởng thành hiện thực.
+    `,
+        },
+      ];
+
+      // Tìm bài viết theo ID
+      const news = newsData.find((n) => n.id === id);
+
+      if (news) {
+        document.getElementById("title").innerText = news.title;
+        document.getElementById("image").src = news.image;
+        document.getElementById("content").innerText = news.content;
+        document.getElementById("author").innerText = news.author;
+        document.getElementById("date").innerText = news.date;
+        document.getElementById("category").innerText = news.category;
+      } else {
+        document.getElementById("title").innerText = "Không tìm thấy bài viết!";
+      }
+    </script>
+    <a href="#top" class="back-to-top" title="Lên đầu trang">
+      <i class="bi bi-chevron-up">
+        <img class="go-up" src="./images/muiten.svg" alt="Về trang chủ" />
+      </i>
+    </a>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Về Chúng tôi</h3>
+          <ul>
+            <li><a href="about.html">Giới thiệu</a></li>
+            <li><a href="#">Tuyển dụng</a></li>
+            <li><a href="#">Chính sách bảo mật</a></li>
+            <li><a href="#">Điều khoản sử dụng</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Hỗ trợ khách hàng</h3>
+          <ul>
+            <li><a href="#">Hướng dẫn mua hàng</a></li>
+            <li><a href="#">Chính sách đổi trả</a></li>
+            <li><a href="#">Bảo hành</a></li>
+            <li><a href="#">Câu hỏi thường gặp</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Chính sách</h3>
+          <ul>
+            <li><a href="./payment-policy.html">Chính sách thanh toán</a></li>
+            <li><a href="./shipping-policy.html">Chính sách vận chuyển</a></li>
+            <li><a href="./warranty-policy.html">Chính sách bảo hành</a></li>
+            <li><a href="./exchange-policy.html">Chính sách đổi trả</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section contact-info">
+          <h3>Liên hệ</h3>
+          <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
+          <p>📞 Hotline: 1900 xxxx</p>
+          <p>✉️ Email: support@bookstore.vn</p>
+          <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
+          <div class="social-links">
+            <a href="#">f</a>
+            <a href="#">📷</a>
+            <a href="#">▶️</a>
+            <a href="#">💼</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
+      </div>
+    </footer>
+    <!-- Modal Đăng Nhập -->
+    <div id="loginModal" class="auth-modal">
+      <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
+      <div class="auth-modal-content">
+        <button class="auth-modal-close" onclick="closeLoginModal()">
+          &times;
+        </button>
+
+        <div class="auth-modal-header">
+          <h2>Đăng Nhập</h2>
+          <p>Chào mừng bạn trở lại!</p>
+        </div>
+
+        <form id="login-form" class="auth-modal-form">
+          <div class="form-group">
+            <label for="login-username">Tài khoản</label>
+            <div class="input-with-icon">
+              <span class="input-icon">👤</span>
+              <input
+                type="text"
+                id="login-username"
+                placeholder="Nhập tài khoản"
+              />
+            </div>
+            <span id="error-login-username" class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Mật khẩu</label>
+            <div class="input-with-icon">
+              <span class="input-icon">🔐</span>
+              <input
+                type="password"
+                id="login-password"
+                placeholder="Nhập mật khẩu"
+              />
+              <span
+                class="password-toggle"
+                id="toggle-login-password"
+                onclick="togglePassword('login-password', 'toggle-login-password')"
+                >👁️‍🗨️</span
+              >
+            </div>
+            <span id="error-login-password" class="error-msg"></span>
+          </div>
+
+          <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
+        </form>
+
+        <div class="auth-modal-footer">
+          Chưa có tài khoản?
+          <a href="#" onclick="switchToRegister()">Đăng ký ngay</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Đăng Ký -->
+    <div id="registerModal" class="auth-modal">
+      <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
+      <div class="auth-modal-content">
+        <button class="auth-modal-close" onclick="closeRegisterModal()">
+          &times;
+        </button>
+
+        <div class="auth-modal-header">
+          <h2>Đăng Ký</h2>
+          <p>Tạo tài khoản mới của bạn</p>
+        </div>
+
+        <form
+          id="register-form"
+          class="auth-modal-form"
+          style="max-height: 450px; overflow-y: auto"
+        >
+          <div class="form-group">
+            <label for="reg-fullname">Họ và tên</label>
+            <div class="input-with-icon">
+              <span class="input-icon">👤</span>
+              <input
+                type="text"
+                id="reg-fullname"
+                placeholder="Nhập họ và tên"
+              />
+            </div>
+            <span id="error-fullname" class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-username">Tên tài khoản</label>
+            <div class="input-with-icon">
+              <span class="input-icon">🔑</span>
+              <input
+                type="text"
+                id="reg-username"
+                placeholder="Nhập tên tài khoản"
+              />
+            </div>
+            <span id="error-username" class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Mật khẩu</label>
+            <div class="input-with-icon">
+              <span class="input-icon">🔐</span>
+              <input
+                type="password"
+                id="reg-password"
+                placeholder="Nhập mật khẩu"
+              />
+              <span
+                class="password-toggle"
+                id="toggle-reg-password"
+                onclick="togglePassword('reg-password', 'toggle-reg-password')"
+                >👁️‍🗨️</span
+              >
+            </div>
+            <span id="error-password" class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-confirm-password">Nhập lại mật khẩu</label>
+            <div class="input-with-icon">
+              <span class="input-icon">🔐</span>
+              <input
+                type="password"
+                id="reg-confirm-password"
+                placeholder="Nhập lại mật khẩu"
+              />
+              <span
+                class="password-toggle"
+                id="toggle-reg-confirm"
+                onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')"
+                >👁️‍🗨️</span
+              >
+            </div>
+            <span id="error-confirm-password" class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <div class="input-with-icon">
+              <span class="input-icon">📧</span>
+              <input type="email" id="reg-email" placeholder="Nhập email" />
+            </div>
+            <span id="error-email" class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-phone">Số điện thoại</label>
+            <div class="input-with-icon">
+              <span class="input-icon">📱</span>
+              <input
+                type="tel"
+                id="reg-phone"
+                placeholder="Nhập số điện thoại"
+              />
+            </div>
+            <span id="error-phone" class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-address">Địa chỉ</label>
+            <div class="input-with-icon">
+              <span class="input-icon">📍</span>
+              <input type="text" id="reg-address" placeholder="Nhập địa chỉ" />
+            </div>
+            <span id="error-address" class="error-msg"></span>
+          </div>
+
+          <button type="submit" class="btn-auth-submit">Đăng Ký</button>
+        </form>
+
+        <div class="auth-modal-footer">
+          Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Profile (Hiển thị khi đã đăng nhập) -->
+    <div id="profileModal" class="auth-modal">
+      <div class="auth-modal-overlay" onclick="closeProfileModal()"></div>
+      <div class="auth-modal-content">
+        <button class="auth-modal-close" onclick="closeProfileModal()">
+          &times;
+        </button>
+
+        <div class="auth-modal-header">
+          <div class="profile-avatar-small">👤</div>
+          <h2 id="profile-fullname">Xin chào!</h2>
+          <p>Thông tin tài khoản của bạn</p>
+        </div>
+
+        <div class="profile-info-modal">
+          <div class="info-row">
+            <span class="info-label">👤 Họ và tên:</span>
+            <span class="info-value" id="profile-name-value"></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">🔐 Tài khoản:</span>
+            <span class="info-value" id="profile-username-value"></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">📧 Email:</span>
+            <span class="info-value" id="profile-email-value"></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">📱 Số điện thoại:</span>
+            <span class="info-value" id="profile-phone-value"></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">📍 Địa chỉ:</span>
+            <span class="info-value" id="profile-address-value"></span>
+          </div>
+        </div>
+
+        <button class="btn-logout-modal" onclick="handleLogoutModal()">
+          Đăng xuất
+        </button>
+      </div>
+    </div>
+    <!-- JS -->
+    <script src="assets/js/main.js"></script>
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

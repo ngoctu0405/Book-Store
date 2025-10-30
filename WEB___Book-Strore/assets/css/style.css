@@ -2657,12 +2657,6 @@ footer {
   font-size: 0.9rem;
   color: #555;
 }
-.text-center {
-  width: 15rem;
-  background-color: #0077cc;
-  border-radius: 3rem;
-  padding: 1rem;
-}
 .new_event {
   display: flex;
   justify-content: center;
