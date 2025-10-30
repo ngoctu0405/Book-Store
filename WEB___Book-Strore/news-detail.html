@@ -20,12 +20,16 @@
         padding: 0;
       }
 
+      .container {
+        height: 90rem;
+      }
+
       /* Khung tổng */
       #page {
         position: relative;
-        top: 4rem;
+        top: 6rem;
         max-width: 900px;
-        min-height: 100rem;
+        min-height: 70rem;
         margin: 60px auto;
         background: #fff;
         padding: 40px 50px;
@@ -255,20 +259,21 @@
       </div>
     </nav>
 
-    <div id="page">
-      <a id="back" href="index.html">&larr; Quay lại</a>
+    <a id="back" href="index.html">&larr; Quay lại trang chủ</a>
+    <div class="container">
+      <div id="page">
+        <h1 id="title"></h1>
 
-      <h1 id="title"></h1>
+        <div id="meta">
+          <span id="category"></span>
+          <span id="date"></span>
+          <span id="author"></span>
+        </div>
 
-      <div id="meta">
-        <span id="category"></span>
-        <span id="date"></span>
-        <span id="author"></span>
+        <img id="image" alt="Ảnh bài viết" />
+
+        <p id="content"></p>
       </div>
-
-      <img id="image" alt="Ảnh bài viết" />
-
-      <p id="content"></p>
     </div>
 
     <script>

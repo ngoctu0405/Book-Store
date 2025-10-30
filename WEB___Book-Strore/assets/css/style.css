@@ -943,7 +943,6 @@ select {
   position: absolute;
   top: 100%;
   left: 0;
-  min-width: 220px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -2663,4 +2662,9 @@ footer {
 }
 .news-card {
   height: 35em;
+}
+#back {
+  position: fixed;
+  left: 3rem;
+  top: 8rem;
 }
