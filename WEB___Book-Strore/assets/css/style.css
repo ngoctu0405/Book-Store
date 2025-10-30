@@ -1748,6 +1748,7 @@ footer {
 }
 
 /* Phần hot sale */
+
 .hot-sale {
   /* Các thuộc tính tạo màu gradient (Giữ nguyên) */
   background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
@@ -1790,42 +1791,24 @@ footer {
   border-radius: 3rem;
 }
 
-/* Đặt màu cho các mũi tên điều khiển */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  /* Sử dụng filter để đổi màu SVG icon từ trắng sang đen */
-  filter: invert(100%);
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: transparent;
+  filter: invert(100%); /*icon trắng sang đen*/
+  transition: all 0.3s ease;
 }
 
-/* Hoặc nếu dùng Font Awesome (như đã hướng dẫn trước đó): */
-.carousel-control-prev i,
-.carousel-control-next i {
-  color: #333; /* Màu xám đen */
-  background-color: #fff;
-}
+/* Active – đổi màu nhấn, không đổi size */
 .carousel-control-prev-icon:active,
 .carousel-control-next-icon:active {
-  /* Đổi màu nền của nút khi nhấn (để tạo hiệu ứng) */
   background-color: #0f6e86;
-  border-radius: 50%; /* Dùng 50% thay vì 100% để rõ ràng hơn */
-  width: 4rem;
-  height: 4rem;
-
-  /* Đổi màu icon bên trong bằng filter (để icon chuyển sang màu trắng) */
-  filter: none !important; /* Loại bỏ filter cũ (invert) */
+  filter: invert(0%);
 }
 
-/* Thêm thuộc tính filter cho trạng thái hover*/
-.carousel-control-prev-icon:hover,
-.carousel-control-next-icon:hover {
-  background-color: #535353;
-  border-radius: 50%;
-  width: 4rem;
-  height: 4rem;
-  /* Đặt màu icon bên trong (ví dụ: trắng) */
-  filter: invert(100%);
-}
-/* CSS ban đầu để đảm bảo nút có hình tròn */
+/* Vỏ nút tròn */
 .carousel-control-prev,
 .carousel-control-next {
   border-radius: 50%;
@@ -2633,8 +2616,9 @@ footer {
 /* Phần hot new */
 .container_py-6 {
   position: relative;
-  top: 10rem;
+  top: 13rem;
   background-color: #fff;
+  border-radius: 3rem;
 }
 .g-4 {
   padding: 2rem;
@@ -2672,4 +2656,17 @@ footer {
 .news-desc {
   font-size: 0.9rem;
   color: #555;
+}
+.text-center {
+  width: 15rem;
+  background-color: #0077cc;
+  border-radius: 3rem;
+  padding: 1rem;
+}
+.new_event {
+  display: flex;
+  justify-content: center;
+}
+.news-card {
+  height: 35em;
 }

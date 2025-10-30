@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="vi">
-
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -11,11 +10,25 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css" />
 
-
-
     <style>
       .container {
-        height: 170rem;
+        height: 180rem;
+      }
+
+      /* ========================================================= */
+      /* 4. HOT NEWS AND EVENT */
+      /* ========================================================= */
+      .read-more {
+        position: fixed;
+        top: 30rem;
+      }
+      /* ========================================================= */
+      /* 5. HOT SALE SECTION */
+      /* ========================================================= */
+      .hot_sale_selection {
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        margin: 2rem 0;
       }
       .title-hot-sale {
         background-color: #ffffff;
@@ -25,15 +38,6 @@
       .Top-sale {
         display: flex;
         justify-content: center;
-      }
-
-      /* ========================================================= */
-      /* 5. HOT SALE SECTION */
-      /* ========================================================= */
-      .hot_sale_selection {
-        padding: 3rem 2rem;
-        border-radius: 20px;
-        margin: 2rem 0;
       }
 
       /* Product Card */
@@ -46,7 +50,6 @@
         transition: transform 0.3s ease;
         max-width: 20rem;
       }
-
 
       .product-card:hover {
         transform: translateY(-5px);
@@ -439,7 +442,7 @@
                   <div class="product-card">
                     <div class="card-img">
                       <img
-                        src="https://picsum.photos/300/420?random=27"
+                        src="./images/Đắc Nhân Tâm - Dale Carnegie.jpg"
                         alt="Đắc Nhân Tâm"
                         class="img-fluid"
                       />
@@ -455,7 +458,7 @@
                   <div class="product-card">
                     <div class="card-img">
                       <img
-                        src="https://picsum.photos/300/420?random=28"
+                        src="./images/Tuổi Trẻ Đáng Giá Bao Nhiêu.jpg"
                         alt="Tuổi Trẻ Đáng Giá Bao Nhiêu"
                         class="img-fluid"
                       />
@@ -471,12 +474,12 @@
                   <div class="product-card">
                     <div class="card-img">
                       <img
-                        src="https://picsum.photos/300/420?random=29"
-                        alt="Truyện Kiều"
+                        src="./images/Chí Phèo_ Khi nghệ thuật là tiếng kêu đau khổ thoát ra từ kiếp người lầm than.jpg"
+                        alt="Chí Phèo"
                         class="img-fluid"
                       />
                     </div>
-                    <h4 class="card-title">Truyện Kiều</h4>
+                    <h4 class="card-title">Chí Phèo</h4>
                     <div class="price">70.000đ</div>
                     <div class="card-actions">
                       <button class="btn btn-small">Xem</button>
@@ -491,7 +494,7 @@
                   <div class="product-card">
                     <div class="card-img">
                       <img
-                        src="https://picsum.photos/300/420?random=31"
+                        src="./images/Lão Hạc của Nam Cao.jpg"
                         alt="Lão Hạc"
                         class="img-fluid"
                       />
@@ -507,7 +510,7 @@
                   <div class="product-card">
                     <div class="card-img">
                       <img
-                        src="https://picsum.photos/300/420?random=32"
+                        src="./images/Sách- Nhật Ký Trong Tù - Hồ Chí Minh (Ml).jpg"
                         alt="Nhật Ký Trong Tù"
                         class="img-fluid"
                       />
@@ -523,7 +526,7 @@
                   <div class="product-card">
                     <div class="card-img">
                       <img
-                        src="https://picsum.photos/300/420?random=33"
+                        src="./images/Số đỏ.jpg"
                         alt="Số Đỏ"
                         class="img-fluid"
                       />
@@ -543,13 +546,13 @@
                   <div class="product-card">
                     <div class="card-img">
                       <img
-                        src="https://picsum.photos/300/420?random=35"
-                        alt="Tôi Thấy Hoa Vàng Trên Cỏ Xanh"
+                        src="./images/Chí Phèo_ Khi nghệ thuật là tiếng kêu đau khổ thoát ra từ kiếp người lầm than.jpg"
+                        alt="Harry Potter và hòn đá phù thủy"
                         class="img-fluid"
                       />
                     </div>
-                    <h4 class="card-title">Tôi Thấy Hoa Vàng Trên Cỏ Xanh</h4>
-                    <div class="price">100.000đ</div>
+                    <!-- <h4 class="card-title">Chí Phèo</h4> -->
+                    <div class="price">60.000đ</div>
                     <div class="card-actions">
                       <button class="btn btn-small">Xem</button>
                       <button class="btn btn-cart">Thêm vào giỏ</button>
@@ -559,7 +562,7 @@
                   <div class="product-card">
                     <div class="card-img">
                       <img
-                        src="https://picsum.photos/300/420?random=36"
+                        src="./images/Người lái đò sông Đà.jpg"
                         alt="Người Lái Đò Sông Đà"
                         class="img-fluid"
                       />
@@ -575,7 +578,7 @@
                   <div class="product-card">
                     <div class="card-img">
                       <img
-                        src="https://picsum.photos/300/420?random=37"
+                        src="./images/Nhật ký Đặng Thùy Trâm.jpg"
                         alt="Nhật Ký Đặng Thùy Trâm"
                         class="img-fluid"
                       />
@@ -622,106 +625,295 @@
       <!-- Phần tin tức và sự kiện -->
       <section class="container_py-6">
         <div class="row">
-          <!-- Cột Tin tức -->
+          <!-- Cột TIN TỨC -->
           <div class="col-md-6">
-            <h2 class="section-title">TIN TỨC</h2>
-            <div class="row g-4">
-              <div class="col-md-12">
-                <div class="news-card">
-                  <img
-                    src="https://via.placeholder.com/400x250?text=No+Image+Available"
-                    alt=""
-                  />
-                  <p class="news-date mt-2">Ngày 15/09/2025</p>
-                  <h5 class="news-title">
-                    Alpha Books và Tinh Vân bắt tay phát triển giải pháp...
-                  </h5>
-                  <p class="news-desc">
-                    Sáng ngày 12/9/2025 tại Hà Nội, Công ty Cổ phần Sách Alpha
-                    (Alpha Books) và Công ty Cổ phần Công...
-                  </p>
+            <div class="new_event">
+              <h2 class="section-title text-center mb-4">TIN TỨC</h2>
+            </div>
+            <div
+              id="newsCarousel"
+              class="carousel slide"
+              data-bs-ride="carousel"
+            >
+              <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="1">
+                        <img
+                          src="https://via.placeholder.com/400x250?text=No+Image+Available"
+                          alt="Alpha Books và Tinh Vân"
+                        />
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">📰 Tin tức</span>
+                            <span class="news-date">📅 15/09/2025</span>
+                          </div>
+                          <h3>
+                            'Mãi mãi tuổi hai mươi' - nhật ký vượt thời gian
+                          </h3>
+                          <p>
+                            Nhật ký ghi lại tinh thần chiến đấu, những nỗi niềm
+                            riêng của liệt sĩ Nguyễn Văn Thạc...
+                          </p>
+                          <a href="news-detail.html?id=1" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="2">
+                        <img
+                          src="https://via.placeholder.com/400x250/eee/333?text=Tư+Duy+Phản+Biện"
+                          alt="Tư Duy Phản Biện"
+                        />
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">📰 Tin tức</span>
+                            <span class="news-date">📅 12/09/2025</span>
+                          </div>
+                          <h3>
+                            Tư Duy Phản Biện Thông Minh – Rèn Kỹ Năng Phân...
+                          </h3>
+                          <p>
+                            Trong bối cảnh bùng nổ của thông tin, nơi mà fake
+                            news và định kiến lan truyền...
+                          </p>
+                          <a href="news-detail.html?id=2" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="3">
+                        <img
+                          src="https://via.placeholder.com/400x250/ddd/222?text=Nhân+Sự+Việt"
+                          alt="Tình hình nhân sự"
+                        />
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">📰 Tin tức</span>
+                            <span class="news-date">📅 27/02/2024</span>
+                          </div>
+                          <h3>
+                            TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ TRONG NĂM 2023
+                          </h3>
+                          <p>
+                            CHOÁNG NGỢP TRƯỚC TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ
+                            TRONG NĂM 2023...
+                          </p>
+                          <a href="news-detail.html?id=3" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="4">
+                        <img
+                          src="https://via.placeholder.com/400x250/999/fff?text=Đọc+Sách+Mỗi+Ngày"
+                          alt="Phong trào đọc sách"
+                        />
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">📰 Tin tức</span>
+                            <span class="news-date">📅 10/03/2024</span>
+                          </div>
+                          <h3>Phong trào đọc sách đang quay trở lại mạnh mẽ</h3>
+                          <p>
+                            Nhiều trường học và tổ chức đang đẩy mạnh phong trào
+                            đọc sách cho học sinh và sinh viên...
+                          </p>
+                          <a href="news-detail.html?id=4" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-12">
-                <div class="news-card">
-                  <img
-                    src="https://via.placeholder.com/400x250/eee/333?text=Tư+Duy+Phản+Biện"
-                    alt=""
-                  />
-                  <p class="news-date mt-2">Ngày 12/09/2025</p>
-                  <h5 class="news-title">
-                    Tư Duy Phản Biện Thông Minh – Rèn Kỹ Năng Phân...
-                  </h5>
-                  <p class="news-desc">
-                    Trong bối cảnh bùng nổ của thông tin, nơi mà fake news, định
-                    kiến và các quan điểm một chiều lan truyền...
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="news-card">
-                  <img
-                    src="https://via.placeholder.com/400x250/ddd/222?text=Nhân+Sự+Việt"
-                    alt=""
-                  />
-                  <p class="news-date mt-2">Ngày 27/02/2024</p>
-                  <h5 class="news-title">
-                    TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ TRONG NĂM 2023
-                  </h5>
-                  <p class="news-desc">
-                    CHOÁNG NGỢP TRƯỚC TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ TRONG
-                    NĂM 2023...
-                  </p>
-                </div>
-              </div>
+
+              <!-- Controls -->
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#newsCarousel"
+                data-bs-slide="prev"
+              >
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#newsCarousel"
+                data-bs-slide="next"
+              >
+                <span class="carousel-control-next-icon"></span>
+              </button>
             </div>
           </div>
 
-          <!-- Cột Sự kiện -->
+          <!-- Cột SỰ KIỆN -->
           <div class="col-md-6">
-            <h2 class="section-title">SỰ KIỆN</h2>
-            <div class="row g-4">
-              <div class="col-md-12">
-                <div class="news-card">
-                  <img
-                    src="https://via.placeholder.com/400x250/000/fff?text=Talkshow+Sao+Hoa"
-                    alt=""
-                  />
-                  <p class="news-date mt-2">Ngày 18/01/2024</p>
-                  <h5 class="news-title">
-                    TALKSHOW CUỐI NĂM: HÀNH TRÌNH TỚI SAO HỎA &amp; TƯƠNG LAI
-                    CỦA CHÚNG TA
-                  </h5>
-                  <p class="news-desc">
-                    2023 là một năm kinh tế đầy biến động, đã đến lúc nhìn lại
-                    hành trình đã qua và sẵn sàng cho tương lai...
-                  </p>
+            <div class="new_event">
+              <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
+            </div>
+            <div
+              id="eventCarousel"
+              class="carousel slide"
+              data-bs-ride="carousel"
+            >
+              <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="5">
+                        <img
+                          src="https://via.placeholder.com/400x250/000/fff?text=Talkshow+Sao+Hoa"
+                          alt="Talkshow Sao Hỏa"
+                        />
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">🎪 Sự kiện</span>
+                            <span class="news-date">📅 18/01/2024</span>
+                          </div>
+                          <h3>
+                            TALKSHOW CUỐI NĂM: HÀNH TRÌNH TỚI SAO HỎA &amp;
+                            TƯƠNG LAI
+                          </h3>
+                          <p>
+                            2023 là một năm kinh tế đầy biến động, đã đến lúc
+                            nhìn lại hành trình đã qua và sẵn sàng cho tương
+                            lai...
+                          </p>
+                          <a href="news-detail.html?id=5" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="6">
+                        <img
+                          src="https://via.placeholder.com/400x250/ffcc00/333?text=Book+Festival"
+                          alt="Hội sách mùa hè 2024"
+                        />
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">🎪 Sự kiện</span>
+                            <span class="news-date">📅 10/05/2024</span>
+                          </div>
+                          <h3>HỘI SÁCH MÙA HÈ 2024 – KẾT NỐI TRI THỨC</h3>
+                          <p>
+                            Một sự kiện thường niên nhằm lan tỏa văn hóa đọc và
+                            kết nối những người yêu sách...
+                          </p>
+                          <a href="news-detail.html?id=6" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="7">
+                        <img
+                          src="https://via.placeholder.com/400x250/ddd/222?text=Nhân+Sự+Việt"
+                          alt="Nhân sự Việt"
+                        />
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">🎪 Sự kiện</span>
+                            <span class="news-date">📅 27/02/2024</span>
+                          </div>
+                          <h3>
+                            TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ TRONG NĂM 2023
+                          </h3>
+                          <p>
+                            CHOÁNG NGỢP TRƯỚC TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ
+                            TRONG NĂM 2023...
+                          </p>
+                          <a href="news-detail.html?id=7" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="8">
+                        <img
+                          src="https://via.placeholder.com/400x250/0099ff/fff?text=Workshop+Sáng+Tạo"
+                          alt="Workshop sáng tạo"
+                        />
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">🎪 Sự kiện</span>
+                            <span class="news-date">📅 15/06/2024</span>
+                          </div>
+                          <h3>
+                            WORKSHOP: SÁNG TẠO TRONG CÔNG NGHỆ &amp; XU HƯỚNG
+                            MỚI
+                          </h3>
+                          <p>
+                            Chương trình quy tụ các chuyên gia hàng đầu chia sẻ
+                            kinh nghiệm sáng tạo trong công nghệ số...
+                          </p>
+                          <a href="news-detail.html?id=8" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-12">
-                <div class="news-card">
-                  <img
-                    src="https://via.placeholder.com/400x250/ddd/222?text=Nhân+Sự+Việt"
-                    alt=""
-                  />
-                  <p class="news-date mt-2">Ngày 27/02/2024</p>
-                  <h5 class="news-title">
-                    TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ TRONG NĂM 2023
-                  </h5>
-                  <p class="news-desc">
-                    CHOÁNG NGỢP TRƯỚC TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ TRONG
-                    NĂM 2023...
-                  </p>
-                </div>
-              </div>
+
+              <!-- Controls -->
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#eventCarousel"
+                data-bs-slide="prev"
+              >
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#eventCarousel"
+                data-bs-slide="next"
+              >
+                <span class="carousel-control-next-icon"></span>
+              </button>
             </div>
           </div>
         </div>
       </section>
+
+      <!-- Nút quay lên đầu trang -->
     </main>
     <a href="#top" class="back-to-top" title="Lên đầu trang">
-      <i class="bi bi-chevron-up"
-        >1
+      <i class="bi bi-chevron-up">
         <img class="go-up" src="./images/muiten.svg" alt="Về trang chủ" />
       </i>
     </a>
