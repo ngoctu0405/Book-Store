@@ -1097,12 +1097,15 @@
 
       let currentCart = getCartFunc();
       let newCart = currentCart.filter(item => !selectedIds.includes(item.id));
-      saveCartFunc(newCart);
+      saveCartFunc(newCart); // Xóa sản phẩm đã mua khỏi localStorage
 
       alert(`Đơn hàng #${newOrder.id} (${totalItems} mục) đã được tạo thành công! Tổng tiền: ${formatter.format(total)}. Cảm ơn bạn đã mua sắm!`);
 
-      renderCart();
-    }
+      renderCart(); // Làm mới giao diện giỏ hàng
+      
+      // FIX BUG: Cập nhật lại số lượng giỏ hàng trên navbar
+      if (typeof updateCartCount === 'function') updateCartCount(); 
+}
 
     function renderCartSummary() {
       const cartSummaryContainer = document.querySelector('.cart-summary');
