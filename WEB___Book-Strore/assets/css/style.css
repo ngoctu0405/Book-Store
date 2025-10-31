@@ -2616,6 +2616,7 @@ footer {
 .container_py-6 {
   position: relative;
   top: 13rem;
+  padding: 3rem;
   background-color: #fff;
   border-radius: 3rem;
 }
