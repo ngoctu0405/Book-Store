@@ -9,9 +9,6 @@
   <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
-    
-   
-
     /* Custom styles cho cart page */
     .container {
       max-width: 1400px;
@@ -22,108 +19,187 @@
     .cart-heading {
       font-size: 2.5rem;
       font-weight: 700;
-      color: #2c3e50;
+      background: linear-gradient(135deg, #4f9da6 0%, #82c09a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin-top: 70px;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       text-align: center;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      text-shadow: none;
     }
 
     .cart-layout {
       display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 2rem;
+      grid-template-columns: 1fr 500px;
+      /* ĐÃ SỬA: Tăng chiều rộng lên 500px */
+      gap: 2.5rem;
       margin-top: 2rem;
     }
 
+    /* Cart Items Section - Improved */
     .cart-items-section {
-      background: linear-gradient(145deg, #ffffff 0%, #f5f2e8 100%);
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(79, 157, 166, 0.15);
-      border: 1px solid rgba(130, 192, 154, 0.2);
+      background: white;
+      padding: 2.5rem;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(79, 157, 166, 0.12);
+      border: 1px solid rgba(130, 192, 154, 0.15);
+    }
+
+    .cart-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .cart-section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin: 0;
+    }
+
+    .select-all-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .select-all-label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #4f9da6;
+      user-select: none;
+    }
+
+    .select-all-label input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #4f9da6;
+    }
+
+    .btn-clear-all {
+      padding: 0.65rem 1.3rem;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn-clear-all:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    }
+
+    .btn-clear-all i {
+      font-size: 1.1rem;
     }
 
     .empty-cart {
       text-align: center;
-      padding: 4rem 2rem;
+      padding: 5rem 2rem;
     }
 
     .empty-cart-icon {
-      font-size: 5rem;
-      margin-bottom: 1rem;
-      opacity: 0.5;
+      font-size: 6rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.4;
+      display: block;
     }
 
     .empty-cart h3 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       color: #2c3e50;
       margin-bottom: 1rem;
+      font-weight: 700;
     }
 
     .empty-cart p {
       color: #7f8c8d;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
       font-size: 1.1rem;
     }
 
     .btn-continue {
       display: inline-block;
-      padding: 1rem 2rem;
-      background: linear-gradient(135deg, #4f9da6 0%, #7fb3d3 100%);
+      padding: 1.2rem 2.5rem;
+      background: linear-gradient(135deg, #4f9da6 0%, #82c09a 100%);
       color: white;
       text-decoration: none;
-      border-radius: 12px;
-      font-weight: 600;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 1.1rem;
       transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(79, 157, 166, 0.25);
     }
 
     .btn-continue:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(79, 157, 166, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(79, 157, 166, 0.35);
+      color: white;
     }
 
-    /* Đã sửa CSS cho mục sản phẩm */
+    /* Cart Item - Improved */
     .cart-item {
       display: grid;
-      /* Cột 1: Checkbox, Cột 2: Ảnh, Cột 3: Chi tiết, Cột 4: Thao tác (SL, Giá, Xóa) */
-      grid-template-columns: 30px 100px 1fr auto; 
+      grid-template-columns: 40px 120px 1fr auto;
       align-items: center;
-      gap: 1.5rem;
-      padding: 1.5rem;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 12px;
-      margin-bottom: 1rem;
+      gap: 2rem;
+      padding: 2rem;
+      background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
       transition: all 0.3s ease;
-      border: 1px solid rgba(130, 192, 154, 0.1);
+      border: 2px solid transparent;
     }
 
     .cart-item:hover {
-      transform: translateX(5px);
-      box-shadow: 0 4px 16px rgba(79, 157, 166, 0.1);
-    }
-    
-    /* CSS cho Checkbox */
-    .item-select-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-left: 0.5rem; /* Căn chỉnh với lề */
-    }
-    .item-select-checkbox {
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-        accent-color: #4f9da6; /* Màu chủ đạo */
+      transform: translateX(8px);
+      box-shadow: 0 8px 24px rgba(79, 157, 166, 0.15);
+      border-color: rgba(130, 192, 154, 0.3);
     }
 
+    .item-select-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .item-select-checkbox {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      accent-color: #4f9da6;
+    }
 
     .cart-item-image {
-      width: 100px;
-      height: 140px;
-      border-radius: 8px;
+      width: 120px;
+      height: 160px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .cart-item-image:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     .cart-item-image img {
@@ -135,85 +211,70 @@
     .cart-item-details {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      align-self: flex-start; /* Giúp căn trên cho chi tiết */
+      justify-content: center;
+      gap: 0.5rem;
     }
 
     .cart-item-title {
-      font-size: 1.2rem;
-      font-weight: 600;
+      font-size: 1.3rem;
+      font-weight: 700;
       color: #2c3e50;
-      margin-bottom: 0.5rem;
+      margin: 0;
+      line-height: 1.4;
     }
 
     .cart-item-author {
       color: #7f8c8d;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cart-item-author i {
+      color: #4f9da6;
     }
 
     .cart-item-price {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       color: #e74c3c;
       font-weight: 700;
+      margin: 0.5rem 0 0 0;
     }
 
     .cart-item-actions {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 15px;
-      min-width: 150px; /* Đảm bảo đủ không gian cho tổng tiền và nút */
-    }
-    
-    .cart-item-total {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #2c3e50;
-        min-width: 100px;
-        text-align: right;
-    }
-
-    .btn-remove {
-      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      width: 100%; /* Sửa: làm nút xóa rộng hơn */
       justify-content: center;
+      align-items: flex-end;
+      gap: 1rem;
+      min-width: 180px;
     }
 
-    .btn-remove:hover {
-      background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
-      transform: scale(1.02);
+    .cart-item-total {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #2c3e50;
+      min-width: 120px;
+      text-align: right;
+      padding: 0.5rem 0;
     }
 
     .quantity-controls {
       display: flex;
       align-items: center;
-      border: 2px solid #82c09a;
-      border-radius: 8px;
-      overflow: hidden;
-      background: white;
-      width: 120px; /* Đặt chiều rộng cố định */
+      gap: 0.3rem;
+      background: transparent;
     }
 
     .qty-btn {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-      border: none;
-      background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
-      color: white;
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      border: 2px solid #e0e0e0;
+      background: white;
+      color: #5a5a5a;
       cursor: pointer;
       font-size: 1.2rem;
       font-weight: 700;
@@ -222,135 +283,232 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
 
-    .qty-btn:hover {
-      background: linear-gradient(135deg, #7fb3d3 0%, #82c09a 100%);
+    .qty-btn.minus-btn {
+      border-color: #ffb3b3;
+      color: #ff4d4d;
+    }
+
+    .qty-btn.minus-btn:hover:not(:disabled) {
+      background: #ff4d4d;
+      color: white;
+      border-color: #ff4d4d;
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(255, 77, 77, 0.3);
+    }
+
+    .qty-btn.plus-btn {
+      border-color: #b3e0cc;
+      color: #27ae60;
+    }
+
+    .qty-btn.plus-btn:hover:not(:disabled) {
+      background: #27ae60;
+      color: white;
+      border-color: #27ae60;
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+    }
+
+    .qty-btn:active:not(:disabled) {
+      transform: scale(0.95);
     }
 
     .qty-btn:disabled {
-      opacity: 0.5;
+      opacity: 0.3;
       cursor: not-allowed;
+      background: #f5f5f5;
+      border-color: #ddd;
+      color: #999;
     }
 
     .qty-display {
-      flex-grow: 1; /* Sửa: cho input tự giãn ra */
+      min-width: 35px;
       text-align: center;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 0.95rem;
+      font-weight: 700;
       color: #2c3e50;
-      border: none;
+      border: 2px solid #e8e8e8;
+      border-radius: 6px;
+      padding: 0.3rem 0.4rem;
+      background: #fafafa;
       pointer-events: none;
     }
 
+    .btn-remove {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
+    }
+
+    .btn-remove:hover {
+      background: linear-gradient(135deg, #ee5a6f 0%, #d63447 100%);
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    }
+
+    /* Cart Summary - Improved */
     .cart-summary {
-      background: linear-gradient(145deg, #ffffff 0%, #f5f2e8 100%);
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(79, 157, 166, 0.15);
-      border: 1px solid rgba(130, 192, 154, 0.2);
+      background: white;
+      padding: 3rem;
+      /* Tăng padding */
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(79, 157, 166, 0.12);
+      border: 1px solid rgba(130, 192, 154, 0.15);
       height: fit-content;
       position: sticky;
       top: 120px;
     }
 
     .summary-title {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: #2c3e50;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid rgba(130, 192, 154, 0.2);
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #f0f0f0;
+      text-align: center;
+    }
+    
+    /* CSS MỚI: Định dạng tiêu đề cột chi tiết sản phẩm */
+    .summary-header-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr; /* 3 cột thẳng hàng */
+      gap: 0.5rem;
+      font-weight: 700;
+      color: #7f8c8d;
+      padding: 0 0 0.5rem 0;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 0.5rem;
+    }
+
+    .summary-header-row span:nth-child(2) {
+      text-align: center;
+    }
+
+    .summary-header-row span:last-child {
+      text-align: right;
+    }
+    
+     /* CSS ĐÃ CHỈNH SỬA: Định dạng chi tiết sản phẩm trong tóm tắt */
+    .summary-item-detail {
+      display: grid; /* ĐÃ SỬA: Dùng grid để căn cột */
+      grid-template-columns: 2fr 1fr 1.5fr; /* Căn chỉnh 3 cột */
+      gap: 0.5rem;
+      font-size: 1.15rem; /* TĂNG: Tăng kích thước font lên 1.15rem */
+      color: #333;
+      padding: 0.5rem 0; /* TĂNG: Tăng padding để dễ đọc hơn */
+      align-items: center;
+    }
+
+    .summary-item-detail span:first-child {
+      /* Tên sản phẩm */
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .summary-item-detail span:nth-child(2) {
+      /* Quantity (Số lượng) */
+      font-weight: 600;
+      text-align: center;
+      color: #4f9da6;
+    }
+
+    .summary-item-detail span:last-child {
+      /* Total Price (Giá tổng) */
+      font-weight: 700;
+      color: #e74c3c;
+      text-align: right; /* Căn phải */
+      font-size: 1.05rem; /* Tăng độ nổi bật */
     }
 
     .summary-row {
       display: flex;
       justify-content: space-between;
-      padding: 0.8rem 0;
-      font-size: 1rem;
+      align-items: center;
+      padding: 1rem 0;
+      font-size: 1.05rem;
       color: #2c3e50;
     }
 
+    .summary-row.temp-total {
+      /* ĐIỀU CHỈNH: Padding cho dòng Tạm tính */
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+
+    .summary-row span:first-child {
+      font-weight: 500;
+    }
+
+    .summary-row span:last-child {
+      font-weight: 700;
+    }
+
     .summary-row.total {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: #e74c3c;
-      border-top: 2px solid rgba(130, 192, 154, 0.2);
+      border-top: 2px solid #f0f0f0;
       margin-top: 1rem;
-      padding-top: 1rem;
+      padding-top: 1.5rem;
     }
 
-    .discount-section {
-      margin: 1.5rem 0;
-      padding: 1.5rem;
-      background: linear-gradient(135deg, #f0f8f7 0%, #e6f4f1 100%);
-      border-radius: 12px;
-      border: 1px solid rgba(130, 192, 154, 0.2);
+    .text-success {
+      color: #27ae60 !important;
+      font-weight: 700 !important;
     }
 
-    .discount-section strong {
-      display: block;
-      margin-bottom: 1rem;
-      font-size: 1rem;
-    }
-
-    .discount-input-group {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .discount-input {
-      flex: 1;
-      padding: 0.7rem;
-      border: 2px solid rgba(130, 192, 154, 0.3);
-      border-radius: 8px;
-      font-size: 0.95rem;
-    }
-
-    .btn-apply {
-      padding: 0.7rem 1.2rem;
-      background: linear-gradient(135deg, #4f9da6 0%, #7fb3d3 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-    }
-
-    .btn-apply:hover {
-      background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
-    }
 
     .btn-checkout {
       width: 100%;
-      padding: 1.2rem;
-      background: linear-gradient(135deg, #ff7f50 0%, #ff4500 100%);
+      padding: 1.4rem;
+      background: linear-gradient(135deg, #ff7f50 0%, #ff6347 100%);
       color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
+      border-radius: 16px;
+      font-size: 1.2rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-top: 1.5rem;
+      margin-top: 2rem;
       text-decoration: none;
       display: block;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
+      box-shadow: 0 6px 20px rgba(255, 99, 71, 0.3);
     }
-    
+
     .btn-checkout:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        box-shadow: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
     }
 
     .btn-checkout:hover:not(:disabled) {
-      background: linear-gradient(135deg, #ff6347 0%, #e63900 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(255, 99, 71, 0.4);
+      background: linear-gradient(135deg, #ff6347 0%, #e8533f 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(255, 99, 71, 0.4);
     }
 
     @media (max-width: 1024px) {
@@ -365,71 +523,115 @@
     }
 
     @media (max-width: 768px) {
-      /* Điều chỉnh lại bố cục grid cho mobile */
-      .cart-item {
-        grid-template-columns: 30px 80px 1fr; /* Checkbox, Ảnh, Chi tiết */
-        grid-template-areas: 
-          "checkbox image details"
-          "actions actions actions"; /* Thao tác chiếm hết hàng dưới */
-        gap: 0.5rem 1rem;
-        padding: 1rem;
+      .container {
+        padding: 0 1rem;
       }
-      
+
+      .cart-heading {
+        font-size: 2rem;
+        margin-top: 60px;
+      }
+
+      .cart-items-section {
+        padding: 1.5rem;
+      }
+
+      .cart-section-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+
+      .select-all-wrapper {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .cart-item {
+        grid-template-columns: 30px 90px 1fr;
+        grid-template-areas:
+          "checkbox image details"
+          "actions actions actions";
+        gap: 0.75rem 1rem;
+        padding: 1.5rem;
+      }
+
       .item-select-wrapper {
-          grid-area: checkbox;
+        grid-area: checkbox;
       }
 
       .cart-item-image {
         grid-area: image;
-        width: 80px;
-        height: 110px;
+        width: 90px;
+        height: 120px;
       }
-      
+
       .cart-item-details {
-          grid-area: details;
+        grid-area: details;
       }
-      
-      /* Nhóm Thao tác (Giá, SL, Xóa) */
+
+      .cart-item-title {
+        font-size: 1.1rem;
+      }
+
+      .cart-item-author {
+        font-size: 0.85rem;
+      }
+
+      .cart-item-price {
+        font-size: 1.2rem;
+      }
+
       .cart-item-actions {
         grid-area: actions;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin-top: 0.5rem;
+        margin-top: 0.75rem;
         min-width: unset;
-        gap: 10px;
-        border-top: 1px dashed #eee;
-        padding-top: 10px;
+        gap: 0.75rem;
+        border-top: 1px solid #e0e0e0;
+        padding-top: 1rem;
       }
-      
+
       .cart-item-total {
-        font-size: 1rem;
+        font-size: 1.1rem;
         text-align: left;
-        order: 1; 
+        order: 1;
+        min-width: auto;
       }
-      
+
       .quantity-controls {
-          order: 2;
-          width: 100px;
-          height: 35px;
+        order: 2;
+        gap: 0.25rem;
       }
-      
+
       .qty-btn {
-          width: 30px;
-          height: 35px;
-          min-width: 30px;
-          font-size: 1rem;
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+        font-size: 1.1rem;
       }
-      
+
       .qty-display {
         font-size: 0.9rem;
+        min-width: 32px;
+        padding: 0.25rem 0.35rem;
       }
-      
+
       .btn-remove {
-          order: 3;
-          padding: 0.3rem 0.6rem;
-          font-size: 0.8rem;
-          width: auto;
+        order: 3;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+        width: auto;
+      }
+
+      .cart-summary {
+        padding: 2rem;
+      }
+
+      .summary-title {
+        font-size: 1.5rem;
       }
     }
   </style>
@@ -441,15 +643,15 @@
       <a href="index.html"><img src="images/Logo.png" alt="Logo"> </a>
     </div>
     <div class="search-center">
-      <input id="topSearch" class="search-input" type="text" 
+      <input id="topSearch" class="search-input" type="text"
         placeholder="Nhập tên cuốn sách bạn đang tìm ..." autocomplete="off" />
-      <button class="search-btn" type="button" onclick="handleTopSearch()">Tìm kiếm</button> 
+      <button class="search-btn" type="button" onclick="handleTopSearch()">Tìm kiếm</button>
     </div>
     <div class="auth-cart">
       <div id="authArea">
         <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
         <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
-      </div>  
+      </div>
     </div>
   </header>
 
@@ -465,46 +667,32 @@
           <li class="dropdown">
             <a href="category.html?category=Văn học" data-category="Văn học">Văn học ▸</a>
             <ul class="dropdown-content">
-              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
-                  data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
-              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
-                  data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
-              <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
-                  data-subcategory="Thơ">Thơ</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết">Tiểu thuyết</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn">Truyện ngắn</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Thơ">Thơ</a></li>
             </ul>
           </li>
-
           <li class="dropdown">
             <a href="category.html?category=Kinh tế" data-category="Kinh tế">Kinh tế ▸</a>
             <ul class="dropdown-content">
-              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
-                  data-subcategory="Quản trị">Quản trị</a></li>
-              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
-                  data-subcategory="Tài chính">Tài chính</a></li>
-              <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
-                  data-subcategory="Marketing">Marketing</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị">Quản trị</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính">Tài chính</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Marketing">Marketing</a></li>
             </ul>
           </li>
-
           <li class="dropdown">
             <a href="category.html?category=Thiếu nhi" data-category="Thiếu nhi">Thiếu nhi ▸</a>
             <ul class="dropdown-content">
-              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
-                  data-subcategory="Truyện tranh">Truyện tranh</a></li>
-              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
-                  data-subcategory="Giáo dục">Giáo dục</a></li>
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh">Truyện tranh</a></li>
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục">Giáo dục</a></li>
             </ul>
           </li>
-
           <li class="dropdown">
             <a href="category.html?category=Giáo khoa" data-category="Giáo khoa">Giáo khoa ▸</a>
             <ul class="dropdown-content">
-              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
-                  data-subcategory="Cấp 1">Cấp 1</a></li>
-              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
-                  data-subcategory="Cấp 2">Cấp 2</a></li>
-              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
-                  data-subcategory="Cấp 3">Cấp 3</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1">Cấp 1</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2">Cấp 2</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3">Cấp 3</a></li>
             </ul>
           </li>
         </ul>
@@ -521,8 +709,7 @@
 
   <main class="container">
     <h2 class="cart-heading">🛒 Giỏ Hàng Của Bạn</h2>
-    <div id="cartContainer">
-      </div>
+    <div id="cartContainer"></div>
   </main>
 
   <footer>
@@ -573,513 +760,415 @@
     </div>
   </footer>
 
-  <!-- Modal Đăng Nhập -->
-<div id="loginModal" class="auth-modal">
-  <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
-  <div class="auth-modal-content">
-    <button class="auth-modal-close" onclick="closeLoginModal()">&times;</button>
-    
-    <div class="auth-modal-header">
-      <h2>Đăng Nhập</h2>
-      <p>Chào mừng bạn trở lại!</p>
-    </div>
-    
-    <form id="login-form" class="auth-modal-form">
-      <div class="form-group">
-        <label for="login-username">Tên tài khoản</label>
-        <div class="input-with-icon">
-          <span class="input-icon">👤</span>
-          <input type="text" id="login-username" placeholder="Nhập tên tài khoản">
-        </div>
-        <span id="error-login-username" class="error-msg"></span>
+  <div id="loginModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
+    <div class="auth-modal-content">
+      <button class="auth-modal-close" onclick="closeLoginModal()">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Đăng Nhập</h2>
+        <p>Chào mừng bạn trở lại!</p>
       </div>
-      
-      <div class="form-group">
-        <label for="login-password">Mật khẩu</label>
-        <div class="input-with-icon">
-          <span class="input-icon">🔐</span>
-          <input type="password" id="login-password" placeholder="Nhập mật khẩu">
-          <span class="password-toggle" id="toggle-login-password" 
-                onclick="togglePassword('login-password', 'toggle-login-password')">👁️‍🗨️</span>
+      <form id="login-form" class="auth-modal-form">
+        <div class="form-group">
+          <label for="login-username">Tên tài khoản</label>
+          <div class="input-with-icon">
+            <span class="input-icon">👤</span>
+            <input type="text" id="login-username" placeholder="Nhập tên tài khoản">
+          </div>
+          <span id="error-login-username" class="error-msg"></span>
         </div>
-        <span id="error-login-password" class="error-msg"></span>
+        <div class="form-group">
+          <label for="login-password">Mật khẩu</label>
+          <div class="input-with-icon">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="login-password" placeholder="Nhập mật khẩu">
+            <span class="password-toggle" id="toggle-login-password"
+              onclick="togglePassword('login-password', 'toggle-login-password')">👁️‍🗨️</span>
+          </div>
+          <span id="error-login-password" class="error-msg"></span>
+        </div>
+        <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
+      </form>
+      <div class="auth-modal-footer">
+        Chưa có tài khoản? <a href="#" onclick="switchToRegister()">Đăng ký ngay</a>
       </div>
-      
-      <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
-    </form>
-    
-    <div class="auth-modal-footer">
-      Chưa có tài khoản? <a href="#" onclick="switchToRegister()">Đăng ký ngay</a>
     </div>
   </div>
-</div>
 
-<!-- Modal Đăng Ký -->
-<div id="registerModal" class="auth-modal">
-  <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
-  <div class="auth-modal-content">
-    <button class="auth-modal-close" onclick="closeRegisterModal()">&times;</button>
-    
-    <div class="auth-modal-header">
-      <h2>Đăng Ký</h2>
-      <p>Tạo tài khoản mới của bạn</p>
-    </div>
-    
-    <form id="register-form" class="auth-modal-form" style="max-height: 450px; overflow-y: auto;">
-      <div class="form-group">
-        <label for="reg-fullname">Họ và tên</label>
-        <div class="input-with-icon">
-          <span class="input-icon">👤</span>
-          <input type="text" id="reg-fullname" placeholder="Nhập họ và tên">
-        </div>
-        <span id="error-fullname" class="error-msg"></span>
+  <div id="registerModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
+    <div class="auth-modal-content">
+      <button class="auth-modal-close" onclick="closeRegisterModal()">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Đăng Ký</h2>
+        <p>Tạo tài khoản mới của bạn</p>
       </div>
-      
-      <div class="form-group">
-        <label for="reg-username">Tài khoản</label>
-        <div class="input-with-icon">
-          <span class="input-icon">🔑</span>
-          <input type="text" id="reg-username" placeholder="Nhập tài khoản">
+      <form id="register-form" class="auth-modal-form" style="max-height: 450px; overflow-y: auto;">
+        <div class="form-group">
+          <label for="reg-fullname">Họ và tên</label>
+          <div class="input-with-icon">
+            <span class="input-icon">👤</span>
+            <input type="text" id="reg-fullname" placeholder="Nhập họ và tên">
+          </div>
+          <span id="error-fullname" class="error-msg"></span>
         </div>
-        <span id="error-username" class="error-msg"></span>
-      </div>
-      
-      <div class="form-group">
-        <label for="reg-password">Mật khẩu</label>
-        <div class="input-with-icon">
-          <span class="input-icon">🔐</span>
-          <input type="password" id="reg-password" placeholder="Nhập mật khẩu">
-          <span class="password-toggle" id="toggle-reg-password" 
-                onclick="togglePassword('reg-password', 'toggle-reg-password')">👁️‍🗨️</span>
+        <div class="form-group">
+          <label for="reg-username">Tài khoản</label>
+          <div class="input-with-icon">
+            <span class="input-icon">🔐</span>
+            <input type="text" id="reg-username" placeholder="Nhập tài khoản">
+          </div>
+          <span id="error-username" class="error-msg"></span>
         </div>
-        <span id="error-password" class="error-msg"></span>
-      </div>
-      
-      <div class="form-group">
-        <label for="reg-confirm-password">Nhập lại mật khẩu</label>
-        <div class="input-with-icon">
-          <span class="input-icon">🔐</span>
-          <input type="password" id="reg-confirm-password" placeholder="Nhập lại mật khẩu">
-          <span class="password-toggle" id="toggle-reg-confirm" 
-                onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')">👁️‍🗨️</span>
+        <div class="form-group">
+          <label for="reg-password">Mật khẩu</label>
+          <div class="input-with-icon">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="reg-password" placeholder="Nhập mật khẩu">
+            <span class="password-toggle" id="toggle-reg-password"
+              onclick="togglePassword('reg-password', 'toggle-reg-password')">👁️‍🗨️</span>
+          </div>
+          <span id="error-password" class="error-msg"></span>
         </div>
-        <span id="error-confirm-password" class="error-msg"></span>
-      </div>
-      
-      <div class="form-group">
-        <label for="reg-email">Email</label>
-        <div class="input-with-icon">
-          <span class="input-icon">📧</span>
-          <input type="email" id="reg-email" placeholder="Nhập email">
+        <div class="form-group">
+          <label for="reg-confirm-password">Nhập lại mật khẩu</label>
+          <div class="input-with-icon">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="reg-confirm-password" placeholder="Nhập lại mật khẩu">
+            <span class="password-toggle" id="toggle-reg-confirm"
+              onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')">👁️‍🗨️</span>
+          </div>
+          <span id="error-confirm-password" class="error-msg"></span>
         </div>
-        <span id="error-email" class="error-msg"></span>
-      </div>
-      
-      <div class="form-group">
-        <label for="reg-phone">Số điện thoại</label>
-        <div class="input-with-icon">
-          <span class="input-icon">📱</span>
-          <input type="tel" id="reg-phone" placeholder="Nhập số điện thoại">
+        <div class="form-group">
+          <label for="reg-email">Email</label>
+          <div class="input-with-icon">
+            <span class="input-icon">📧</span>
+            <input type="email" id="reg-email" placeholder="Nhập email">
+          </div>
+          <span id="error-email" class="error-msg"></span>
         </div>
-        <span id="error-phone" class="error-msg"></span>
-      </div>
-      
-      <div class="form-group">
-        <label for="reg-address">Địa chỉ</label>
-        <div class="input-with-icon">
-          <span class="input-icon">📍</span>
-          <input type="text" id="reg-address" placeholder="Nhập địa chỉ">
+        <div class="form-group">
+          <label for="reg-phone">Số điện thoại</label>
+          <div class="input-with-icon">
+            <span class="input-icon">📱</span>
+            <input type="tel" id="reg-phone" placeholder="Nhập số điện thoại">
+          </div>
+          <span id="error-phone" class="error-msg"></span>
         </div>
-        <span id="error-address" class="error-msg"></span>
+        <div class="form-group">
+          <label for="reg-address">Địa chỉ</label>
+          <div class="input-with-icon">
+            <span class="input-icon">📍</span>
+            <input type="text" id="reg-address" placeholder="Nhập địa chỉ">
+          </div>
+          <span id="error-address" class="error-msg"></span>
+        </div>
+        <button type="submit" class="btn-auth-submit">Đăng Ký</button>
+      </form>
+      <div class="auth-modal-footer">
+        Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập</a>
       </div>
-      
-      <button type="submit" class="btn-auth-submit">Đăng Ký</button>
-    </form>
-    
-    <div class="auth-modal-footer">
-      Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập</a>
     </div>
   </div>
-</div>
 
-<!-- Modal Profile (Hiển thị khi đã đăng nhập) -->
-<div id="profileModal" class="auth-modal">
-  <div class="auth-modal-overlay" onclick="closeProfileModal()"></div>
-  <div class="auth-modal-content">
-    <button class="auth-modal-close" onclick="closeProfileModal()">&times;</button>
-    
-    <div class="auth-modal-header">
-      <div class="profile-avatar-small">👤</div>
-      <h2 id="profile-fullname">Xin chào!</h2>
-      <p>Thông tin tài khoản của bạn</p>
+  <div id="profileModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="closeProfileModal()"></div>
+    <div class="auth-modal-content">
+      <button class="auth-modal-close" onclick="closeProfileModal()">&times;</button>
+      <div class="auth-modal-header">
+        <div class="profile-avatar-small">👤</div>
+        <h2 id="profile-fullname">Xin chào!</h2>
+        <p>Thông tin tài khoản của bạn</p>
+      </div>
+      <div class="profile-info-modal">
+        <div class="info-row">
+          <span class="info-label">👤 Họ và tên:</span>
+          <span class="info-value" id="profile-name-value"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">🔐 Tài khoản:</span>
+          <span class="info-value" id="profile-username-value"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">📧 Email:</span>
+          <span class="info-value" id="profile-email-value"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">📱 Số điện thoại:</span>
+          <span class="info-value" id="profile-phone-value"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">📍 Địa chỉ:</span>
+          <span class="info-value" id="profile-address-value"></span>
+        </div>
+      </div>
+      <button class="btn-logout-modal" onclick="handleLogoutModal()">Đăng xuất</button>
     </div>
-    
-    <div class="profile-info-modal">
-      <div class="info-row">
-        <span class="info-label">👤 Họ và tên:</span>
-        <span class="info-value" id="profile-name-value"></span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">🔐 Tài khoản:</span>
-        <span class="info-value" id="profile-username-value"></span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">📧 Email:</span>
-        <span class="info-value" id="profile-email-value"></span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">📱 Số điện thoại:</span>
-        <span class="info-value" id="profile-phone-value"></span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">📍 Địa chỉ:</span>
-        <span class="info-value" id="profile-address-value"></span>
-      </div>
-    </div>
-    
-    <button class="btn-logout-modal" onclick="handleLogoutModal()">Đăng xuất</button>
   </div>
-</div>
 
   <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/main.js"></script> 
-  
+  <script src="assets/js/main.js"></script>
+
   <script>
-    // ======================= CÁC HÀM ĐIỀU KHIỂN MODAL (Định nghĩa lại để hoạt động độc lập) =======================
-
     function openModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            // Thêm class 'show' để kích hoạt CSS display: flex và opacity: 1
-            modal.classList.add('show'); 
-            document.body.style.overflow = 'hidden'; // Ngăn cuộn màn hình
-        }
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
     }
-    
+
     function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.remove('show');
-            document.body.style.overflow = ''; 
-            // Xóa lỗi (nếu có)
-            modal.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
-            // Reset form
-            const form = modal.querySelector('form');
-            if(form) form.reset();
-        }
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        modal.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
+        const form = modal.querySelector('form');
+        if (form) form.reset();
+      }
     }
- 
 
-    // Toggles password visibility 
     function togglePassword(inputId, toggleId) {
-        const input = document.getElementById(inputId);
-        const toggle = document.getElementById(toggleId);
-        if (input.type === 'password') {
-            input.type = 'text';
-            if(toggle) toggle.textContent = '🙈';
-        } else {
-            input.type = 'password';
-            if(toggle) toggle.textContent = '👁️‍🗨️';
-        }
+      const input = document.getElementById(inputId);
+      const toggle = document.getElementById(toggleId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (toggle) toggle.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        if (toggle) toggle.textContent = '👁️‍🗨️';
+      }
     }
 
-
-    // ======================= CÁC HÀM TIỆN ÍCH DÙNG CHO GIỎ HÀNG =======================
-
-    // Định dạng tiền tệ VND
     const formatter = new Intl.NumberFormat('vi-VN', {
       style: 'currency',
       currency: 'VND',
       minimumFractionDigits: 0
     });
-    
-    // Lấy dữ liệu sản phẩm (Phụ thuộc vào biến SAMPLE trong main.js)
+
     function getProductData() {
-        // Cố gắng lấy dữ liệu từ localStorage 
-        // Dùng SAMPLE.products làm dự phòng nếu không tìm thấy trong localStorage
-        return JSON.parse(localStorage.getItem('bs_data'))?.products || (typeof SAMPLE !== 'undefined' ? SAMPLE.products : []) || [];
+      return JSON.parse(localStorage.getItem('bs_data'))?.products || (typeof SAMPLE !== 'undefined' ? SAMPLE.products : []) || [];
     }
-    
-    // Lấy thông tin chi tiết sản phẩm từ ID
+
     function getProductById(productId) {
       return getProductData().find(p => p.id === productId);
     }
-    
-    /**
-     * Lấy danh sách ID các sản phẩm đang được chọn để thanh toán từ UI.
-     * @returns {Array<number>} Mảng các ID sản phẩm.
-     */
+
     function getSelectedProductIds() {
-        const checkboxes = document.querySelectorAll('.item-select-checkbox:checked');
-        return Array.from(checkboxes).map(cb => parseInt(cb.dataset.id));
+      const checkboxes = document.querySelectorAll('.item-select-checkbox:checked');
+      return Array.from(checkboxes).map(cb => parseInt(cb.dataset.id));
     }
 
-
-    // ======================= CÁC HÀM TÍNH TOÁN (Dùng i.qty) =======================
-
-    /**
-     * Tính toán tổng tiền, số lượng dựa trên các sản phẩm ĐƯỢC CHỌN.
-     * @returns {Object} { subtotal, shippingFee, total, totalItems, cartData, selectedCartData }
-     */
     function calculateTotals() {
-      // Giả định hàm getCart và saveCart được định nghĩa trong main.js hoặc ở đây
       const getCartFunc = typeof getCart === 'function' ? getCart : () => JSON.parse(localStorage.getItem('bs_cart')) || [];
       const cart = getCartFunc();
       const selectedIds = getSelectedProductIds();
-      
+
       let subtotal = 0;
       let totalItems = 0;
       const cartData = [];
       const selectedCartData = [];
-      
+
       cart.forEach(item => {
         const product = getProductById(item.id);
         if (product) {
-          const itemTotal = product.price * item.qty; 
+          const itemTotal = product.price * item.qty;
           const itemFullData = { ...item, product, itemTotal };
           cartData.push(itemFullData);
-          
+
           if (selectedIds.includes(item.id)) {
-             subtotal += itemTotal;
-             totalItems += item.qty;
-             selectedCartData.push(itemFullData);
+            subtotal += itemTotal;
+            totalItems += item.qty;
+            selectedCartData.push(itemFullData);
           }
         }
       });
 
-      // Giả định: Miễn phí vận chuyển nếu tổng tiền trên 500,000 VND
       const SHIPPING_THRESHOLD = 500000;
       const STANDARD_SHIPPING_FEE = 30000;
-      // Phí vận chuyển chỉ tính khi có sản phẩm được chọn
       const shippingFee = subtotal > 0 && subtotal < SHIPPING_THRESHOLD ? STANDARD_SHIPPING_FEE : 0;
       const total = subtotal + shippingFee;
 
       return { subtotal, shippingFee, total, totalItems, cartData, selectedCartData };
     }
 
-    // ======================= CÁC HÀM XỬ LÝ SỰ KIỆN =======================
-
-    /**
-     * Tăng/Giảm số lượng sản phẩm.
-     * @param {number} productId ID sản phẩm.
-     * @param {number} change +1 hoặc -1.
-     */
     function changeQuantity(productId, change) {
       const getCartFunc = typeof getCart === 'function' ? getCart : () => JSON.parse(localStorage.getItem('bs_cart')) || [];
       const saveCartFunc = typeof saveCart === 'function' ? saveCart : (c) => localStorage.setItem('bs_cart', JSON.stringify(c));
 
       let cart = getCartFunc();
       const itemIndex = cart.findIndex(item => item.id === productId);
-      
+
       if (itemIndex > -1) {
-          let currentQty = cart[itemIndex].qty;
-          let newQty = currentQty + change;
-          
-          if (newQty > 0) {
-              cart[itemIndex].qty = newQty;
+        let currentQty = cart[itemIndex].qty;
+        let newQty = currentQty + change;
+
+        if (newQty > 0) {
+          cart[itemIndex].qty = newQty;
+        } else {
+          if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
+            cart.splice(itemIndex, 1);
           } else {
-              if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
-                  cart.splice(itemIndex, 1);
-              } else {
-                  return;
-              }
+            return;
           }
-          
-          saveCartFunc(cart);
-          // Kiểm tra và gọi hàm updateCartCount từ main.js nếu có
-          if (typeof updateCartCount === 'function') updateCartCount();
-          renderCart(); 
+        }
+
+        saveCartFunc(cart);
+        if (typeof updateCartCount === 'function') updateCartCount();
+        renderCart();
       }
     }
 
-
-    /**
-     * Xóa một sản phẩm khỏi giỏ hàng.
-     * @param {number} productId ID sản phẩm.
-     */
     function removeItem(productId) {
       if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
         const getCartFunc = typeof getCart === 'function' ? getCart : () => JSON.parse(localStorage.getItem('bs_cart')) || [];
         const saveCartFunc = typeof saveCart === 'function' ? saveCart : (c) => localStorage.setItem('bs_cart', JSON.stringify(c));
-        
+
         let cart = getCartFunc();
         cart = cart.filter(item => item.id !== productId);
         saveCartFunc(cart);
         if (typeof updateCartCount === 'function') updateCartCount();
-        renderCart(); 
+        renderCart();
       }
     }
-    
-    /**
-     * Xóa toàn bộ giỏ hàng (không cần quan tâm đến mục được chọn).
-     */
+
     function clearAllCart() {
-        if (confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')) {
-            const saveCartFunc = typeof saveCart === 'function' ? saveCart : (c) => localStorage.setItem('bs_cart', JSON.stringify(c));
-            saveCartFunc([]);
-            if (typeof updateCartCount === 'function') updateCartCount();
-            renderCart(); 
-        }
+      if (confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng?')) {
+        const saveCartFunc = typeof saveCart === 'function' ? saveCart : (c) => localStorage.setItem('bs_cart', JSON.stringify(c));
+        saveCartFunc([]);
+        if (typeof updateCartCount === 'function') updateCartCount();
+        renderCart();
+      }
     }
 
-    /**
-     * Xử lý khi người dùng click vào checkbox Chọn Tất Cả.
-     * @param {boolean} checked Trạng thái của checkbox Chọn Tất Cả.
-     */
     function toggleSelectAll(checked) {
-        document.querySelectorAll('.item-select-checkbox').forEach(cb => {
-            cb.checked = checked;
-        });
-        renderCartSummary(); 
+      document.querySelectorAll('.item-select-checkbox').forEach(cb => {
+        cb.checked = checked;
+      });
+      renderCartSummary();
     }
-    
-    /**
-     * Xử lý khi người dùng click vào checkbox của một sản phẩm.
-     */
+
     function handleItemSelection() {
-        const allCheckboxes = document.querySelectorAll('.item-select-checkbox');
-        const selectedCheckboxes = document.querySelectorAll('.item-select-checkbox:checked');
-        const selectAllCheckbox = document.getElementById('selectAllItems');
+      const allCheckboxes = document.querySelectorAll('.item-select-checkbox');
+      const selectedCheckboxes = document.querySelectorAll('.item-select-checkbox:checked');
+      const selectAllCheckbox = document.getElementById('selectAllItems');
 
-        if (selectAllCheckbox) {
-            selectAllCheckbox.checked = allCheckboxes.length > 0 && allCheckboxes.length === selectedCheckboxes.length;
-        }
-        
-        renderCartSummary(); 
+      if (selectAllCheckbox) {
+        selectAllCheckbox.checked = allCheckboxes.length > 0 && allCheckboxes.length === selectedCheckboxes.length;
+      }
+
+      renderCartSummary();
     }
 
-    /**
-     * Xử lý sự kiện áp dụng mã giảm giá (Mô phỏng)
-     */
-    window.applyCoupon = function() {
-        const coupon = document.getElementById('couponInput').value.trim().toUpperCase();
-        const msg = document.getElementById('couponMessage');
-        msg.style.color = 'red';
-        
-        if (coupon === 'FREE30K') {
-            msg.style.color = 'green';
-            msg.textContent = '🎉 Mã FREE30K giảm 30.000đ đã được áp dụng (chỉ mô phỏng)!';
-        } else if (coupon) {
-            msg.textContent = '❌ Mã giảm giá không hợp lệ.';
-        } else {
-            msg.textContent = '';
-        }
-    };
 
-    /**
-     * Xử lý sự kiện Thanh toán: chỉ thanh toán và xóa các mục đã chọn.
-     */
     function checkout() {
       const { subtotal, totalItems, selectedCartData } = calculateTotals();
-      
+
       if (totalItems === 0) {
         alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán.');
         return;
       }
-      
-      // Kiểm tra đăng nhập
+
       const user = localStorage.getItem('bs_user');
       if (!user) {
-          alert('Vui lòng Đăng nhập để tiếp tục thanh toán.');
-          // Gọi hàm mở Modal đăng nhập (đã được định nghĩa lại ở trên)
-          openLoginModal();
-          return;
+        alert('Vui lòng Đăng nhập để tiếp tục thanh toán.');
+        openLoginModal();
+        return;
       }
 
-      // 1. Tạo đơn hàng (Mô phỏng)
       const orders = JSON.parse(localStorage.getItem('bs_orders') || '[]');
       const { total } = calculateTotals();
       const newOrder = {
-          id: Date.now(),
-          userId: JSON.parse(user).username,
-          items: selectedCartData,
-          total: total,
-          date: new Date().toISOString(),
-          status: 'Chờ xử lý'
+        id: Date.now(),
+        userId: JSON.parse(user).username,
+        items: selectedCartData,
+        total: total,
+        date: new Date().toISOString(),
+        status: 'Chờ xử lý'
       };
       orders.push(newOrder);
       localStorage.setItem('bs_orders', JSON.stringify(orders));
 
-      // 2. Xóa các sản phẩm đã thanh toán khỏi giỏ hàng hiện tại
       const selectedIds = selectedCartData.map(item => item.id);
       const getCartFunc = typeof getCart === 'function' ? getCart : () => JSON.parse(localStorage.getItem('bs_cart')) || [];
       const saveCartFunc = typeof saveCart === 'function' ? saveCart : (c) => localStorage.setItem('bs_cart', JSON.stringify(c));
-      
+
       let currentCart = getCartFunc();
       let newCart = currentCart.filter(item => !selectedIds.includes(item.id));
       saveCartFunc(newCart);
 
       alert(`Đơn hàng #${newOrder.id} (${totalItems} mục) đã được tạo thành công! Tổng tiền: ${formatter.format(total)}. Cảm ơn bạn đã mua sắm!`);
-      
-      // 3. Render lại toàn bộ giỏ hàng
+
       renderCart();
     }
-    
-    // ======================= HÀM HIỂN THỊ TÓM TẮT (GỌI LẠI KHI CHỌN) =======================
-    
-    /**
-     * Chỉ render lại khu vực tóm tắt đơn hàng.
-     */
+
     function renderCartSummary() {
-        const cartSummaryContainer = document.querySelector('.cart-summary');
-        if (!cartSummaryContainer) return;
+      const cartSummaryContainer = document.querySelector('.cart-summary');
+      if (!cartSummaryContainer) return;
 
-        const { subtotal, shippingFee, total, totalItems } = calculateTotals();
+      const { subtotal, shippingFee, total, totalItems, selectedCartData } = calculateTotals();
 
-        // 2. Render khu vực tóm tắt
-        const summaryHtml = `
-            <h3 class="summary-title">Tóm tắt đơn hàng</h3>
-            
-            <div class="summary-row">
-                <span>Tạm tính (${totalItems} sản phẩm được chọn)</span>
-                <span>${formatter.format(subtotal)}</span>
-            </div>
+      // --- PHẦN HIỂN THỊ CHI TIẾT SẢN PHẨM TRONG TÓM TẮT ---
+      const selectedItemsDetailsHtml = selectedCartData.map(item => `
+        <div class="summary-item-detail">
+          <span title="${item.product.name}">${item.product.name}</span>
+          <span>${item.qty}</span>
+          <span>${formatter.format(item.itemTotal)}</span>
+        </div>
+      `).join('');
 
-            <div class="discount-section">
-                <strong>Mã giảm giá (Coupon)</strong>
-                <div class="discount-input-group">
-                    <input type="text" placeholder="Nhập mã..." class="discount-input" id="couponInput">
-                    <button class="btn-apply" onclick="applyCoupon()">Áp dụng</button>
-                </div>
-                <div id="couponMessage" style="margin-top: 10px; font-size: 0.9em; font-weight: 500;"></div>
-            </div>
-            
-            <div class="summary-row">
-                <span>Phí vận chuyển</span>
-                <span class="${shippingFee === 0 && subtotal > 0 ? 'text-success' : ''}">${shippingFee === 0 && subtotal > 0 ? 'Miễn phí' : (subtotal === 0 ? '--' : formatter.format(shippingFee))}</span>
-            </div>
+    const summaryItemsDetailsWrapper = selectedItemsDetailsHtml ? `
+  <div style="padding: 0 1rem 1rem 0; border-bottom: 1px dashed #e0e0e0; margin-bottom: 0.5rem; max-height: 400px; overflow-y: auto;">
+    <div class="summary-header-row">
+      <span>Sản phẩm</span>
+      <span>SL</span>
+      <span>Giá tổng</span>
+    </div>
+    ${selectedItemsDetailsHtml}
+  </div>
+` : '';
+      // ---------------------------------------------------------
 
-            <div class="summary-row total">
-                <span>Tổng cộng</span>
-                <span class="text-danger">${formatter.format(total)}</span>
-            </div>
-            
-            <button class="btn-checkout" onclick="checkout()" ${totalItems === 0 ? 'disabled' : ''}>
-                Thanh toán các mục đã chọn (${formatter.format(total)})
-            </button>
-
-            <a href="index.html" class="btn-continue" style="display: block; margin-top: 1.5rem; text-align: center; background: #82c09a;">
-                « Tiếp tục mua sắm
-            </a>
-        `;
+      const summaryHtml = `
+        <h3 class="summary-title">Tóm tắt đơn hàng</h3>
         
-        cartSummaryContainer.innerHTML = summaryHtml;
+        ${summaryItemsDetailsWrapper} <div class="summary-row temp-total" style="border-top: 1px solid #f0f0f0;">
+          <span>Tạm tính (${totalItems} sản phẩm)</span>
+          <span>${formatter.format(subtotal)}</span>
+        </div>
+        
+
+        <div class="summary-row">
+          <span>Phí vận chuyển</span>
+          <span class="${shippingFee === 0 && subtotal > 0 ? 'text-success' : ''}">${shippingFee === 0 && subtotal > 0 ? 'Miễn phí ✓' : (subtotal === 0 ? '--' : formatter.format(shippingFee))}</span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Tổng cộng</span>
+          <span>${formatter.format(total)}</span>
+        </div>
+        
+        <button class="btn-checkout" onclick="checkout()" ${totalItems === 0 ? 'disabled' : ''}>
+          ${totalItems === 0 ? 'Chọn sản phẩm để thanh toán' : `Thanh toán (${formatter.format(total)})`}
+        </button>
+
+        <a href="index.html" class="btn-continue" style="display: block; margin-top: 1.5rem; text-align: center; background: linear-gradient(135deg, #4f9da6 0%, #82c09a 100%);">
+          « Tiếp tục mua sắm
+        </a>
+      `;
+
+      cartSummaryContainer.innerHTML = summaryHtml;
     }
 
-
-    // ======================= HÀM HIỂN THỊ GIAO DIỆN CHÍNH (MAIN RENDER) =======================
-
-    /**
-     * Hiển thị toàn bộ giao diện giỏ hàng.
-     */
     function renderCart() {
       const cartContainer = document.getElementById('cartContainer');
       if (!cartContainer) return;
 
       const getCartFunc = typeof getCart === 'function' ? getCart : () => JSON.parse(localStorage.getItem('bs_cart')) || [];
       const currentCart = getCartFunc();
-      
-      // 1. Nếu giỏ hàng trống
+
       if (currentCart.length === 0) {
         cartContainer.innerHTML = `
           <div class="empty-cart">
@@ -1091,80 +1180,70 @@
         `;
         return;
       }
-      
-      // 2. Nếu có sản phẩm, render layout 2 cột
+
       const { cartData } = calculateTotals();
-      
-      // Mặc định chọn tất cả khi render lần đầu (Nếu muốn không chọn, đổi thành false)
       const initialChecked = true;
-      
+
       const itemsHtml = cartData.map(item => `
-          <div class="cart-item" data-product-id="${item.id}">
-              <label class="item-select-wrapper">
-                  <input type="checkbox" data-id="${item.id}" class="item-select-checkbox" 
-                         onchange="handleItemSelection()" ${initialChecked ? 'checked' : ''}>
-              </label>
-              <div class="cart-item-image">
-                  <img src="${item.product.img}" alt="${item.product.name}">
-              </div>
-              <div class="cart-item-details">
-                  <h4 class="cart-item-title">${item.product.name}</h4>
-                  <p class="cart-item-author">Tác giả: ${item.product.author}</p>
-                  <p class="cart-item-price">${formatter.format(item.product.price)} / cuốn</p>
-              </div>
-              <div class="cart-item-actions">
-                  <p class="cart-item-total">${formatter.format(item.itemTotal)}</p>
-                  <div class="quantity-controls">
-                      <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
-                      <input type="text" id="qty-${item.id}" class="qty-display" value="${item.qty}" 
-                             min="1" readonly>
-                      <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
-                  </div>
-                  <button class="btn-remove" onclick="removeItem(${item.id})">
-                      <i class="bi bi-trash"></i> Xóa
-                  </button>
-              </div>
+        <div class="cart-item" data-product-id="${item.id}">
+          <label class="item-select-wrapper">
+            <input type="checkbox" data-id="${item.id}" class="item-select-checkbox" 
+                   onchange="handleItemSelection()" ${initialChecked ? 'checked' : ''}>
+          </label>
+          <div class="cart-item-image">
+            <img src="${item.product.img}" alt="${item.product.name}">
           </div>
+          <div class="cart-item-details">
+            <h4 class="cart-item-title">${item.product.name}</h4>
+            <p class="cart-item-author"><i class="bi bi-person"></i> ${item.product.author}</p>
+            <p class="cart-item-price">${formatter.format(item.product.price)} / cuốn</p>
+          </div>
+          <div class="cart-item-actions">
+            <p class="cart-item-total">${formatter.format(item.itemTotal)}</p>
+            <div class="quantity-controls">
+              <button class="qty-btn minus-btn" onclick="changeQuantity(${item.id}, -1)">−</button>
+              <input type="text" id="qty-${item.id}" class="qty-display" value="${item.qty}" 
+                     min="1" readonly>
+              <button class="qty-btn plus-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+            </div>
+            <button class="btn-remove" onclick="removeItem(${item.id})">
+              <i class="bi bi-trash"></i> Xóa
+            </button>
+          </div>
+        </div>
       `).join('');
-      
+
       cartContainer.innerHTML = `
         <div class="cart-layout">
           <div class="cart-items-section">
-            <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-              <h3 class="mb-0">Danh sách sản phẩm (${currentCart.length} mục)</h3>
-              <label class="d-flex align-items-center mb-0">
-                  <input type="checkbox" id="selectAllItems" class="me-2" onchange="toggleSelectAll(this.checked)" ${initialChecked ? 'checked' : ''}>
-                  <strong>Chọn tất cả</strong>
-                  <button class="btn btn-sm btn-remove ms-3" onclick="clearAllCart()" style="background: none; color: #e74c3c;">
-                    <i class="bi bi-trash"></i> Xóa tất cả
-                  </button>
-              </label>
+            <div class="cart-section-header">
+              <h3 class="cart-section-title">📦 Danh sách sản phẩm (${currentCart.length})</h3>
+              <div class="select-all-wrapper">
+                <label class="select-all-label">
+                  <input type="checkbox" id="selectAllItems" onchange="toggleSelectAll(this.checked)" ${initialChecked ? 'checked' : ''}>
+                  <span>Chọn tất cả</span>
+                </label>
+                <button class="btn-clear-all" onclick="clearAllCart()">
+                  <i class="bi bi-trash"></i> Xóa tất cả
+                </button>
+              </div>
             </div>
             ${itemsHtml}
           </div>
-          <div class="cart-summary">
-            </div>
+          <div class="cart-summary"></div>
         </div>
       `;
-      
-      // Gọi render summary sau khi các checkbox đã được chèn vào DOM
-      renderCartSummary(); 
+
+      renderCartSummary();
     }
 
-    // ======================= KHỞI TẠO =======================
-    
     document.addEventListener('DOMContentLoaded', function() {
-      // Thiết lập trạng thái ban đầu của giỏ hàng
-      renderCart(); 
-      
-      // Gọi các hàm khởi tạo từ main.js để đảm bảo UI Header được cập nhật
+      renderCart();
+
       if (typeof updateCartCount === 'function') updateCartCount();
-      if (typeof updateAuthUI === 'function') updateAuthUI(); 
-      
-      // Kiểm tra và load query tìm kiếm nếu cần (hàm từ main.js)
+      if (typeof updateAuthUI === 'function') updateAuthUI();
       if (typeof loadSearchQuery === 'function') loadSearchQuery();
 
-      // Xử lý nút tìm kiếm
       const searchBtn = document.querySelector('.search-btn');
       if (searchBtn && typeof handleTopSearch === 'function') {
         searchBtn.addEventListener('click', handleTopSearch);
@@ -1172,4 +1251,5 @@
     });
   </script>
 </body>
+
 </html>
