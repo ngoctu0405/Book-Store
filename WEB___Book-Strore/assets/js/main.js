@@ -933,7 +933,7 @@ function updateAuthUI() {
           <li>
             <a href="#" onclick="viewOrderHistory(event)">
               <span class="dropdown-icon"></span>
-Lịch sử mua hàng
+               Lịch sử mua hàng
             </a>
           </li>
           <li class="user-submenu">
@@ -982,13 +982,13 @@ function viewProfile(e) {
   openProfileModal(); // Có thể giữ modal hoặc chuyển sang trang mới
 }
 
-// Xem lịch sử mua hàng
+// ========================================================================================Xem lịch sử mua hàng
 function viewOrderHistory(e) {
   if (e) e.preventDefault();
-  alert('Chức năng đang phát triển: Lịch sử mua hàng');
-  // window.location.href = 'order-history.html';
+  // alert('Chức năng đang phát triển: Lịch sử mua hàng'); // Bỏ dòng này
+  window.location.href = 'purchase-history.html'; // Bỏ // và sửa tên file
 }
-
+//==================================================================================================================
 // Sửa thông tin cá nhân
 function editProfile(e) {
   if (e) e.preventDefault();
