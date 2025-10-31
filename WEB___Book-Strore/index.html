@@ -12,34 +12,89 @@
 
     <style>
       .container {
-        height: 180rem;
+        height: 190rem;
       }
 
       /* ========================================================= */
       /* 4. HOT NEWS AND EVENT */
       /* ========================================================= */
+      .container_py-6 {
+        border-radius: 3rem;
+        padding: 3rem;
+      }
+      .news-card {
+        /* width: 13rem; */
+        display: flex;
+        flex-direction: column;
+        height: 43rem;
+        background-color: #fff;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Ảnh */
+      .news-card img {
+        width: 100%;
+        height: 300px; /* điều chỉnh tuỳ ý */
+        object-fit: cover;
+        display: block;
+      }
+
+      .new_event {
+        background-color: #2c61a7;
+        border-radius: 3rem;
+        min-width: 13rem;
+        min-height: 6rem;
+      }
+      .text-news {
+        display: flex;
+        justify-content: center;
+      }
+      /* Nội dung */
+      .news-content {
+        padding: 1rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: space-between; */
+      }
+
+      /* Link đọc thêm */
       .read-more {
         position: fixed;
-        top: 30rem;
+        top: 38rem;
+        font-size: 0.85rem; /* nhỏ vừa đủ */
+        color: #0077cc;
+        font-weight: bold;
+        text-decoration: none;
+        margin-top: 0.5rem; /* khoảng cách từ đoạn text */
       }
-      .text-center {
-        width: 15rem;
-        background-color: #0077cc;
-        border-radius: 3rem;
-        padding: 1rem;
+
+      .read-more:hover {
+        text-decoration: underline;
       }
+
+      /* Đảm bảo cột bằng nhau */
+      .carousel-item .row.g-3 {
+        display: flex;
+      }
+
+      .carousel-item .col-md-6 {
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Đảm bảo carousel-inner đẹp */
       .carousel-inner {
         background-color: #22a6ce;
-        border-radius: 3rem;
+        border-radius: 1rem;
+        padding: 1rem;
       }
+
       /* ========================================================= */
       /* 5. HOT SALE SECTION */
       /* ========================================================= */
-      .hot_sale_selection {
-        padding: 3rem 2rem;
-        border-radius: 20px;
-        margin: 2rem 0;
-      }
       .title-hot-sale {
         background-color: #ffffff;
         border-radius: 1rem;
@@ -49,13 +104,15 @@
         display: flex;
         justify-content: center;
       }
-      /* ========================================================= */
-      /* 5. HOT SALE SECTION */
-      /* ========================================================= */
       .hot_sale_selection {
-        padding: 3rem 2rem;
-        border-radius: 20px;
+        height: 45rem;
+        padding: 4rem;
+        border-radius: 3rem;
         margin: 2rem 0;
+      }
+      .carousel-inner-hot {
+        position: relative;
+        top: 2rem;
       }
       /* Product Card */
       .product-card {
@@ -65,7 +122,16 @@
         margin: 0 0.75rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         transition: transform 0.3s ease;
-        max-width: 20rem;
+        width: 20rem;
+        height: 33rem;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: space-between; */
+      }
+      .product-card .card-img img {
+        width: 100%; /* Chiều rộng luôn đầy khung chứa */
+        height: 300px; /* Chiều cao cố định để tất cả ảnh bằng nhau */
+        object-fit: cover; /* Giữ tỷ lệ ảnh, cắt phần thừa nếu cần */
       }
 
       .product-card:hover {
@@ -104,34 +170,29 @@
         gap: 0.5rem;
       }
 
-      .btn-small {
-        flex: 1;
-        padding: 0.5rem 0.75rem;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
+      .card-actions .btn-small,
+      .card-actions .btn-cart {
+        flex: 1; /* chia đều chiều rộng */
+        height: 40px; /* chiều cao cố định */
+        padding: 0; /* padding ngang đã có flex */
         font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 8px;
         cursor: pointer;
-        background: #5dade2;
-        color: white;
         transition: all 0.3s ease;
+        color: white;
+      }
+
+      .btn-small {
+        background: #5dade2; /* màu xanh */
+      }
+
+      .btn-cart {
+        background: #ff6b4a; /* màu cam */
       }
 
       .btn-small:hover {
         background: #3498db;
-      }
-
-      .btn-cart {
-        flex: 1;
-        padding: 0.5rem 0.75rem;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        background: #ff6b4a;
-        color: white;
-        transition: all 0.3s ease;
       }
 
       .btn-cart:hover {
@@ -453,7 +514,7 @@
             data-bs-ride="carousel"
             data-bs-interval="3000"
           >
-            <div class="carousel-inner">
+            <div class="carousel-inner-hot">
               <div class="carousel-item active">
                 <div class="d-flex justify-content-between">
                   <div class="product-card">
@@ -568,7 +629,7 @@
                         class="img-fluid"
                       />
                     </div>
-                    <!-- <h4 class="card-title">Chí Phèo</h4> -->
+                    <h4 class="card-title">Chí Phèo</h4>
                     <div class="price">60.000đ</div>
                     <div class="card-actions">
                       <button class="btn btn-small">Xem</button>
@@ -644,8 +705,10 @@
         <div class="row">
           <!-- Cột TIN TỨC -->
           <div class="col-md-6">
-            <div class="new_event">
-              <h2 class="section-title text-center mb-4">TIN TỨC</h2>
+            <div class="text-news">
+              <div class="new_event">
+                <h2 class="section-title text-center mb-4">TIN TỨC</h2>
+              </div>
             </div>
             <div
               id="newsCarousel"
@@ -658,10 +721,12 @@
                   <div class="row g-3">
                     <div class="col-md-6">
                       <article class="news-card" data-id="1">
-                        <img
-                          src="https://via.placeholder.com/400x250?text=No+Image+Available"
-                          alt="Alpha Books và Tinh Vân"
-                        />
+                        <div class="news-img">
+                          <img
+                            src="./images/Mãi mãi tuổi hai mươi.jpg"
+                            alt="Alpha Books và Tinh Vân"
+                          />
+                        </div>
                         <div class="news-content">
                           <div class="news-meta">
                             <span class="news-category">📰 Tin tức</span>
@@ -683,10 +748,12 @@
 
                     <div class="col-md-6">
                       <article class="news-card" data-id="2">
-                        <img
-                          src="https://via.placeholder.com/400x250/eee/333?text=Tư+Duy+Phản+Biện"
-                          alt="Tư Duy Phản Biện"
-                        />
+                        <div class="news-img">
+                          <img
+                            src="./images/Tư duy phản biện.jpg"
+                            alt="Tư Duy Phản Biện"
+                          />
+                        </div>
                         <div class="news-content">
                           <div class="news-meta">
                             <span class="news-category">📰 Tin tức</span>
@@ -713,21 +780,22 @@
                   <div class="row g-3">
                     <div class="col-md-6">
                       <article class="news-card" data-id="3">
-                        <img
-                          src="https://via.placeholder.com/400x250/ddd/222?text=Nhân+Sự+Việt"
-                          alt="Tình hình nhân sự"
-                        />
+                        <div class="news-img">
+                          <img
+                            src="./images/Top sách 2025.jpg"
+                            alt="Tình hình nhân sự"
+                          />
+                        </div>
                         <div class="news-content">
                           <div class="news-meta">
                             <span class="news-category">📰 Tin tức</span>
                             <span class="news-date">📅 27/02/2024</span>
                           </div>
-                          <h3>
-                            TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ TRONG NĂM 2023
-                          </h3>
+                          <h3>Những cuốn sách mới đáng chú ý nửa cuối 2025</h3>
                           <p>
-                            CHOÁNG NGỢP TRƯỚC TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ
-                            TRONG NĂM 2023...
+                            Thị trường sách nửa cuối năm 2025 chứng kiến sự xuất
+                            hiện của nhiều tác phẩm đáng chú ý, từ tiểu thuyết,
+                            sách phát triển bản thân,...
                           </p>
                           <a href="news-detail.html?id=3" class="read-more"
                             >Đọc thêm →</a
@@ -738,10 +806,12 @@
 
                     <div class="col-md-6">
                       <article class="news-card" data-id="4">
-                        <img
-                          src="https://via.placeholder.com/400x250/999/fff?text=Đọc+Sách+Mỗi+Ngày"
-                          alt="Phong trào đọc sách"
-                        />
+                        <div class="news-img">
+                          <img
+                            src="./images/Phong trào đọc sách.jpg"
+                            alt="Phong trào đọc sách"
+                          />
+                        </div>
                         <div class="news-content">
                           <div class="news-meta">
                             <span class="news-category">📰 Tin tức</span>
@@ -784,8 +854,10 @@
 
           <!-- Cột SỰ KIỆN -->
           <div class="col-md-6">
-            <div class="new_event">
-              <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
+            <div class="text-news">
+              <div class="new_event">
+                <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
+              </div>
             </div>
             <div
               id="eventCarousel"
@@ -798,10 +870,12 @@
                   <div class="row g-3">
                     <div class="col-md-6">
                       <article class="news-card" data-id="5">
-                        <img
-                          src="https://via.placeholder.com/400x250/000/fff?text=Talkshow+Sao+Hoa"
-                          alt="Talkshow Sao Hỏa"
-                        />
+                        <div class="news-img">
+                          <img
+                            src="./images/Talk show.png"
+                            alt="Talkshow Sao Hỏa"
+                          />
+                        </div>
                         <div class="news-content">
                           <div class="news-meta">
                             <span class="news-category">🎪 Sự kiện</span>
@@ -825,14 +899,16 @@
 
                     <div class="col-md-6">
                       <article class="news-card" data-id="6">
-                        <img
-                          src="https://via.placeholder.com/400x250/ffcc00/333?text=Book+Festival"
-                          alt="Hội sách mùa hè 2024"
-                        />
+                        <div class="news-img">
+                          <img
+                            src="./images/Hội sách.jpg"
+                            alt="Hội sách mùa hè 2024"
+                          />
+                        </div>
                         <div class="news-content">
                           <div class="news-meta">
-                            <span class="news-category">🎪 Sự kiện</span>
-                            <span class="news-date">📅 10/05/2024</span>
+                            <span class="news-category">Văn hóa - Sách</span>
+                            <span class="news-date">📅 31/10/2025</span>
                           </div>
                           <h3>HỘI SÁCH MÙA HÈ 2024 – KẾT NỐI TRI THỨC</h3>
                           <p>
@@ -853,21 +929,25 @@
                   <div class="row g-3">
                     <div class="col-md-6">
                       <article class="news-card" data-id="7">
-                        <img
-                          src="https://via.placeholder.com/400x250/ddd/222?text=Nhân+Sự+Việt"
-                          alt="Nhân sự Việt"
-                        />
+                        <div class="news-img">
+                          <img
+                            src="./images/Hành trình tri thức.jpg"
+                            alt="Hành trình tri thức"
+                          />
+                        </div>
                         <div class="news-content">
                           <div class="news-meta">
-                            <span class="news-category">🎪 Sự kiện</span>
-                            <span class="news-date">📅 27/02/2024</span>
+                            <span class="news-category">Văn hóa - sách</span>
+                            <span class="news-date">📅 28/10/2025</span>
                           </div>
                           <h3>
-                            TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ TRONG NĂM 2023
+                            Ra mắt bộ sách mới “Hành Trình Tri Thức 2025” thu
+                            hút độc giả trẻ
                           </h3>
                           <p>
-                            CHOÁNG NGỢP TRƯỚC TÌNH HÌNH BIẾN ĐỘNG NGÀNH NHÂN SỰ
-                            TRONG NĂM 2023...
+                            Mới đây, tại Hà Nội, nhà xuất bản Tri Thức Việt đã
+                            tổ chức lễ ra mắt bộ sách “Hành Trình Tri Thức
+                            2025”...
                           </p>
                           <a href="news-detail.html?id=7" class="read-more"
                             >Đọc thêm →</a
@@ -878,10 +958,12 @@
 
                     <div class="col-md-6">
                       <article class="news-card" data-id="8">
-                        <img
-                          src="https://via.placeholder.com/400x250/0099ff/fff?text=Workshop+Sáng+Tạo"
-                          alt="Workshop sáng tạo"
-                        />
+                        <div class="news-img">
+                          <img
+                            src="./images/Work shop.jpg"
+                            alt="Workshop sáng tạo"
+                          />
+                        </div>
                         <div class="news-content">
                           <div class="news-meta">
                             <span class="news-category">🎪 Sự kiện</span>
