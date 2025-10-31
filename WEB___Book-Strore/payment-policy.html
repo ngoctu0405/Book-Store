@@ -10,6 +10,22 @@
       .container_1 {
         height: 70rem;
       }
+            /* Nút quay lại */
+      #back {
+        display: inline-block;
+        margin-top: 35px;
+        background: #007bff;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        transition: 0.25s ease;
+      }
+
+      #back:hover {
+        background: #0056b3;
+        color: #fff;
+      }
       /* CHÍNH SÁCH THANH TOÁN PAGE */
       section {
         padding: 1rem 1rem;
@@ -189,6 +205,7 @@
     <div class="cart-float" id="cartFloat"><button id="cartBtnFloat" class="btn"><span class="cart-icon">🛒</span> <span
           id="cart-count" class="cart-count">0</span></button></div>
   </nav>
+  <a id="back" href="index.html">&larr; Quay lại trang chủ</a>
 
 
     <!-- PHẦN CHÍNH SÁCH THANH TOÁN -->
@@ -273,33 +290,35 @@
       <div class="footer-content">
         <div class="footer-section">
           <h3>Về Chúng tôi</h3>
-          <ul>
-            <li><a href="about.html">Giới thiệu</a></li>
-            <li><a href="#">Tuyển dụng</a></li>
-            <li><a href="#">Chính sách bảo mật</a></li>
-            <li><a href="#">Điều khoản sử dụng</a></li>
-          </ul>
-        </div>
+        <ul>
+          <li><a href="about.html">Giới thiệu</a></li>
+          <li><a href="./news.html">Tin tức</a></li>
+          <li><a href="./privacy_policy.html">Chính sách bảo mật</a></li>
+          <li><a href="./terms-of-use.html">Điều khoản sử dụng</a></li>
+        </ul>
+      </div>
 
-        <div class="footer-section">
-          <h3>Hỗ trợ khách hàng</h3>
-          <ul>
-            <li><a href="#">Hướng dẫn mua hàng</a></li>
-            <li><a href="#">Chính sách đổi trả</a></li>
-            <li><a href="#">Bảo hành</a></li>
-            <li><a href="#">Câu hỏi thường gặp</a></li>
-          </ul>
-        </div>
+      <div class="footer-section">
+        <h3>Hỗ trợ khách hàng</h3>
+        <ul>
+          <li><a href="./shopping_guide.html">Hướng dẫn mua hàng</a></li>
+          <li><a href="./exchange-policy.html">Chính sách đổi trả</a></li>
+          <li><a href="./warranty-policy.html">Chính sách bảo hành</a></li>
+          <li>
+            <a href="./frequently-asked-questions.html">Câu hỏi thường gặp</a>
+          </li>
+        </ul>
+      </div>
 
-        <div class="footer-section">
-          <h3>Chính sách</h3>
-          <ul>
-            <li><a href="./payment-policy.html">Chính sách thanh toán</a></li>
-            <li><a href="./shipping-policy.html">Chính sách vận chuyển</a></li>
-            <li><a href="./warranty-policy.html">Chính sách bảo hành</a></li>
-            <li><a href="./exchange-policy.html">Chính sách đổi trả</a></li>
-          </ul>
-        </div>
+      <div class="footer-section">
+        <h3>Chính sách</h3>
+        <ul>
+          <li><a href="./payment-policy.html">Chính sách thanh toán</a></li>
+          <li><a href="./shipping-policy.html">Chính sách vận chuyển</a></li>
+          <li><a href="./warranty-policy.html">Chính sách bảo hành</a></li>
+          <li><a href="./exchange-policy.html">Chính sách đổi trả</a></li>
+        </ul>
+      </div>
 
         <div class="footer-section contact-info">
           <h3>Liên hệ</h3>
