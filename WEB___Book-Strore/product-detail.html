@@ -55,24 +55,9 @@
             margin: 0 3rem;
         }
 
-        .search-input {
-            width: 100%;
-            padding: 0.8rem 1.5rem;
-            border: 2px solid rgba(130, 192, 154, 0.3);
-            border-radius: 12px;
-            background: rgba(245, 242, 232, 0.9);
-            color: #2c3e50;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
+        
 
-        .search-input:focus {
-            outline: none;
-            border-color: #4f9da6;
-            background: #fff;
-            box-shadow: 0 0 20px rgba(79, 157, 166, 0.2);
-        }
-
+       
         .auth-cart {
             display: flex;
             align-items: center;
@@ -635,23 +620,24 @@
 
 <body>
     <header class="topbar">
-        <a href="index.html" class="logo">
-            <span>📚</span>
-            <span>Literary Haven</span>
-        </a>
-        <!-- nút tìm kiếm -->
-    <div class="search-center">
+      <div class="logo">
+        <a href="index.html"><img src="images/Logo.png" alt="Logo" /> </a>
+      </div>
+
+      <div class="search-center">
   <input id="topSearch" class="search-input" type="text" 
     placeholder="Nhập tên cuốn sách bạn đang tìm ..." autocomplete="off" />
   <button class="search-btn" type="button">Tìm kiếm</button> 
 </div>
-<!-------------------------------------------------------------------------->
-        <div class="auth-cart">
-     <div id="authArea">
-        <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
-        <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
-      </div> 
-    </div>
+
+      <div class="auth-cart">
+        <div id="authArea">
+          <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
+          <button class="btn-auth btn-signup" onclick="openRegisterModal()">
+            Đăng ký
+          </button>
+        </div>
+      </div>
     </header>
 
     <nav class="navbar">
