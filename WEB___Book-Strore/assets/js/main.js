@@ -1403,6 +1403,8 @@ function handleRegister(e) {
   }
 
   const newUser = {
+    id: Date.now(),
+    status: 'active',
     fullName,
     username,
     password,

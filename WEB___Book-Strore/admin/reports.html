@@ -1,28 +1,142 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Admin - reports.html</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo</title>
+
+     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/admin_style.css">
 </head>
-
 <body>
-    <header class="header">
-        <div class="logo">Admin - Nhà Sách</div>
-        <nav class="nav"><a href="../index.html">Về trang chính</a></nav>
-    </header>
-    <main class='container'>
-        <h2>Báo cáo</h2>
-        <div class='card'>Báo cáo doanh thu</div>
-    </main>
-    <footer class="footer">
-        <p>© 2025 Admin</p>
-    </footer>
-    <script src="../assets/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    
+    <aside class="sidebar d-flex flex-column vh-100">
+        <div class="sidebar-header">
+            Literary Haven - Admin
+        </div>
 
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">Bảng điều khiển</a>
+            </li>
+            <li class="nav-item">
+                <a href="users.html" class="nav-link">Khách hàng</a>
+            </li>
+            <li class="nav-item">
+                <a href="categories.html" class="nav-link">Loại sản phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a href="products.html" class="nav-link">Sản phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a href="purchase-orders.html" class="nav-link">Nhập hàng</a>
+            </li>
+             <li class="nav-item">
+                <a href="pricing.html" class="nav-link">Quản lý giá</a>
+            </li>
+            <li class="nav-item">
+                <a href="orders.html" class="nav-link">Đơn hàng</a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html" class="nav-link">Tồn kho</a>
+            </li>
+            <li class="nav-item">
+                <a href="reports.html" class="nav-link">Báo cáo</a>
+            </li>
+        </ul>
+        
+        <div class="mt-auto p-3">
+             <ul class="nav nav-pills flex-column">
+                <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link">Đăng xuất</a></li>
+             </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar p-3 d-flex justify-content-between align-items-center">
+            <form class="search-bar d-flex align-items-center">
+                <input class="form-control" type="search" placeholder="Tìm kiếm...">
+            </form>
+            <div class="profile-area d-flex align-items-center">
+                <div class="profile-pic ms-3"></div>
+            </div>
+        </header>
+
+        <div class="page-content p-4">
+            <h1 class="mb-4">Báo cáo</h1>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label for="filter-start-date" class="form-label">Từ ngày</label>
+                            <input type="date" class="form-control" id="filter-start-date">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="filter-end-date" class="form-label">Đến ngày</label>
+                            <input type="date" class="form-control" id="filter-end-date">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">Tạo báo cáo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header"><h3 class="h5 mb-0">Báo cáo Doanh thu</h3></div>
+                        <div class="card-body">
+                            <h4 class="h1 text-center">150.000.000đ</h4>
+                            <p class="text-center text-muted">Tổng doanh thu trong kỳ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header"><h3 class="h5 mb-0">Báo cáo Đơn hàng</h3></div>
+                        <div class="card-body">
+                            <h4 class="h1 text-center">320</h4>
+                            <p class="text-center text-muted">Tổng đơn hàng đã giao</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header"><h3 class="h5 mb-0">Sản phẩm bán chạy nhất</h3></div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã SP</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng đã bán</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>SP001</td>
+                                        <td>Harry Potter</td>
+                                        <td>150</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SP002</td>
+                                        <td>Nhật Ký Trong Tù</td>
+                                        <td>95</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+   <script src="../assets/js/admin_main.js"></script>
+    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
