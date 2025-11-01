@@ -226,6 +226,9 @@
         .product-card {
           margin-bottom: 1.5rem; /* cách dọc giữa các card */
         }
+        .Top-sale {
+          width: 23rem;
+        }
       }
 
       /* ========================================================= */
@@ -808,13 +811,14 @@
       <!-- Phần tin tức và sự kiện -->
       <section class="container_py-6">
         <div class="row">
-          <!-- Cột TIN TỨC -->
+          <!-- 📰 CỘT TIN TỨC -->
           <div class="col-md-6">
             <div class="text-news">
               <div class="new_event">
                 <h2 class="section-title text-center mb-4">TIN TỨC</h2>
               </div>
             </div>
+
             <div
               id="newsCarousel"
               class="carousel slide"
@@ -957,162 +961,160 @@
             </div>
           </div>
 
-          <!-- Cột SỰ KIỆN -->
-          <div class="events">
-            <div class="col-md-6">
-              <div class="text-news">
-                <div class="new_event">
-                  <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
-                </div>
-              </div>
-              <div
-                id="eventCarousel"
-                class="carousel slide"
-                data-bs-ride="carousel"
-              >
-                <div class="carousel-inner">
-                  <!-- Slide 1 -->
-                  <div class="carousel-item active">
-                    <div class="row g-3">
-                      <div class="col-md-6">
-                        <article class="news-card" data-id="5">
-                          <div class="news-img">
-                            <img
-                              src="./images/Talk show.png"
-                              alt="Talkshow Sao Hỏa"
-                            />
-                          </div>
-                          <div class="news-content">
-                            <div class="news-meta">
-                              <span class="news-category">🎪 Sự kiện</span>
-                              <span class="news-date">📅 18/01/2024</span>
-                            </div>
-                            <h3>
-                              TALKSHOW CUỐI NĂM: HÀNH TRÌNH TỚI SAO HỎA &amp;
-                              TƯƠNG LAI
-                            </h3>
-                            <p>
-                              2023 là một năm kinh tế đầy biến động, đã đến lúc
-                              nhìn lại hành trình đã qua và sẵn sàng cho tương
-                              lai...
-                            </p>
-                            <a href="news-detail.html?id=5" class="read-more"
-                              >Đọc thêm →</a
-                            >
-                          </div>
-                        </article>
-                      </div>
-
-                      <div class="col-md-6">
-                        <article class="news-card" data-id="6">
-                          <div class="news-img">
-                            <img
-                              src="./images/Hội sách.jpg"
-                              alt="Hội sách mùa hè 2024"
-                            />
-                          </div>
-                          <div class="news-content">
-                            <div class="news-meta">
-                              <span class="news-category">Văn hóa - Sách</span>
-                              <span class="news-date">📅 31/10/2025</span>
-                            </div>
-                            <h3>HỘI SÁCH MÙA HÈ 2024 – KẾT NỐI TRI THỨC</h3>
-                            <p>
-                              Một sự kiện thường niên nhằm lan tỏa văn hóa đọc
-                              và kết nối những người yêu sách...
-                            </p>
-                            <a href="news-detail.html?id=6" class="read-more"
-                              >Đọc thêm →</a
-                            >
-                          </div>
-                        </article>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Slide 2 -->
-                  <div class="carousel-item">
-                    <div class="row g-3">
-                      <div class="col-md-6">
-                        <article class="news-card" data-id="7">
-                          <div class="news-img">
-                            <img
-                              src="./images/Hành trình tri thức.jpg"
-                              alt="Hành trình tri thức"
-                            />
-                          </div>
-                          <div class="news-content">
-                            <div class="news-meta">
-                              <span class="news-category">Văn hóa - sách</span>
-                              <span class="news-date">📅 28/10/2025</span>
-                            </div>
-                            <h3>
-                              Ra mắt bộ sách mới “Hành Trình Tri Thức 2025” thu
-                              hút độc giả trẻ
-                            </h3>
-                            <p>
-                              Mới đây, tại Hà Nội, nhà xuất bản Tri Thức Việt đã
-                              tổ chức lễ ra mắt bộ sách “Hành Trình Tri Thức
-                              2025”...
-                            </p>
-                            <a href="news-detail.html?id=7" class="read-more"
-                              >Đọc thêm →</a
-                            >
-                          </div>
-                        </article>
-                      </div>
-
-                      <div class="col-md-6">
-                        <article class="news-card" data-id="8">
-                          <div class="news-img">
-                            <img
-                              src="./images/Work shop.jpg"
-                              alt="Workshop sáng tạo"
-                            />
-                          </div>
-                          <div class="news-content">
-                            <div class="news-meta">
-                              <span class="news-category">🎪 Sự kiện</span>
-                              <span class="news-date">📅 15/06/2024</span>
-                            </div>
-                            <h3>
-                              WORKSHOP: SÁNG TẠO TRONG CÔNG NGHỆ &amp; XU HƯỚNG
-                              MỚI
-                            </h3>
-                            <p>
-                              Chương trình quy tụ các chuyên gia hàng đầu chia
-                              sẻ kinh nghiệm sáng tạo trong công nghệ số...
-                            </p>
-                            <a href="news-detail.html?id=8" class="read-more"
-                              >Đọc thêm →</a
-                            >
-                          </div>
-                        </article>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Controls -->
-                <button
-                  class="carousel-control-prev"
-                  type="button"
-                  data-bs-target="#eventCarousel"
-                  data-bs-slide="prev"
-                >
-                  <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button
-                  class="carousel-control-next"
-                  type="button"
-                  data-bs-target="#eventCarousel"
-                  data-bs-slide="next"
-                >
-                  <span class="carousel-control-next-icon"></span>
-                </button>
+          <!-- 🎪 CỘT SỰ KIỆN -->
+          <div class="col-md-6 events">
+            <div class="text-news">
+              <div class="new_event">
+                <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
               </div>
             </div>
-            <
+
+            <div
+              id="eventCarousel"
+              class="carousel slide"
+              data-bs-ride="carousel"
+            >
+              <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="5">
+                        <div class="news-img">
+                          <img
+                            src="./images/Talk show.png"
+                            alt="Talkshow Sao Hỏa"
+                          />
+                        </div>
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">🎪 Sự kiện</span>
+                            <span class="news-date">📅 18/01/2024</span>
+                          </div>
+                          <h3>
+                            TALKSHOW CUỐI NĂM: HÀNH TRÌNH TỚI SAO HỎA &amp;
+                            TƯƠNG LAI
+                          </h3>
+                          <p>
+                            2023 là một năm kinh tế đầy biến động, đã đến lúc
+                            nhìn lại hành trình đã qua và sẵn sàng cho tương
+                            lai...
+                          </p>
+                          <a href="news-detail.html?id=5" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="6">
+                        <div class="news-img">
+                          <img
+                            src="./images/Hội sách.jpg"
+                            alt="Hội sách mùa hè 2024"
+                          />
+                        </div>
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">Văn hóa - Sách</span>
+                            <span class="news-date">📅 31/10/2025</span>
+                          </div>
+                          <h3>HỘI SÁCH MÙA HÈ 2024 – KẾT NỐI TRI THỨC</h3>
+                          <p>
+                            Một sự kiện thường niên nhằm lan tỏa văn hóa đọc và
+                            kết nối những người yêu sách...
+                          </p>
+                          <a href="news-detail.html?id=6" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="7">
+                        <div class="news-img">
+                          <img
+                            src="./images/Hành trình tri thức.jpg"
+                            alt="Hành trình tri thức"
+                          />
+                        </div>
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">Văn hóa - sách</span>
+                            <span class="news-date">📅 28/10/2025</span>
+                          </div>
+                          <h3>
+                            Ra mắt bộ sách mới “Hành Trình Tri Thức 2025” thu
+                            hút độc giả trẻ
+                          </h3>
+                          <p>
+                            Mới đây, tại Hà Nội, nhà xuất bản Tri Thức Việt đã
+                            tổ chức lễ ra mắt bộ sách “Hành Trình Tri Thức
+                            2025”...
+                          </p>
+                          <a href="news-detail.html?id=7" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+
+                    <div class="col-md-6">
+                      <article class="news-card" data-id="8">
+                        <div class="news-img">
+                          <img
+                            src="./images/Work shop.jpg"
+                            alt="Workshop sáng tạo"
+                          />
+                        </div>
+                        <div class="news-content">
+                          <div class="news-meta">
+                            <span class="news-category">🎪 Sự kiện</span>
+                            <span class="news-date">📅 15/06/2024</span>
+                          </div>
+                          <h3>
+                            WORKSHOP: SÁNG TẠO TRONG CÔNG NGHỆ &amp; XU HƯỚNG
+                            MỚI
+                          </h3>
+                          <p>
+                            Chương trình quy tụ các chuyên gia hàng đầu chia sẻ
+                            kinh nghiệm sáng tạo trong công nghệ số...
+                          </p>
+                          <a href="news-detail.html?id=8" class="read-more"
+                            >Đọc thêm →</a
+                          >
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Controls -->
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#eventCarousel"
+                data-bs-slide="prev"
+              >
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#eventCarousel"
+                data-bs-slide="next"
+              >
+                <span class="carousel-control-next-icon"></span>
+              </button>
+            </div>
           </div>
         </div>
       </section>
