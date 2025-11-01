@@ -265,9 +265,20 @@
         font-weight: 700;
         margin-bottom: 1rem;
       }
+
       /* =====================================================*/
       /* Media */
       /* =====================================================*/
+      @media (max-width: 575px) {
+        .container {
+          width: 100%;
+          max-width: 100vw !important;
+          --bs-gutter-x: 0 !important;
+        }
+        .banner-center {
+          display: flex;
+        }
+      }
     </style>
 
     <!-- Nút back to top -->
@@ -434,18 +445,20 @@
 
     <!-- Banner -->
     <main class="container">
-      <section class="banner">
-        <div class="banner-content">
-          <h1>Literary Haven xin chào!</h1>
-          <h2>"The Home, All Tomes"</h2>
-          <p>Hàng ngàn tựa sách hay đang chờ bạn</p>
-          <div class="all-books">
-            <a href="category.html" data-category="all" class="active"
-              >Tất cả Sách</a
-            >
+      <div class="banner-center">
+        <section class="banner">
+          <div class="banner-content">
+            <h1>Literary Haven xin chào!</h1>
+            <h2>"The Home, All Tomes"</h2>
+            <p>Hàng ngàn tựa sách hay đang chờ bạn</p>
+            <div class="all-books">
+              <a href="category.html" data-category="all" class="active"
+                >Tất cả Sách</a
+              >
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <!-- Phần about us -->
       <section class="about-section py-5">

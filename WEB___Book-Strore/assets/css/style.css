@@ -189,6 +189,59 @@ body {
   /* animation quay nhẹ */
   animation: rotate 20s linear infinite;
 }
+/* Media banner */
+/* 🌙 Responsive Banner cho điện thoại (màn hình < 576px) */
+@media (max-width: 575px) {
+  .banner {
+    top: 4rem;
+    padding: 3rem 1rem; /* thu gọn khoảng cách để vừa khung nhỏ */
+    border-radius: 1rem;
+  }
+
+  .banner-content h1 {
+    font-size: 1.6rem; /* tiêu đề chính nhỏ lại */
+    line-height: 1.3;
+  }
+
+  .banner-content h2 {
+    font-size: 1rem; /* tagline phụ */
+    margin-top: 0.5rem;
+  }
+
+  .banner-content p {
+    font-size: 0.9rem; /* mô tả ngắn hơn, gọn gàng hơn */
+    margin-top: 0.75rem;
+  }
+
+  .all-books {
+    margin-top: 1.5rem;
+  }
+
+  .all-books a {
+    font-size: 0.9rem; /* nút CTA nhỏ hơn */
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    display: inline-block;
+  }
+  .banner:before {
+    /* tạo phần tử giả để làm hiệu ứng nền */
+    content: "";
+    /* vị trí tuyệt đối so với .banner */
+    position: absolute;
+    /* đặt lớn vượt ra ngoài để làm hiệu ứng */
+    top: -50%;
+    left: -50%;
+    /* rộng gấp đôi để cover */
+    width: 50%;
+    height: 50%;
+    /* nền radial mờ */
+    background: radial-gradient(
+      circle,
+      rgba(245, 242, 232, 0.2) 0%,
+      transparent 70%
+    );
+  }
+}
 
 @keyframes rotate {
   from {
@@ -2299,13 +2352,19 @@ footer {
 
 /* Responsive cho mobile */
 @media (max-width: 768px) {
+  .col-md-6 {
+    /* position: relative;
+    top: 1rem; */
+    min-height: 25rem;
+  }
   .image-stack {
-    gap: 15px;
+    position: relative;
+    top: -4rem;
   }
 
   .image-stack img {
-    width: 100%;
-    max-width: 350px; /* tránh ảnh quá to */
+    width: 200px; /* kích thước ảnh */
+    height: 200px;
   }
 }
 
