@@ -1718,6 +1718,8 @@ footer {
 /* Responsive */
 @media (max-width: 768px) {
   .topbar {
+    padding: 15px 30px;
+    height: 55px;
     gap: 1rem;
   }
 
