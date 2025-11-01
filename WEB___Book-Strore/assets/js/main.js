@@ -10,7 +10,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm kinh điển về nghệ thuật giao tiếp.",
-      img: "https://picsum.photos/300/420?random=27",
+      img: "../../images/Đắc Nhân Tâm - Dale Carnegie.jpg", // ko chạy
     },
     {
       id: 2,
