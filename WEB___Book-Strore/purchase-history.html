@@ -1,1116 +1,1162 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lịch sử mua hàng - Literary Haven</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
-    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <style>
-      body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lịch sử mua hàng - Literary Haven</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    body {
+      /* Matched: Light Beige/Brown to Light Blue gradient from product-detail.html body */
+      background: linear-gradient(135deg, #f5f2e8 0%, #e8d5b7 50%, #7fb3d3 100%);
+      color: #2c3e50;
+      min-height: 100vh;
+    }
 
+    .container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .page-heading {
+      font-size: 2.5rem;
+      font-weight: 700;
+      /* Đã loại bỏ các thuộc tính tạo hiệu ứng chữ chuyển màu */
+      /* background: linear-gradient(135deg, #4f9da6 0%, #7fb3d3 100%); */
+      /* -webkit-background-clip: text; */
+      /* -webkit-text-fill-color: transparent; */
+      /* background-clip: text; */
+      
+      /* Thêm màu chữ mặc định để đảm bảo tiêu đề hiện rõ */
+      color: #2c3e50; /* Hoặc màu đen (#000) nếu bạn muốn */
+      
+      margin-top: 70px;
+      margin-bottom: 2rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .history-container {
+      background: white;
+      border-radius: 24px;
+      padding: 3rem;
+      /* Matched: Shadow color based on #4f9da6 */
+      box-shadow: 0 10px 40px rgba(79, 157, 166, 0.15);
+      /* Matched: Border color based on #82c09a */
+      border: 1px solid rgba(130, 192, 154, 0.2);
+      min-height: 400px;
+    }
+
+    /* Filter Section */
+    .filter-section {
+      display: flex;
+      /* **ĐÃ SỬA: justify-content để căn hai phần tử sang hai bên** */
+      justify-content: space-between; 
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #f0f0f0;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-title {
+      /* **ĐÃ SỬA: Tăng kích thước font chữ và In đậm** */
+      font-size: 1.6rem; 
+      color: #2c3e50;
+      font-weight: 700;
+    }
+
+    .filter-tabs {
+        /* Đã ẩn khối này vì nó không còn được sử dụng */
+        display: none; 
+    }
+
+    .order-stats {
+      /* Đã chỉnh lại style cho phù hợp với nội dung duy nhất còn lại */
+      display: flex;
+      gap: 1rem;
+      font-size: 1.2rem; /* Tăng kích thước font */
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .order-stats strong {
+      /* Changed to #4f9da6 */
+      color: #4f9da6;
+      font-size: 1.3rem; /* Tăng kích thước số lượng */
+    }
+
+    /* Order Card - Thiết kế giống Cart Item */
+    .order-card {
+      background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .order-card:hover {
+      transform: translateX(8px);
+      /* Matched: Shadow color based on #4f9da6 */
+      box-shadow: 0 8px 24px rgba(79, 157, 166, 0.15);
+      /* Matched: Border color based on #4f9da6 */
+      border-color: rgba(79, 157, 166, 0.3);
+    }
+
+    .order-header {
+      display: flex;
+      /* Chỉ còn 2 phần tử: ID/Date và Status (Status đã bị xóa trong renderOrders, nên chỉ còn ID/Date) */
+      justify-content: flex-start; 
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f0f0f0;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .order-id-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .order-id {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .order-id span {
+      /* Changed to #4f9da6 */
+      color: #4f9da6;
+    }
+
+    .order-date {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #7f8c8d;
+      font-size: 0.95rem;
+    }
+    
+    /* Đã giữ lại style cho phần Modal Detail */
+    .order-status {
+      padding: 0.6rem 1.5rem;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-delivered {
+      /* Giữ màu xanh lá cây đậm cho đã giao */
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+    }
+
+    .status-processing {
+      /* Giữ màu hồng/đỏ cam cho đang xử lý */
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+    }
+
+    .status-cancelled {
+      /* Giữ màu xanh navy/xám đậm cho đã hủy */
+      background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+      color: white;
+    }
+
+    /* Order Items Preview */
+    .order-items-preview {
+      /* Changed to #4f9da6 based rgba */
+      background: rgba(79, 157, 166, 0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .preview-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .preview-item:last-child {
+      border-bottom: none;
+    }
+
+    .preview-image {
+      width: 80px;
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .preview-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .preview-name {
+      font-weight: 700;
+      color: #2c3e50;
+      font-size: 1.1rem;
+    }
+
+    .preview-author {
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .preview-price-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+    }
+
+    .preview-quantity {
+      font-size: 0.95rem;
+      color: #666;
+      font-weight: 600;
+    }
+
+    .preview-total {
+      font-weight: 700;
+      color: #e74c3c;
+      font-size: 1.2rem;
+    }
+
+    .more-items-notice {
+      text-align: center;
+      color: #7f8c8d;
+      font-style: italic;
+      padding-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    /* Order Footer */
+    .order-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1.5rem;
+      border-top: 2px solid #f0f0f0;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .order-total {
+      font-size: 1.6rem;
+      font-weight: 700;
+      /* Changed to #4f9da6 */
+      color: #4f9da6;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-detail {
+      /* Matched: Primary Green/Teal Gradient (#82c09a and #4f9da6) */
+      background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+      color: white;
+    }
+
+    .btn-detail:hover {
+      transform: scale(1.05);
+      /* Matched: Shadow color based on #4f9da6 */
+      box-shadow: 0 5px 15px rgba(79, 157, 166, 0.4);
+    }
+
+    .btn-reorder {
+      /* Changed: Secondary accent color (Cart button gradient from product-detail.html: #ff7f50 0%, #ff4500 100%) */
+      background: linear-gradient(135deg, #ff7f50 0%, #ff4500 100%);
+      color: white;
+    }
+
+    .btn-reorder:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(255, 99, 71, 0.4);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 5rem 2rem;
+    }
+
+    .empty-state-icon {
+      font-size: 6rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.4;
+    }
+
+    .empty-state h3 {
+      color: #2c3e50;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .empty-state p {
+      color: #7f8c8d;
+      font-size: 1.1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-continue {
+      display: inline-block;
+      padding: 1.2rem 2.5rem;
+      /* Matched: Primary Green/Teal Gradient (#82c09a and #4f9da6) */
+      background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      /* Matched: Shadow color based on #4f9da6 */
+      box-shadow: 0 4px 16px rgba(79, 157, 166, 0.25);
+    }
+
+    .btn-continue:hover {
+      transform: translateY(-3px);
+      /* Matched: Shadow color based on #4f9da6 */
+      box-shadow: 0 8px 24px rgba(79, 157, 166, 0.35);
+      color: white;
+    }
+
+    /* Modal Styles */
+    .order-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .order-modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 24px;
+      padding: 3rem;
+      max-width: 900px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      animation: slideIn 0.3s ease;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #666;
+      transition: all 0.3s;
+      background: none;
+      border: none;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      color: #333;
+      background: #f0f0f0;
+      transform: rotate(90deg);
+    }
+
+    .modal-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .modal-header h2 {
+      /* Changed to #4f9da6 */
+      color: #4f9da6;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .modal-order-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      /* Matched: Shipping Info Background Gradient from product-detail.html */
+      background: linear-gradient(135deg, #f0f8f7 0%, #e6f4f1 100%);
+      border-radius: 12px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      color: #7f8c8d;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .modal-items-section {
+      margin-top: 2rem;
+    }
+
+    .modal-items-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-items-header {
+      display: grid;
+      grid-template-columns: 100px 2fr 1fr 1.5fr;
+      gap: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      font-weight: 700;
+      color: #7f8c8d;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-items-header span:nth-child(3),
+    .modal-items-header span:nth-child(4) {
+      text-align: right;
+    }
+
+    .modal-item {
+      display: grid;
+      grid-template-columns: 100px 2fr 1fr 1.5fr;
+      gap: 1rem;
+      padding: 1.5rem 1rem;
+      border-bottom: 1px solid #e9ecef;
+      align-items: center;
+    }
+
+    .modal-item:last-child {
+      border-bottom: none;
+    }
+
+    .modal-item-image {
+      width: 100px;
+      height: 130px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .modal-item-name {
+      font-weight: 700;
+      color: #2c3e50;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+
+    .modal-item-author {
+      color: #7f8c8d;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-item-price {
+      color: #666;
+      font-size: 0.95rem;
+      margin-top: 0.3rem;
+    }
+
+    .modal-item-quantity {
+      text-align: right;
+      font-weight: 600;
+      /* Changed to #4f9da6 */
+      color: #4f9da6;
+      font-size: 1.1rem;
+    }
+
+    .modal-item-total {
+      text-align: right;
+      font-weight: 700;
+      color: #e74c3c;
+      font-size: 1.3rem;
+    }
+
+    .modal-summary {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      /* Matched: Shipping Info Background Gradient from product-detail.html */
+      background: linear-gradient(135deg, #f0f8f7 0%, #e6f4f1 100%);
+      border-radius: 12px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 0;
+      font-size: 1.1rem;
+    }
+
+    .summary-row.subtotal {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .summary-row.shipping {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .summary-row.shipping .text-success {
+      color: #27ae60 !important;
+      font-weight: 700;
+    }
+
+    .summary-row.total {
+      font-size: 1.6rem;
+      font-weight: 700;
+      /* Changed to #4f9da6 */
+      color: #4f9da6;
+      border-top: 2px solid #ddd;
+      margin-top: 1rem;
+      padding-top: 1.5rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
       .container {
-        max-width: 1400px;
-        margin: 2rem auto;
-        padding: 0 2rem;
+        padding: 0 1rem;
       }
-
-      .page-header {
-        background: white;
-        border-radius: 24px;
-        padding: 2.5rem;
-        margin-top: 90px;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      .page-heading {
+        font-size: 2rem;
+        margin-top: 60px;
       }
-
-      .page-header h1 {
-        color: #667eea;
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .page-header p {
-        color: #666;
-        font-size: 1.1rem;
-        margin: 0;
-      }
-
       .history-container {
-        background: white;
-        border-radius: 24px;
-        padding: 3rem;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        min-height: 400px;
-      }
-
-      .filter-section {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 2px solid #f0f0f0;
-        flex-wrap: wrap;
-        gap: 1rem;
-      }
-
-      .filter-tabs {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .filter-tab {
-        padding: 0.8rem 1.5rem;
-        border: 2px solid #e0e0e0;
-        background: white;
-        color: #666;
-        border-radius: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .filter-tab:hover {
-        border-color: #667eea;
-        color: #667eea;
-      }
-
-      .filter-tab.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-color: transparent;
-      }
-
-      .order-stats {
-        display: flex;
-        gap: 1rem;
-        font-size: 0.95rem;
-        color: #666;
-      }
-
-      .order-card {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        border-radius: 20px;
-        padding: 2rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        border-left: 6px solid #667eea;
-      }
-
-      .order-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      }
-
-      .order-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-      }
-
-      .order-id {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #333;
-      }
-
-      .order-id span {
-        color: #667eea;
-      }
-
-      .order-status {
-        padding: 0.6rem 1.5rem;
-        border-radius: 25px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .status-delivered {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        color: white;
-      }
-
-      .status-processing {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-      }
-
-      .status-cancelled {
-        background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
-        color: white;
-      }
-
-      .order-date {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: #666;
-        font-size: 0.95rem;
-      }
-
-      .order-items {
-        background: rgba(255, 255, 255, 0.6);
-        border-radius: 12px;
         padding: 1.5rem;
-        margin-bottom: 1.5rem;
       }
-
-      .order-item {
-        display: flex;
+      .filter-section {
+        /* **ĐÃ SỬA: Chuyển sang column trên mobile và căn giữa các mục** */
+        justify-content: center;
+        flex-direction: column; 
         align-items: center;
+      }
+      .section-title {
+        margin-bottom: 0.5rem; /* Thêm khoảng cách nếu chuyển sang column */
+      }
+      .order-card {
+        padding: 1.5rem;
+      }
+      .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .preview-item {
+        grid-template-columns: 60px 1fr;
+        grid-template-areas: "image info" "price price";
         gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       }
-
-      .order-item:last-child {
-        border-bottom: none;
-      }
-
-      .item-image {
+      .preview-image {
+        grid-area: image;
         width: 60px;
         height: 80px;
-        border-radius: 8px;
-        object-fit: cover;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
-
-      .item-info {
-        flex: 1;
+      .preview-info {
+        grid-area: info;
       }
-
-      .item-name {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 0.3rem;
-      }
-
-      .item-author {
-        font-size: 0.9rem;
-        color: #666;
-      }
-
-      .item-price {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.3rem;
-      }
-
-      .item-quantity {
-        font-size: 0.9rem;
-        color: #666;
-      }
-
-      .item-total {
-        font-weight: 700;
-        color: #e74c3c;
-        font-size: 1.1rem;
-      }
-
-      .order-footer {
-        display: flex;
+      .preview-price-info {
+        grid-area: price;
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding-top: 1.5rem;
-        border-top: 2px solid rgba(255, 255, 255, 0.6);
-        flex-wrap: wrap;
-        gap: 1rem;
       }
-
-      .order-total {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #667eea;
-      }
-
-      .order-actions {
-        display: flex;
-        gap: 1rem;
-      }
-
-      .btn-action {
-        padding: 0.8rem 1.5rem;
-        border: none;
-        border-radius: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
-      }
-
-      .btn-detail {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-      }
-
-      .btn-detail:hover {
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-      }
-
-      .btn-reorder {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-      }
-
-      .btn-reorder:hover {
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
-      }
-
-      .empty-state {
-        text-align: center;
-        padding: 4rem 2rem;
-      }
-
-      .empty-state-icon {
-        font-size: 5rem;
-        margin-bottom: 1.5rem;
-        opacity: 0.4;
-      }
-
-      .empty-state h3 {
-        color: #333;
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
-      }
-
-      .empty-state p {
-        color: #666;
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-      }
-
-      .btn-continue {
-        display: inline-block;
-        padding: 1rem 2.5rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        text-decoration: none;
-        border-radius: 16px;
-        font-weight: 700;
-        transition: all 0.3s ease;
-      }
-
-      .btn-continue:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-        color: white;
-      }
-
-      /* Modal Styles */
-      .order-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .order-modal.active {
-        display: flex;
-      }
-
-      .modal-content {
-        background: white;
-        border-radius: 24px;
-        padding: 3rem;
-        max-width: 700px;
-        width: 90%;
-        max-height: 85vh;
-        overflow-y: auto;
-        position: relative;
-        animation: slideIn 0.3s ease;
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: translateY(-50px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      .modal-close {
-        position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-        font-size: 2rem;
-        cursor: pointer;
-        color: #666;
-        transition: color 0.3s;
-        background: none;
-        border: none;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-      }
-
-      .modal-close:hover {
-        color: #333;
-        background: #f0f0f0;
-      }
-
-      .modal-header {
-        margin-bottom: 2rem;
-      }
-
-      .modal-header h2 {
-        color: #667eea;
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .modal-order-info {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: #f8f9fa;
-        border-radius: 12px;
-      }
-
-      .info-item {
-        display: flex;
+      .order-footer {
         flex-direction: column;
-        gap: 0.3rem;
+        align-items: stretch;
       }
-
-      .info-label {
-        font-size: 0.85rem;
-        color: #666;
-        text-transform: uppercase;
-        font-weight: 600;
-        letter-spacing: 0.5px;
+      .order-actions {
+        flex-direction: column;
+        gap: 0.8rem;
       }
-
-      .info-value {
-        font-size: 1.1rem;
-        color: #333;
-        font-weight: 600;
+      .order-total {
+        justify-content: center;
       }
-
-      @media (max-width: 768px) {
-        .container {
-          padding: 0 1rem;
-        }
-
-        .page-header {
-          padding: 1.5rem;
-          margin-top: 70px;
-        }
-
-        .page-header h1 {
-          font-size: 1.8rem;
-        }
-
-        .history-container {
-          padding: 1.5rem;
-        }
-
-        .filter-section {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .order-card {
-          padding: 1.5rem;
-        }
-
-        .order-header {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .order-footer {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .order-actions {
-          width: 100%;
-          flex-direction: column;
-        }
-
-        .btn-action {
-          width: 100%;
-          text-align: center;
-        }
-
-        .modal-content {
-          padding: 2rem;
-        }
-
-        .modal-order-info {
-          grid-template-columns: 1fr;
-        }
+      .modal-content {
+        padding: 2rem;
       }
-    </style>
-  </head>
+      .modal-order-info {
+        grid-template-columns: 1fr;
+      }
+      .modal-items-header,
+      .modal-item {
+        grid-template-columns: 60px 1fr 1fr;
+        grid-template-areas: "image info info" "qty total total";
+      }
+      .modal-item-image {
+        grid-area: image;
+        width: 60px;
+        height: 80px;
+      }
+      .modal-item-info {
+        grid-area: info;
+      }
+      .modal-item-quantity {
+        grid-area: qty;
+        text-align: left;
+      }
+      .modal-item-total {
+        grid-area: total;
+        text-align: right;
+      }
+      .modal-items-header {
+        display: none; /* Hide header on mobile for simpler view */
+      }
+    }
+  </style>
+</head>
 
-  <body>
-    <header class="topbar">
-      <div class="logo">
-        <a href="index.html"><img src="images/Logo.png" alt="Logo" /> </a>
-      </div>
-      <div class="search-center">
-        <input
-          id="topSearch"
-          class="search-input"
-          type="text"
-          placeholder="Nhập tên cuốn sách bạn đang tìm ..."
-          autocomplete="off"
-        />
-        <button class="search-btn" type="button" onclick="handleTopSearch()">
-          Tìm kiếm
-        </button>
-      </div>
-      <div class="auth-cart">
-        <div id="authArea">
-          <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
-          <button class="btn-auth btn-signup" onclick="openRegisterModal()">
-            Đăng ký
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <nav class="navbar" id="mainNav">
-      <ul class="menu" id="mainMenu">
-        <li><a href="index.html">Trang chủ</a></li>
-        <li><a href="about.html">Giới thiệu</a></li>
-        <div class="category-menu">
-          <button
-            class="category-btn"
-            onclick="window.location.href='category.html'"
-          >
-            Danh mục sách ▾
-          </button>
-          <ul class="book-filter">
-            <li class="dropdown">
-              <a href="category.html?category=Văn học" data-category="Văn học"
-                >Văn học ▸</a
-              >
-              <ul class="dropdown-content">
-                <li>
-                  <a
-                    href="category.html?category=Văn học&subcategory=Tiểu thuyết"
-                    >Tiểu thuyết</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="category.html?category=Văn học&subcategory=Truyện ngắn"
-                    >Truyện ngắn</a
-                  >
-                </li>
-                <li>
-                  <a href="category.html?category=Văn học&subcategory=Thơ"
-                    >Thơ</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="category.html?category=Kinh tế" data-category="Kinh tế"
-                >Kinh tế ▸</a
-              >
-              <ul class="dropdown-content">
-                <li>
-                  <a href="category.html?category=Kinh tế&subcategory=Quản trị"
-                    >Quản trị</a
-                  >
-                </li>
-                <li>
-                  <a href="category.html?category=Kinh tế&subcategory=Tài chính"
-                    >Tài chính</a
-                  >
-                </li>
-                <li>
-                  <a href="category.html?category=Kinh tế&subcategory=Marketing"
-                    >Marketing</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a
-                href="category.html?category=Thiếu nhi"
-                data-category="Thiếu nhi"
-                >Thiếu nhi ▸</a
-              >
-              <ul class="dropdown-content">
-                <li>
-                  <a
-                    href="category.html?category=Thiếu nhi&subcategory=Truyện tranh"
-                    >Truyện tranh</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="category.html?category=Thiếu nhi&subcategory=Giáo dục"
-                    >Giáo dục</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a
-                href="category.html?category=Giáo khoa"
-                data-category="Giáo khoa"
-                >Giáo khoa ▸</a
-              >
-              <ul class="dropdown-content">
-                <li>
-                  <a href="category.html?category=Giáo khoa&subcategory=Cấp 1"
-                    >Cấp 1</a
-                  >
-                </li>
-                <li>
-                  <a href="category.html?category=Giáo khoa&subcategory=Cấp 2"
-                    >Cấp 2</a
-                  >
-                </li>
-                <li>
-                  <a href="category.html?category=Giáo khoa&subcategory=Cấp 3"
-                    >Cấp 3</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        <li><a href="news.html">Tin tức</a></li>
-      </ul>
-      <div class="cart-float" id="cartFloat">
-        <button id="cartBtnFloat" class="btn">
-          <span class="cart-icon">🛒</span>
-          <span id="cart-count" class="cart-count">0</span>
-        </button>
-      </div>
-    </nav>
-
-    <main class="container">
-      <div class="page-header">
-        <h1>
-          <span>📦</span>
-          Lịch sử mua hàng
-        </h1>
-        <p>Quản lý và theo dõi tất cả đơn hàng của bạn</p>
-      </div>
-
-      <div class="history-container">
-        <div class="filter-section">
-          <div class="filter-tabs">
-            <button class="filter-tab active" onclick="filterOrders('all')">
-              Tất cả
-            </button>
-            <button class="filter-tab" onclick="filterOrders('processing')">
-              Đang xử lý
-            </button>
-            <button class="filter-tab" onclick="filterOrders('delivered')">
-              Đã giao
-            </button>
-            <button class="filter-tab" onclick="filterOrders('cancelled')">
-              Đã hủy
-            </button>
-          </div>
-          <div class="order-stats">
-            <span>Tổng: <strong id="totalOrders">0</strong> đơn</span>
-          </div>
-        </div>
-
-        <div id="orderList"></div>
-      </div>
-    </main>
-
-    <footer>
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>Về Chúng tôi</h3>
-          <ul>
-            <li><a href="about.html">Giới thiệu</a></li>
-            <li><a href="./news.html">Tin tức</a></li>
-            <li><a href="./privacy_policy.html">Chính sách bảo mật</a></li>
-            <li><a href="./terms-of-use.html">Điều khoản sử dụng</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-section">
-          <h3>Hỗ trợ khách hàng</h3>
-          <ul>
-            <li><a href="./shopping_guide.html">Hướng dẫn mua hàng</a></li>
-            <li><a href="./exchange-policy.html">Chính sách đổi trả</a></li>
-            <li><a href="./warranty-policy.html">Chính sách bảo hành</a></li>
-            <li>
-              <a href="./frequently-asked-questions.html">Câu hỏi thường gặp</a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="footer-section">
-          <h3>Chính sách</h3>
-          <ul>
-            <li><a href="./payment-policy.html">Chính sách thanh toán</a></li>
-            <li><a href="./shipping-policy.html">Chính sách vận chuyển</a></li>
-            <li><a href="./warranty-policy.html">Chính sách bảo hành</a></li>
-            <li><a href="./exchange-policy.html">Chính sách đổi trả</a></li>
-          </ul>
-        </div>
-        <div class="footer-section contact-info">
-          <h3>Liên hệ</h3>
-          <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
-          <p>📞 Hotline: 1900 xxxx</p>
-          <p>✉️ Email: support@bookstore.vn</p>
-          <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
-          <div class="social-links">
-            <a href="#">f</a>
-            <a href="#">📷</a>
-            <a href="#">▶️</a>
-            <a href="#">💼</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
-      </div>
-    </footer>
-
-    <!-- Modal chi tiết đơn hàng -->
-    <div id="orderModal" class="order-modal">
-      <div class="modal-content">
-        <button class="modal-close" onclick="closeOrderModal()">&times;</button>
-        <div id="modalBody"></div>
+<body>
+  <header class="topbar">
+    <div class="logo">
+      <a href="index.html"><img src="images/Logo.png" alt="Logo" /> </a>
+    </div>
+    <div class="search-center">
+      <input id="topSearch" class="search-input" type="text" placeholder="Nhập tên cuốn sách bạn đang tìm ..." autocomplete="off" />
+      <button class="search-btn" type="button" onclick="handleTopSearch()">Tìm kiếm</button>
+    </div>
+    <div class="auth-cart">
+      <div id="authArea">
+        <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
+        <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
       </div>
     </div>
+  </header>
 
-    <!-- Auth Modals -->
-    <div id="loginModal" class="auth-modal">
-      <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
-      <div class="auth-modal-content">
-        <button class="auth-modal-close" onclick="closeLoginModal()">
-          &times;
-        </button>
-        <div class="auth-modal-header">
-          <h2>Đăng Nhập</h2>
-          <p>Chào mừng bạn trở lại!</p>
+  <nav class="navbar" id="mainNav">
+    <ul class="menu" id="mainMenu">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="about.html">Giới thiệu</a></li>
+      <div class="category-menu">
+        <button class="category-btn" onclick="window.location.href='category.html'">Danh mục sách ▾</button>
+        <ul class="book-filter">
+          <li class="dropdown">
+            <a href="category.html?category=Văn học" data-category="Văn học">Văn học ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết">Tiểu thuyết</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn">Truyện ngắn</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Thơ">Thơ</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="category.html?category=Kinh tế" data-category="Kinh tế">Kinh tế ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị">Quản trị</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính">Tài chính</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Marketing">Marketing</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="category.html?category=Thiếu nhi" data-category="Thiếu nhi">Thiếu nhi ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh">Truyện tranh</a></li>
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục">Giáo dục</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="category.html?category=Giáo khoa" data-category="Giáo khoa">Giáo khoa ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1">Cấp 1</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2">Cấp 2</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3">Cấp 3</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <li><a href="news.html">Tin tức</a></li>
+    </ul>
+    <div class="cart-float" id="cartFloat">
+      <button id="cartBtnFloat" class="btn">
+        <span class="cart-icon">🛒</span>
+        <span id="cart-count" class="cart-count">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2 class="page-heading">
+      <span>📦</span>
+      Lịch sử mua hàng
+    </h2>
+
+    <div class="history-container">
+      <div class="filter-section">
+        <div class="section-title">Thông tin chi tiết</div> 
+        <div class="order-stats">
+          <span>Tổng đơn hàng: <strong id="totalOrders">0</strong></span>
         </div>
-        <form id="login-form" class="auth-modal-form">
-          <div class="form-group">
-            <label for="login-username">Tên tài khoản</label>
-            <div class="input-with-icon">
-              <span class="input-icon">👤</span>
-              <input
-                type="text"
-                id="login-username"
-                placeholder="Nhập tên tài khoản"
-              />
-            </div>
-            <span id="error-login-username" class="error-msg"></span>
-          </div>
-          <div class="form-group">
-            <label for="login-password">Mật khẩu</label>
-            <div class="input-with-icon">
-              <span class="input-icon">🔒</span>
-              <input
-                type="password"
-                id="login-password"
-                placeholder="Nhập mật khẩu"
-              />
-              <span
-                class="password-toggle"
-                id="toggle-login-password"
-                onclick="togglePassword('login-password', 'toggle-login-password')"
-                >👁️‍🗨️</span
-              >
-            </div>
-            <span id="error-login-password" class="error-msg"></span>
-          </div>
-          <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
-        </form>
-        <div class="auth-modal-footer">
-          Chưa có tài khoản?
-          <a href="#" onclick="switchToRegister()">Đăng ký ngay</a>
+      </div>
+
+      <div id="orderList"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Về Chúng tôi</h3>
+        <ul>
+          <li><a href="about.html">Giới thiệu</a></li>
+          <li><a href="./news.html">Tin tức</a></li>
+          <li><a href="./privacy_policy.html">Chính sách bảo mật</a></li>
+          <li><a href="./terms-of-use.html">Điều khoản sử dụng</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Hỗ trợ khách hàng</h3>
+        <ul>
+          <li><a href="./shopping_guide.html">Hướng dẫn mua hàng</a></li>
+          <li><a href="./exchange-policy.html">Chính sách đổi trả</a></li>
+          <li><a href="./warranty-policy.html">Chính sách bảo hành</a></li>
+          <li><a href="./frequently-asked-questions.html">Câu hỏi thường gặp</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Chính sách</h3>
+        <ul>
+          <li><a href="./payment-policy.html">Chính sách thanh toán</a></li>
+          <li><a href="./shipping-policy.html">Chính sách vận chuyển</a></li>
+          <li><a href="./warranty-policy.html">Chính sách bảo hành</a></li>
+          <li><a href="./exchange-policy.html">Chính sách đổi trả</a></li>
+        </ul>
+      </div>
+      <div class="footer-section contact-info">
+        <h3>Liên hệ</h3>
+        <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
+        <p>📞 Hotline: 1900 xxxx</p>
+        <p>✉️ Email: support@bookstore.vn</p>
+        <p>🕗 Giờ làm việc: 8:00 - 22:00</p>
+        <div class="social-links">
+          <a href="#">f</a>
+          <a href="#">📷</a>
+          <a href="#">▶️</a>
+          <a href="#">💼</a>
         </div>
       </div>
     </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
+    </div>
+  </footer>
 
-    <div id="registerModal" class="auth-modal">
-      <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
-      <div class="auth-modal-content">
-        <button class="auth-modal-close" onclick="closeRegisterModal()">
-          &times;
-        </button>
-        <div class="auth-modal-header">
-          <h2>Đăng Ký</h2>
-          <p>Tạo tài khoản mới của bạn</p>
+  <div id="orderModal" class="order-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="loginModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
+    <div class="auth-modal-content">
+      <button class="auth-modal-close" onclick="closeLoginModal()">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Đăng Nhập</h2>
+        <p>Chào mừng bạn trở lại!</p>
+      </div>
+      <form id="login-form" class="auth-modal-form">
+        <div class="form-group">
+          <label for="login-username">Tên tài khoản</label>
+          <div class="input-with-icon">
+            <span class="input-icon">👤</span>
+            <input type="text" id="login-username" placeholder="Nhập tên tài khoản">
+          </div>
+          <span id="error-login-username" class="error-msg"></span>
         </div>
-        <form
-          id="register-form"
-          class="auth-modal-form"
-          style="max-height: 450px; overflow-y: auto"
-        >
-          <div class="form-group">
-            <label for="reg-fullname">Họ và tên</label>
-            <div class="input-with-icon">
-              <span class="input-icon">👤</span>
-              <input
-                type="text"
-                id="reg-fullname"
-                placeholder="Nhập họ và tên"
-              />
-            </div>
-            <span id="error-fullname" class="error-msg"></span>
+        <div class="form-group">
+          <label for="login-password">Mật khẩu</label>
+          <div class="input-with-icon">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="login-password" placeholder="Nhập mật khẩu">
+            <span class="password-toggle" id="toggle-login-password" onclick="togglePassword('login-password', 'toggle-login-password')">👁️‍🗨️</span>
           </div>
-          <div class="form-group">
-            <label for="reg-username">Tài khoản</label>
-            <div class="input-with-icon">
-              <span class="input-icon">📝</span>
-              <input
-                type="text"
-                id="reg-username"
-                placeholder="Nhập tài khoản"
-              />
-            </div>
-            <span id="error-username" class="error-msg"></span>
-          </div>
-          <div class="form-group">
-            <label for="reg-password">Mật khẩu</label>
-            <div class="input-with-icon">
-              <span class="input-icon">🔒</span>
-              <input
-                type="password"
-                id="reg-password"
-                placeholder="Nhập mật khẩu"
-              />
-              <span
-                class="password-toggle"
-                id="toggle-reg-password"
-                onclick="togglePassword('reg-password', 'toggle-reg-password')"
-                >👁️‍🗨️</span
-              >
-            </div>
-            <span id="error-password" class="error-msg"></span>
-          </div>
-          <div class="form-group">
-            <label for="reg-confirm-password">Nhập lại mật khẩu</label>
-            <div class="input-with-icon">
-              <span class="input-icon">🔒</span>
-              <input
-                type="password"
-                id="reg-confirm-password"
-                placeholder="Nhập lại mật khẩu"
-              />
-              <span
-                class="password-toggle"
-                id="toggle-reg-confirm"
-                onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')"
-                >👁️‍🗨️</span
-              >
-            </div>
-            <span id="error-confirm-password" class="error-msg"></span>
-          </div>
-          <div class="form-group">
-            <label for="reg-email">Email</label>
-            <div class="input-with-icon">
-              <span class="input-icon">📧</span>
-              <input type="email" id="reg-email" placeholder="Nhập email" />
-            </div>
-            <span id="error-email" class="error-msg"></span>
-          </div>
-          <div class="form-group">
-            <label for="reg-phone">Số điện thoại</label>
-            <div class="input-with-icon">
-              <span class="input-icon">📱</span>
-              <input
-                type="tel"
-                id="reg-phone"
-                placeholder="Nhập số điện thoại"
-              />
-            </div>
-            <span id="error-phone" class="error-msg"></span>
-          </div>
-          <div class="form-group">
-            <label for="reg-address">Địa chỉ</label>
-            <div class="input-with-icon">
-              <span class="input-icon">📍</span>
-              <input type="text" id="reg-address" placeholder="Nhập địa chỉ" />
-            </div>
-            <span id="error-address" class="error-msg"></span>
-          </div>
-          <button type="submit" class="btn-auth-submit">Đăng Ký</button>
-        </form>
-        <div class="auth-modal-footer">
-          Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập</a>
+          <span id="error-login-password" class="error-msg"></span>
         </div>
+        <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
+      </form>
+      <div class="auth-modal-footer">
+        Chưa có tài khoản? <a href="#" onclick="switchToRegister()">Đăng ký ngay</a>
       </div>
     </div>
+  </div>
 
-    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
+  <div id="registerModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
+    <div class="auth-modal-content">
+      <button class="auth-modal-close" onclick="closeRegisterModal()">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Đăng Ký</h2>
+        <p>Tạo tài khoản mới của bạn</p>
+      </div>
+      <form id="register-form" class="auth-modal-form" style="max-height: 450px; overflow-y: auto">
+        <div class="form-group">
+          <label for="reg-fullname">Họ và tên</label>
+          <div class="input-with-icon">
+            <span class="input-icon">👤</span>
+            <input type="text" id="reg-fullname" placeholder="Nhập họ và tên">
+          </div>
+          <span id="error-fullname" class="error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-username">Tài khoản</label>
+          <div class="input-with-icon">
+            <span class="input-icon">📝</span>
+            <input type="text" id="reg-username" placeholder="Nhập tài khoản">
+          </div>
+          <span id="error-username" class="error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Mật khẩu</label>
+          <div class="input-with-icon">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="reg-password" placeholder="Nhập mật khẩu">
+            <span class="password-toggle" id="toggle-reg-password" onclick="togglePassword('reg-password', 'toggle-reg-password')">👁️‍🗨️</span>
+          </div>
+          <span id="error-password" class="error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-confirm-password">Nhập lại mật khẩu</label>
+          <div class="input-with-icon">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="reg-confirm-password" placeholder="Nhập lại mật khẩu">
+            <span class="password-toggle" id="toggle-reg-confirm" onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')">👁️‍🗨️</span>
+          </div>
+          <span id="error-confirm-password" class="error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email</label>
+          <div class="input-with-icon">
+            <span class="input-icon">📧</span>
+            <input type="email" id="reg-email" placeholder="Nhập email">
+          </div>
+          <span id="error-email" class="error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-phone">Số điện thoại</label>
+          <div class="input-with-icon">
+            <span class="input-icon">📱</span>
+            <input type="tel" id="reg-phone" placeholder="Nhập số điện thoại">
+          </div>
+          <span id="error-phone" class="error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-address">Địa chỉ</label>
+          <div class="input-with-icon">
+            <span class="input-icon">📍</span>
+            <input type="text" id="reg-address" placeholder="Nhập địa chỉ">
+          </div>
+          <span id="error-address" class="error-msg"></span>
+        </div>
+        <button type="submit" class="btn-auth-submit">Đăng Ký</button>
+      </form>
+      <div class="auth-modal-footer">
+        Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập</a>
+      </div>
+    </div>
+  </div>
 
-    <script>
-      const formatter = new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-        minimumFractionDigits: 0,
+  <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+      minimumFractionDigits: 0
+    });
+
+    let currentFilter = 'all';
+    let allOrders = [];
+
+    function getProductById(productId) {
+      const data = JSON.parse(localStorage.getItem('bs_data'));
+      if (!data || !data.products) return null;
+      return data.products.find(p => p.id === productId);
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
       });
+    }
 
-      let currentFilter = "all";
-      let allOrders = [];
+    function getStatusInfo(status) {
+      const statusMap = {
+        'Chờ xử lý': { class: 'status-processing', text: '⏳ Đang xử lý', emoji: '⏳' },
+        'Đang xử lý': { class: 'status-processing', text: '⏳ Đang xử lý', emoji: '⏳' },
+        'Đã giao': { class: 'status-delivered', text: '✓ Đã giao', emoji: '✓' },
+        'Đã hủy': { class: 'status-cancelled', text: '✕ Đã hủy', emoji: '✕' }
+      };
+      return statusMap[status] || { class: 'status-processing', text: status, emoji: '📦' };
+    }
 
-      function getProductById(productId) {
-        const data = JSON.parse(localStorage.getItem("bs_data"));
-        if (!data || !data.products) return null;
-        return data.products.find((p) => p.id === productId);
-      }
+    // Hàm filterOrders không còn cần thiết nhưng được giữ lại để tránh lỗi nếu các thành phần khác gọi đến.
+    function filterOrders(filter) {
+      currentFilter = filter;
+      renderOrders();
+    }
 
-      function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("vi-VN", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-      }
+    function renderOrders() {
+      const orderList = document.getElementById('orderList');
+      if (!orderList) return;
 
-      function getStatusInfo(status) {
-        const statusMap = {
-          "Chờ xử lý": {
-            class: "status-processing",
-            text: "⏳ Đang xử lý",
-            emoji: "⏳",
-          },
-          "Đang xử lý": {
-            class: "status-processing",
-            text: "⏳ Đang xử lý",
-            emoji: "⏳",
-          },
-          "Đã giao": {
-            class: "status-delivered",
-            text: "✓ Đã giao",
-            emoji: "✓",
-          },
-          "Đã hủy": { class: "status-cancelled", text: "✕ Đã hủy", emoji: "✕" },
-        };
-        return (
-          statusMap[status] || {
-            class: "status-processing",
-            text: status,
-            emoji: "📦",
-          }
-        );
-      }
+      const orders = JSON.parse(localStorage.getItem('bs_orders') || '[]');
 
-      function filterOrders(filter) {
-        currentFilter = filter;
+      // Luôn hiển thị tất cả đơn hàng vì không có bộ lọc trạng thái
+      let filteredOrders = orders;
+      
+      filteredOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+      allOrders = filteredOrders;
 
-        // Update active tab
-        document.querySelectorAll(".filter-tab").forEach((tab) => {
-          tab.classList.remove("active");
-        });
-        event.target.classList.add("active");
+      // Cập nhật tổng số đơn hàng
+      document.getElementById('totalOrders').textContent = filteredOrders.length;
 
-        renderOrders();
-      }
-
-      function renderOrders() {
-        const orderList = document.getElementById("orderList");
-        if (!orderList) return;
-
-        // Get orders from localStorage
-        const orders = JSON.parse(localStorage.getItem("bs_orders") || "[]");
-
-        // Filter orders based on current filter
-        let filteredOrders = orders;
-        if (currentFilter !== "all") {
-          const filterMap = {
-            processing: ["Chờ xử lý", "Đang xử lý"],
-            delivered: ["Đã giao"],
-            cancelled: ["Đã hủy"],
-          };
-          filteredOrders = orders.filter((order) =>
-            filterMap[currentFilter].includes(order.status)
-          );
-        }
-
-        // Sort by date (newest first)
-        filteredOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
-        allOrders = filteredOrders;
-
-        // Update stats
-        document.getElementById("totalOrders").textContent =
-          filteredOrders.length;
-
-        if (filteredOrders.length === 0) {
-          orderList.innerHTML = `
+      if (filteredOrders.length === 0) {
+        orderList.innerHTML = `
           <div class="empty-state">
-            <div class="empty-state-icon">📭</div>
+            <div class="empty-state-icon">🔭</div>
             <h3>Chưa có đơn hàng nào</h3>
-            <p>Bạn chưa có đơn hàng ${
-              currentFilter !== "all" ? "trong danh mục này" : "nào"
-            }. Hãy bắt đầu mua sắm ngay!</p>
+            <p>Hãy bắt đầu mua sắm ngay!</p>
             <a href="index.html" class="btn-continue">Tiếp tục mua sắm</a>
           </div>
         `;
-          return;
-        }
+        return;
+      }
 
-        const ordersHtml = filteredOrders
-          .map((order) => {
-            const statusInfo = getStatusInfo(order.status);
-            const itemsPreview = order.items.slice(0, 3);
-            const moreItems =
-              order.items.length > 3 ? order.items.length - 3 : 0;
+      const ordersHtml = filteredOrders.map(order => {
+        // Loại bỏ việc gọi getStatusInfo nếu không dùng ở đây
+        // const statusInfo = getStatusInfo(order.status);
+        const itemsPreview = order.items.slice(0, 3);
+        const moreItems = order.items.length > 3 ? order.items.length - 3 : 0;
 
-            return `
+        return `
           <div class="order-card">
             <div class="order-header">
-              <div>
+              <div class="order-id-wrapper">
                 <div class="order-id">Đơn hàng: <span>#${order.id}</span></div>
                 <div class="order-date">
                   <i class="bi bi-calendar"></i>
                   ${formatDate(order.date)}
                 </div>
               </div>
-              <div class="order-status ${statusInfo.class}">${
-              statusInfo.text
-            }</div>
-            </div>
+              </div>
 
-            <div class="order-items">
-              ${itemsPreview
-                .map((item) => {
-                  const product = getProductById(item.id);
-                  if (!product) return "";
-                  return `
-                  <div class="order-item">
-                    <img src="${product.img}" alt="${
-                    product.name
-                  }" class="item-image">
-                    <div class="item-info">
-                      <div class="item-name">${product.name}</div>
-                      <div class="item-author">${product.author}</div>
+            <div class="order-items-preview">
+              ${itemsPreview.map(item => {
+                const product = getProductById(item.id);
+                if (!product) return '';
+                return `
+                  <div class="preview-item">
+                    <div class="preview-image">
+                      <img src="${product.img}" alt="${product.name}">
                     </div>
-                    <div class="item-price">
-                      <div class="item-quantity">x${item.qty}</div>
-                      <div class="item-total">${formatter.format(
-                        product.price * item.qty
-                      )}</div>
+                    <div class="preview-info">
+                      <div class="preview-name">${product.name}</div>
+                      <div class="preview-author"><i class="bi bi-person"></i> ${product.author}</div>
+                    </div>
+                    <div class="preview-price-info">
+                      <div class="preview-quantity">x${item.qty}</div>
+                      <div class="preview-total">${formatter.format(product.price * item.qty)}</div>
                     </div>
                   </div>
                 `;
-                })
-                .join("")}
-              ${
-                moreItems > 0
-                  ? `
-                <div style="text-align: center; color: #666; font-style: italic; padding-top: 0.5rem;">
+              }).join('')}
+              ${moreItems > 0 ? `
+                <div class="more-items-notice">
                   và ${moreItems} sản phẩm khác...
                 </div>
-              `
-                  : ""
-              }
+              ` : ''}
             </div>
 
             <div class="order-footer">
-              <div class="order-total">💰 Tổng cộng: ${formatter.format(
-                order.total
-              )}</div>
+              <div class="order-total">
+                <i class="bi bi-cash-coin"></i>
+                Tổng cộng: ${formatter.format(order.total)}
+              </div>
               <div class="order-actions">
-                <button class="btn-action btn-detail" onclick='showOrderDetail(${JSON.stringify(
-                  order
-                ).replace(/'/g, "&#39;")})'>
+                <button class="btn-action btn-detail" onclick='showOrderDetail(${JSON.stringify(order).replace(/'/g, "&#39;")})'>
                   <i class="bi bi-eye"></i> Xem chi tiết
                 </button>
-                <button class="btn-action btn-reorder" onclick="reorder(${
-                  order.id
-                })">
+                <button class="btn-action btn-reorder" onclick="reorder(${order.id})">
                   <i class="bi bi-arrow-repeat"></i> Mua lại
                 </button>
               </div>
             </div>
           </div>
         `;
-          })
-          .join("");
+      }).join('');
 
-        orderList.innerHTML = ordersHtml;
-      }
+      orderList.innerHTML = ordersHtml;
+    }
 
-      function showOrderDetail(order) {
-        const modal = document.getElementById("orderModal");
-        const modalBody = document.getElementById("modalBody");
-        const statusInfo = getStatusInfo(order.status);
+    function showOrderDetail(order) {
+      const modal = document.getElementById('orderModal');
+      const modalBody = document.getElementById('modalBody');
+      const statusInfo = getStatusInfo(order.status); // Vẫn cần dùng trong modal chi tiết
 
-        const itemsHtml = order.items
-          .map((item) => {
-            const product = getProductById(item.id);
-            if (!product) return "";
-            return `
-          <div class="order-item">
-            <img src="${product.img}" alt="${product.name}" class="item-image">
-            <div class="item-info">
-              <div class="item-name">${product.name}</div>
-              <div class="item-author">Tác giả: ${product.author}</div>
-              <div style="margin-top: 0.5rem; color: #666;">
-                Đơn giá: ${formatter.format(product.price)}
-              </div>
+      const SHIPPING_THRESHOLD = 500000;
+      const STANDARD_SHIPPING_FEE = 30000;
+      
+      // *** BẮT ĐẦU PHẦN SỬA LỖI LOGIC TÍNH TOÁN ***
+      let calculatedSubtotal = 0;
+
+      // 1. Tính Tạm tính (Subtotal) bằng cách cộng tổng giá trị các sản phẩm
+      order.items.forEach(item => {
+          const product = getProductById(item.id);
+          if (product) {
+              calculatedSubtotal += product.price * item.qty;
+          }
+      });
+      
+      // 2. Tính Phí vận chuyển dựa trên Tạm tính
+      const shippingFee = calculatedSubtotal >= SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE;
+      // *** KẾT THÚC PHẦN SỬA LỖI LOGIC TÍNH TOÁN ***
+
+      const itemsHtml = order.items.map(item => {
+        const product = getProductById(item.id);
+        if (!product) return '';
+        return `
+          <div class="modal-item">
+            <div class="modal-item-image">
+              <img src="${product.img}" alt="${product.name}">
             </div>
-            <div class="item-price">
-              <div class="item-quantity">Số lượng: ${item.qty}</div>
-              <div class="item-total">${formatter.format(
-                product.price * item.qty
-              )}</div>
+            <div class="modal-item-info">
+              <div class="modal-item-name">${product.name}</div>
+              <div class="modal-item-author"><i class="bi bi-person"></i> ${product.author}</div>
+              <div class="modal-item-price">Đơn giá: ${formatter.format(product.price)}</div>
             </div>
+            <div class="modal-item-quantity">x${item.qty}</div>
+            <div class="modal-item-total">${formatter.format(product.price * item.qty)}</div>
           </div>
         `;
-          })
-          .join("");
+      }).join('');
 
-        modalBody.innerHTML = `
+      modalBody.innerHTML = `
         <div class="modal-header">
           <h2>Chi tiết đơn hàng #${order.id}</h2>
-          <span class="order-status ${
-            statusInfo.class
-          }" style="display: inline-block; margin-top: 0.5rem;">
+          <span class="order-status ${statusInfo.class}" style="display: inline-block; margin-top: 0.5rem;">
             ${statusInfo.text}
           </span>
         </div>
@@ -1130,107 +1176,96 @@
           </div>
           <div class="info-item">
             <div class="info-label">Tổng tiền</div>
-            <div class="info-value" style="color: #667eea;">${formatter.format(
-              order.total
-            )}</div>
+            <div class="info-value" style="color: #4f9da6;">${formatter.format(order.total)}</div>
           </div>
         </div>
 
-        <h3 style="margin-bottom: 1rem; color: #333;">📦 Danh sách sản phẩm</h3>
-        <div class="order-items">
+        <div class="modal-items-section">
+          <h3 class="modal-items-title"><i class="bi bi-box-seam"></i> Danh sách sản phẩm</h3>
+          <div class="modal-items-header">
+            <span>Hình ảnh</span>
+            <span>Sản phẩm</span>
+            <span>Số lượng</span>
+            <span>Thành tiền</span>
+          </div>
           ${itemsHtml}
         </div>
 
-        <div style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="color: #666;">Tạm tính:</span>
-            <span style="font-weight: 600;">${formatter.format(
-              order.total - (order.total >= 500000 ? 0 : 30000)
-            )}</span>
+        <div class="modal-summary">
+          <div class="summary-row subtotal">
+            <span>Tạm tính:</span>
+            <span>${formatter.format(calculatedSubtotal)}</span>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <span style="color: #666;">Phí vận chuyển:</span>
-            <span style="font-weight: 600; color: ${
-              order.total >= 500000 ? "#27ae60" : "#333"
-            };">
-              ${order.total >= 500000 ? "Miễn phí ✓" : formatter.format(30000)}
+          <div class="summary-row shipping">
+            <span>Phí vận chuyển:</span>
+            <span class="${shippingFee === 0 ? 'text-success' : ''}">
+              ${shippingFee === 0 ? 'Miễn phí ✓' : formatter.format(shippingFee)}
             </span>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 2px solid #ddd;">
-            <span style="font-size: 1.3rem; font-weight: 700; color: #333;">Tổng cộng:</span>
-            <span style="font-size: 1.5rem; font-weight: 700; color: #667eea;">${formatter.format(
-              order.total
-            )}</span>
+          <div class="summary-row total">
+            <span>Tổng cộng:</span>
+            <span>${formatter.format(order.total)}</span>
           </div>
         </div>
       `;
 
-        modal.classList.add("active");
+      modal.classList.add('active');
+    }
+
+    function closeOrderModal() {
+      document.getElementById('orderModal').classList.remove('active');
+    }
+
+    function reorder(orderId) {
+      const order = allOrders.find(o => o.id === orderId);
+      if (!order) {
+        alert('Không tìm thấy đơn hàng!');
+        return;
       }
 
-      function closeOrderModal() {
-        document.getElementById("orderModal").classList.remove("active");
-      }
+      if (confirm(`Bạn có muốn mua lại ${order.items.length} sản phẩm từ đơn hàng #${orderId}?`)) {
+        const cart = JSON.parse(localStorage.getItem('bs_cart') || '[]');
 
-      function reorder(orderId) {
-        const order = allOrders.find((o) => o.id === orderId);
-        if (!order) {
-          alert("Không tìm thấy đơn hàng!");
-          return;
-        }
-
-        if (
-          confirm(
-            `Bạn có muốn mua lại ${order.items.length} sản phẩm từ đơn hàng #${orderId}?`
-          )
-        ) {
-          const cart = JSON.parse(localStorage.getItem("bs_cart") || "[]");
-
-          order.items.forEach((item) => {
-            const existingItem = cart.find((c) => c.id === item.id);
-            if (existingItem) {
-              existingItem.qty += item.qty;
-            } else {
-              cart.push({ id: item.id, qty: item.qty });
-            }
-          });
-
-          localStorage.setItem("bs_cart", JSON.stringify(cart));
-
-          if (typeof updateCartCount === "function") {
-            updateCartCount();
-          }
-
-          alert("✅ Đã thêm tất cả sản phẩm vào giỏ hàng!");
-          window.location.href = "cart.html";
-        }
-      }
-
-      // Close modal when clicking outside
-      document
-        .getElementById("orderModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) {
-            closeOrderModal();
+        order.items.forEach(item => {
+          const existingItem = cart.find(c => c.id === item.id);
+          if (existingItem) {
+            existingItem.qty += item.qty;
+          } else {
+            cart.push({ id: item.id, qty: item.qty });
           }
         });
 
-      // Initialize page
-      document.addEventListener("DOMContentLoaded", function () {
-        // Check if user is logged in
-        const user = localStorage.getItem("bs_user");
-        if (!user) {
-          alert("Vui lòng đăng nhập để xem lịch sử mua hàng!");
-          window.location.href = "index.html";
-          return;
+        localStorage.setItem('bs_cart', JSON.stringify(cart));
+
+        if (typeof updateCartCount === 'function') {
+          updateCartCount();
         }
 
-        renderOrders();
+        alert('✅ Đã thêm tất cả sản phẩm vào giỏ hàng!');
+        window.location.href = 'cart.html';
+      }
+    }
 
-        if (typeof updateCartCount === "function") updateCartCount();
-        if (typeof updateAuthUI === "function") updateAuthUI();
-        if (typeof loadSearchQuery === "function") loadSearchQuery();
-      });
-    </script>
-  </body>
+    document.getElementById('orderModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeOrderModal();
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = localStorage.getItem('bs_user');
+      if (!user) {
+        alert('Vui lòng đăng nhập để xem lịch sử mua hàng!');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      renderOrders();
+
+      if (typeof updateCartCount === 'function') updateCartCount();
+      if (typeof updateAuthUI === 'function') updateAuthUI();
+      if (typeof loadSearchQuery === 'function') loadSearchQuery();
+    });
+  </script>
+</body>
 </html>

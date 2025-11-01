@@ -982,7 +982,8 @@ function viewProfile(e) {
   openProfileModal(); // Có thể giữ modal hoặc chuyển sang trang mới
 }
 
-// ========================================================================================Xem lịch sử mua hàng
+// ===================================================================================================================
+// Xem lịch sử mua hàng
 function viewOrderHistory(e) {
   if (e) e.preventDefault();
   // alert('Chức năng đang phát triển: Lịch sử mua hàng'); // Bỏ dòng này
@@ -992,17 +993,17 @@ function viewOrderHistory(e) {
 // Sửa thông tin cá nhân
 function editProfile(e) {
   if (e) e.preventDefault();
-  alert('Chức năng đang phát triển: Sửa thông tin cá nhân');
-  // Có thể mở modal edit hoặc chuyển sang trang edit
+  // Chuyển hướng đến trang sửa thông tin cá nhân
+  window.location.href = 'update-profile.html'; 
 }
-
+//==================================================================================================================
 // Đổi mật khẩu
 function changePassword(e) {
   if (e) e.preventDefault();
-  alert('Chức năng đang phát triển: Đổi mật khẩu');
-  // Có thể mở modal đổi mật khẩu
+  // Chuyển hướng đến trang đổi mật khẩu
+  window.location.href = 'change-password.html'; 
 }
-
+//==================================================================================================================
 // Đăng xuất từ dropdown
 function handleLogoutDropdown(e) {
   if (e) e.preventDefault();
