@@ -10,7 +10,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm kinh điển về nghệ thuật giao tiếp.",
-      img: "../../images/Đắc Nhân Tâm - Dale Carnegie.jpg", // ko chạy
+      img: "images/Đắc Nhân Tâm - Dale Carnegie.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Truyện cảm hứng cho bạn trẻ tìm kiếm chính mình.",
-      img: "https://picsum.photos/300/420?random=28",
+      img: "images/Tuoi_tre_dang_gia_bao_nhiêu.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 3,
@@ -32,7 +32,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Thơ",
       desc: "Kiệt tác văn học Việt Nam.",
-      img: "https://picsum.photos/300/420?random=29",
+      img: "images/Truyện_Kiều.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 4,
@@ -43,7 +43,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Tác phẩm hiện thực phê phán sâu sắc.",
-      img: "https://picsum.photos/300/420?random=30",
+      img: "images/Tắt_Đèn.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 5,
@@ -54,7 +54,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Câu chuyện đầy nhân văn về thân phận người nông dân.",
-      img: "https://picsum.photos/300/420?random=31",
+      img: "images/Lão_Hạc.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 6,
@@ -65,7 +65,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Thơ",
       desc: "Tập thơ giàu triết lý và tinh thần cách mạng.",
-      img: "https://picsum.photos/300/420?random=32",
+      img: "images/Nhật_Ký_Trong_Tù.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 7,
@@ -76,7 +76,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm trào phúng đặc sắc.",
-      img: "https://picsum.photos/300/420?random=33",
+      img: "images/Số_Đỏ.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 8,
@@ -87,7 +87,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Bi kịch của người nông dân trong xã hội cũ.",
-      img: "https://picsum.photos/300/420?random=34",
+      img: "images/Chí_Phèo.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 9,
@@ -98,7 +98,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Câu chuyện tuổi thơ đầy xúc động.",
-      img: "https://picsum.photos/300/420?random=35",
+      img: "images/Tôi_thấy_hoa_vàng_trên_cỏ_xanh.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 10,
@@ -109,7 +109,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Tác phẩm tiêu biểu cho phong cách tùy bút độc đáo.",
-      img: "https://picsum.photos/300/420?random=36",
+      img: "images/Người_lái_đò_sông_Đà.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 11,
@@ -120,7 +120,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tấm gương sáng của một nữ bác sĩ trong chiến tranh.",
-      img: "https://picsum.photos/300/420?random=37",
+      img: "images/Nhật_ký_Đặng_Thùy_Trâm.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 12,
@@ -131,7 +131,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Thơ",
       desc: "Tập thơ nổi tiếng với nhiều bài thơ sâu sắc.",
-      img: "https://picsum.photos/300/420?random=38",
+      img: "images/Ánh_Trắng.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 13,
@@ -142,7 +142,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tập đầu tiên của loạt Harry Potter.",
-      img: "https://picsum.photos/300/420?random=53",
+      img: "images/Harry_Potter_và_Hòn_Đá_Phù_Thủy.jpg", // ĐÃ SỬA: Bỏ "/"
     },
 
     // ================= Kinh tế =================
@@ -155,7 +155,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Sách tài chính cá nhân nổi tiếng.",
-      img: "https://picsum.photos/300/420?random=39",
+      img: "images/Cha_Giàu_Cha_Nghèo.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 15,
@@ -166,7 +166,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Bài học khởi nghiệp từ Israel.",
-      img: "https://picsum.photos/300/420?random=40",
+      img: "images/Quốc_gia_khởi_nghiệp.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 16,
@@ -177,7 +177,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Hướng dẫn kỹ năng lãnh đạo cá nhân.",
-      img: "https://picsum.photos/300/420?random=41",
+      img: "images/7_Thói_Quen_Hiệu_Quả.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 17,
@@ -188,29 +188,29 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Loạt sách tài chính cá nhân nổi tiếng.",
-      img: "https://picsum.photos/300/420?random=42",
+      img: "images/Dạy_con_làm_giàu_III.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 18,
       sku: "KT005",
-      name: "Tư Duy Nhanh Và Chậm",
-      author: "Daniel Kahneman",
+      name: "Lợi Thế Cạnh Tranh",
+      author: "Michael Porter",
       price: 160000,
       category: "Kinh tế",
       subcategory: "Marketing",
       desc: "Tác phẩm tâm lý học ứng dụng trong kinh tế.",
-      img: "https://picsum.photos/300/420?random=43",
+      img: "images/Lợi_Thế_Cạnh_Tranh.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 19,
       sku: "KT006",
-      name: "Cạnh Tranh Bằng Chiến Lược",
-      author: "Michael Porter",
+      name: "Tư Duy Phản Biện",
+      author: "Richard Paul",
       price: 180000,
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Sách chiến lược kinh doanh kinh điển.",
-      img: "https://picsum.photos/300/420?random=44",
+      img: "images/Tư_duy_phản_biện.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 20,
@@ -221,18 +221,18 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Marketing",
       desc: "Xu hướng marketing hiện đại.",
-      img: "https://picsum.photos/300/420?random=45",
+      img: "images/Marketing_4.0.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 21,
       sku: "KT008",
-      name: "Nghĩ Giàu Làm Giàu",
-      author: "Napoleon Hill",
+      name: "Kinh Tế Dành Cho Doanh Nhân",
+      author: "Nguyễn Đình Cungx`",
       price: 125000,
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Sách làm giàu kinh điển.",
-      img: "https://picsum.photos/300/420?random=46",
+      img: "images/Kinh_doanh.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 22,
@@ -243,29 +243,29 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Mô hình chiến lược kinh doanh đột phá.",
-      img: "https://picsum.photos/300/420?random=47",
+      img: "images/Chiến_lược_đại_dương_xanh.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 23,
       sku: "KT010",
-      name: "Kinh Tế Học Dành Cho Người Bận Rộn",
-      author: "Tyler Cowen",
+      name: "Những Đoạn Tâm Lý Thuyết Phục",
+      author: "Dan Ariely",
       price: 110000,
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Kinh tế học giản lược, dễ hiểu.",
-      img: "https://picsum.photos/300/420?random=48",
+      img: "images/Những_đoàn_tâm_lý_thuyết_phục.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 24,
       sku: "KT011",
-      name: "Influence - Tâm Lý Học Thuyết Phục",
-      author: "Robert Cialdini",
+      name: "Cách Nghĩ Để Thành Công",
+      author: "Dale Carnegie",
       price: 160000,
       category: "Kinh tế",
       subcategory: "Marketing",
       desc: "Cuốn sách kinh điển về nghệ thuật thuyết phục.",
-      img: "https://picsum.photos/300/420?random=49",
+      img: "images/Cách_Nghĩ_Để_Thành_Công.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 25,
@@ -276,53 +276,53 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Nghệ thuật lãnh đạo bản thân và tổ chức.",
-      img: "https://picsum.photos/300/420?random=50",
+      img: "images/Nhà_lãnh_đạo_không_chức_danh.png", // ĐÃ SỬA: Bỏ "/"
     },
 
     // ================= Thiếu nhi =================
     {
       id: 26,
       sku: "TN001",
-      name: "Doraemon Tập 1",
+      name: "Doraemon Tập 29",
       author: "Fujiko F. Fujio",
       price: 25000,
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Truyện tranh nổi tiếng Nhật Bản.",
-      img: "https://picsum.photos/300/420?random=51",
+      img: "images/Doreamon_tập_29.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 27,
       sku: "TN002",
-      name: "Conan Tập 1",
+      name: "Conan Tập 5",
       author: "Gosho Aoyama",
       price: 30000,
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Thám tử lừng danh Conan.",
-      img: "https://picsum.photos/300/420?random=52",
+      img: "images/Conan_tập_5.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 28,
       sku: "TN004",
-      name: "Totto-chan Bên Cửa Sổ",
-      author: "Kuroyanagi Tetsuko",
+      name: "Miko Tập 33",
+      author: "Nhiều tác giả",
       price: 85000,
       category: "Thiếu nhi",
       subcategory: "Giáo dục",
       desc: "Câu chuyện giáo dục đầy cảm hứng.",
-      img: "https://picsum.photos/300/420?random=54",
+      img: "images/MIKO_tập_33.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 29,
       sku: "TN005",
-      name: "Dragon Ball Tập 1",
+      name: "Dragon Ball Tập 19",
       author: "Akira Toriyama",
       price: 35000,
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Bộ manga nổi tiếng toàn cầu.",
-      img: "https://picsum.photos/300/420?random=55",
+      img: "images/Dragon_Ball_Tập_19.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 30,
@@ -333,18 +333,18 @@ const SAMPLE = {
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Truyện tranh Việt Nam nổi bật.",
-      img: "https://picsum.photos/300/420?random=56",
+      img: "images/Thần_đồng_đất_Việt_tập_1.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 31,
       sku: "TN007",
-      name: "Búp Sen Xanh",
-      author: "Sơn Tùng",
+      name: "Shin - cậu bé bút chì ",
+      author: "Takahashi Yoshito",
       price: 90000,
       category: "Thiếu nhi",
       subcategory: "Giáo dục",
       desc: "Tác phẩm văn học thiếu nhi nổi bật.",
-      img: "https://picsum.photos/300/420?random=57",
+      img: "images/Cậu_bé_bút_chì.jpg", // ĐÃ SỬA: Bỏ "/"
     },
 
     // ================= Giáo khoa =================
@@ -357,7 +357,7 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Toán lớp 1.",
-      img: "https://picsum.photos/300/420?random=58",
+      img: "images/Toan_Lop_1.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 33,
@@ -368,51 +368,51 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Tiếng Việt lớp 2.",
-      img: "https://picsum.photos/300/420?random=59",
+      img: "images/Tieng_Viet_lớp_2.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 34,
       sku: "GK003",
-      name: "Toán Lớp 6",
+      name: "Hóa học Lớp 8",
       author: "Nhiều tác giả",
       price: 25000,
       category: "Giáo khoa",
       subcategory: "Cấp 2",
-      desc: "Sách giáo khoa Toán lớp 6.",
-      img: "https://picsum.photos/300/420?random=60",
+      desc: "Sách giáo khoa Hóa học lớp 8.",
+      img: "images/Hóa_học_lớp_8.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 35,
       sku: "GK004",
-      name: "Ngữ Văn Lớp 7",
+      name: "Lịch sử Lớp 8",
       author: "Nhiều tác giả",
       price: 28000,
       category: "Giáo khoa",
       subcategory: "Cấp 2",
-      desc: "Sách giáo khoa Ngữ văn lớp 7.",
-      img: "https://picsum.photos/300/420?random=61",
+      desc: "Sách giáo khoa Lịch sử lớp 7.",
+      img: "images/Lịch_sử_lớp_8.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 36,
       sku: "GK005",
-      name: "Lịch Sử Lớp 8",
+      name: "Vật lí Lớp 11",
       author: "Nhiều tác giả",
       price: 27000,
       category: "Giáo khoa",
-      subcategory: "Cấp 2",
-      desc: "Sách giáo khoa Lịch sử lớp 8.",
-      img: "https://picsum.photos/300/420?random=62",
+      subcategory: "Cấp 3",
+      desc: "Sách giáo khoa Vật lí lớp 11.",
+      img: "images/Vật_lí_lớp_11.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 37,
       sku: "GK006",
-      name: "Toán Lớp 10",
+      name: "Mỹ thuật Lớp 5",
       author: "Nhiều tác giả",
       price: 32000,
       category: "Giáo khoa",
-      subcategory: "Cấp 3",
-      desc: "Sách giáo khoa Toán lớp 10.",
-      img: "https://picsum.photos/300/420?random=63",
+      subcategory: "Cấp 1",
+      desc: "Sách giáo khoa Mỹ thuật lớp 5.",
+      img: "images/Mĩ_thuật_lớp_5.png", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 38,
@@ -423,19 +423,19 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 3",
       desc: "Sách giáo khoa Hóa học lớp 11.",
-      img: "https://picsum.photos/300/420?random=64",
+      img: "images/Hóa_học_lớp_11.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 39,
       sku: "GK008",
-      name: "Ngữ Văn Lớp 12",
+      name: "Đạo đức Lớp 4",
       author: "Nhiều tác giả",
       price: 36000,
       category: "Giáo khoa",
-      subcategory: "Cấp 3",
-      desc: "Sách giáo khoa Ngữ văn lớp 12.",
-      img: "https://picsum.photos/300/420?random=65",
-    },
+      subcategory: "Cấp 1",
+      desc: "Sách giáo khoa Đạo đức lớp 4.",
+      img: "images/Đạo_đức_lớp_4.jpg", // ĐÃ SỬA: Bỏ "/"
+    }
   ],
 };
 
@@ -663,6 +663,7 @@ function addToCart(id, qty = 1) {
   if (typeof renderCart === "function") renderCart();
 }
 //--------------------------------------------------------------------------------------------------------------------------
+// SỬA LỖI Ở ĐÂY: Thêm thẻ <img> và loại bỏ lỗi cú pháp
 function renderCart() {
   const wrap = document.getElementById("cart-contents");
   if (!wrap) return;
@@ -675,14 +676,21 @@ function renderCart() {
   wrap.innerHTML =
     cart
       .map((i) => {
-        x;
         const p = data.find((x) => x.id === i.id);
-        return `<div class="cart-item-card"><h4>${p.name}</h4><p>Số lượng: ${
-          i.qty
-        }</p><p>Giá: ${(p.price * i.qty).toLocaleString("vi-VN")}đ</p></div>`;
+        
+        // SỬA: Thêm thẻ <img> và loại bỏ x;
+        return `<div class="cart-item-card" style="display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px dashed #eee; padding-bottom: 10px;">
+        <img src="${p.img}" alt="${p.name}" style="width: 70px; height: 90px; object-fit: cover; border: 1px solid #ddd;">
+        <div>
+          <h4>${p.name}</h4>
+          <p>Số lượng: ${
+            i.qty
+          }</p><p style="font-weight: 700;">Giá: ${(p.price * i.qty).toLocaleString("vi-VN")}đ</p>
+        </div>
+        </div>`;
       })
       .join("") +
-    `<p style="font-weight:700;margin-top:12px">Tổng: ${cart
+    `<p style="font-weight:700;margin-top:12px; border-top: 1px solid #333; padding-top: 10px;">Tổng cộng: ${cart
       .reduce((s, i) => {
         const p = getData().products.find((x) => x.id === i.id);
         return s + p.price * i.qty;
