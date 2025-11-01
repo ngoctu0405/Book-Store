@@ -15,6 +15,14 @@
         height: 185rem;
       }
 
+      @media (max-width: 575px) {
+        .container {
+          width: 100%;
+          max-width: 100vw !important;
+          --bs-gutter-x: 0 !important;
+          height: 460rem;
+        }
+      }
       /* ========================================================= */
       /* 4. HOT NEWS AND EVENT */
       /* ========================================================= */
@@ -90,6 +98,17 @@
         background-color: #22a6ce;
         border-radius: 1rem;
         padding: 1rem;
+      }
+      @media (max-width: 575px) {
+        .container_py-6 {
+          position: relative;
+          top: 20rem;
+          height: 210rem;
+        }
+        .events {
+          position: relative;
+          top: 10em;
+        }
       }
 
       /* ========================================================= */
@@ -198,6 +217,16 @@
       .btn-cart:hover {
         background: #e74c3c;
       }
+      /* Media */
+      @media (max-width: 575px) {
+        .hot_sale_selection {
+          /* display: flex; */
+          height: 130rem;
+        }
+        .product-card {
+          margin-bottom: 1.5rem; /* cách dọc giữa các card */
+        }
+      }
 
       /* ========================================================= */
       /* 6. NÚT ĐIỀU KHIỂN CAROUSEL */
@@ -270,11 +299,6 @@
       /* Media */
       /* =====================================================*/
       @media (max-width: 575px) {
-        .container {
-          width: 100%;
-          max-width: 100vw !important;
-          --bs-gutter-x: 0 !important;
-        }
         .banner-center {
           display: flex;
         }
@@ -524,6 +548,7 @@
               <h1 class="hot-sale">Top sách bán chạy</h1>
             </div>
           </div>
+
           <div
             id="carouselExampleIndicators"
             class="carousel slide"
@@ -533,64 +558,70 @@
             <div class="carousel-inner-hot">
               <!-- Trang 1 -->
               <div class="carousel-item active">
-                <div class="d-flex justify-content-between">
-                  <div class="product-card">
-                    <div class="card-img">
-                      <img
-                        src="./images/Đắc Nhân Tâm - Dale Carnegie.jpg"
-                        alt="Đắc Nhân Tâm"
-                        class="img-fluid"
-                      />
-                    </div>
-                    <h4 class="card-title">Đắc Nhân Tâm</h4>
-                    <div class="price">85.000đ</div>
-                    <div class="card-actions">
-                      <a href="product-detail.html?id=1" class="btn btn-small"
-                        >Xem</a
-                      >
-                      <a href="product-detail.html?id=1" class="btn btn-cart"
-                        >Thêm vào giỏ</a
-                      >
-                    </div>
-                  </div>
-
-                  <div class="product-card">
-                    <div class="card-img">
-                      <img
-                        src="./images/Tuổi Trẻ Đáng Giá Bao Nhiêu.jpg"
-                        alt="Tuổi Trẻ Đáng Giá Bao Nhiêu"
-                        class="img-fluid"
-                      />
-                    </div>
-                    <h4 class="card-title">Tuổi Trẻ Đáng Giá Bao Nhiêu</h4>
-                    <div class="price">90.000đ</div>
-                    <div class="card-actions">
-                      <a href="product-detail.html?id=2" class="btn btn-small"
-                        >Xem</a
-                      >
-                      <a href="product-detail.html?id=2" class="btn btn-cart"
-                        >Thêm vào giỏ</a
-                      >
+                <div class="row">
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-card">
+                      <div class="card-img">
+                        <img
+                          src="./images/Đắc Nhân Tâm - Dale Carnegie.jpg"
+                          alt="Đắc Nhân Tâm"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <h4 class="card-title">Đắc Nhân Tâm</h4>
+                      <div class="price">85.000đ</div>
+                      <div class="card-actions">
+                        <a href="product-detail.html?id=1" class="btn btn-small"
+                          >Xem</a
+                        >
+                        <a href="product-detail.html?id=1" class="btn btn-cart"
+                          >Thêm vào giỏ</a
+                        >
+                      </div>
                     </div>
                   </div>
 
-                  <div class="product-card">
-                    <div class="card-img">
-                      <img
-                        src="./images/Chí Phèo_ Khi nghệ thuật là tiếng kêu đau khổ thoát ra từ kiếp người lầm than.jpg"
-                        alt="Chí Phèo"
-                        class="img-fluid"
-                      />
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-card">
+                      <div class="card-img">
+                        <img
+                          src="./images/Tuổi Trẻ Đáng Giá Bao Nhiêu.jpg"
+                          alt="Tuổi Trẻ Đáng Giá Bao Nhiêu"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <h4 class="card-title">Tuổi Trẻ Đáng Giá Bao Nhiêu</h4>
+                      <div class="price">90.000đ</div>
+                      <div class="card-actions">
+                        <a href="product-detail.html?id=2" class="btn btn-small"
+                          >Xem</a
+                        >
+                        <a href="product-detail.html?id=2" class="btn btn-cart"
+                          >Thêm vào giỏ</a
+                        >
+                      </div>
                     </div>
-                    <h4 class="card-title">Chí Phèo</h4>
-                    <div class="price">70.000đ</div>
-                    <div class="card-actions">
-                      <a href="product-detail.html?id=8" class="btn btn-small"
-                        >Xem</a
-                      >
-                      <a href="product-detail.html?id=3" class="btn btn-cart"
-                        >Thêm vào giỏ</a
-                      >
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-card">
+                      <div class="card-img">
+                        <img
+                          src="./images/Chí Phèo_ Khi nghệ thuật là tiếng kêu đau khổ thoát ra từ kiếp người lầm than.jpg"
+                          alt="Chí Phèo"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <h4 class="card-title">Chí Phèo</h4>
+                      <div class="price">70.000đ</div>
+                      <div class="card-actions">
+                        <a href="product-detail.html?id=8" class="btn btn-small"
+                          >Xem</a
+                        >
+                        <a href="product-detail.html?id=3" class="btn btn-cart"
+                          >Thêm vào giỏ</a
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -598,64 +629,70 @@
 
               <!-- Trang 2 -->
               <div class="carousel-item">
-                <div class="d-flex justify-content-between">
-                  <div class="product-card">
-                    <div class="card-img">
-                      <img
-                        src="./images/Lão Hạc của Nam Cao.jpg"
-                        alt="Lão Hạc"
-                        class="img-fluid"
-                      />
-                    </div>
-                    <h4 class="card-title">Lão Hạc</h4>
-                    <div class="price">60.000đ</div>
-                    <div class="card-actions">
-                      <a href="product-detail.html?id=5" class="btn btn-small"
-                        >Xem</a
-                      >
-                      <a href="product-detail.html?id=4" class="btn btn-cart"
-                        >Thêm vào giỏ</a
-                      >
-                    </div>
-                  </div>
-
-                  <div class="product-card">
-                    <div class="card-img">
-                      <img
-                        src="./images/Sách- Nhật Ký Trong Tù - Hồ Chí Minh (Ml).jpg"
-                        alt="Nhật Ký Trong Tù"
-                        class="img-fluid"
-                      />
-                    </div>
-                    <h4 class="card-title">Nhật Ký Trong Tù</h4>
-                    <div class="price">80.000đ</div>
-                    <div class="card-actions">
-                      <a href="product-detail.html?id=6" class="btn btn-small"
-                        >Xem</a
-                      >
-                      <a href="product-detail.html?id=5" class="btn btn-cart"
-                        >Thêm vào giỏ</a
-                      >
+                <div class="row">
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-card">
+                      <div class="card-img">
+                        <img
+                          src="./images/Lão Hạc của Nam Cao.jpg"
+                          alt="Lão Hạc"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <h4 class="card-title">Lão Hạc</h4>
+                      <div class="price">60.000đ</div>
+                      <div class="card-actions">
+                        <a href="product-detail.html?id=5" class="btn btn-small"
+                          >Xem</a
+                        >
+                        <a href="product-detail.html?id=4" class="btn btn-cart"
+                          >Thêm vào giỏ</a
+                        >
+                      </div>
                     </div>
                   </div>
 
-                  <div class="product-card">
-                    <div class="card-img">
-                      <img
-                        src="./images/Số đỏ.jpg"
-                        alt="Số Đỏ"
-                        class="img-fluid"
-                      />
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-card">
+                      <div class="card-img">
+                        <img
+                          src="./images/Sách- Nhật Ký Trong Tù - Hồ Chí Minh (Ml).jpg"
+                          alt="Nhật Ký Trong Tù"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <h4 class="card-title">Nhật Ký Trong Tù</h4>
+                      <div class="price">80.000đ</div>
+                      <div class="card-actions">
+                        <a href="product-detail.html?id=6" class="btn btn-small"
+                          >Xem</a
+                        >
+                        <a href="product-detail.html?id=5" class="btn btn-cart"
+                          >Thêm vào giỏ</a
+                        >
+                      </div>
                     </div>
-                    <h4 class="card-title">Số Đỏ</h4>
-                    <div class="price">95.000đ</div>
-                    <div class="card-actions">
-                      <a href="product-detail.html?id=7" class="btn btn-small"
-                        >Xem</a
-                      >
-                      <a href="product-detail.html?id=6" class="btn btn-cart"
-                        >Thêm vào giỏ</a
-                      >
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-card">
+                      <div class="card-img">
+                        <img
+                          src="./images/Số đỏ.jpg"
+                          alt="Số Đỏ"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <h4 class="card-title">Số Đỏ</h4>
+                      <div class="price">95.000đ</div>
+                      <div class="card-actions">
+                        <a href="product-detail.html?id=7" class="btn btn-small"
+                          >Xem</a
+                        >
+                        <a href="product-detail.html?id=6" class="btn btn-cart"
+                          >Thêm vào giỏ</a
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -663,70 +700,83 @@
 
               <!-- Trang 3 -->
               <div class="carousel-item">
-                <div class="d-flex justify-content-between">
-                  <div class="product-card">
-                    <div class="card-img">
-                      <img
-                        src="./images/Sách Cha Giàu Cha Nghèo - Đọc Sách Online, Nghe Sách Nói, Tải Sách Miễn Phí (PDF).jpg"
-                        alt="Chí phèo"
-                        class="img-fluid"
-                      />
-                    </div>
-                    <h4 class="card-title">Cha giàu cha ngèo</h4>
-                    <div class="price">120.000đ</div>
-                    <div class="card-actions">
-                      <a href="product-detail.html?id=14" class="btn btn-small"
-                        >Xem</a
-                      >
-                      <a href="product-detail.html?id=7" class="btn btn-cart"
-                        >Thêm vào giỏ</a
-                      >
-                    </div>
-                  </div>
-
-                  <div class="product-card">
-                    <div class="card-img">
-                      <img
-                        src="./images/Người lái đò sông Đà.jpg"
-                        alt="Người Lái Đò Sông Đà"
-                        class="img-fluid"
-                      />
-                    </div>
-                    <h4 class="card-title">Người Lái Đò Sông Đà</h4>
-                    <div class="price">72.000đ</div>
-                    <div class="card-actions">
-                      <a href="product-detail.html?id=10" class="btn btn-small"
-                        >Xem</a
-                      >
-                      <a href="product-detail.html?id=8" class="btn btn-cart"
-                        >Thêm vào giỏ</a
-                      >
+                <div class="row">
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-card">
+                      <div class="card-img">
+                        <img
+                          src="./images/Sách Cha Giàu Cha Nghèo - Đọc Sách Online, Nghe Sách Nói, Tải Sách Miễn Phí (PDF).jpg"
+                          alt="Cha Giàu Cha Nghèo"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <h4 class="card-title">Cha Giàu Cha Nghèo</h4>
+                      <div class="price">120.000đ</div>
+                      <div class="card-actions">
+                        <a
+                          href="product-detail.html?id=14"
+                          class="btn btn-small"
+                          >Xem</a
+                        >
+                        <a href="product-detail.html?id=7" class="btn btn-cart"
+                          >Thêm vào giỏ</a
+                        >
+                      </div>
                     </div>
                   </div>
 
-                  <div class="product-card">
-                    <div class="card-img">
-                      <img
-                        src="./images/Nhật ký Đặng Thùy Trâm.jpg"
-                        alt="Nhật Ký Đặng Thùy Trâm"
-                        class="img-fluid"
-                      />
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-card">
+                      <div class="card-img">
+                        <img
+                          src="./images/Người lái đò sông Đà.jpg"
+                          alt="Người Lái Đò Sông Đà"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <h4 class="card-title">Người Lái Đò Sông Đà</h4>
+                      <div class="price">72.000đ</div>
+                      <div class="card-actions">
+                        <a
+                          href="product-detail.html?id=10"
+                          class="btn btn-small"
+                          >Xem</a
+                        >
+                        <a href="product-detail.html?id=8" class="btn btn-cart"
+                          >Thêm vào giỏ</a
+                        >
+                      </div>
                     </div>
-                    <h4 class="card-title">Nhật Ký Đặng Thùy Trâm</h4>
-                    <div class="price">85.000đ</div>
-                    <div class="card-actions">
-                      <a href="product-detail.html?id=11" class="btn btn-small"
-                        >Xem</a
-                      >
-                      <a href="product-detail.html?id=9" class="btn btn-cart"
-                        >Thêm vào giỏ</a
-                      >
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-card">
+                      <div class="card-img">
+                        <img
+                          src="./images/Nhật ký Đặng Thùy Trâm.jpg"
+                          alt="Nhật Ký Đặng Thùy Trâm"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <h4 class="card-title">Nhật Ký Đặng Thùy Trâm</h4>
+                      <div class="price">85.000đ</div>
+                      <div class="card-actions">
+                        <a
+                          href="product-detail.html?id=11"
+                          class="btn btn-small"
+                          >Xem</a
+                        >
+                        <a href="product-detail.html?id=9" class="btn btn-cart"
+                          >Thêm vào giỏ</a
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
+            <!-- Nút điều hướng Carousel -->
             <button
               class="carousel-control-prev"
               type="button"
@@ -908,158 +958,161 @@
           </div>
 
           <!-- Cột SỰ KIỆN -->
-          <div class="col-md-6">
-            <div class="text-news">
-              <div class="new_event">
-                <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
+          <div class="events">
+            <div class="col-md-6">
+              <div class="text-news">
+                <div class="new_event">
+                  <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
+                </div>
               </div>
-            </div>
-            <div
-              id="eventCarousel"
-              class="carousel slide"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-inner">
-                <!-- Slide 1 -->
-                <div class="carousel-item active">
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <article class="news-card" data-id="5">
-                        <div class="news-img">
-                          <img
-                            src="./images/Talk show.png"
-                            alt="Talkshow Sao Hỏa"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">🎪 Sự kiện</span>
-                            <span class="news-date">📅 18/01/2024</span>
+              <div
+                id="eventCarousel"
+                class="carousel slide"
+                data-bs-ride="carousel"
+              >
+                <div class="carousel-inner">
+                  <!-- Slide 1 -->
+                  <div class="carousel-item active">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <article class="news-card" data-id="5">
+                          <div class="news-img">
+                            <img
+                              src="./images/Talk show.png"
+                              alt="Talkshow Sao Hỏa"
+                            />
                           </div>
-                          <h3>
-                            TALKSHOW CUỐI NĂM: HÀNH TRÌNH TỚI SAO HỎA &amp;
-                            TƯƠNG LAI
-                          </h3>
-                          <p>
-                            2023 là một năm kinh tế đầy biến động, đã đến lúc
-                            nhìn lại hành trình đã qua và sẵn sàng cho tương
-                            lai...
-                          </p>
-                          <a href="news-detail.html?id=5" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
+                          <div class="news-content">
+                            <div class="news-meta">
+                              <span class="news-category">🎪 Sự kiện</span>
+                              <span class="news-date">📅 18/01/2024</span>
+                            </div>
+                            <h3>
+                              TALKSHOW CUỐI NĂM: HÀNH TRÌNH TỚI SAO HỎA &amp;
+                              TƯƠNG LAI
+                            </h3>
+                            <p>
+                              2023 là một năm kinh tế đầy biến động, đã đến lúc
+                              nhìn lại hành trình đã qua và sẵn sàng cho tương
+                              lai...
+                            </p>
+                            <a href="news-detail.html?id=5" class="read-more"
+                              >Đọc thêm →</a
+                            >
+                          </div>
+                        </article>
+                      </div>
 
-                    <div class="col-md-6">
-                      <article class="news-card" data-id="6">
-                        <div class="news-img">
-                          <img
-                            src="./images/Hội sách.jpg"
-                            alt="Hội sách mùa hè 2024"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">Văn hóa - Sách</span>
-                            <span class="news-date">📅 31/10/2025</span>
+                      <div class="col-md-6">
+                        <article class="news-card" data-id="6">
+                          <div class="news-img">
+                            <img
+                              src="./images/Hội sách.jpg"
+                              alt="Hội sách mùa hè 2024"
+                            />
                           </div>
-                          <h3>HỘI SÁCH MÙA HÈ 2024 – KẾT NỐI TRI THỨC</h3>
-                          <p>
-                            Một sự kiện thường niên nhằm lan tỏa văn hóa đọc và
-                            kết nối những người yêu sách...
-                          </p>
-                          <a href="news-detail.html?id=6" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
+                          <div class="news-content">
+                            <div class="news-meta">
+                              <span class="news-category">Văn hóa - Sách</span>
+                              <span class="news-date">📅 31/10/2025</span>
+                            </div>
+                            <h3>HỘI SÁCH MÙA HÈ 2024 – KẾT NỐI TRI THỨC</h3>
+                            <p>
+                              Một sự kiện thường niên nhằm lan tỏa văn hóa đọc
+                              và kết nối những người yêu sách...
+                            </p>
+                            <a href="news-detail.html?id=6" class="read-more"
+                              >Đọc thêm →</a
+                            >
+                          </div>
+                        </article>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Slide 2 -->
+                  <div class="carousel-item">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <article class="news-card" data-id="7">
+                          <div class="news-img">
+                            <img
+                              src="./images/Hành trình tri thức.jpg"
+                              alt="Hành trình tri thức"
+                            />
+                          </div>
+                          <div class="news-content">
+                            <div class="news-meta">
+                              <span class="news-category">Văn hóa - sách</span>
+                              <span class="news-date">📅 28/10/2025</span>
+                            </div>
+                            <h3>
+                              Ra mắt bộ sách mới “Hành Trình Tri Thức 2025” thu
+                              hút độc giả trẻ
+                            </h3>
+                            <p>
+                              Mới đây, tại Hà Nội, nhà xuất bản Tri Thức Việt đã
+                              tổ chức lễ ra mắt bộ sách “Hành Trình Tri Thức
+                              2025”...
+                            </p>
+                            <a href="news-detail.html?id=7" class="read-more"
+                              >Đọc thêm →</a
+                            >
+                          </div>
+                        </article>
+                      </div>
+
+                      <div class="col-md-6">
+                        <article class="news-card" data-id="8">
+                          <div class="news-img">
+                            <img
+                              src="./images/Work shop.jpg"
+                              alt="Workshop sáng tạo"
+                            />
+                          </div>
+                          <div class="news-content">
+                            <div class="news-meta">
+                              <span class="news-category">🎪 Sự kiện</span>
+                              <span class="news-date">📅 15/06/2024</span>
+                            </div>
+                            <h3>
+                              WORKSHOP: SÁNG TẠO TRONG CÔNG NGHỆ &amp; XU HƯỚNG
+                              MỚI
+                            </h3>
+                            <p>
+                              Chương trình quy tụ các chuyên gia hàng đầu chia
+                              sẻ kinh nghiệm sáng tạo trong công nghệ số...
+                            </p>
+                            <a href="news-detail.html?id=8" class="read-more"
+                              >Đọc thêm →</a
+                            >
+                          </div>
+                        </article>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <article class="news-card" data-id="7">
-                        <div class="news-img">
-                          <img
-                            src="./images/Hành trình tri thức.jpg"
-                            alt="Hành trình tri thức"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">Văn hóa - sách</span>
-                            <span class="news-date">📅 28/10/2025</span>
-                          </div>
-                          <h3>
-                            Ra mắt bộ sách mới “Hành Trình Tri Thức 2025” thu
-                            hút độc giả trẻ
-                          </h3>
-                          <p>
-                            Mới đây, tại Hà Nội, nhà xuất bản Tri Thức Việt đã
-                            tổ chức lễ ra mắt bộ sách “Hành Trình Tri Thức
-                            2025”...
-                          </p>
-                          <a href="news-detail.html?id=7" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-
-                    <div class="col-md-6">
-                      <article class="news-card" data-id="8">
-                        <div class="news-img">
-                          <img
-                            src="./images/Work shop.jpg"
-                            alt="Workshop sáng tạo"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">🎪 Sự kiện</span>
-                            <span class="news-date">📅 15/06/2024</span>
-                          </div>
-                          <h3>
-                            WORKSHOP: SÁNG TẠO TRONG CÔNG NGHỆ &amp; XU HƯỚNG
-                            MỚI
-                          </h3>
-                          <p>
-                            Chương trình quy tụ các chuyên gia hàng đầu chia sẻ
-                            kinh nghiệm sáng tạo trong công nghệ số...
-                          </p>
-                          <a href="news-detail.html?id=8" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-                  </div>
-                </div>
+                <!-- Controls -->
+                <button
+                  class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#eventCarousel"
+                  data-bs-slide="prev"
+                >
+                  <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button
+                  class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#eventCarousel"
+                  data-bs-slide="next"
+                >
+                  <span class="carousel-control-next-icon"></span>
+                </button>
               </div>
-
-              <!-- Controls -->
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#eventCarousel"
-                data-bs-slide="prev"
-              >
-                <span class="carousel-control-prev-icon"></span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#eventCarousel"
-                data-bs-slide="next"
-              >
-                <span class="carousel-control-next-icon"></span>
-              </button>
             </div>
+            <
           </div>
         </div>
       </section>
