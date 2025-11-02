@@ -1,28 +1,131 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Admin - user-edit.html</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết Khách hàng</title>
+
+     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/admin_style.css">
 </head>
-
 <body>
-    <header class="header">
-        <div class="logo">Admin - Nhà Sách</div>
-        <nav class="nav"><a href="../index.html">Về trang chính</a></nav>
-    </header>
-    <main class='container'>
-        <h2>Sửa người dùng</h2>
-        <div class='card'>Form edit (placeholder)</div>
-    </main>
-    <footer class="footer">
-        <p>© 2025 Admin</p>
-    </footer>
-    <script src="../assets/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    
+    <aside class="sidebar d-flex flex-column vh-100">
+        <div class="sidebar-header">
+             Literary Haven - Admin
+        </div>
 
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">Bảng điều khiển</a>
+            </li>
+            <li class="nav-item">
+                <a href="users.html" class="nav-link">Khách hàng</a>
+            </li>
+            <li class="nav-item">
+                <a href="categories.html" class="nav-link">Loại sản phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a href="products.html" class="nav-link">Sản phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a href="purchase-orders.html" class="nav-link">Nhập hàng</a>
+            </li>
+             <li class="nav-item">
+                <a href="pricing.html" class="nav-link">Quản lý giá</a>
+            </li>
+            <li class="nav-item">
+                <a href="orders.html" class="nav-link">Đơn hàng</a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html" class="nav-link">Tồn kho</a>
+            </li>
+            <li class="nav-item">
+                <a href="reports.html" class="nav-link">Báo cáo</a>
+            </li>
+        </ul>
+        
+        <div class="mt-auto p-3">
+             <ul class="nav nav-pills flex-column">
+                <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link">Đăng xuất</a></li>
+             </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar p-3 d-flex justify-content-between align-items-center">
+            <form class="search-bar d-flex align-items-center">
+                <input class="form-control" type="search" placeholder="Tìm kiếm...">
+            </form>
+            <div class="profile-area d-flex align-items-center">
+                <div class="profile-pic ms-3"></div>
+            </div>
+        </header>
+
+        <div class="page-content p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0">Chi tiết Khách hàng</h1>
+                <a href="users.html" class="btn btn-secondary">Quay lại danh sách</a>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="form-container p-4">
+                        <h3 class="h5 mb-3">Thông tin cơ bản</h3>
+                        <div class="mb-3">
+                            <label class="form-label">Tên khách hàng</label>
+                            <input type="text" class="form-control" value="John Doe" disabled readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" value="john.doe@example.com" disabled readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ngày tham gia</label>
+                            <input type="text" class="form-control" value="20/10/2025" disabled readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="card mb-4">
+                        <div class="card-header"><h3 class="h5 mb-0">Quản lý Tài khoản</h3></div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Trạng thái hiện tại</label>
+                                <span class="status delivered d-block w-100 text-center">Hoạt động</span>
+                                </div>
+                            <hr>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-danger">Khóa tài khoản này</button>
+                                <button class="btn btn-success">Mở khóa tài khoản</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header"><h3 class="h5 mb-0">Reset Mật khẩu</h3></div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="new-password" class="form-label">Mật khẩu mới</V>
+                                    <input type="password" class="form-control" id="new-password" placeholder="Nhập mật khẩu tạm thời...">
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-warning">Đặt lại mật khẩu</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <script src="../assets/js/admin_main.js"></script>
+    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

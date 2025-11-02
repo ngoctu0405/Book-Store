@@ -1,0 +1,175 @@
+/* --- 1. BIẾN MÀU VÀ THIẾT LẬP CHUNG --- */
+:root {
+    /* Font mặc định của Bootstrap sẽ được sử dụng */
+    --primary-color: #3a3a8d; /* Màu tím than đậm */
+    --light-primary: #4a4a9f;
+}
+
+/* Ghi đè màu primary của Bootstrap */
+.btn-primary,
+.bg-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f7fa;
+}
+
+/* --- 2. BỐ CỤC CHÍNH (SIDEBAR & MAIN) --- */
+
+/* --- Sidebar (Thanh bên) --- */
+.sidebar {
+    width: 250px;
+    background-color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding: 20px 20px 0 20px;
+    color: white;
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    color: #e0e0e0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 4px 15px;
+}
+
+.sidebar .nav-link:hover {
+    background-color: var(--light-primary);
+    color: white;
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--light-primary);
+    color: white;
+    font-weight: 500;
+}
+
+/* --- Khu vực nội dung chính --- */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Thanh tìm kiếm (Phía trên) --- */
+.top-bar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.search-bar .form-control {
+    border: none;
+    background-color: #f4f7fa;
+}
+.search-bar {
+    border-radius: 20px;
+    background-color: #f4f7fa;
+    padding: 2px 15px;
+}
+.search-bar .btn {
+    background: transparent;
+    border: none;
+    color: #888;
+}
+.search-bar .form-control:focus {
+    box-shadow: none;
+    background-color: #f4f7fa;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffc107;
+}
+
+/* --- 3. CÁC COMPONENT TÙY CHỈNH --- */
+
+/* --- Thẻ thống kê (Dashboard) --- */
+.stat-card {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-card.dark {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* --- Bảng (Tables) --- */
+.table {
+    vertical-align: middle;
+}
+
+/* Trạng thái (Pills) */
+.status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: 500;
+    font-size: 12px;
+}
+.status.delivered { /* Đã giao / Hoạt động */
+    background-color: #e0f8e9;
+    color: #28a745;
+}
+.status.pending { /* Chờ xử lý / Đã khóa / Đã ẩn */
+    background-color: #fff8e1;
+    color: #ffc107;
+}
+.status.processed { /* Đã xử lý (Đơn hàng) */
+    background-color: #e0f0f8;
+    color: #0d6efd;
+}
+.status.cancelled { /* Đã hủy (Đơn hàng) */
+    background-color: #f8e0e0;
+    color: #dc3545;
+}
+
+/* Cảnh báo tồn kho (Inventory) */
+.table-danger-light {
+    --bs-table-bg: #f8e0e0;
+    --bs-table-color: #dc3545;
+    font-weight: 500;
+}
+
+/* Ô nhập % lợi nhuận (Pricing) */
+.profit-input {
+    width: 80px;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+}
+.profit-input:focus {
+    outline: 1px solid var(--primary-color);
+}
+
+/* --- Biểu mẫu (Forms) --- */
+.form-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.form-actions {
+    text-align: right;
+}
+
+/* --- Trang Chi tiết Đơn hàng --- */
+.order-detail-card .item-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}

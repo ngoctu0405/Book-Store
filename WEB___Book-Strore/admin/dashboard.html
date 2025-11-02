@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Bảng điều khiển Admin</title>
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/admin_style.css">
+</head>
+<body>
+    
+    <aside class="sidebar d-flex flex-column vh-100">
+        <div class="sidebar-header">
+          Literary Haven - Admin
+        </div>
+
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">Bảng điều khiển</a>
+            </li>
+            <li class="nav-item">
+                <a href="users.html" class="nav-link">Khách hàng</a>
+            </li>
+            <li class="nav-item">
+                <a href="categories.html" class="nav-link">Loại sản phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a href="products.html" class="nav-link">Sản phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a href="purchase-orders.html" class="nav-link">Nhập hàng</a>
+            </li>
+             <li class="nav-item">
+                <a href="pricing.html" class="nav-link">Quản lý giá</a>
+            </li>
+            <li class="nav-item">
+                <a href="orders.html" class="nav-link">Đơn hàng</a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html" class="nav-link">Tồn kho</a>
+            </li>
+            <li class="nav-item">
+                <a href="reports.html" class="nav-link">Báo cáo</a>
+            </li>
+        </ul>
+        
+        <div class="mt-auto p-3">
+             <ul class="nav nav-pills flex-column">
+                <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link">Đăng xuất</a></li>
+             </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar p-3 d-flex justify-content-between align-items-center">
+            <form class="search-bar d-flex align-items-center">
+                <input class="form-control" type="search" placeholder="Tìm kiếm...">
+            </form>
+            <div class="profile-area d-flex align-items-center">
+                <div class="profile-pic ms-3"></div>
+            </div>
+        </header>
+
+        <div class="page-content p-4">
+            <h1 class="mb-4">Bảng điều khiển</h1>
+
+            <div class="row g-4 mb-4">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card stat-card">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2 class="h1 mb-0">1,504</h2>
+                                <span>Lượt xem</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card stat-card dark">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2 class="h1 mb-0">80</h2>
+                                <span>Doanh số</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card stat-card">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2 class="h1 mb-0">284</h2>
+                                <span>Bình luận</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card stat-card">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2 class="h1 mb-0">36.3Mđ</h2>
+                                <span>Doanh thu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="h5 mb-0">Đơn hàng gần đây</h3>
+                    <a href="orders.html" class="btn btn-sm btn-primary">Xem tất cả</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tên</th>
+                                    <th>Giá</th>
+                                    <th>Thanh toán</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dảk bủh</td>
+                                    <td>300.000đ</td>
+                                    <td>Đã thanh toán</td>
+                                    <td><span class="status delivered">Đã vận chuyển</span></td>
+                                </tr>
+                                <tr>
+                                    <td>lmao lmao</td>
+                                    <td>450.000đ</td>
+                                    <td>Chưa thanh toán</td>
+                                    <td><span class="status pending">Chờ xử lý</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </main>
+    <script src="../assets/js/admin_main.js"></script>
+    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
