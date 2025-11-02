@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <style>
     body {
-      /* Matched: Light Beige/Brown to Light Blue gradient from product-detail.html body */
       background: linear-gradient(135deg, #f5f2e8 0%, #e8d5b7 50%, #7fb3d3 100%);
       color: #2c3e50;
       min-height: 100vh;
@@ -24,15 +23,7 @@
     .page-heading {
       font-size: 2.5rem;
       font-weight: 700;
-      /* Đã loại bỏ các thuộc tính tạo hiệu ứng chữ chuyển màu */
-      /* background: linear-gradient(135deg, #4f9da6 0%, #7fb3d3 100%); */
-      /* -webkit-background-clip: text; */
-      /* -webkit-text-fill-color: transparent; */
-      /* background-clip: text; */
-      
-      /* Thêm màu chữ mặc định để đảm bảo tiêu đề hiện rõ */
-      color: #2c3e50; /* Hoặc màu đen (#000) nếu bạn muốn */
-      
+      color: #2c3e50;
       margin-top: 70px;
       margin-bottom: 2rem;
       text-align: center;
@@ -46,9 +37,7 @@
       background: white;
       border-radius: 24px;
       padding: 3rem;
-      /* Matched: Shadow color based on #4f9da6 */
       box-shadow: 0 10px 40px rgba(79, 157, 166, 0.15);
-      /* Matched: Border color based on #82c09a */
       border: 1px solid rgba(130, 192, 154, 0.2);
       min-height: 400px;
     }
@@ -56,7 +45,6 @@
     /* Filter Section */
     .filter-section {
       display: flex;
-      /* **ĐÃ SỬA: justify-content để căn hai phần tử sang hai bên** */
       justify-content: space-between; 
       align-items: center;
       margin-bottom: 2rem;
@@ -67,33 +55,25 @@
     }
 
     .section-title {
-      /* **ĐÃ SỬA: Tăng kích thước font chữ và In đậm** */
       font-size: 1.6rem; 
       color: #2c3e50;
       font-weight: 700;
     }
 
-    .filter-tabs {
-        /* Đã ẩn khối này vì nó không còn được sử dụng */
-        display: none; 
-    }
-
     .order-stats {
-      /* Đã chỉnh lại style cho phù hợp với nội dung duy nhất còn lại */
       display: flex;
       gap: 1rem;
-      font-size: 1.2rem; /* Tăng kích thước font */
+      font-size: 1.2rem;
       color: #2c3e50;
       font-weight: 600;
     }
 
     .order-stats strong {
-      /* Changed to #4f9da6 */
       color: #4f9da6;
-      font-size: 1.3rem; /* Tăng kích thước số lượng */
+      font-size: 1.3rem;
     }
 
-    /* Order Card - Thiết kế giống Cart Item */
+    /* Order Card */
     .order-card {
       background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
       border-radius: 16px;
@@ -106,15 +86,12 @@
 
     .order-card:hover {
       transform: translateX(8px);
-      /* Matched: Shadow color based on #4f9da6 */
       box-shadow: 0 8px 24px rgba(79, 157, 166, 0.15);
-      /* Matched: Border color based on #4f9da6 */
       border-color: rgba(79, 157, 166, 0.3);
     }
 
     .order-header {
       display: flex;
-      /* Chỉ còn 2 phần tử: ID/Date và Status (Status đã bị xóa trong renderOrders, nên chỉ còn ID/Date) */
       justify-content: flex-start; 
       align-items: center;
       margin-bottom: 1.5rem;
@@ -140,7 +117,6 @@
     }
 
     .order-id span {
-      /* Changed to #4f9da6 */
       color: #4f9da6;
     }
 
@@ -151,39 +127,9 @@
       color: #7f8c8d;
       font-size: 0.95rem;
     }
-    
-    /* Đã giữ lại style cho phần Modal Detail */
-    .order-status {
-      padding: 0.6rem 1.5rem;
-      border-radius: 25px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .status-delivered {
-      /* Giữ màu xanh lá cây đậm cho đã giao */
-      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-      color: white;
-    }
-
-    .status-processing {
-      /* Giữ màu hồng/đỏ cam cho đang xử lý */
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      color: white;
-    }
-
-    .status-cancelled {
-      /* Giữ màu xanh navy/xám đậm cho đã hủy */
-      background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
-      color: white;
-    }
 
     /* Order Items Preview */
     .order-items-preview {
-      /* Changed to #4f9da6 based rgba */
       background: rgba(79, 157, 166, 0.05);
       border-radius: 12px;
       padding: 1.5rem;
@@ -278,7 +224,6 @@
     .order-total {
       font-size: 1.6rem;
       font-weight: 700;
-      /* Changed to #4f9da6 */
       color: #4f9da6;
       display: flex;
       align-items: center;
@@ -308,19 +253,16 @@
     }
 
     .btn-detail {
-      /* Matched: Primary Green/Teal Gradient (#82c09a and #4f9da6) */
       background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
       color: white;
     }
 
     .btn-detail:hover {
       transform: scale(1.05);
-      /* Matched: Shadow color based on #4f9da6 */
       box-shadow: 0 5px 15px rgba(79, 157, 166, 0.4);
     }
 
     .btn-reorder {
-      /* Changed: Secondary accent color (Cart button gradient from product-detail.html: #ff7f50 0%, #ff4500 100%) */
       background: linear-gradient(135deg, #ff7f50 0%, #ff4500 100%);
       color: white;
     }
@@ -358,7 +300,6 @@
     .btn-continue {
       display: inline-block;
       padding: 1.2rem 2.5rem;
-      /* Matched: Primary Green/Teal Gradient (#82c09a and #4f9da6) */
       background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
       color: white;
       text-decoration: none;
@@ -366,13 +307,11 @@
       font-weight: 700;
       font-size: 1.1rem;
       transition: all 0.3s ease;
-      /* Matched: Shadow color based on #4f9da6 */
       box-shadow: 0 4px 16px rgba(79, 157, 166, 0.25);
     }
 
     .btn-continue:hover {
       transform: translateY(-3px);
-      /* Matched: Shadow color based on #4f9da6 */
       box-shadow: 0 8px 24px rgba(79, 157, 166, 0.35);
       color: white;
     }
@@ -451,7 +390,6 @@
     }
 
     .modal-header h2 {
-      /* Changed to #4f9da6 */
       color: #4f9da6;
       font-size: 2rem;
       margin-bottom: 0.5rem;
@@ -464,7 +402,6 @@
       gap: 1.5rem;
       margin-bottom: 2rem;
       padding: 1.5rem;
-      /* Matched: Shipping Info Background Gradient from product-detail.html */
       background: linear-gradient(135deg, #f0f8f7 0%, #e6f4f1 100%);
       border-radius: 12px;
     }
@@ -578,7 +515,6 @@
     .modal-item-quantity {
       text-align: right;
       font-weight: 600;
-      /* Changed to #4f9da6 */
       color: #4f9da6;
       font-size: 1.1rem;
     }
@@ -593,7 +529,6 @@
     .modal-summary {
       margin-top: 2rem;
       padding: 1.5rem;
-      /* Matched: Shipping Info Background Gradient from product-detail.html */
       background: linear-gradient(135deg, #f0f8f7 0%, #e6f4f1 100%);
       border-radius: 12px;
     }
@@ -624,7 +559,6 @@
     .summary-row.total {
       font-size: 1.6rem;
       font-weight: 700;
-      /* Changed to #4f9da6 */
       color: #4f9da6;
       border-top: 2px solid #ddd;
       margin-top: 1rem;
@@ -644,13 +578,12 @@
         padding: 1.5rem;
       }
       .filter-section {
-        /* **ĐÃ SỬA: Chuyển sang column trên mobile và căn giữa các mục** */
         justify-content: center;
         flex-direction: column; 
         align-items: center;
       }
       .section-title {
-        margin-bottom: 0.5rem; /* Thêm khoảng cách nếu chuyển sang column */
+        margin-bottom: 0.5rem;
       }
       .order-card {
         padding: 1.5rem;
@@ -717,7 +650,7 @@
         text-align: right;
       }
       .modal-items-header {
-        display: none; /* Hide header on mobile for simpler view */
+        display: none;
       }
     }
   </style>
@@ -1053,7 +986,7 @@
           <span class="info-value" id="profile-name-value"></span>
         </div>
         <div class="info-row">
-          <span class="info-label">🔐 Tài khoản:</span>
+          <span class="info-label">🔑 Tài khoản:</span>
           <span class="info-value" id="profile-username-value"></span>
         </div>
         <div class="info-row">
@@ -1086,7 +1019,6 @@
       minimumFractionDigits: 0
     });
 
-    let currentFilter = 'all';
     let allOrders = [];
 
     function getProductById(productId) {
@@ -1106,38 +1038,18 @@
       });
     }
 
-    function getStatusInfo(status) {
-      const statusMap = {
-        'Chờ xử lý': { class: 'status-processing', text: '⏳ Đang xử lý', emoji: '⏳' },
-        'Đang xử lý': { class: 'status-processing', text: '⏳ Đang xử lý', emoji: '⏳' },
-        'Đã giao': { class: 'status-delivered', text: '✓ Đã giao', emoji: '✓' },
-        'Đã hủy': { class: 'status-cancelled', text: '✕ Đã hủy', emoji: '✕' }
-      };
-      return statusMap[status] || { class: 'status-processing', text: status, emoji: '📦' };
-    }
-
-    // Hàm filterOrders không còn cần thiết nhưng được giữ lại để tránh lỗi nếu các thành phần khác gọi đến.
-    function filterOrders(filter) {
-      currentFilter = filter;
-      renderOrders();
-    }
-
     function renderOrders() {
       const orderList = document.getElementById('orderList');
       if (!orderList) return;
 
       const orders = JSON.parse(localStorage.getItem('bs_orders') || '[]');
-
-      // Luôn hiển thị tất cả đơn hàng vì không có bộ lọc trạng thái
-      let filteredOrders = orders;
       
-      filteredOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
-      allOrders = filteredOrders;
+      orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+      allOrders = orders;
 
-      // Cập nhật tổng số đơn hàng
-      document.getElementById('totalOrders').textContent = filteredOrders.length;
+      document.getElementById('totalOrders').textContent = orders.length;
 
-      if (filteredOrders.length === 0) {
+      if (orders.length === 0) {
         orderList.innerHTML = `
           <div class="empty-state">
             <div class="empty-state-icon">🔭</div>
@@ -1149,9 +1061,7 @@
         return;
       }
 
-      const ordersHtml = filteredOrders.map(order => {
-        // Loại bỏ việc gọi getStatusInfo nếu không dùng ở đây
-        // const statusInfo = getStatusInfo(order.status);
+      const ordersHtml = orders.map(order => {
         const itemsPreview = order.items.slice(0, 3);
         const moreItems = order.items.length > 3 ? order.items.length - 3 : 0;
 
@@ -1165,7 +1075,7 @@
                   ${formatDate(order.date)}
                 </div>
               </div>
-              </div>
+            </div>
 
             <div class="order-items-preview">
               ${itemsPreview.map(item => {
@@ -1218,25 +1128,20 @@
     function showOrderDetail(order) {
       const modal = document.getElementById('orderModal');
       const modalBody = document.getElementById('modalBody');
-      const statusInfo = getStatusInfo(order.status); // Vẫn cần dùng trong modal chi tiết
 
       const SHIPPING_THRESHOLD = 500000;
       const STANDARD_SHIPPING_FEE = 30000;
       
-      // *** BẮT ĐẦU PHẦN SỬA LỖI LOGIC TÍNH TOÁN ***
       let calculatedSubtotal = 0;
 
-      // 1. Tính Tạm tính (Subtotal) bằng cách cộng tổng giá trị các sản phẩm
       order.items.forEach(item => {
-          const product = getProductById(item.id);
-          if (product) {
-              calculatedSubtotal += product.price * item.qty;
-          }
+        const product = getProductById(item.id);
+        if (product) {
+          calculatedSubtotal += product.price * item.qty;
+        }
       });
       
-      // 2. Tính Phí vận chuyển dựa trên Tạm tính
       const shippingFee = calculatedSubtotal >= SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE;
-      // *** KẾT THÚC PHẦN SỬA LỖI LOGIC TÍNH TOÁN ***
 
       const itemsHtml = order.items.map(item => {
         const product = getProductById(item.id);
@@ -1257,12 +1162,11 @@
         `;
       }).join('');
 
+      const shippingAddress = order.shippingAddress || null;
+
       modalBody.innerHTML = `
         <div class="modal-header">
           <h2>Chi tiết đơn hàng #${order.id}</h2>
-          <span class="order-status ${statusInfo.class}" style="display: inline-block; margin-top: 0.5rem;">
-            ${statusInfo.text}
-          </span>
         </div>
 
         <div class="modal-order-info">
@@ -1275,14 +1179,48 @@
             <div class="info-value">${formatDate(order.date)}</div>
           </div>
           <div class="info-item">
-            <div class="info-label">Trạng thái</div>
-            <div class="info-value">${order.status}</div>
-          </div>
-          <div class="info-item">
             <div class="info-label">Tổng tiền</div>
             <div class="info-value" style="color: #4f9da6;">${formatter.format(order.total)}</div>
           </div>
         </div>
+
+        ${shippingAddress ? `
+          <div class="shipping-address-info" style="background: linear-gradient(135deg, #fff8e1 0%, #ffe6cc 100%); padding: 1.5rem; border-radius: 12px; margin: 2rem 0; border-left: 4px solid #ff9800;">
+            <h3 style="margin: 0 0 1rem 0; color: #2c3e50; font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="bi bi-geo-alt-fill" style="color: #ff9800;"></i> Thông tin giao hàng
+            </h3>
+            <div style="display: grid; gap: 0.8rem;">
+              <div style="display: flex; align-items: center; gap: 0.8rem;">
+                <i class="bi bi-person-fill" style="color: #ff9800; font-size: 1.1rem;"></i>
+                <div>
+                  <span style="font-weight: 600; color: #666; font-size: 0.9rem; display: block;">Người nhận:</span>
+                  <strong style="font-size: 1.1rem; color: #2c3e50;">${shippingAddress.name}</strong>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.8rem;">
+                <i class="bi bi-telephone-fill" style="color: #ff9800; font-size: 1.1rem;"></i>
+                <div>
+                  <span style="font-weight: 600; color: #666; font-size: 0.9rem; display: block;">Số điện thoại:</span>
+                  <strong style="font-size: 1.1rem; color: #2c3e50;">${shippingAddress.phone}</strong>
+                </div>
+              </div>
+              <div style="display: flex; align-items: start; gap: 0.8rem;">
+                <i class="bi bi-house-door-fill" style="color: #ff9800; font-size: 1.1rem; margin-top: 0.2rem;"></i>
+                <div>
+                  <span style="font-weight: 600; color: #666; font-size: 0.9rem; display: block;">Địa chỉ giao hàng:</span>
+                  <strong style="font-size: 1.05rem; color: #2c3e50; line-height: 1.5;">${shippingAddress.address}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        ` : `
+          <div class="shipping-address-info" style="background: #fff3cd; padding: 1.5rem; border-radius: 12px; margin: 2rem 0; border-left: 4px solid #ffc107;">
+            <p style="margin: 0; color: #856404; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="bi bi-exclamation-triangle"></i> 
+              <span>Đơn hàng này chưa có thông tin địa chỉ giao hàng</span>
+            </p>
+          </div>
+        `}
 
         <div class="modal-items-section">
           <h3 class="modal-items-title"><i class="bi bi-box-seam"></i> Danh sách sản phẩm</h3>

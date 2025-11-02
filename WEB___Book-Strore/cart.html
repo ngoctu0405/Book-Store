@@ -1256,6 +1256,609 @@
         searchBtn.addEventListener('click', handleTopSearch);
       }
     });
+    // ==================== QUẢN LÝ ĐỊA CHỈ GIAO HÀNG ====================
+// THÊM CODE NÀY VÀO TRONG THẺ <script> CỦA FILE cart.html
+
+// Lấy danh sách địa chỉ của user
+function getUserAddresses() {
+  const user = JSON.parse(localStorage.getItem('bs_user'));
+  if (!user) return [];
+  
+  const addresses = JSON.parse(localStorage.getItem('bs_user_addresses') || '{}');
+  return addresses[user.username] || [];
+}
+
+// Lưu danh sách địa chỉ
+function saveUserAddresses(addressList) {
+  const user = JSON.parse(localStorage.getItem('bs_user'));
+  if (!user) return;
+  
+  const allAddresses = JSON.parse(localStorage.getItem('bs_user_addresses') || '{}');
+  allAddresses[user.username] = addressList;
+  localStorage.setItem('bs_user_addresses', JSON.stringify(allAddresses));
+}
+
+// Lấy địa chỉ được chọn
+function getSelectedAddress() {
+  const user = JSON.parse(localStorage.getItem('bs_user'));
+  if (!user) return null;
+  
+  const selected = JSON.parse(localStorage.getItem('bs_selected_address') || '{}');
+  return selected[user.username] || null;
+}
+
+// Lưu địa chỉ được chọn
+function saveSelectedAddress(address) {
+  const user = JSON.parse(localStorage.getItem('bs_user'));
+  if (!user) return;
+  
+  const allSelected = JSON.parse(localStorage.getItem('bs_selected_address') || '{}');
+  allSelected[user.username] = address;
+  localStorage.setItem('bs_selected_address', JSON.stringify(allSelected));
+}
+
+// Khởi tạo địa chỉ mặc định từ thông tin user
+function initDefaultAddress() {
+  const user = JSON.parse(localStorage.getItem('bs_user'));
+  if (!user) return null;
+  
+  const addresses = getUserAddresses();
+  
+  if (addresses.length === 0) {
+    const defaultAddress = {
+      id: Date.now(),
+      name: user.fullName,
+      phone: user.phone,
+      address: user.address,
+      isDefault: true
+    };
+    addresses.push(defaultAddress);
+    saveUserAddresses(addresses);
+    saveSelectedAddress(defaultAddress);
+    return defaultAddress;
+  }
+  
+  let selected = getSelectedAddress();
+  if (!selected) {
+    selected = addresses.find(addr => addr.isDefault) || addresses[0];
+    saveSelectedAddress(selected);
+  }
+  
+  return selected;
+}
+
+// Render phần địa chỉ giao hàng
+function renderShippingAddress() {
+  const user = JSON.parse(localStorage.getItem('bs_user_addresses'));
+  
+  if (!user) {
+    return `
+      <div class="shipping-address-section" style="background: #fff3cd; padding: 1.5rem; border-radius: 12px; border: 1px solid #ffc107; margin-bottom: 1.5rem;">
+        <p style="margin: 0; color: #856404; text-align: center;">
+          <i class="bi bi-exclamation-triangle"></i> Vui lòng đăng nhập để nhập địa chỉ giao hàng
+        </p>
+      </div>
+    `;
+  }
+  
+  const selectedAddress = initDefaultAddress();
+  const addresses = getUserAddresses();
+  
+  return `
+    <div class="shipping-address-section" style="background: white; padding: 2rem; border-radius: 16px; border: 2px solid #e3f2fd; margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h4 style="margin: 0; color: #2c3e50; font-size: 1.3rem;">
+          <i class="bi bi-geo-alt-fill" style="color: #4f9da6;"></i> Địa chỉ giao hàng
+        </h4>
+        <button onclick="openAddressModal()" class="btn-manage-address" style="padding: 0.5rem 1rem; background: #4f9da6; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="bi bi-pencil-square"></i> Quản lý
+        </button>
+      </div>
+      
+      <div class="selected-address" style="background: #f8f9fa; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #4f9da6;">
+        <div style="display: flex; align-items: start; gap: 0.8rem; margin-bottom: 0.5rem;">
+          <i class="bi bi-person-fill" style="color: #4f9da6; font-size: 1.1rem;"></i>
+          <div style="flex: 1;">
+            <strong style="font-size: 1.1rem; color: #2c3e50;">${selectedAddress.name}</strong>
+            ${selectedAddress.isDefault ? '<span style="background: #4caf50; color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-left: 0.5rem;">Mặc định</span>' : ''}
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; color: #555;">
+          <i class="bi bi-telephone-fill" style="color: #4f9da6;"></i>
+          <span>${selectedAddress.phone}</span>
+        </div>
+        <div style="display: flex; align-items: start; gap: 0.8rem; color: #555;">
+          <i class="bi bi-house-door-fill" style="color: #4f9da6; margin-top: 0.2rem;"></i>
+          <span style="line-height: 1.5;">${selectedAddress.address}</span>
+        </div>
+      </div>
+      
+      ${addresses.length > 1 ? `
+        <button onclick="toggleAddressList()" class="btn-change-address" style="width: 100%; margin-top: 1rem; padding: 0.7rem; background: white; border: 2px dashed #4f9da6; color: #4f9da6; border-radius: 8px; cursor: pointer; font-weight: 600;">
+          <i class="bi bi-arrow-repeat"></i> Chọn địa chỉ khác
+        </button>
+        
+        <div id="addressList" style="display: none; margin-top: 1rem; max-height: 300px; overflow-y: auto;">
+          ${addresses.filter(addr => addr.id !== selectedAddress.id).map(addr => `
+            <div class="address-item" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 0.8rem; cursor: pointer; border: 2px solid transparent; transition: all 0.3s;" onclick="selectAddress(${addr.id})">
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                  <strong style="color: #2c3e50;">${addr.name}</strong>
+                  ${addr.isDefault ? '<span style="background: #4caf50; color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-left: 0.5rem;">Mặc định</span>' : ''}
+                  <div style="color: #666; font-size: 0.9rem; margin-top: 0.3rem;">
+                    <i class="bi bi-telephone"></i> ${addr.phone}
+                  </div>
+                  <div style="color: #666; font-size: 0.9rem; margin-top: 0.3rem;">
+                    <i class="bi bi-house-door"></i> ${addr.address}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function toggleAddressList() {
+  const list = document.getElementById('addressList');
+  if (list) {
+    list.style.display = list.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function selectAddress(addressId) {
+  const addresses = getUserAddresses();
+  const selected = addresses.find(addr => addr.id === addressId);
+  
+  if (selected) {
+    saveSelectedAddress(selected);
+    renderCart();
+  }
+}
+
+function openAddressModal() {
+  const user = JSON.parse(localStorage.getItem('bs_user'));
+  if (!user) {
+    alert('Vui lòng đăng nhập!');
+    return;
+  }
+  
+  const addresses = getUserAddresses();
+  const modal = document.createElement('div');
+  modal.id = 'addressManagementModal';
+  modal.className = 'auth-modal show';
+  
+  modal.innerHTML = `
+    <div class="auth-modal-overlay" onclick="closeAddressModal()"></div>
+    <div class="auth-modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+      <button class="auth-modal-close" onclick="closeAddressModal()">&times;</button>
+      <div class="auth-modal-header">
+        <h2><i class="bi bi-geo-alt"></i> Quản lý địa chỉ</h2>
+        <p>Bạn có thể lưu tối đa 3 địa chỉ</p>
+      </div>
+      
+      <div style="padding: 1.5rem;">
+        ${addresses.length < 3 ? `
+          <button onclick="showAddAddressForm()" class="btn-add-address" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #4f9da6 0%, #82c09a 100%); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; margin-bottom: 1.5rem;">
+            <i class="bi bi-plus-circle"></i> Thêm địa chỉ mới
+          </button>
+        ` : '<p style="text-align: center; color: #e74c3c; margin-bottom: 1.5rem;"><i class="bi bi-exclamation-circle"></i> Bạn đã lưu tối đa 3 địa chỉ</p>'}
+        
+        <div id="addAddressForm" style="display: none; background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem;">
+          <h4 style="margin-bottom: 1rem;">Thêm địa chỉ mới</h4>
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Họ và tên</label>
+            <input type="text" id="newAddressName" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;">
+          </div>
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Số điện thoại</label>
+            <input type="tel" id="newAddressPhone" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;">
+          </div>
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Địa chỉ</label>
+            <textarea id="newAddressAddress" rows="3" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;"></textarea>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button onclick="saveNewAddress()" style="flex: 1; padding: 0.7rem; background: #4caf50; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+              <i class="bi bi-check-circle"></i> Lưu
+            </button>
+            <button onclick="hideAddAddressForm()" style="flex: 1; padding: 0.7rem; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+              Hủy
+            </button>
+          </div>
+        </div>
+        
+        <div id="addressListManagement">
+          <h4 style="margin-bottom: 1rem;">Địa chỉ đã lưu (${addresses.length}/3)</h4>
+          ${addresses.map(addr => `
+            <div class="address-card" style="background: white; padding: 1.2rem; border-radius: 10px; margin-bottom: 1rem; border: 2px solid ${addr.isDefault ? '#4caf50' : '#e0e0e0'};">
+              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.8rem;">
+                <div style="flex: 1;">
+                  <strong style="font-size: 1.1rem; color: #2c3e50;">${addr.name}</strong>
+                  ${addr.isDefault ? '<span style="background: #4caf50; color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-left: 0.5rem;">Mặc định</span>' : ''}
+                </div>
+              </div>
+              <div style="color: #666; margin-bottom: 0.3rem;">
+                <i class="bi bi-telephone"></i> ${addr.phone}
+              </div>
+              <div style="color: #666; margin-bottom: 1rem;">
+                <i class="bi bi-house-door"></i> ${addr.address}
+              </div>
+              <div style="display: flex; gap: 0.5rem;">
+                ${!addr.isDefault ? `
+                  <button onclick="setDefaultAddress(${addr.id})" style="flex: 1; padding: 0.5rem; background: #4caf50; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                    <i class="bi bi-star"></i> Đặt mặc định
+                  </button>
+                ` : ''}
+                <button onclick="editAddress(${addr.id})" style="flex: 1; padding: 0.5rem; background: #2196f3; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                  <i class="bi bi-pencil"></i> Sửa
+                </button>
+                ${!addr.isDefault ? `
+                  <button onclick="deleteAddress(${addr.id})" style="flex: 1; padding: 0.5rem; background: #f44336; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                    <i class="bi bi-trash"></i> Xóa
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddressModal() {
+  const modal = document.getElementById('addressManagementModal');
+  if (modal) {
+    modal.remove();
+    document.body.style.overflow = 'auto';
+  }
+}
+
+function showAddAddressForm() {
+  document.getElementById('addAddressForm').style.display = 'block';
+}
+
+function hideAddAddressForm() {
+  document.getElementById('addAddressForm').style.display = 'none';
+  document.getElementById('newAddressName').value = '';
+  document.getElementById('newAddressPhone').value = '';
+  document.getElementById('newAddressAddress').value = '';
+}
+
+function saveNewAddress() {
+  const name = document.getElementById('newAddressName').value.trim();
+  const phone = document.getElementById('newAddressPhone').value.trim();
+  const address = document.getElementById('newAddressAddress').value.trim();
+  
+  if (!name || !phone || !address) {
+    alert('Vui lòng điền đầy đủ thông tin!');
+    return;
+  }
+  
+  // Validate số điện thoại (10 chữ số)
+  const phoneRegex = /^[0-9]{10}$/;
+  if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+    alert('Số điện thoại phải có 10 chữ số!');
+    return;
+  }
+  
+  const addresses = getUserAddresses();
+  
+  if (addresses.length >= 3) {
+    alert('Bạn chỉ có thể lưu tối đa 3 địa chỉ!');
+    return;
+  }
+  
+  const newAddress = {
+    id: Date.now(),
+    name,
+    phone,
+    address,
+    isDefault: addresses.length === 0
+  };
+  
+  addresses.push(newAddress);
+  saveUserAddresses(addresses);
+  
+  if (addresses.length === 1) {
+    saveSelectedAddress(newAddress);
+  }
+  
+  closeAddressModal();
+  setTimeout(() => {
+    openAddressModal();
+    renderCart();
+  }, 100);
+}
+
+function setDefaultAddress(addressId) {
+  const addresses = getUserAddresses();
+  
+  addresses.forEach(addr => {
+    addr.isDefault = addr.id === addressId;
+  });
+  
+  saveUserAddresses(addresses);
+  
+  const selectedAddress = addresses.find(addr => addr.id === addressId);
+  saveSelectedAddress(selectedAddress);
+  
+  closeAddressModal();
+  openAddressModal();
+  renderCart();
+}
+
+function editAddress(addressId) {
+  const addresses = getUserAddresses();
+  const address = addresses.find(addr => addr.id === addressId);
+  
+  if (!address) return;
+  
+  // Ẩn form thêm mới nếu đang mở
+  const addForm = document.getElementById('addAddressForm');
+  if (addForm) addForm.style.display = 'none';
+  
+  // Kiểm tra xem form sửa đã tồn tại chưa
+  let editForm = document.getElementById('editAddressForm');
+  
+  if (!editForm) {
+    // Tạo form sửa mới
+    editForm = document.createElement('div');
+    editForm.id = 'editAddressForm';
+    editForm.style.cssText = 'background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border: 2px solid #2196f3;';
+    
+    const addressListManagement = document.getElementById('addressListManagement');
+    addressListManagement.parentNode.insertBefore(editForm, addressListManagement);
+  }
+  
+  // Render nội dung form
+  editForm.innerHTML = `
+    <h4 style="margin-bottom: 1rem; color: #2196f3;">
+      <i class="bi bi-pencil-square"></i> Sửa địa chỉ
+    </h4>
+    <div style="margin-bottom: 1rem;">
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Họ và tên</label>
+      <input type="text" id="editAddressName" value="${address.name}" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;">
+    </div>
+    <div style="margin-bottom: 1rem;">
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Số điện thoại</label>
+      <input type="tel" id="editAddressPhone" value="${address.phone}" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;">
+    </div>
+    <div style="margin-bottom: 1rem;">
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Địa chỉ</label>
+      <textarea id="editAddressAddress" rows="3" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;">${address.address}</textarea>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+      <button onclick="saveEditAddress(${addressId})" style="flex: 1; padding: 0.7rem; background: #2196f3; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+        <i class="bi bi-check-circle"></i> Lưu thay đổi
+      </button>
+      <button onclick="cancelEditAddress()" style="flex: 1; padding: 0.7rem; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+        Hủy
+      </button>
+    </div>
+  `;
+  
+  // Scroll đến form
+  editForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function saveEditAddress(addressId) {
+  const name = document.getElementById('editAddressName').value.trim();
+  const phone = document.getElementById('editAddressPhone').value.trim();
+  const addressText = document.getElementById('editAddressAddress').value.trim();
+  
+  if (!name || !phone || !addressText) {
+    alert('Vui lòng điền đầy đủ thông tin!');
+    return;
+  }
+  
+  // Validate số điện thoại
+  const phoneRegex = /^[0-9]{10}$/;
+  if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+    alert('Số điện thoại phải có 10 chữ số!');
+    return;
+  }
+  
+  const addresses = getUserAddresses();
+  const address = addresses.find(addr => addr.id === addressId);
+  
+  if (address) {
+    address.name = name;
+    address.phone = phone;
+    address.address = addressText;
+    
+    saveUserAddresses(addresses);
+    
+    // Cập nhật địa chỉ được chọn nếu đang chọn địa chỉ này
+    const selected = getSelectedAddress();
+    if (selected && selected.id === addressId) {
+      saveSelectedAddress(address);
+    }
+    
+    // Đóng và mở lại modal để refresh
+    closeAddressModal();
+    setTimeout(() => {
+      openAddressModal();
+      renderCart(); // Cập nhật lại giỏ hàng
+    }, 100);
+  }
+}
+
+function cancelEditAddress() {
+  const editForm = document.getElementById('editAddressForm');
+  if (editForm) {
+    editForm.remove();
+  }
+}
+
+function deleteAddress(addressId) {
+  if (!confirm('Bạn có chắc muốn xóa địa chỉ này?')) return;
+  
+  let addresses = getUserAddresses();
+  const addressToDelete = addresses.find(addr => addr.id === addressId);
+  
+  if (addressToDelete && addressToDelete.isDefault) {
+    alert('Không thể xóa địa chỉ mặc định! Vui lòng đặt địa chỉ khác làm mặc định trước.');
+    return;
+  }
+  
+  addresses = addresses.filter(addr => addr.id !== addressId);
+  saveUserAddresses(addresses);
+  
+  const selected = getSelectedAddress();
+  if (selected && selected.id === addressId) {
+    const defaultAddr = addresses.find(addr => addr.isDefault) || addresses[0];
+    if (defaultAddr) {
+      saveSelectedAddress(defaultAddr);
+    }
+  }
+  
+  closeAddressModal();
+  if (addresses.length > 0) {
+    openAddressModal();
+  }
+  renderCart();
+}
+
+// ==================== CẬP NHẬT HÀM RENDER CART ====================
+// THAY THẾ HÀM renderCart() CŨ BẰNG HÀM NÀY
+
+function renderCart() {
+  const cartContainer = document.getElementById('cartContainer');
+  if (!cartContainer) return;
+
+  const getCartFunc = typeof getCart === 'function' ? getCart : () => JSON.parse(localStorage.getItem('bs_cart')) || [];
+  const currentCart = getCartFunc();
+
+  if (currentCart.length === 0) {
+    cartContainer.innerHTML = `
+      <div class="empty-cart">
+        <span class="empty-cart-icon">🛍️</span>
+        <h3>Giỏ hàng của bạn đang trống!</h3>
+        <p>Hãy thêm những cuốn sách yêu thích vào giỏ hàng ngay nào.</p>
+        <a href="index.html" class="btn-continue">Tiếp tục mua sắm</a>
+      </div>
+    `;
+    return;
+  }
+
+  const { cartData } = calculateTotals();
+  const initialChecked = true;
+
+  const itemsHtml = cartData.map(item => `
+    <div class="cart-item" data-product-id="${item.id}">
+      <label class="item-select-wrapper">
+        <input type="checkbox" data-id="${item.id}" class="item-select-checkbox" 
+               onchange="handleItemSelection()" ${initialChecked ? 'checked' : ''}>
+      </label>
+      <div class="cart-item-image">
+        <img src="${item.product.img}" alt="${item.product.name}">
+      </div>
+      <div class="cart-item-details">
+        <h4 class="cart-item-title">${item.product.name}</h4>
+        <p class="cart-item-author"><i class="bi bi-person"></i> ${item.product.author}</p>
+        <p class="cart-item-price">${formatter.format(item.product.price)} / cuốn</p>
+      </div>
+      <div class="cart-item-actions">
+        <p class="cart-item-total">${formatter.format(item.itemTotal)}</p>
+        <div class="quantity-controls">
+          <button class="qty-btn minus-btn" onclick="changeQuantity(${item.id}, -1)">−</button>
+          <input type="text" id="qty-${item.id}" class="qty-display" value="${item.qty}" 
+                 min="1" readonly>
+          <button class="qty-btn plus-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+        </div>
+        <button class="btn-remove" onclick="removeItem(${item.id})">
+          <i class="bi bi-trash"></i> Xóa
+        </button>
+      </div>
+    </div>
+  `).join('');
+
+  cartContainer.innerHTML = `
+    <div class="cart-layout">
+      <div class="cart-items-section">
+        <div class="cart-section-header">
+          <h3 class="cart-section-title">📦 Danh sách sản phẩm (${currentCart.length})</h3>
+          <div class="select-all-wrapper">
+            <label class="select-all-label">
+              <input type="checkbox" id="selectAllItems" onchange="toggleSelectAll(this.checked)" ${initialChecked ? 'checked' : ''}>
+              <span>Chọn tất cả</span>
+            </label>
+            <button class="btn-clear-all" onclick="clearAllCart()">
+              <i class="bi bi-trash"></i> Xóa tất cả
+            </button>
+          </div>
+        </div>
+        ${itemsHtml}
+      </div>
+      <div>
+        ${renderShippingAddress()}
+        <div class="cart-summary"></div>
+      </div>
+    </div>
+  `;
+
+  renderCartSummary();
+}
+
+// ==================== CẬP NHẬT HÀM CHECKOUT ====================
+// THAY THẾ HÀM checkout() CŨ BẰNG HÀM NÀY
+
+function checkout() {
+  const { subtotal, totalItems, selectedCartData } = calculateTotals();
+
+  if (totalItems === 0) {
+    alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán.');
+    return;
+  }
+
+  const user = localStorage.getItem('bs_user');
+  if (!user) {
+    alert('Vui lòng Đăng nhập để tiếp tục thanh toán.');
+    openLoginModal();
+    return;
+  }
+
+  const shippingAddress = getSelectedAddress();
+  if (!shippingAddress) {
+    alert('Vui lòng chọn địa chỉ giao hàng!');
+    return;
+  }
+
+  const orders = JSON.parse(localStorage.getItem('bs_orders') || '[]');
+  const { total } = calculateTotals();
+  const newOrder = {
+    id: Date.now(),
+    userId: JSON.parse(user).username,
+    items: selectedCartData,
+    total: total,
+    shippingAddress: shippingAddress,
+    date: new Date().toISOString(),
+    status: 'Chờ xử lý'
+  };
+  orders.push(newOrder);
+  localStorage.setItem('bs_orders', JSON.stringify(orders));
+
+  const selectedIds = selectedCartData.map(item => item.id);
+  const getCartFunc = typeof getCart === 'function' ? getCart : () => JSON.parse(localStorage.getItem('bs_cart')) || [];
+  const saveCartFunc = typeof saveCart === 'function' ? saveCart : (c) => localStorage.setItem('bs_cart', JSON.stringify(c));
+
+  let currentCart = getCartFunc();
+  let newCart = currentCart.filter(item => !selectedIds.includes(item.id));
+  saveCartFunc(newCart);
+
+  alert(`Đơn hàng #${newOrder.id} (${totalItems} mục) đã được tạo thành công!\nGiao đến: ${shippingAddress.name}, ${shippingAddress.phone}\n${shippingAddress.address}\nTổng tiền: ${formatter.format(total)}. Cảm ơn bạn đã mua sắm!`);
+
+  renderCart();
+  
+  if (typeof updateCartCount === 'function') updateCartCount(); 
+}
   </script>
 </body>
 
