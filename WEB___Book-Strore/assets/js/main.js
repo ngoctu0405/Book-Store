@@ -10,7 +10,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm kinh điển về nghệ thuật giao tiếp.",
-      img: "images/Đắc Nhân Tâm - Dale Carnegie.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/Đắc_Nhân_Tâm.jpg", // ĐÃ SỬA: Bỏ "/"
     },
     {
       id: 2,
@@ -631,12 +631,18 @@ function renderProductDetail() {
       }, document.getElementById('qty').value)">Thêm vào giỏ</button>
     </div>`;
 }
-// chỉnh thành vẫn thêm vào giỏ được dù chưa đăng nhập--------------------------------------------------------------------------
+
+// BẮT ĐẦU PHẦN CHỈNH SỬA LOGIC GIỎ HÀNG
+// Sửa lại hàm addToCart để yêu cầu đăng nhập trước khi thêm vào giỏ
 function addToCart(id, qty = 1) {
-  // --------------------------------------------------------------------------------------------------
-  // Đã xóa bỏ dòng kiểm tra đăng nhập: if(!user){ window.location.href = "login.html?next=product-"+id; return; }
-  // Sản phẩm sẽ được thêm thẳng vào localStorage, nơi giỏ hàng được lưu trữ (dù có user hay không).
-  // --------------------------------------------------------------------------------------------------
+  // LOGIC BẮT BUỘC ĐĂNG NHẬP
+  const user = localStorage.getItem("bs_user");
+  if (!user) {
+    // Nếu chưa đăng nhập, HIỆN MODAL ĐĂNG NHẬP
+    openLoginModal();
+    return;
+  }
+  // KẾT THÚC LOGIC BẮT BUỘC ĐĂNG NHẬP
 
   const cart = getCart();
 
@@ -662,7 +668,8 @@ function addToCart(id, qty = 1) {
   // Nếu bạn đang ở trang giỏ hàng (cart.html), renderCart sẽ cập nhật lại danh sách
   if (typeof renderCart === "function") renderCart();
 }
-//--------------------------------------------------------------------------------------------------------------------------
+// KẾT THÚC PHẦN CHỈNH SỬA LOGIC GIỎ HÀNG
+
 // SỬA LỖI Ở ĐÂY: Thêm thẻ <img> và loại bỏ lỗi cú pháp
 function renderCart() {
   const wrap = document.getElementById("cart-contents");
@@ -722,10 +729,17 @@ function login(username) {
   renderMenu();
 }
 
+// ==========================================================
+// ✅ ĐIỂM SỬA LỖI 1: Cập nhật hàm logout()
 function logout() {
   localStorage.removeItem("bs_user");
+  // THÊM: Xóa giỏ hàng khi đăng xuất để reset về 0
+  localStorage.setItem("bs_cart", JSON.stringify([])); 
   renderMenu();
+  if (typeof updateCartCount === "function") updateCartCount();
+  location.reload();
 }
+// ==========================================================
 
 // ===== PRODUCT DETAIL PAGE FUNCTIONS =====
 function getProductIdFromURL() {
@@ -901,17 +915,19 @@ function decreaseQty() {
   }
 }
 
+// BẮT ĐẦU PHẦN CHỈNH SỬA LOGIC CHI TIẾT SẢN PHẨM
 function addToCartDetail(productId) {
   const qtyInput = document.getElementById("qty");
   const qty = qtyInput ? parseInt(qtyInput.value) : 1;
   const product = findProductById(productId);
 
-  // Check if user is logged in
+  // LOGIC BẮT BUỘC ĐĂNG NHẬP (HIỆN MODAL)
   const user = localStorage.getItem("bs_user");
   if (!user) {
-    window.location.href = "login.html?next=product-" + productId;
+    openLoginModal();
     return;
   }
+  // KẾT THÚC LOGIC BẮT BUỘC ĐĂNG NHẬP
 
   // Add to cart
   const cart = getCart();
@@ -935,12 +951,13 @@ function buyNow(productId) {
   const qtyInput = document.getElementById("qty");
   const qty = qtyInput ? parseInt(qtyInput.value) : 1;
 
-  // Check if user is logged in
+  // LOGIC BẮT BUỘC ĐĂNG NHẬP (HIỆN MODAL)
   const user = localStorage.getItem("bs_user");
   if (!user) {
-    window.location.href = "login.html?next=product-" + productId;
+    openLoginModal();
     return;
   }
+  // KẾT THÚC LOGIC BẮT BUỘC ĐĂNG NHẬP
 
   // Add to cart first
   const cart = getCart();
@@ -952,6 +969,7 @@ function buyNow(productId) {
   // Redirect to cart page
   window.location.href = "cart.html";
 }
+// KẾT THÚC PHẦN CHỈNH SỬA LOGIC CHI TIẾT SẢN PHẨM
 
 function initProductDetail() {
   const mainContent = document.getElementById("mainContent");
@@ -1312,6 +1330,7 @@ function handleLogin(e) {
       email: user.email,
       phone: user.phone,
       address: user.address,
+      password: user.password,
     })
   );
 
@@ -1422,17 +1441,21 @@ function handleRegister(e) {
   setTimeout(() => openLoginModal(), 300);
 }
 
-// Đăng xuất từ modal
+// ==========================================================
+// ✅ ĐIỂM SỬA LỖI 2: Cập nhật hàm handleLogoutModal()
 function handleLogoutModal() {
   if (confirm("Bạn có chắc muốn đăng xuất?")) {
     localStorage.removeItem("bs_user");
+    // THÊM: Xóa giỏ hàng khi đăng xuất để reset về 0
+    localStorage.setItem("bs_cart", JSON.stringify([])); 
     closeProfileModal();
     updateAuthUI();
+    if (typeof updateCartCount === "function") updateCartCount();
     location.reload();
   }
 }
+// ==========================================================
 
-// Cập nhật giao diện auth
 // Cập nhật giao diện auth
 // CHỖ SỬA: Cập nhật hàm updateAuthUI() để hiển thị dropdown thay vì modal
 function updateAuthUI() {
@@ -1532,15 +1555,21 @@ function changePassword(e) {
   window.location.href = "change-password.html";
 }
 //==================================================================================================================
-// Đăng xuất từ dropdown
+
+// ==========================================================
+// ✅ ĐIỂM SỬA LỖI 3: Cập nhật hàm handleLogoutDropdown()
 function handleLogoutDropdown(e) {
   if (e) e.preventDefault();
   if (confirm("Bạn có chắc muốn đăng xuất?")) {
     localStorage.removeItem("bs_user");
+    // THÊM: Xóa giỏ hàng khi đăng xuất để reset về 0
+    localStorage.setItem("bs_cart", JSON.stringify([])); 
     updateAuthUI();
+    if (typeof updateCartCount === "function") updateCartCount();
     location.reload();
   }
 }
+// ==========================================================
 
 //  CHỖ SỬA: Thêm event listener để đóng dropdown khi click bên ngoài
 document.addEventListener("click", function (e) {
