@@ -875,7 +875,7 @@ select {
   background: linear-gradient(180deg, #7fb3d3 0%, #4f9da6 100%);
 }
 
-/* Phân trang */
+/*==================================================================================================== Phân trang */
 .pagination {
   /* căn giữa thanh phân trang */
   display: flex;
