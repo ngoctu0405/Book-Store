@@ -1801,41 +1801,22 @@ footer {
   }
 }
 
-/* Phần hot sale */
-
+/* 🌟 PHẦN HOT SALE 🌟 */
 .hot-sale {
-  /* Các thuộc tính tạo màu gradient (Giữ nguyên) */
   background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  /* Viền chữ */
   -webkit-text-stroke: 1px #ffffff;
-  /* Tăng font chữ */
   font-size: 40px;
-  /* (Nên giữ lại) */
   font-weight: 900;
-}
-
-.carousel-inner {
-  display: flex;
-  /* justify-content: space-evenly; */
-  position: absolute;
-  top: 2rem;
-  /* display: flex;
-  justifu-content: center;
-  align-items: center; */
-  width: 100%;
-  border-radius: 16px;
-  padding: 2rem;
-}
-.hot-sale {
   pointer-events: none;
   display: flex;
   justify-content: center;
 }
 
+/* 🛍️ Container hot sale */
 .hot_sale_selection {
   position: relative;
   top: 10rem;
@@ -1845,37 +1826,85 @@ footer {
   border-radius: 3rem;
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background-color: transparent;
-  filter: invert(100%); /*icon trắng sang đen*/
-  transition: all 0.3s ease;
+/* 🎠 Carousel layout */
+.carousel-inner {
+  display: flex;
+  position: absolute;
+  top: 2rem;
+  width: 100%;
+  border-radius: 16px;
+  padding: 2rem;
 }
 
-/* Active – đổi màu nhấn, không đổi size */
-.carousel-control-prev-icon:active,
-.carousel-control-next-icon:active {
-  background-color: #0f6e86;
-  filter: invert(0%);
-}
-
-/* Vỏ nút tròn */
-.carousel-control-prev,
-.carousel-control-next {
-  border-radius: 50%;
-}
-/* ✨ Ghi đè Flexbox của Bootstrap bằng Grid để căn đều 4 card ✨ */
+/* 📦 Card container */
 .d-flex.justify-content-between {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 cột bằng nhau */
-  gap: 20px; /* Khoảng cách giữa các card */
-
-  /* TẠO KHOẢNG TRỐNG CHO NÚT (Giữ nguyên cấu trúc cũ) */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   width: 90%;
   margin: 0 auto;
+}
+
+/* 🎬 Hiệu ứng slide */
+.carousel-item {
+  transition: transform 0.5s ease-in-out;
+  opacity: 1;
+}
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active {
+  display: flex;
+}
+.carousel-item:not(.active) {
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+/* 🧭 Ghi đè hoàn toàn Bootstrap cho nút điều hướng */
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 4.5rem !important;
+  height: 4.5rem !important;
+  background: transparent !important;
+  border: none !important;
+  opacity: 1 !important;
+  transition: transform 0.25s ease-in-out !important;
+  z-index: 10 !important;
+}
+
+/* 📍 Phóng to gấp 3 lần khi hover */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  transform: translateY(-50%) scale(2) !important; /* 💥 to gấp 3 lần */
+}
+
+/* 🟢 Icon trong nút */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 2rem !important;
+  height: 2rem !important;
+  background-size: 100% 100% !important;
+  border-radius: 50% !important;
+  background-color: transparent !important;
+  filter: invert(100%) !important;
+  transition: filter 0.3s ease, background-color 0.3s ease !important;
+}
+
+/* 🖱️ Hover màu */
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+  background-color: rgba(79, 157, 166, 0.5) !important;
+  filter: invert(0%) !important;
+}
+
+/* 👆 Khi nhấn giữ */
+.carousel-control-prev-icon:active,
+.carousel-control-next-icon:active {
+  background-color: #0f6e86 !important;
+  filter: invert(0%) !important;
 }
 
 /* ==================== MODAL AUTH STYLES ==================== */
@@ -2673,8 +2702,11 @@ footer {
 .back-to-top:hover i {
   transform: translateY(-2px);
 }
-
+/**************************************/
 /* Phần hot new */
+/**************************************/
+
+/* Container chính */
 .container_py-6 {
   position: relative;
   top: 13rem;
@@ -2682,16 +2714,21 @@ footer {
   background-color: #fff;
   border-radius: 3rem;
 }
+
+/* Grid padding */
 .g-4 {
   padding: 2rem;
 }
+
+/* Tiêu đề section */
 .section-title {
   font-weight: 700;
   font-size: 1.8rem;
-
   margin: 2rem 0 1rem;
   position: relative;
 }
+
+/* Gạch ngang dưới title */
 .section-title::after {
   content: "";
   display: block;
@@ -2700,43 +2737,92 @@ footer {
   background-color: #333;
   margin: 0.5rem auto 0;
 }
+
+/* Card tin tức */
+.news-card {
+  width: 100%;
+  height: 35em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s; /* thêm nếu muốn hiệu ứng hover mượt */
+}
+
+/* Hình trong card */
 .news-card img {
   width: 100%;
   height: 200px;
   object-fit: cover;
   border-radius: 0.5rem;
+  display: block;
 }
+
+/* Ngày tin */
 .news-date {
   font-size: 0.9rem;
   color: #777;
+  margin-top: 0.5rem;
 }
+
+/* Tiêu đề tin */
 .news-title {
   font-weight: 600;
   font-size: 1rem;
   margin-top: 0.5rem;
+  color: #333;
 }
+
+/* Mô tả tin */
 .news-desc {
   font-size: 0.9rem;
   color: #555;
+  margin-top: 0.3rem;
+  flex-grow: 1; /* Giữ card cao bằng nhau */
 }
+
+/* Canh giữa danh sách tin */
 .new_event {
   display: flex;
   justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  align-items: stretch; /* giữ các card cùng chiều cao */
 }
-.news-card {
-  height: 35em;
-}
+
+/* Nút quay lại */
 #back {
   position: fixed;
   left: 3rem;
   top: 8rem;
+  z-index: 1000;
 }
+
+/* Nút logout */
 .btn-logout-modal {
   height: 3rem;
   width: 7rem;
   border-radius: 3rem;
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
+.btn-logout-modal:hover {
+  background-color: #d32f2f;
+}
+
+/* Ngăn card nhảy layout khi hover */
+.news-card * {
+  transition: none;
+}
+
+/*************************************/
 /* Tìm kiếm nâng cao */
 /* Container các filter */
 .advanced-filters {

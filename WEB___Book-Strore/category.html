@@ -1,118 +1,467 @@
-  <!doctype html>
-  <html lang="vi">
+<!doctype html>
+<html lang="vi">
 
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Nhà Sách Online</title>
-      <link rel="stylesheet" href="assets/css/style.css">
-      <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
-
-  </head>
-
-  <body>
-        <a id="top"></a>
-    <header class="topbar">
-      <div class="logo">
-        <a href="index.html"><img src="images/Logo.png" alt="Logo"> </a>
-      </div>
-      <!-- nút tìm kiếm -->
-      <div class="search-center">
-    <input id="topSearch" class="search-input" type="text" 
-      placeholder="Nhập tên cuốn sách bạn đang tìm ..." autocomplete="off" />
-    <button class="search-btn" type="button">Tìm kiếm</button> 
-  </div>
-  <!-------------------------------------------------------------------------->
-      <div class="auth-cart">
-        <div id="authArea">
-          <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
-          <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
-        </div>  
-      </div>
-    </header>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nhà Sách Online</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
     
-    <nav class="navbar" id="mainNav">
-      <ul class="menu" id="mainMenu">
-        <li><a href="index.html">Trang chủ</a></li>
-        <li><a href="about.html">Giới thiệu</a></li>
-        <div class="category-menu">
-          <button class="category-btn" onclick="window.location.href='category.html'">
-            Danh mục sách ▾
-          </button>
-          <ul class="book-filter">
+    <style>
+      /* Container chính cho bộ lọc nâng cao */
+      .advanced-filters {
+          display: flex;
+          gap: 15px;
+          padding: 20px;
+          margin: 20px 0;
+          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          align-items: center;
+          flex-wrap: wrap;
+          border: 1px solid #dee2e6;
+      }
 
-            <!-- Văn học -->
-            <li class="dropdown">
-              <a href="#" data-category="Văn học">Văn học ▸</a>
-              <ul class="dropdown-content">
-                <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
-                    data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
-                <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
-                    data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
-                <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
-                    data-subcategory="Thơ">Thơ</a></li>
-              </ul>
-            </li>
+      /* Item chứa mỗi bộ lọc */
+      .filter-item {
+          position: relative;
+          display: inline-block;
+          /* Tạo vùng đệm để dễ hover */
+          padding-bottom: 8px;
+      }
+      
+      /* Tạo vùng đệm vô hình giữa button và dropdown */
+      .filter-item::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          height: 8px;
+          background: transparent;
+      }
 
-            <!-- Kinh tế -->
-            <li class="dropdown">
-              <a href="#" data-category="Kinh tế">Kinh tế ▸</a>
-              <ul class="dropdown-content">
-                <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
-                    data-subcategory="Quản trị">Quản trị</a></li>
-                <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
-                    data-subcategory="Tài chính">Tài chính</a></li>
-                <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
-                    data-subcategory="Marketing">Marketing</a></li>
-              </ul>
-            </li>
+      /* Nút bộ lọc */
+      .filter-btn {
+          background: #ffffff;
+          color: #2c3e50;
+          padding: 12px 20px;
+          border: 2px solid #e0e0e0;
+          cursor: pointer;
+          border-radius: 8px;
+          font-size: 15px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+          min-width: 160px;
+      }
 
-            <!-- Thiếu nhi -->
-            <li class="dropdown">
-              <a href="#" data-category="Thiếu nhi">Thiếu nhi ▸</a>
-              <ul class="dropdown-content">
-                <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
-                    data-subcategory="Truyện tranh">Truyện tranh</a></li>
-                <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
-                    data-subcategory="Giáo dục">Giáo dục</a></li>
-              </ul>
-            </li>
+      .filter-btn:hover {
+          background: #f8f9fa;
+          border-color: #007bff;
+          color: #007bff;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 123, 255, 0.15);
+      }
 
-            <!-- Giáo khoa -->
-            <li class="dropdown">
-              <a href="#" data-category="Giáo khoa">Giáo khoa ▸</a>
-              <ul class="dropdown-content">
-                <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
-                    data-subcategory="Cấp 1">Cấp 1</a></li>
-                <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
-                    data-subcategory="Cấp 2">Cấp 2</a></li>
-                <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
-                    data-subcategory="Cấp 3">Cấp 3</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        </div>
-        <div class="dropdown" id="catDropdown"></div>
-        </li>
-        <li><a href="news.html">Tin tức</a></li>
-      </ul>
-      <div class="cart-float" id="cartFloat"><button id="cartBtnFloat" class="btn"><span class="cart-icon">🛒</span> <span
-            id="cart-count" class="cart-count">0</span></button></div>
-    </nav>
+      .filter-btn:active {
+          transform: translateY(0);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
 
-<main class="container">
-  <!-- Phần top: breadcrumb + advanced filters -->
-  <div class="products-top">
-    <!-- Breadcrumb category -->
-    <button class="breadcrumb-btn" id="breadcrumb-category" onclick="window.location.href='category.html'">
-      Tất cả sách
-    </button>
-  </div> <!-- end products-top -->
+      /* Dropdown menu */
+      .filter-dropdown {
+          list-style-type: none;
+          padding: 8px 0;
+          margin: 0;
+          position: absolute;
+          top: calc(100% + 8px);
+          left: 0;
+          z-index: 1000;
+          background-color: #ffffff;
+          border: 1px solid #e0e0e0;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+          min-width: 200px;
+          display: none;
+          border-radius: 8px;
+          overflow: hidden;
+          animation: slideDown 0.2s ease;
+      }
 
-    <!-- Advanced filters -->
+      @keyframes slideDown {
+          from {
+              opacity: 0;
+              transform: translateY(-10px);
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+      }
+
+      /* Hiển thị dropdown khi hover hoặc có class open */
+      .filter-item:hover .filter-dropdown,
+      .filter-item.open .filter-dropdown {
+          display: block;
+      }
+
+      /* Delay ẩn dropdown khi rời chuột */
+      .filter-item .filter-dropdown {
+          transition: opacity 0.6s ease 3s, visibility 0.6s ease 3s;
+          opacity: 0;
+          visibility: hidden;
+      }
+
+      .filter-item:hover .filter-dropdown,
+      .filter-item.open .filter-dropdown {
+          opacity: 1;
+          visibility: visible;
+          display: block;
+          transition-delay: 0s;
+      }
+
+      /* Item trong dropdown */
+      .filter-dropdown li {
+          margin: 0;
+          padding: 0;
+      }
+
+      .filter-dropdown li a {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 14px 22px;
+          text-decoration: none;
+          color: #495057;
+          white-space: nowrap;
+          transition: all 0.2s ease;
+          font-size: 15px;
+          font-weight: 400;
+      }
+
+      .filter-dropdown li a:hover {
+          background: linear-gradient(90deg, #e3f2fd 0%, #bbdefb 100%);
+          color: #1976d2;
+          padding-left: 24px;
+      }
+
+      .filter-dropdown li:first-child a {
+          border-radius: 8px 8px 0 0;
+      }
+
+      .filter-dropdown li:last-child a {
+          border-radius: 0 0 8px 8px;
+      }
+      
+      /* --- Bổ sung CSS cho lọc khoảng giá --- */
+      .price-range-dropdown {
+          /* Đảm bảo div không bị áp dụng style ul/li */
+          list-style-type: none !important;
+          padding: 15px !important;
+          min-width: 250px !important;
+          /* Vô hiệu hóa animation */
+          transition: none !important;
+      }
+      .price-range-dropdown input[type="number"] {
+          box-sizing: border-box;
+      }
+      /* ------------------------------------- */
+
+      /* Nút xóa tìm kiếm nâng cao - ĐÃ SỬA THEO YÊU CẦU CUỐI */
+      .clear-filters-btn {
+          margin-left: auto;
+          text-decoration: none;
+          color: black;
+          padding: 10px 18px;
+
+          border: 2px solid #dc3545;
+          
+          /* Chữ Trắng Đục (Màu mặc định khi chưa có filter) */
+          color: rgb(255, 255, 255); 
+          
+          /* Tăng Size và Độ Đậm */
+          padding: 10px 18px;
+          border-radius: 8px;
+          font-size: 16px; /* TĂNG SIZE */
+          font-weight: 700; /* LÀM ĐẬM */
+          
+          transition: all 0.3s ease;
+          /* ********** LUÔN HIỂN THỊ NÚT ********** */
+          display: inline-flex; 
+          /* **************************************** */
+          align-items: center;
+          gap: 6px;
+          box-shadow: 0 2px 4px rgba(10, 9, 10, 0.1);
+      }
+
+      .clear-filters-btn:hover {
+          background-color: #c82333; /* Đỏ đậm hơn khi hover */
+          color: #ffffff;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(15, 0, 2, 0.3);
+      }
+
+      .clear-filters-btn:active {
+          transform: translateY(0);
+          box-shadow: 0 2px 4px rgba(7, 0, 1, 0.1);
+      }
+      
+      /* LỚP CSS KÍCH HOẠT (CHUYỂN CHỮ SANG ĐEN) */
+      .clear-filters-btn.active-clear {
+          background-color: #dc3545; /* Nền: Đỏ */
+          color: #000000; /* CHỮ: ĐEN */
+          border-color: #dc3545; /* Viền: Đỏ */
+          font-weight: 900; /* Đậm hơn nữa */
+      }
+
+      /* Phần hiển thị bộ lọc đã chọn */
+      .selected-filters {
+          padding: 15px 20px;
+          margin: 0 0 20px 0;
+          background: #fff3cd;
+          border-left: 4px solid #ffc107;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .selected-filters h1 {
+          font-size: 16px;
+          font-weight: 600;
+          color: #856404;
+          margin: 0;
+          padding: 0;
+      }
+
+      .selected-filters .filter-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #ffffff;
+          color: #495057;
+          padding: 6px 12px;
+          margin: 5px 5px 0 0;
+          border-radius: 6px;
+          font-size: 13px;
+          border: 1px solid #dee2e6;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      .selected-filters .filter-tag .remove-filter {
+          cursor: pointer;
+          color: #dc3545;
+          font-weight: bold;
+          transition: color 0.2s;
+      }
+
+      .selected-filters .filter-tag .remove-filter:hover {
+          color: #bd2130;
+      }
+
+      /* Responsive cho mobile */
+      @media (max-width: 768px) {
+          .advanced-filters {
+              flex-direction: column;
+              align-items: stretch;
+              gap: 10px;
+          }
+          
+          .filter-item {
+              width: 100%;
+          }
+          
+          .filter-btn {
+              width: 100%;
+              justify-content: space-between;
+          }
+          
+          .filter-dropdown {
+              width: 100%;
+              min-width: auto;
+          }
+          
+          .clear-filters-btn {
+              width: 100%;
+              justify-content: center;
+              margin-left: 0;
+          }
+      }
+
+      /* Loading state */
+      .filter-btn.loading {
+          opacity: 0.6;
+          cursor: not-allowed;
+          pointer-events: none;
+      }
+
+      .filter-btn.loading::after {
+          content: "";
+          width: 12px;
+          height: 12px;
+          border: 2px solid #007bff;
+          border-top-color: transparent;
+          border-radius: 50%;
+          animation: spin 0.6s linear infinite;
+          margin-left: 8px;
+      }
+
+      @keyframes spin {
+          to {
+              transform: rotate(360deg);
+          }
+      }
+
+      /* Active state cho filter đã chọn */
+      .filter-btn.active {
+          background: #007bff;
+          color: #ffffff;
+          border-color: #007bff;
+      }
+
+      .filter-btn.active:hover {
+          background: #0056b3;
+          border-color: #0056b3;
+      }
+
+      /* Số lượng badge */
+      .filter-count {
+          background: #dc3545;
+          color: #ffffff;
+          padding: 2px 6px;
+          border-radius: 10px;
+          font-size: 11px;
+          font-weight: 600;
+          margin-left: 4px;
+      }
+      
+      /* --- Bổ sung CSS cho Tác giả - ĐÃ SỬA --- */
+      .product-author {
+          margin: 0.3rem 0 0.8rem 0 !important; 
+          font-size: 14px !important;
+          color: #6c757d !important;
+          font-weight: 400 !important;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+
+      .product-info {
+          padding: 10px;
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: space-between !important;
+          flex-grow: 1 !important;
+      }
+      
+      /* Sửa margin của h3 trong product-card */
+      .product-card h3 {
+          margin-bottom: 0.5rem !important;
+      }
+      
+      /* Sửa price bỏ absolute positioning */
+      .product-card .price {
+          position: static !important;
+          margin-bottom: 1rem !important;
+      }
+      /* -------------------------------- */
+    </style>
+</head>
+
+<body>
+  <a id="top"></a>
+  <header class="topbar">
+    <div class="logo">
+      <a href="index.html"><img src="images/Logo.png" alt="Logo"> </a>
+    </div>
+    <div class="search-center">
+      <input id="topSearch" class="search-input" type="text" 
+        placeholder="Nhập tên cuốn sách bạn đang tìm ..." autocomplete="off" />
+      <button class="search-btn" type="button">Tìm kiếm</button> 
+    </div>
+    <div class="auth-cart">
+      <div id="authArea">
+        <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
+        <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
+      </div>  
+    </div>
+  </header>
+  
+  <nav class="navbar" id="mainNav">
+    <ul class="menu" id="mainMenu">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="about.html">Giới thiệu</a></li>
+      <div class="category-menu">
+        <button class="category-btn" onclick="window.location.href='category.html'">
+          Danh mục sách ▾
+        </button>
+        <ul class="book-filter">
+
+          <li class="dropdown">
+            <a href="#" data-category="Văn học">Văn học ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
+                  data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
+                  data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
+              <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
+                  data-subcategory="Thơ">Thơ</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" data-category="Kinh tế">Kinh tế ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
+                  data-subcategory="Quản trị">Quản trị</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
+                  data-subcategory="Tài chính">Tài chính</a></li>
+              <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
+                  data-subcategory="Marketing">Marketing</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" data-category="Thiếu nhi">Thiếu nhi ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
+                  data-subcategory="Truyện tranh">Truyện tranh</a></li>
+              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
+                  data-subcategory="Giáo dục">Giáo dục</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" data-category="Giáo khoa">Giáo khoa ▸</a>
+            <ul class="dropdown-content">
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
+                  data-subcategory="Cấp 1">Cấp 1</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
+                  data-subcategory="Cấp 2">Cấp 2</a></li>
+              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
+                  data-subcategory="Cấp 3">Cấp 3</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="dropdown" id="catDropdown"></div>
+      </li>
+      <li><a href="news.html">Tin tức</a></li>
+    </ul>
+    <div class="cart-float" id="cartFloat"><button id="cartBtnFloat" class="btn"><span class="cart-icon">🛒</span> <span
+          id="cart-count" class="cart-count">0</span></button></div>
+  </nav>
+
+  <main class="container">
+    <div class="products-top">
+      <button class="breadcrumb-btn" id="breadcrumb-category" onclick="window.location.href='category.html'">
+        Tất cả sách
+      </button>
+    </div>
+    
     <div class="advanced-filters">
-
       <div class="filter-item">
         <button class="filter-btn">Theo tên truyện ▾</button>
         <ul class="filter-dropdown">
@@ -128,38 +477,37 @@
           <li><a href="#">Z → A</a></li>
         </ul>
       </div>
-
+      
       <div class="filter-item">
-        <button class="filter-btn">Theo giá ▾</button>
-        <ul class="filter-dropdown">
-          <li><a href="#">Thấp → Cao</a></li>
-          <li><a href="#">Cao → Thấp</a></li>
-        </ul>
+        <button class="filter-btn" id="price-filter-btn">Theo giá (khoảng) ▾</button>
+        <div class="filter-dropdown price-range-dropdown" style="padding: 15px; min-width: 250px;">
+            <div style="margin-bottom: 10px;">
+                <label for="min-price" style="display: block; font-size: 14px; margin-bottom: 5px;">Giá Tối Thiểu (₫)</label>
+                <input type="text" id="min-price" placeholder="Ví dụ: 50.000" 
+                       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label for="max-price" style="display: block; font-size: 14px; margin-bottom: 5px;">Giá Tối Đa (₫)</label>
+                <input type="text" id="max-price" placeholder="Ví dụ: 200.000"
+                       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            <button id="apply-price-filter" 
+                    style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; font-weight: 600;">
+                Áp dụng
+            </button>
+        </div>
       </div>
+      <a href="./category.html" class="clear-filters-btn">Xóa tất cả tìm kiếm nâng cao</a>
+    </div>
+    
+    <div class="selected-filters" id="selectedFilters">
+      <h1>Tìm kiếm nâng cao: </h1>
+    </div>
 
-      <div class="filter-item">
-        <button class="filter-btn">Theo năm ▾</button>
-        <ul class="filter-dropdown">
-          <li><a href="#">Mới → Cũ</a></li>
-          <li><a href="#">Cũ → Mới</a></li>
-        </ul>
-      </div>
+    <div id="product-list" class="products-grid"></div>
 
-      <a href="./category.html" class= "clear-filters-btn">Xóa tất cả tìm kiếm nâng cao</a>
-
-    </div> <!-- end advanced-filters -->
-
-  <!-- Nơi hiển thị các filter đã chọn -->
-  <div class="selected-filters" id="selectedFilters">
-    <h1>Tìm kiếm nâng cao: </h1>
-  </div>
-
-  <!-- Danh sách sản phẩm -->
-  <div id="product-list" class="products-grid"></div>
-
-  <!-- Phân trang -->
-  <div id="pagination" class="pagination"></div>
-</main>
+    <div id="pagination" class="pagination"></div>
+  </main>
 
   <footer>
     <div class="footer-content">
@@ -200,7 +548,7 @@
         <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
         <p>📞 Hotline: 1900 xxxx</p>
         <p>✉️ Email: support@bookstore.vn</p>
-        <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
+        <p>🕗 Giờ làm việc: 8:00 - 22:00</p>
         <div class="social-links">
           <a href="#">f</a>
           <a href="#">📷</a>
@@ -213,7 +561,7 @@
       <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
     </div>
   </footer>
-  <!-- Modal Đăng Nhập -->
+  
   <div id="loginModal" class="auth-modal">
     <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
     <div class="auth-modal-content">
@@ -237,7 +585,7 @@
         <div class="form-group">
           <label for="login-password">Mật khẩu</label>
           <div class="input-with-icon">
-            <span class="input-icon">🔐</span>
+            <span class="input-icon">🔒</span>
             <input type="password" id="login-password" placeholder="Nhập mật khẩu">
             <span class="password-toggle" id="toggle-login-password" 
                   onclick="togglePassword('login-password', 'toggle-login-password')">👁️‍🗨️</span>
@@ -254,7 +602,6 @@
     </div>
   </div>
 
-  <!-- Modal Đăng Ký -->
   <div id="registerModal" class="auth-modal">
     <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
     <div class="auth-modal-content">
@@ -287,7 +634,7 @@
         <div class="form-group">
           <label for="reg-password">Mật khẩu</label>
           <div class="input-with-icon">
-            <span class="input-icon">🔐</span>
+            <span class="input-icon">🔒</span>
             <input type="password" id="reg-password" placeholder="Nhập mật khẩu">
             <span class="password-toggle" id="toggle-reg-password" 
                   onclick="togglePassword('reg-password', 'toggle-reg-password')">👁️‍🗨️</span>
@@ -298,7 +645,7 @@
         <div class="form-group">
           <label for="reg-confirm-password">Nhập lại mật khẩu</label>
           <div class="input-with-icon">
-            <span class="input-icon">🔐</span>
+            <span class="input-icon">🔒</span>
             <input type="password" id="reg-confirm-password" placeholder="Nhập lại mật khẩu">
             <span class="password-toggle" id="toggle-reg-confirm" 
                   onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')">👁️‍🗨️</span>
@@ -342,7 +689,6 @@
     </div>
   </div>
 
-  <!-- Modal Profile (Hiển thị khi đã đăng nhập) -->
   <div id="profileModal" class="auth-modal">
     <div class="auth-modal-overlay" onclick="closeProfileModal()"></div>
     <div class="auth-modal-content">
@@ -360,7 +706,7 @@
           <span class="info-value" id="profile-name-value"></span>
         </div>
         <div class="info-row">
-          <span class="info-label">🔐 Tài khoản:</span>
+          <span class="info-label">🔑 Tài khoản:</span>
           <span class="info-value" id="profile-username-value"></span>
         </div>
         <div class="info-row">
@@ -380,13 +726,400 @@
       <button class="btn-logout-modal" onclick="handleLogoutModal()">Đăng xuất</button>
     </div>
   </div>
+  
   <script src="assets/js/main.js"></script>
   <script src="bootstrap-5.3.2-dist/css/bootstrap.min.js"></script>
-      <!-- Nút quay lên đầu trang -->
-      <a href="#top" class="back-to-top" title="Lên đầu trang">
-        <i class="bi bi-chevron-up">
-          <img class="go-up" src="./images/muiten.svg" alt="Về trang chủ" />
-        </i>
-      </a>
-  </body>
-  </html>
+  <a href="#top" class="back-to-top" title="Lên đầu trang">
+    <i class="bi bi-chevron-up">
+      <img class="go-up" src="./images/muiten.svg" alt="Về trang chủ" />
+    </i>
+  </a>
+ <!-- ==================== INLINE JAVASCRIPT CHO CATEGORY PAGE - FIXED ==================== -->
+<script>
+// Biến toàn cục để lưu trạng thái filter
+let categoryFilters = {
+  sortByName: null,
+  sortByAuthor: null,
+  minPrice: null,
+  maxPrice: null,
+  category: null,
+  subcategory: null
+};
+
+// Khởi tạo trang category
+function initCategoryPage() {
+  console.log('Initializing category page...');
+  
+  // Đọc URL params
+  const urlParams = new URLSearchParams(window.location.search);
+  categoryFilters.category = urlParams.get('category');
+  categoryFilters.subcategory = urlParams.get('subcategory');
+  
+  console.log('URL Filters:', categoryFilters);
+  
+  // Cập nhật breadcrumb
+  updateCategoryBreadcrumb();
+  
+  // Setup event listeners
+  setupCategoryFilterListeners();
+  
+  // Load và hiển thị sản phẩm
+  applyCategoryFilters();
+  
+  // Cập nhật UI
+  updateSelectedFilters();
+  updateClearButton();
+}
+
+// Cập nhật breadcrumb
+function updateCategoryBreadcrumb() {
+  const breadcrumbBtn = document.getElementById('breadcrumb-category');
+  if (!breadcrumbBtn) return;
+
+  if (!categoryFilters.category) {
+    breadcrumbBtn.textContent = 'Tất cả sách';
+  } else if (categoryFilters.subcategory) {
+    breadcrumbBtn.textContent = `Danh mục sách > ${categoryFilters.category} > ${categoryFilters.subcategory}`;
+  } else {
+    breadcrumbBtn.textContent = `Danh mục sách > ${categoryFilters.category}`;
+  }
+}
+
+// Setup event listeners
+function setupCategoryFilterListeners() {
+  console.log('Setting up filter listeners...');
+  
+  // Lọc theo tên truyện
+  const nameFilterLinks = document.querySelectorAll('.filter-item:nth-child(1) .filter-dropdown a');
+  console.log('Name filter links:', nameFilterLinks.length);
+  
+  nameFilterLinks.forEach((link, index) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('Name filter clicked:', index);
+      categoryFilters.sortByName = index === 0 ? 'asc' : 'desc';
+      applyCategoryFilters();
+      updateSelectedFilters();
+      updateClearButton();
+    });
+  });
+
+  // Lọc theo tác giả
+  const authorFilterLinks = document.querySelectorAll('.filter-item:nth-child(2) .filter-dropdown a');
+  console.log('Author filter links:', authorFilterLinks.length);
+  
+  authorFilterLinks.forEach((link, index) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('Author filter clicked:', index);
+      categoryFilters.sortByAuthor = index === 0 ? 'asc' : 'desc';
+      applyCategoryFilters();
+      updateSelectedFilters();
+      updateClearButton();
+    });
+  });
+
+  // Lọc theo khoảng giá
+  const applyPriceBtn = document.getElementById('apply-price-filter');
+  if (applyPriceBtn) {
+    console.log('Price filter button found');
+    applyPriceBtn.addEventListener('click', () => {
+      console.log('Apply price filter clicked');
+      applyPriceFilter();
+    });
+  } else {
+    console.error('Price filter button NOT found');
+  }
+
+  // Format input giá với dấu chấm ngăn cách
+  const minPriceInput = document.getElementById('min-price');
+  const maxPriceInput = document.getElementById('max-price');
+  
+  if (minPriceInput) {
+    minPriceInput.addEventListener('input', (e) => {
+      formatPriceInputWithDots(e.target);
+    });
+    minPriceInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applyPriceFilter();
+      }
+    });
+  }
+  
+  if (maxPriceInput) {
+    maxPriceInput.addEventListener('input', (e) => {
+      formatPriceInputWithDots(e.target);
+    });
+    maxPriceInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applyPriceFilter();
+      }
+    });
+  }
+}
+
+// Format input với dấu chấm ngăn cách hàng nghìn
+function formatPriceInputWithDots(input) {
+  // Lưu vị trí con trỏ
+  let cursorPosition = input.selectionStart;
+  let oldValue = input.value;
+  
+  // Xóa tất cả ký tự không phải số
+  let numericValue = input.value.replace(/[^\d]/g, '');
+  
+  // Thêm dấu chấm ngăn cách
+  let formattedValue = '';
+  if (numericValue) {
+    formattedValue = parseInt(numericValue).toLocaleString('vi-VN');
+  }
+  
+  // Cập nhật giá trị
+  input.value = formattedValue;
+  
+  // Điều chỉnh vị trí con trỏ
+  if (formattedValue.length > oldValue.length) {
+    cursorPosition++;
+  } else if (formattedValue.length < oldValue.length) {
+    cursorPosition--;
+  }
+  
+  // Đặt lại con trỏ
+  input.setSelectionRange(cursorPosition, cursorPosition);
+}
+
+// Áp dụng lọc theo giá
+function applyPriceFilter() {
+  const minInput = document.getElementById('min-price');
+  const maxInput = document.getElementById('max-price');
+  
+  if (!minInput || !maxInput) {
+    console.error('Price inputs not found!');
+    return;
+  }
+  
+  // Lấy giá trị và xóa dấu chấm để parse thành số
+  const minVal = minInput.value.replace(/\./g, '').trim();
+  const maxVal = maxInput.value.replace(/\./g, '').trim();
+  
+  console.log('Price filter values:', { minVal, maxVal });
+  
+  // Validate
+  if (minVal && maxVal && parseInt(minVal) > parseInt(maxVal)) {
+    alert('Giá tối thiểu không thể lớn hơn giá tối đa!');
+    return;
+  }
+  
+  categoryFilters.minPrice = minVal ? parseInt(minVal) : null;
+  categoryFilters.maxPrice = maxVal ? parseInt(maxVal) : null;
+  
+  console.log('Updated price filters:', categoryFilters);
+  
+  applyCategoryFilters();
+  updateSelectedFilters();
+  updateClearButton();
+}
+
+// Áp dụng tất cả filters
+function applyCategoryFilters() {
+  console.log('Applying filters:', categoryFilters);
+  
+  let products = getData().products;
+  console.log('Total products before filter:', products.length);
+  
+  // Lọc theo category
+  if (categoryFilters.category) {
+    products = products.filter(p => p.category === categoryFilters.category);
+    console.log('After category filter:', products.length);
+  }
+  
+  // Lọc theo subcategory
+  if (categoryFilters.subcategory) {
+    products = products.filter(p => p.subcategory === categoryFilters.subcategory);
+    console.log('After subcategory filter:', products.length);
+  }
+  
+  // Lọc theo giá
+  if (categoryFilters.minPrice !== null) {
+    products = products.filter(p => p.price >= categoryFilters.minPrice);
+    console.log('After min price filter:', products.length);
+  }
+  
+  if (categoryFilters.maxPrice !== null) {
+    products = products.filter(p => p.price <= categoryFilters.maxPrice);
+    console.log('After max price filter:', products.length);
+  }
+  
+  // Sắp xếp
+  if (categoryFilters.sortByName && categoryFilters.sortByAuthor) {
+    // Sắp xếp cả 2: Tên trước, tác giả sau
+    products.sort((a, b) => {
+      const nameCompare = categoryFilters.sortByName === 'asc' 
+        ? a.name.localeCompare(b.name, 'vi')
+        : b.name.localeCompare(a.name, 'vi');
+      
+      if (nameCompare === 0) {
+        return categoryFilters.sortByAuthor === 'asc'
+          ? a.author.localeCompare(b.author, 'vi')
+          : b.author.localeCompare(a.author, 'vi');
+      }
+      
+      return nameCompare;
+    });
+    console.log('Sorted by name + author');
+  } else if (categoryFilters.sortByName) {
+    products.sort((a, b) => {
+      return categoryFilters.sortByName === 'asc'
+        ? a.name.localeCompare(b.name, 'vi')
+        : b.name.localeCompare(a.name, 'vi');
+    });
+    console.log('Sorted by name only');
+  } else if (categoryFilters.sortByAuthor) {
+    products.sort((a, b) => {
+      return categoryFilters.sortByAuthor === 'asc'
+        ? a.author.localeCompare(b.author, 'vi')
+        : b.author.localeCompare(a.author, 'vi');
+    });
+    console.log('Sorted by author only');
+  }
+  
+  console.log('Final products count:', products.length);
+  
+  // Cập nhật và render
+  currentList = products;
+  renderProductList(1);
+}
+
+// Hiển thị filter tags
+function updateSelectedFilters() {
+  const container = document.getElementById('selectedFilters');
+  if (!container) return;
+  
+  let html = '<h1>Tìm kiếm nâng cao: </h1>';
+  let hasFilter = false;
+  
+  // Tên
+  if (categoryFilters.sortByName) {
+    hasFilter = true;
+    const direction = categoryFilters.sortByName === 'asc' ? 'A → Z' : 'Z → A';
+    html += `<span class="filter-tag">
+      Tên: ${direction}
+      <span class="remove-filter" onclick="removeCategoryFilter('sortByName')">✕</span>
+    </span>`;
+  }
+  
+  // Tác giả
+  if (categoryFilters.sortByAuthor) {
+    hasFilter = true;
+    const direction = categoryFilters.sortByAuthor === 'asc' ? 'A → Z' : 'Z → A';
+    html += `<span class="filter-tag">
+      Tác giả: ${direction}
+      <span class="remove-filter" onclick="removeCategoryFilter('sortByAuthor')">✕</span>
+    </span>`;
+  }
+  
+  // Giá
+  if (categoryFilters.minPrice !== null || categoryFilters.maxPrice !== null) {
+    hasFilter = true;
+    let priceText = 'Giá: ';
+    if (categoryFilters.minPrice !== null && categoryFilters.maxPrice !== null) {
+      priceText += `${categoryFilters.minPrice.toLocaleString('vi-VN')}₫ - ${categoryFilters.maxPrice.toLocaleString('vi-VN')}₫`;
+    } else if (categoryFilters.minPrice !== null) {
+      priceText += `Từ ${categoryFilters.minPrice.toLocaleString('vi-VN')}₫`;
+    } else {
+      priceText += `Đến ${categoryFilters.maxPrice.toLocaleString('vi-VN')}₫`;
+    }
+    html += `<span class="filter-tag">
+      ${priceText}
+      <span class="remove-filter" onclick="removeCategoryFilter('price')">✕</span>
+    </span>`;
+  }
+  
+  container.innerHTML = html;
+  container.style.display = hasFilter ? 'block' : 'none';
+}
+
+// Xóa một filter
+function removeCategoryFilter(filterType) {
+  console.log('Removing filter:', filterType);
+  
+  switch(filterType) {
+    case 'sortByName':
+      categoryFilters.sortByName = null;
+      break;
+    case 'sortByAuthor':
+      categoryFilters.sortByAuthor = null;
+      break;
+    case 'price':
+      categoryFilters.minPrice = null;
+      categoryFilters.maxPrice = null;
+      const minInput = document.getElementById('min-price');
+      const maxInput = document.getElementById('max-price');
+      if (minInput) minInput.value = '';
+      if (maxInput) maxInput.value = '';
+      break;
+  }
+  
+  applyCategoryFilters();
+  updateSelectedFilters();
+  updateClearButton();
+}
+
+// Cập nhật nút Clear
+function updateClearButton() {
+  const clearBtn = document.querySelector('.clear-filters-btn');
+  if (!clearBtn) return;
+  
+  const hasActiveFilter = categoryFilters.sortByName || 
+                         categoryFilters.sortByAuthor || 
+                         categoryFilters.minPrice !== null || 
+                         categoryFilters.maxPrice !== null;
+  
+  if (hasActiveFilter) {
+    clearBtn.classList.add('active-clear');
+  } else {
+    clearBtn.classList.remove('active-clear');
+  }
+}
+
+// Override renderProductList để hiển thị tác giả
+function renderProductList(page = 1) {
+  const wrap = document.getElementById('product-list');
+  if (!wrap) return;
+  
+  currentPage = page;
+  const all = currentList;
+  const start = (page - 1) * perPage;
+  const list = all.slice(start, start + perPage);
+
+  wrap.innerHTML = list
+    .map((it) => `
+    <div class="product-card">
+      <img src="${it.img}" alt="${it.name}">
+      <div class="product-info">
+        <h3>${it.name}</h3>
+        <p class="product-author">Tác giả: ${it.author}</p>
+        <div class="price">${it.price.toLocaleString('vi-VN')}₫</div>
+        <div class="button-row">
+          <a class="btn btn-small" href="product-detail.html?id=${it.id}">Xem</a>
+          <button class="btn btn-cart" onclick="addToCart(${it.id}, 1)">Thêm vào giỏ</button>
+        </div>
+      </div>
+    </div>
+    `)
+    .join('');
+
+  renderPagination(Math.ceil(all.length / perPage));
+}
+
+// Khởi tạo khi DOM ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCategoryPage);
+} else {
+  initCategoryPage();
+}
+</script>
+</body>
+
+</html>

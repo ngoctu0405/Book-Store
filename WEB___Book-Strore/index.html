@@ -23,91 +23,143 @@
           height: 460rem;
         }
       }
-      /* ========================================================= */
-      /* 4. HOT NEWS AND EVENT */
-      /* ========================================================= */
-      .container_py-6 {
-        border-radius: 3rem;
-        padding: 3rem;
-      }
+      /* ================= Tin tức & Sự kiện ================= */
       .news-card {
-        /* width: 13rem; */
-        display: flex;
-        flex-direction: column;
-        height: 43rem;
-        background-color: #fff;
+        background: #fff;
         border-radius: 1rem;
         overflow: hidden;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Ảnh */
-      .news-card img {
-        width: 100%;
-        height: 300px; /* điều chỉnh tuỳ ý */
-        object-fit: cover;
-        display: block;
-      }
-
-      .new_event {
-        background-color: #57c0e0;
-        border-radius: 2rem;
-        min-width: 15rem;
-        min-height: 6rem;
-      }
-      .text-news {
-        display: flex;
-        justify-content: center;
-      }
-      /* Nội dung */
-      .news-content {
-        padding: 1rem;
-        flex-grow: 1;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
         display: flex;
         flex-direction: column;
-        /* justify-content: space-between; */
+      }
+      .news-card:hover {
+        transform: translateY(-5px);
       }
 
-      /* Link đọc thêm */
+      .news-img img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .news-content {
+        padding: 1rem;
+      }
+
+      .news-meta {
+        font-size: 0.85rem;
+        color: #555;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+      }
+
       .read-more {
-        position: fixed;
-        top: 38rem;
-        font-size: 0.85rem; /* nhỏ vừa đủ */
-        color: #0077cc;
-        font-weight: bold;
+        color: #3498db;
         text-decoration: none;
-        margin-top: 0.5rem; /* khoảng cách từ đoạn text */
+        font-weight: 600;
       }
-
       .read-more:hover {
         text-decoration: underline;
       }
 
-      /* Đảm bảo cột bằng nhau */
-      .carousel-item .row.g-3 {
+      /* ================= Hot Sale ================= */
+      .title-hot-sale {
+        background-color: #fff;
+        border-radius: 1rem;
+        width: 30rem;
+      }
+      .Top-sale {
         display: flex;
+        justify-content: center;
       }
 
-      .carousel-item .col-md-6 {
+      .hot_sale_selection {
+        min-height: 45rem;
+        padding: 4rem;
+        border-radius: 3rem;
+        margin: 2rem 0;
+      }
+
+      .product-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 1.5rem;
+        margin: 0 0.75rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        width: 20rem;
+        height: 33rem;
         display: flex;
         flex-direction: column;
       }
 
-      /* Đảm bảo carousel-inner đẹp */
-      .carousel-inner {
-        background-color: #22a6ce;
-        border-radius: 1rem;
-        padding: 1rem;
+      .product-card:hover {
+        transform: translateY(-5px);
       }
+
+      .card-img img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 16px;
+      }
+
+      .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.75rem;
+        min-height: 50px;
+      }
+
+      .price {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #e74c3c;
+        margin-bottom: 1rem;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .card-actions .btn-small,
+      .card-actions .btn-cart {
+        flex: 1;
+        height: 40px;
+        padding: 0;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: white;
+      }
+      .btn-small {
+        background: #5dade2;
+      }
+      .btn-cart {
+        background: #ff6b4a;
+      }
+      .btn-small:hover {
+        background: #3498db;
+      }
+      .btn-cart:hover {
+        background: #e74c3c;
+      }
+
+      /* ================= Media ================= */
       @media (max-width: 575px) {
-        .container_py-6 {
-          position: relative;
-          top: 20rem;
-          height: 210rem;
+        .hot_sale_selection {
+          min-height: auto;
         }
-        .events {
-          position: relative;
-          top: 10em;
+        .product-card {
+          margin-bottom: 1.5rem;
+        }
+        .Top-sale {
+          width: 23rem;
         }
       }
 
@@ -552,9 +604,10 @@
             </div>
           </div>
 
+          <!-- Carousel Bán chạy -->
           <div
             id="carouselExampleIndicators"
-            class="carousel slide"
+            class="carousel slide carousel-fade"
             data-bs-ride="carousel"
             data-bs-interval="3000"
           >
@@ -562,11 +615,12 @@
               <!-- Trang 1 -->
               <div class="carousel-item active">
                 <div class="row">
+                  <!-- Sách 1 -->
                   <div class="col-lg-4 col-md-6 col-12">
                     <div class="product-card">
                       <div class="card-img">
                         <img
-                          src="./images/Đắc Nhân Tâm - Dale Carnegie.jpg"
+                          src="./images/Đắc_Nhân_Tâm.jpg"
                           alt="Đắc Nhân Tâm"
                           class="img-fluid"
                         />
@@ -584,11 +638,12 @@
                     </div>
                   </div>
 
+                  <!-- Sách 2 -->
                   <div class="col-lg-4 col-md-6 col-12">
                     <div class="product-card">
                       <div class="card-img">
                         <img
-                          src="./images/Tuổi Trẻ Đáng Giá Bao Nhiêu.jpg"
+                          src="./images/Tuoi_tre_dang_gia_bao_nhiêu.jpg"
                           alt="Tuổi Trẻ Đáng Giá Bao Nhiêu"
                           class="img-fluid"
                         />
@@ -606,11 +661,12 @@
                     </div>
                   </div>
 
+                  <!-- Sách 3 -->
                   <div class="col-lg-4 col-md-6 col-12">
                     <div class="product-card">
                       <div class="card-img">
                         <img
-                          src="./images/Chí Phèo_ Khi nghệ thuật là tiếng kêu đau khổ thoát ra từ kiếp người lầm than.jpg"
+                          src="./images/Chí_Phèo.jpg"
                           alt="Chí Phèo"
                           class="img-fluid"
                         />
@@ -618,7 +674,7 @@
                       <h4 class="card-title">Chí Phèo</h4>
                       <div class="price">70.000đ</div>
                       <div class="card-actions">
-                        <a href="product-detail.html?id=8" class="btn btn-small"
+                        <a href="product-detail.html?id=3" class="btn btn-small"
                           >Xem</a
                         >
                         <a href="product-detail.html?id=3" class="btn btn-cart"
@@ -633,11 +689,12 @@
               <!-- Trang 2 -->
               <div class="carousel-item">
                 <div class="row">
+                  <!-- Sách 4 -->
                   <div class="col-lg-4 col-md-6 col-12">
                     <div class="product-card">
                       <div class="card-img">
                         <img
-                          src="./images/Lão Hạc của Nam Cao.jpg"
+                          src="./images/Lão_Hạc.jpg"
                           alt="Lão Hạc"
                           class="img-fluid"
                         />
@@ -645,7 +702,7 @@
                       <h4 class="card-title">Lão Hạc</h4>
                       <div class="price">60.000đ</div>
                       <div class="card-actions">
-                        <a href="product-detail.html?id=5" class="btn btn-small"
+                        <a href="product-detail.html?id=4" class="btn btn-small"
                           >Xem</a
                         >
                         <a href="product-detail.html?id=4" class="btn btn-cart"
@@ -655,11 +712,12 @@
                     </div>
                   </div>
 
+                  <!-- Sách 5 -->
                   <div class="col-lg-4 col-md-6 col-12">
                     <div class="product-card">
                       <div class="card-img">
                         <img
-                          src="./images/Sách- Nhật Ký Trong Tù - Hồ Chí Minh (Ml).jpg"
+                          src="./images/Nhật_Ký_Trong_Tù.jpg"
                           alt="Nhật Ký Trong Tù"
                           class="img-fluid"
                         />
@@ -667,7 +725,7 @@
                       <h4 class="card-title">Nhật Ký Trong Tù</h4>
                       <div class="price">80.000đ</div>
                       <div class="card-actions">
-                        <a href="product-detail.html?id=6" class="btn btn-small"
+                        <a href="product-detail.html?id=5" class="btn btn-small"
                           >Xem</a
                         >
                         <a href="product-detail.html?id=5" class="btn btn-cart"
@@ -677,11 +735,12 @@
                     </div>
                   </div>
 
+                  <!-- Sách 6 -->
                   <div class="col-lg-4 col-md-6 col-12">
                     <div class="product-card">
                       <div class="card-img">
                         <img
-                          src="./images/Số đỏ.jpg"
+                          src="./images/Số_đỏ.jpg"
                           alt="Số Đỏ"
                           class="img-fluid"
                         />
@@ -689,7 +748,7 @@
                       <h4 class="card-title">Số Đỏ</h4>
                       <div class="price">95.000đ</div>
                       <div class="card-actions">
-                        <a href="product-detail.html?id=7" class="btn btn-small"
+                        <a href="product-detail.html?id=6" class="btn btn-small"
                           >Xem</a
                         >
                         <a href="product-detail.html?id=6" class="btn btn-cart"
@@ -704,11 +763,12 @@
               <!-- Trang 3 -->
               <div class="carousel-item">
                 <div class="row">
+                  <!-- Sách 7 -->
                   <div class="col-lg-4 col-md-6 col-12">
                     <div class="product-card">
                       <div class="card-img">
                         <img
-                          src="./images/Sách Cha Giàu Cha Nghèo - Đọc Sách Online, Nghe Sách Nói, Tải Sách Miễn Phí (PDF).jpg"
+                          src="./images/Cha_Giàu_Cha_Nghèo.jpg"
                           alt="Cha Giàu Cha Nghèo"
                           class="img-fluid"
                         />
@@ -716,9 +776,7 @@
                       <h4 class="card-title">Cha Giàu Cha Nghèo</h4>
                       <div class="price">120.000đ</div>
                       <div class="card-actions">
-                        <a
-                          href="product-detail.html?id=14"
-                          class="btn btn-small"
+                        <a href="product-detail.html?id=7" class="btn btn-small"
                           >Xem</a
                         >
                         <a href="product-detail.html?id=7" class="btn btn-cart"
@@ -728,11 +786,12 @@
                     </div>
                   </div>
 
+                  <!-- Sách 8 -->
                   <div class="col-lg-4 col-md-6 col-12">
                     <div class="product-card">
                       <div class="card-img">
                         <img
-                          src="./images/Người lái đò sông Đà.jpg"
+                          src="./images/Người_lái_đò_sông_Đà.jpg"
                           alt="Người Lái Đò Sông Đà"
                           class="img-fluid"
                         />
@@ -740,9 +799,7 @@
                       <h4 class="card-title">Người Lái Đò Sông Đà</h4>
                       <div class="price">72.000đ</div>
                       <div class="card-actions">
-                        <a
-                          href="product-detail.html?id=10"
-                          class="btn btn-small"
+                        <a href="product-detail.html?id=8" class="btn btn-small"
                           >Xem</a
                         >
                         <a href="product-detail.html?id=8" class="btn btn-cart"
@@ -752,11 +809,12 @@
                     </div>
                   </div>
 
+                  <!-- Sách 9 -->
                   <div class="col-lg-4 col-md-6 col-12">
                     <div class="product-card">
                       <div class="card-img">
                         <img
-                          src="./images/Nhật ký Đặng Thùy Trâm.jpg"
+                          src="./images/Nhật_ký_Đặng_Thùy_Trâm.jpg"
                           alt="Nhật Ký Đặng Thùy Trâm"
                           class="img-fluid"
                         />
@@ -764,9 +822,7 @@
                       <h4 class="card-title">Nhật Ký Đặng Thùy Trâm</h4>
                       <div class="price">85.000đ</div>
                       <div class="card-actions">
-                        <a
-                          href="product-detail.html?id=11"
-                          class="btn btn-small"
+                        <a href="product-detail.html?id=9" class="btn btn-small"
                           >Xem</a
                         >
                         <a href="product-detail.html?id=9" class="btn btn-cart"
@@ -792,6 +848,7 @@
               ></span>
               <span class="visually-hidden">Previous</span>
             </button>
+
             <button
               class="carousel-control-next"
               type="button"
@@ -809,15 +866,11 @@
       </div>
 
       <!-- Phần tin tức và sự kiện -->
-      <section class="container_py-6">
-        <div class="row">
+      <section class="container py-6">
+        <div class="row g-4">
           <!-- 📰 CỘT TIN TỨC -->
           <div class="col-md-6">
-            <div class="text-news">
-              <div class="new_event">
-                <h2 class="section-title text-center mb-4">TIN TỨC</h2>
-              </div>
-            </div>
+            <h2 class="section-title text-center mb-4">TIN TỨC</h2>
 
             <div
               id="newsCarousel"
@@ -829,11 +882,12 @@
                 <div class="carousel-item active">
                   <div class="row g-3">
                     <div class="col-md-6">
-                      <article class="news-card" data-id="1">
+                      <article class="news-card">
                         <div class="news-img">
                           <img
                             src="./images/Mãi mãi tuổi hai mươi.jpg"
                             alt="Alpha Books và Tinh Vân"
+                            loading="lazy"
                           />
                         </div>
                         <div class="news-content">
@@ -854,13 +908,13 @@
                         </div>
                       </article>
                     </div>
-
                     <div class="col-md-6">
-                      <article class="news-card" data-id="2">
+                      <article class="news-card">
                         <div class="news-img">
                           <img
-                            src="./images/Tư duy phản biện.jpg"
+                            src="./images/Tư_duy_phản_biện.jpg"
                             alt="Tư Duy Phản Biện"
+                            loading="lazy"
                           />
                         </div>
                         <div class="news-content">
@@ -888,11 +942,12 @@
                 <div class="carousel-item">
                   <div class="row g-3">
                     <div class="col-md-6">
-                      <article class="news-card" data-id="3">
+                      <article class="news-card">
                         <div class="news-img">
                           <img
                             src="./images/Top sách 2025.jpg"
                             alt="Tình hình nhân sự"
+                            loading="lazy"
                           />
                         </div>
                         <div class="news-content">
@@ -903,8 +958,7 @@
                           <h3>Những cuốn sách mới đáng chú ý nửa cuối 2025</h3>
                           <p>
                             Thị trường sách nửa cuối năm 2025 chứng kiến sự xuất
-                            hiện của nhiều tác phẩm đáng chú ý, từ tiểu thuyết,
-                            sách phát triển bản thân,...
+                            hiện của nhiều tác phẩm đáng chú ý...
                           </p>
                           <a href="news-detail.html?id=3" class="read-more"
                             >Đọc thêm →</a
@@ -912,13 +966,13 @@
                         </div>
                       </article>
                     </div>
-
                     <div class="col-md-6">
-                      <article class="news-card" data-id="4">
+                      <article class="news-card">
                         <div class="news-img">
                           <img
                             src="./images/Phong trào đọc sách.jpg"
                             alt="Phong trào đọc sách"
+                            loading="lazy"
                           />
                         </div>
                         <div class="news-content">
@@ -941,7 +995,6 @@
                 </div>
               </div>
 
-              <!-- Controls -->
               <button
                 class="carousel-control-prev"
                 type="button"
@@ -962,12 +1015,8 @@
           </div>
 
           <!-- 🎪 CỘT SỰ KIỆN -->
-          <div class="col-md-6 events">
-            <div class="text-news">
-              <div class="new_event">
-                <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
-              </div>
-            </div>
+          <div class="col-md-6">
+            <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
 
             <div
               id="eventCarousel"
@@ -979,11 +1028,12 @@
                 <div class="carousel-item active">
                   <div class="row g-3">
                     <div class="col-md-6">
-                      <article class="news-card" data-id="5">
+                      <article class="news-card">
                         <div class="news-img">
                           <img
                             src="./images/Talk show.png"
                             alt="Talkshow Sao Hỏa"
+                            loading="lazy"
                           />
                         </div>
                         <div class="news-content">
@@ -992,13 +1042,12 @@
                             <span class="news-date">📅 18/01/2024</span>
                           </div>
                           <h3>
-                            TALKSHOW CUỐI NĂM: HÀNH TRÌNH TỚI SAO HỎA &amp;
-                            TƯƠNG LAI
+                            TALKSHOW CUỐI NĂM: HÀNH TRÌNH TỚI SAO HỎA & TƯƠNG
+                            LAI
                           </h3>
                           <p>
                             2023 là một năm kinh tế đầy biến động, đã đến lúc
-                            nhìn lại hành trình đã qua và sẵn sàng cho tương
-                            lai...
+                            nhìn lại hành trình đã qua...
                           </p>
                           <a href="news-detail.html?id=5" class="read-more"
                             >Đọc thêm →</a
@@ -1006,13 +1055,13 @@
                         </div>
                       </article>
                     </div>
-
                     <div class="col-md-6">
-                      <article class="news-card" data-id="6">
+                      <article class="news-card">
                         <div class="news-img">
                           <img
                             src="./images/Hội sách.jpg"
                             alt="Hội sách mùa hè 2024"
+                            loading="lazy"
                           />
                         </div>
                         <div class="news-content">
@@ -1033,31 +1082,27 @@
                     </div>
                   </div>
                 </div>
-
                 <!-- Slide 2 -->
                 <div class="carousel-item">
                   <div class="row g-3">
                     <div class="col-md-6">
-                      <article class="news-card" data-id="7">
+                      <article class="news-card">
                         <div class="news-img">
                           <img
                             src="./images/Hành trình tri thức.jpg"
                             alt="Hành trình tri thức"
+                            loading="lazy"
                           />
                         </div>
                         <div class="news-content">
                           <div class="news-meta">
-                            <span class="news-category">Văn hóa - sách</span>
+                            <span class="news-category">Văn hóa - Sách</span>
                             <span class="news-date">📅 28/10/2025</span>
                           </div>
-                          <h3>
-                            Ra mắt bộ sách mới “Hành Trình Tri Thức 2025” thu
-                            hút độc giả trẻ
-                          </h3>
+                          <h3>Ra mắt bộ sách mới “Hành Trình Tri Thức 2025”</h3>
                           <p>
                             Mới đây, tại Hà Nội, nhà xuất bản Tri Thức Việt đã
-                            tổ chức lễ ra mắt bộ sách “Hành Trình Tri Thức
-                            2025”...
+                            tổ chức lễ ra mắt bộ sách...
                           </p>
                           <a href="news-detail.html?id=7" class="read-more"
                             >Đọc thêm →</a
@@ -1065,13 +1110,13 @@
                         </div>
                       </article>
                     </div>
-
                     <div class="col-md-6">
-                      <article class="news-card" data-id="8">
+                      <article class="news-card">
                         <div class="news-img">
                           <img
                             src="./images/Work shop.jpg"
                             alt="Workshop sáng tạo"
+                            loading="lazy"
                           />
                         </div>
                         <div class="news-content">
@@ -1080,8 +1125,7 @@
                             <span class="news-date">📅 15/06/2024</span>
                           </div>
                           <h3>
-                            WORKSHOP: SÁNG TẠO TRONG CÔNG NGHỆ &amp; XU HƯỚNG
-                            MỚI
+                            WORKSHOP: SÁNG TẠO TRONG CÔNG NGHỆ & XU HƯỚNG MỚI
                           </h3>
                           <p>
                             Chương trình quy tụ các chuyên gia hàng đầu chia sẻ
@@ -1097,7 +1141,6 @@
                 </div>
               </div>
 
-              <!-- Controls -->
               <button
                 class="carousel-control-prev"
                 type="button"
