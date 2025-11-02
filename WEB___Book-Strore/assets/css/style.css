@@ -2736,3 +2736,136 @@ footer {
   width: 7rem;
   border-radius: 3rem;
 }
+
+/* Tìm kiếm nâng cao */
+/* Container các filter */
+.advanced-filters {
+  position: relative;
+  left: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Mỗi filter item */
+.filter-item {
+  position: relative;
+}
+
+/* Nút filter */
+.filter-btn {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+.filter-btn:hover {
+  background-color: #f9f9f9;
+  border-color: #bbb;
+}
+
+/* Dropdown nội dung */
+.filter-dropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  list-style: none;
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+
+  /* Ẩn dropdown mặc định */
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+/* Items trong dropdown */
+.filter-dropdown li {
+  padding: 0.5rem 1rem;
+}
+.filter-dropdown li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s ease;
+}
+.filter-dropdown li:hover {
+  background: #f0f0f0;
+}
+
+/* Khi hover nút hoặc dropdown => hiển thị dropdown */
+.filter-btn:hover + .filter-dropdown,
+.filter-dropdown:hover {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.filter-btn.selected {
+  background-color: #24b5da;
+  color: #fff;
+  border-color: #24b5da;
+}
+
+.selected-filters {
+  position: relative;
+  left: 2rem;
+  margin: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.selected-filter {
+  background-color: #24b5da;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: default;
+}
+
+.selected-filter span.remove-filter {
+  font-weight: bold;
+  cursor: pointer;
+}
+.selected-filters h1 {
+  font-size: 1.2rem; /* Kích thước chữ vừa phải */
+  font-weight: 600; /* Chữ đậm vừa phải */
+  color: #333; /* Màu chữ */
+  margin: 0 0 0.5rem 0; /* Cách dưới 0.5rem so với filter tags */
+  padding: 0; /* Không cần padding */
+  line-height: 1.4; /* Chiều cao dòng thoáng */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Font dễ đọc */
+}
+
+.clear-filters-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.clear-filters-btn:hover {
+  background-color: #d32f2f;
+}
