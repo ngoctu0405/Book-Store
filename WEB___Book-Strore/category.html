@@ -304,6 +304,37 @@
           font-weight: 600;
           margin-left: 4px;
       }
+      
+      /* --- Bổ sung CSS cho Tác giả - ĐÃ SỬA --- */
+      .product-author {
+          margin: 0.3rem 0 0.8rem 0 !important; 
+          font-size: 14px !important;
+          color: #6c757d !important;
+          font-weight: 400 !important;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+
+      .product-info {
+          padding: 10px;
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: space-between !important;
+          flex-grow: 1 !important;
+      }
+      
+      /* Sửa margin của h3 trong product-card */
+      .product-card h3 {
+          margin-bottom: 0.5rem !important;
+      }
+      
+      /* Sửa price bỏ absolute positioning */
+      .product-card .price {
+          position: static !important;
+          margin-bottom: 1rem !important;
+      }
+      /* -------------------------------- */
     </style>
 </head>
 
@@ -640,7 +671,7 @@
           <span class="info-value" id="profile-name-value"></span>
         </div>
         <div class="info-row">
-          <span class="info-label">🔐 Tài khoản:</span>
+          <span class="info-label">🔑 Tài khoản:</span>
           <span class="info-value" id="profile-username-value"></span>
         </div>
         <div class="info-row">

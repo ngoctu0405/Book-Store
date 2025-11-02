@@ -11,6 +11,7 @@ const SAMPLE = {
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm kinh điển về nghệ thuật giao tiếp.",
       img: "images/Đắc_Nhân_Tâm.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 2,
@@ -22,6 +23,7 @@ const SAMPLE = {
       subcategory: "Tiểu thuyết",
       desc: "Truyện cảm hứng cho bạn trẻ tìm kiếm chính mình.",
       img: "images/Tuoi_tre_dang_gia_bao_nhiêu.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 3,
@@ -33,6 +35,7 @@ const SAMPLE = {
       subcategory: "Thơ",
       desc: "Kiệt tác văn học Việt Nam.",
       img: "images/Truyện_Kiều.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 4,
@@ -44,6 +47,7 @@ const SAMPLE = {
       subcategory: "Truyện ngắn",
       desc: "Tác phẩm hiện thực phê phán sâu sắc.",
       img: "images/Tắt_Đèn.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 5,
@@ -55,6 +59,7 @@ const SAMPLE = {
       subcategory: "Truyện ngắn",
       desc: "Câu chuyện đầy nhân văn về thân phận người nông dân.",
       img: "images/Lão_Hạc.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 6,
@@ -66,6 +71,7 @@ const SAMPLE = {
       subcategory: "Thơ",
       desc: "Tập thơ giàu triết lý và tinh thần cách mạng.",
       img: "images/Nhật_Ký_Trong_Tù.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 7,
@@ -77,6 +83,7 @@ const SAMPLE = {
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm trào phúng đặc sắc.",
       img: "images/Số_Đỏ.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 8,
@@ -88,6 +95,7 @@ const SAMPLE = {
       subcategory: "Truyện ngắn",
       desc: "Bi kịch của người nông dân trong xã hội cũ.",
       img: "images/Chí_Phèo.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 9,
@@ -99,6 +107,7 @@ const SAMPLE = {
       subcategory: "Tiểu thuyết",
       desc: "Câu chuyện tuổi thơ đầy xúc động.",
       img: "images/Tôi_thấy_hoa_vàng_trên_cỏ_xanh.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 10,
@@ -110,6 +119,7 @@ const SAMPLE = {
       subcategory: "Truyện ngắn",
       desc: "Tác phẩm tiêu biểu cho phong cách tùy bút độc đáo.",
       img: "images/Người_lái_đò_sông_Đà.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 11,
@@ -121,6 +131,7 @@ const SAMPLE = {
       subcategory: "Tiểu thuyết",
       desc: "Tấm gương sáng của một nữ bác sĩ trong chiến tranh.",
       img: "images/Nhật_ký_Đặng_Thùy_Trâm.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 12,
@@ -132,6 +143,7 @@ const SAMPLE = {
       subcategory: "Thơ",
       desc: "Tập thơ nổi tiếng với nhiều bài thơ sâu sắc.",
       img: "images/Ánh_Trắng.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 13,
@@ -143,6 +155,7 @@ const SAMPLE = {
       subcategory: "Tiểu thuyết",
       desc: "Tập đầu tiên của loạt Harry Potter.",
       img: "images/Harry_Potter_và_Hòn_Đá_Phù_Thủy.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
 
     // ================= Kinh tế =================
@@ -156,6 +169,7 @@ const SAMPLE = {
       subcategory: "Tài chính",
       desc: "Sách tài chính cá nhân nổi tiếng.",
       img: "images/Cha_Giàu_Cha_Nghèo.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 15,
@@ -167,6 +181,7 @@ const SAMPLE = {
       subcategory: "Quản trị",
       desc: "Bài học khởi nghiệp từ Israel.",
       img: "images/Quốc_gia_khởi_nghiệp.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 16,
@@ -178,6 +193,7 @@ const SAMPLE = {
       subcategory: "Quản trị",
       desc: "Hướng dẫn kỹ năng lãnh đạo cá nhân.",
       img: "images/7_Thói_Quen_Hiệu_Quả.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 17,
@@ -189,6 +205,7 @@ const SAMPLE = {
       subcategory: "Tài chính",
       desc: "Loạt sách tài chính cá nhân nổi tiếng.",
       img: "images/Dạy_con_làm_giàu_III.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 18,
@@ -200,6 +217,7 @@ const SAMPLE = {
       subcategory: "Marketing",
       desc: "Tác phẩm tâm lý học ứng dụng trong kinh tế.",
       img: "images/Lợi_Thế_Cạnh_Tranh.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 19,
@@ -211,6 +229,7 @@ const SAMPLE = {
       subcategory: "Quản trị",
       desc: "Sách chiến lược kinh doanh kinh điển.",
       img: "images/Tư_duy_phản_biện.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 20,
@@ -222,6 +241,7 @@ const SAMPLE = {
       subcategory: "Marketing",
       desc: "Xu hướng marketing hiện đại.",
       img: "images/Marketing_4.0.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 21,
@@ -233,6 +253,7 @@ const SAMPLE = {
       subcategory: "Tài chính",
       desc: "Sách làm giàu kinh điển.",
       img: "images/Kinh_doanh.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 22,
@@ -244,6 +265,7 @@ const SAMPLE = {
       subcategory: "Quản trị",
       desc: "Mô hình chiến lược kinh doanh đột phá.",
       img: "images/Chiến_lược_đại_dương_xanh.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 23,
@@ -255,6 +277,7 @@ const SAMPLE = {
       subcategory: "Tài chính",
       desc: "Kinh tế học giản lược, dễ hiểu.",
       img: "images/Những_đoàn_tâm_lý_thuyết_phục.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 24,
@@ -266,6 +289,7 @@ const SAMPLE = {
       subcategory: "Marketing",
       desc: "Cuốn sách kinh điển về nghệ thuật thuyết phục.",
       img: "images/Cách_Nghĩ_Để_Thành_Công.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 25,
@@ -277,6 +301,7 @@ const SAMPLE = {
       subcategory: "Quản trị",
       desc: "Nghệ thuật lãnh đạo bản thân và tổ chức.",
       img: "images/Nhà_lãnh_đạo_không_chức_danh.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
 
     // ================= Thiếu nhi =================
@@ -290,6 +315,7 @@ const SAMPLE = {
       subcategory: "Truyện tranh",
       desc: "Truyện tranh nổi tiếng Nhật Bản.",
       img: "images/Doreamon_tập_29.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 27,
@@ -301,6 +327,7 @@ const SAMPLE = {
       subcategory: "Truyện tranh",
       desc: "Thám tử lừng danh Conan.",
       img: "images/Conan_tập_5.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 28,
@@ -312,6 +339,7 @@ const SAMPLE = {
       subcategory: "Giáo dục",
       desc: "Câu chuyện giáo dục đầy cảm hứng.",
       img: "images/MIKO_tập_33.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 29,
@@ -323,6 +351,7 @@ const SAMPLE = {
       subcategory: "Truyện tranh",
       desc: "Bộ manga nổi tiếng toàn cầu.",
       img: "images/Dragon_Ball_Tập_19.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 30,
@@ -334,6 +363,7 @@ const SAMPLE = {
       subcategory: "Truyện tranh",
       desc: "Truyện tranh Việt Nam nổi bật.",
       img: "images/Thần_đồng_đất_Việt_tập_1.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 31,
@@ -345,6 +375,7 @@ const SAMPLE = {
       subcategory: "Giáo dục",
       desc: "Tác phẩm văn học thiếu nhi nổi bật.",
       img: "images/Cậu_bé_bút_chì.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
 
     // ================= Giáo khoa =================
@@ -358,6 +389,7 @@ const SAMPLE = {
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Toán lớp 1.",
       img: "images/Toan_Lop_1.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 33,
@@ -369,6 +401,7 @@ const SAMPLE = {
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Tiếng Việt lớp 2.",
       img: "images/Tieng_Viet_lớp_2.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 34,
@@ -380,6 +413,7 @@ const SAMPLE = {
       subcategory: "Cấp 2",
       desc: "Sách giáo khoa Hóa học lớp 8.",
       img: "images/Hóa_học_lớp_8.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 35,
@@ -391,6 +425,7 @@ const SAMPLE = {
       subcategory: "Cấp 2",
       desc: "Sách giáo khoa Lịch sử lớp 7.",
       img: "images/Lịch_sử_lớp_8.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 36,
@@ -402,6 +437,7 @@ const SAMPLE = {
       subcategory: "Cấp 3",
       desc: "Sách giáo khoa Vật lí lớp 11.",
       img: "images/Vật_lí_lớp_11.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 37,
@@ -413,6 +449,7 @@ const SAMPLE = {
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Mỹ thuật lớp 5.",
       img: "images/Mĩ_thuật_lớp_5.png", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 38,
@@ -424,6 +461,7 @@ const SAMPLE = {
       subcategory: "Cấp 3",
       desc: "Sách giáo khoa Hóa học lớp 11.",
       img: "images/Hóa_học_lớp_11.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
     {
       id: 39,
@@ -435,10 +473,10 @@ const SAMPLE = {
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Đạo đức lớp 4.",
       img: "images/Đạo_đức_lớp_4.jpg", // ĐÃ SỬA: Bỏ "/"
+      qty: 100, // THÊM MỚI
     },
   ],
 };
-
 if (!localStorage.getItem("bs_data"))
   localStorage.setItem("bs_data", JSON.stringify(SAMPLE));
 if (!localStorage.getItem("bs_cart"))
@@ -1712,31 +1750,35 @@ let currentFilters = {
   "Theo năm": null, // nếu có dữ liệu year
 };
 
-function renderProducts(products) {
-  productList.innerHTML = ""; // Xóa danh sách cũ trước khi hiển thị lại
-  products.forEach((prod) => {
-    const card = document.createElement("div"); // Tạo thẻ chứa sản phẩm
-    card.className = "product-card"; // Gán class cho card
-    card.innerHTML = `
-      <img src="${prod.img}" alt="${prod.name}"> <!-- Hình sản phẩm -->
-      <div class="card-body">
-        <h3>${prod.name}</h3> <!-- Tên sản phẩm -->
-        <p class="author">${prod.author}</p> <!-- Tác giả -->
-        <p class="price">${prod.price.toLocaleString(
-          "vi-VN"
-        )}₫</p> <!-- Giá VNĐ -->
-        <div class="button-row"> <!-- Hàng nút -->
-          <a class="btn btn-small" href="product-detail.html?id=${
-            prod.id
-          }">Xem</a> <!-- Nút xem -->
-          <button class="btn btn-cart" onclick="addToCart(${
-            prod.id
-          },1)">Thêm vào giỏ</button> <!-- Nút thêm vào giỏ -->
-        </div>
-      </div>
-    `;
-    productList.appendChild(card); // Thêm card vào danh sách
-  });
+function renderProductList(page = 1) {
+  const wrap = document.getElementById("product-list");
+  if (!wrap) return;
+  currentPage = page;
+
+  const all = currentList;
+  const start = (page - 1) * perPage;
+  const list = all.slice(start, start + perPage);
+
+  wrap.innerHTML = list
+    .map(
+      (it) => `
+  <div class="product-card">
+    <img src="${it.img}" alt="">
+    <h3>${it.name}</h3>
+    
+    <p class="author">Tác giả: ${it.author}</p>
+    <div class="price">${it.price.toLocaleString("vi-VN")}đ</div>
+  <div class="button-row">
+  <a class="btn btn-small" href="product-detail.html?id=${it.id}">Xem</a>
+<button class="btn btn-cart" onclick="addToCart(${
+        it.id
+      },1)">Thêm vào giỏ</button>
+</div>
+  </div>`
+    )
+    .join("");
+
+  renderPagination(Math.ceil(all.length / perPage));
 }
 
 // Hàm áp dụng filter
