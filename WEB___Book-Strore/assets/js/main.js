@@ -435,7 +435,7 @@ const SAMPLE = {
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Đạo đức lớp 4.",
       img: "images/Đạo_đức_lớp_4.jpg", // ĐÃ SỬA: Bỏ "/"
-    }
+    },
   ],
 };
 
@@ -677,15 +677,17 @@ function renderCart() {
     cart
       .map((i) => {
         const p = data.find((x) => x.id === i.id);
-        
+
         // SỬA: Thêm thẻ <img> và loại bỏ x;
         return `<div class="cart-item-card" style="display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px dashed #eee; padding-bottom: 10px;">
-        <img src="${p.img}" alt="${p.name}" style="width: 70px; height: 90px; object-fit: cover; border: 1px solid #ddd;">
+        <img src="${p.img}" alt="${
+          p.name
+        }" style="width: 70px; height: 90px; object-fit: cover; border: 1px solid #ddd;">
         <div>
           <h4>${p.name}</h4>
-          <p>Số lượng: ${
-            i.qty
-          }</p><p style="font-weight: 700;">Giá: ${(p.price * i.qty).toLocaleString("vi-VN")}đ</p>
+          <p>Số lượng: ${i.qty}</p><p style="font-weight: 700;">Giá: ${(
+          p.price * i.qty
+        ).toLocaleString("vi-VN")}đ</p>
         </div>
         </div>`;
       })
@@ -1404,7 +1406,7 @@ function handleRegister(e) {
 
   const newUser = {
     id: Date.now(),
-    status: 'active',
+    status: "active",
     fullName,
     username,
     password,
@@ -1620,3 +1622,140 @@ document.addEventListener("DOMContentLoaded", function () {
     loadSearchQuery();
   }
 });
+
+// **********************************
+// Tìm kiếm nâng cao
+// **********************************
+// Hiển thị những gì đã chọn ở tìm kiếm nâng cao
+const filterItems = document.querySelectorAll(".filter-item");
+const selectedContainer = document.getElementById("selectedFilters");
+
+filterItems.forEach((item) => {
+  const btn = item.querySelector(".filter-btn");
+  const dropdownLinks = item.querySelectorAll(".filter-dropdown a");
+
+  dropdownLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault(); // tránh link reload
+
+      const value = link.textContent.trim(); // giá trị đã chọn
+      const filterName = btn.textContent.replace(" ▾", ""); // tên filter
+
+      // Đổi tên nút và đổi màu
+      btn.textContent = `${filterName}: ${value} ▾`;
+      btn.classList.add("selected");
+
+      // Kiểm tra filter đã có chưa
+      let existingTag = selectedContainer.querySelector(
+        `[data-filter="${filterName}"]`
+      );
+      if (existingTag) {
+        existingTag.querySelector("span.value").textContent = value;
+      } else {
+        // Tạo filter tag mới
+        const tag = document.createElement("div");
+        tag.className = "selected-filter";
+        tag.setAttribute("data-filter", filterName);
+        tag.innerHTML = `<span class="name">${filterName}: </span><span class="value">${value}</span>
+                         <span class="remove-filter">&times;</span>`;
+        selectedContainer.appendChild(tag);
+
+        // Thêm sự kiện xóa filter
+        tag.querySelector(".remove-filter").addEventListener("click", () => {
+          tag.remove();
+          btn.textContent = filterName + " ▾";
+          btn.classList.remove("selected");
+        });
+      }
+    });
+  });
+});
+
+// Hiển thị các card đã tìm kiếm nâng cao
+// Dữ liệu mẫu (SAMPLE.products) bạn đã có
+const productList = document.getElementById("product-list");
+
+// Lưu filter hiện tại
+let currentFilters = {
+  "Theo tên truyện": null,
+  "Theo tác giả": null,
+  "Theo giá": null,
+  "Theo năm": null, // nếu có dữ liệu year
+};
+
+function renderProducts(products) {
+  productList.innerHTML = ""; // Xóa danh sách cũ trước khi hiển thị lại
+  products.forEach((prod) => {
+    const card = document.createElement("div"); // Tạo thẻ chứa sản phẩm
+    card.className = "product-card"; // Gán class cho card
+    card.innerHTML = `
+      <img src="${prod.img}" alt="${prod.name}"> <!-- Hình sản phẩm -->
+      <div class="card-body">
+        <h3>${prod.name}</h3> <!-- Tên sản phẩm -->
+        <p class="author">${prod.author}</p> <!-- Tác giả -->
+        <p class="price">${prod.price.toLocaleString(
+          "vi-VN"
+        )}₫</p> <!-- Giá VNĐ -->
+        <div class="button-row"> <!-- Hàng nút -->
+          <a class="btn btn-small" href="product-detail.html?id=${
+            prod.id
+          }">Xem</a> <!-- Nút xem -->
+          <button class="btn btn-cart" onclick="addToCart(${
+            prod.id
+          },1)">Thêm vào giỏ</button> <!-- Nút thêm vào giỏ -->
+        </div>
+      </div>
+    `;
+    productList.appendChild(card); // Thêm card vào danh sách
+  });
+}
+
+// Hàm áp dụng filter
+function applyFilters() {
+  let filtered = [...SAMPLE.products];
+
+  // Theo tên truyện
+  if (currentFilters["Theo tên truyện"] === "A → Z")
+    filtered.sort((a, b) => a.name.localeCompare(b.name));
+  if (currentFilters["Theo tên truyện"] === "Z → A")
+    filtered.sort((a, b) => b.name.localeCompare(a.name));
+
+  // Theo tác giả
+  if (currentFilters["Theo tác giả"] === "A → Z")
+    filtered.sort((a, b) => a.author.localeCompare(b.author));
+  if (currentFilters["Theo tác giả"] === "Z → A")
+    filtered.sort((a, b) => b.author.localeCompare(a.author));
+
+  // Theo giá
+  if (currentFilters["Theo giá"] === "Thấp → Cao")
+    filtered.sort((a, b) => a.price - b.price);
+  if (currentFilters["Theo giá"] === "Cao → Thấp")
+    filtered.sort((a, b) => b.price - a.price);
+
+  // Theo năm (nếu có trường year)
+  if (currentFilters["Theo năm"] === "Mới → Cũ")
+    filtered.sort((a, b) => (b.year || 0) - (a.year || 0));
+  if (currentFilters["Theo năm"] === "Cũ → Mới")
+    filtered.sort((a, b) => (a.year || 0) - (b.year || 0));
+
+  renderProducts(filtered);
+}
+
+// Cập nhật currentFilters khi chọn dropdown
+filterItems.forEach((item) => {
+  const btn = item.querySelector(".filter-btn");
+  const dropdownLinks = item.querySelectorAll(".filter-dropdown a");
+  const filterName = btn.textContent.replace(" ▾", "");
+
+  dropdownLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const value = link.textContent.trim();
+      currentFilters[filterName] = value; // lưu filter đã chọn
+      applyFilters();
+    });
+  });
+});
+
+// Render mặc định
+renderProducts(SAMPLE.products);
