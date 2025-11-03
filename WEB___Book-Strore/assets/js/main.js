@@ -1815,6 +1815,27 @@ function updateProductStock(selectedItems) {
             }
             hasUpdated = true;
         }
+        selectedItems.forEach(cartItem => {
+    const productIndex = products.findIndex(p => p.id === cartItem.id);
+
+    if (productIndex > -1) {
+        const purchasedQty = cartItem.qty;
+        const currentStock = products[productIndex].qty || 0; 
+        
+        // Trừ số lượng tồn kho
+        products[productIndex].qty = currentStock - purchasedQty;
+
+        // --- BỔ SUNG QUAN TRỌNG: GHI NHẬN THỜI GIAN CẬP NHẬT CUỐI CÙNG ---
+        products[productIndex].lastStockUpdate = new Date().toISOString(); 
+        // -----------------------------------------------------------------
+
+        // Đảm bảo số lượng không âm
+        if (products[productIndex].qty < 0) {
+             products[productIndex].qty = 0;
+        }
+        // ...
+    }
+});
     });
 
     if (hasUpdated) {

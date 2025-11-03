@@ -3,10 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Tồn kho</title>
+    <title>Quản lý Tồn kho - Literary Haven Admin</title>
 
- <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
+    
+    <style>
+        /* CSS Tùy chỉnh */
+        .table-warning {
+            --bs-table-bg: #fff3cd !important;
+            border-left: 5px solid #ffc107;
+        }
+        .table-danger {
+            --bs-table-bg: #f8d7da !important;
+            border-left: 5px solid #dc3545;
+        }
+        .table-secondary {
+            --bs-table-bg: #e9ecef !important;
+        }
+        .text-danger {
+            color: #dc3545 !important;
+        }
+        
+        .card-inventory {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        .card-header-inventory {
+            background-color: #4f9da6;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .btn-action-small {
+            padding: 0.25rem 0.6rem;
+            font-size: 0.85rem;
+            margin-left: 5px;
+        }
+        .input-qty {
+            width: 60px;
+            text-align: center;
+            padding: 0.2rem;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
     
@@ -31,131 +78,269 @@
             <li class="nav-item">
                 <a href="purchase-orders.html" class="nav-link">Nhập hàng</a>
             </li>
-             <li class="nav-item">
-                <a href="pricing.html" class="nav-link">Quản lý giá</a>
+            <li class="nav-item">
+                <a href="sales-orders.html" class="nav-link">Đơn hàng</a>
             </li>
             <li class="nav-item">
-                <a href="orders.html" class="nav-link">Đơn hàng</a>
+                <a href="inventory.html" class="nav-link active">Tồn kho</a> 
             </li>
             <li class="nav-item">
-                <a href="inventory.html" class="nav-link active">Tồn kho</a>
-            </li>
-            <li class="nav-item">
-                <a href="reports.html" class="nav-link">Báo cáo</a>
+                <a href="reports.html" class="nav-link">Báo cáo & Thống kê</a>
             </li>
         </ul>
-        
-        <div class="mt-auto p-3">
-             <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
-                <li class="nav-item"><a href="index.html" class="nav-link">Đăng xuất</a></li>
-             </ul>
+        <div class="sidebar-footer">
+            <a href="../index.html">Về trang chủ</a>
         </div>
     </aside>
 
     <main class="main-content">
-        <header class="top-bar p-3 d-flex justify-content-between align-items-center">
-            <form class="search-bar d-flex align-items-center">
-                <input class="form-control" type="search" placeholder="Tìm kiếm...">
-            </form>
-            <div class="profile-area d-flex align-items-center">
-                <div class="profile-pic ms-3"></div>
-            </div>
-        </header>
+        <div class="top-nav">
+             <span class="user-welcome">Chào mừng, Admin!</span>
+             <button class="btn btn-sm btn-outline-light">Đăng xuất</button>
+        </div>
 
-        <div class="page-content p-4">
-            <h1 class="mb-4">Báo cáo Tồn kho (Yêu cầu 8)</h1>
+        <div class="container-fluid py-4">
+            <h1 class="mb-4">Quản Lý Tồn Kho Sản Phẩm</h1>
 
-            <div class="card mb-4">
-                <div class="card-body">
-                    <form class="row g-3 align-items-end">
-                        <div class="col-md-3">
-                            <label for="filter-product" class="form-label">Tên sản phẩm</label>
-                            <input type="text" class="form-control" id="filter-product" placeholder="Nhập tên hoặc mã SP...">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="filter-category" class="form-label">Loại sản phẩm</label>
-                            <select id="filter-category" class="form-select">
-                                <option value="" selected>Tất cả loại</option>
-                                <option value="sap">Tiểu Thuyết</option>
-                                <option value="dau-goi">SGK Cấp 1</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="filter-start-date" class="form-label">Từ ngày</label>
-                            <input type="date" class="form-control" id="filter-start-date">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="filter-end-date" class="form-label">Đến ngày</label>
-                            <input type="date" class="form-control" id="filter-end-date">
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary w-100">Tra cứu</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="h5 mb-0">Báo cáo Nhập - Xuất - Tồn</h3>
+            <div class="card card-inventory">
+                <div class="card-header card-header-inventory">
+                   Báo Cáo Tồn Kho Hiện Tại
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover table-sm">
-                            <thead>
+                        <table class="table table-striped table-hover align-middle">
+                            <thead class="table-dark">
                                 <tr>
-                                    <th>Mã SP</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th class="text-center">Tồn đầu kỳ</th>
-                                    <th class="text-center text-success">Tổng nhập</th>
-                                    <th class="text-center text-danger">Tổng xuất</th>
-                                    <th class="text-center">Tồn cuối kỳ</th>
+                                    <th scope="col">Mã SP</th>
+                                    <th scope="col">Tên Sách</th>
+                                    <th scope="col" class="text-center">SL Còn Lại</th>
+                                    <th scope="col" class="text-center">Trạng Thái</th>
+                                    <th scope="col" class="text-center">Thời Gian Cập Nhật</th>
+                                    <th scope="col" class="text-center">Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>SP001</td>
-                                    <td>Đắc nhân tâm</td>
-                                    <td class="text-center">50</td>
-                                    <td class="text-center text-success">+100</td>
-                                    <td class="text-center text-danger">-80</td>
-                                    <td class="text-center fw-bold">70</td>
-                                </tr>
-                                <tr>
-                                    <td>SP002</td>
-                                    <td>Nhật Ký Trong Tù</td>
-                                    <td class="text-center">30</td>
-                                    <td class="text-center text-success">+50</td>
-                                    <td class="text-center text-danger">-75</td>
-                                    <td class="text-center fw-bold">5</td>
-                                </tr>
-                                <tr class="table-danger-light">
-                                    <td>SP003</td>
-                                    <td>Harry Potter</td>
-                                    <td class="text-center">15</td>
-                                    <td class="text-center text-success">+0</td>
-                                    <td class="text-center text-danger">-7</td>
-                                    <td class="text-center fw-bold">8 (Sắp hết!)</td>
-                                </tr>
-                                 <tr>
-                                    <td>SP004</td>
-                                    <td>Số Đỏ</td>
-                                    <td class="text-center">100</td>
-                                    <td class="text-center text-success">+0</td>
-                                    <td class="text-center text-danger">-20</td>
-                                    <td class="text-center fw-bold">80</td>
-                                </tr>
+                            <tbody id="inventoryTableBody">
+                                <tr><td colspan="6" class="text-center">Đang tải dữ liệu tồn kho...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-    </main>  
+    </main>
+    
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/admin_main.js"></script>
+    <script src="../assets/js/main.js"></script> 
+
+    <script>
+        // Ngưỡng cảnh báo theo yêu cầu: dưới 20 quyển
+        const LOW_STOCK_THRESHOLD = 20; 
+
+        // --- Helper Functions ---
+
+        /** Định dạng chuỗi ngày tháng ISO sang định dạng giờ-ngày tháng năm Việt Nam. */
+        function formatDateTime(dateString) {
+            if (!dateString) return 'Chưa có giao dịch bán'; 
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date)) return 'Lỗi định dạng ngày';
+
+                const options = {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                };
+                return date.toLocaleDateString('vi-VN', options);
+            } catch (e) {
+                return 'Chưa có giao dịch bán';
+            }
+        }
+
+        // --- Hành động Tương tác ---
+
+        /**
+         * Xử lý nhập thêm số lượng tồn kho.
+         * @param {number} productId - ID sản phẩm.
+         * @param {string} productName - Tên sản phẩm.
+         */
+        function handleImport(productId, productName) {
+            const inputElement = document.getElementById(`inputQty_${productId}`);
+            const qty = parseInt(inputElement.value);
+
+            if (isNaN(qty) || qty <= 0) {
+                alert('Vui lòng nhập số lượng hợp lệ (> 0) để nhập thêm.');
+                return;
+            }
+            
+            let data = typeof getData === 'function' ? getData() : null;
+            if (!data) return;
+
+            const productIndex = data.products.findIndex(p => p.id === productId);
+
+            if (productIndex > -1) {
+                const currentStock = data.products[productIndex].qty || 0;
+                
+                // Cập nhật tồn kho mới
+                data.products[productIndex].qty = currentStock + qty;
+                data.products[productIndex].lastStockUpdate = new Date().toISOString();
+                
+                // Nếu sản phẩm đang bị khóa, mở khóa (active)
+                if (data.products[productIndex].status === 'inactive') {
+                     data.products[productIndex].status = 'active';
+                }
+
+                if (typeof saveData === 'function') {
+                    saveData(data);
+                    alert(`✅ Đã nhập thêm ${qty} cuốn sách "${productName}". Tồn kho mới: ${currentStock + qty}.`);
+                    renderInventoryTable(generateInventoryReport()); // Render lại bảng
+                }
+            }
+        }
+
+        /**
+         * Xử lý Dừng Bán/Bán Lại (Khóa/Mở khóa sản phẩm).
+         * @param {number} productId - ID sản phẩm.
+         * @param {string} productName - Tên sản phẩm.
+         * @param {string} currentStatus - Trạng thái hiện tại ('active' hoặc 'inactive').
+         */
+        function handleToggleStatus(productId, productName, currentStatus) {
+            const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+            const actionText = newStatus === 'inactive' ? 'DỪNG BÁN' : 'BÁN LẠI';
+            
+            if (!confirm(`⚠️ Bạn có chắc chắn muốn ${actionText} sách "${productName}" không?`)) {
+                return;
+            }
+
+            let data = typeof getData === 'function' ? getData() : null;
+            if (!data) return;
+
+            const productIndex = data.products.findIndex(p => p.id === productId);
+
+            if (productIndex > -1) {
+                data.products[productIndex].status = newStatus;
+
+                if (typeof saveData === 'function') {
+                    saveData(data);
+                    alert(`✅ Đã cập nhật trạng thái sách "${productName}" thành: ${newStatus === 'active' ? 'Đang Bán' : 'Dừng Bán (Khóa)'}.`);
+                    renderInventoryTable(generateInventoryReport()); // Render lại bảng
+                }
+            }
+        }
+
+
+        // --- RENDERING LOGIC ---
+
+        /**
+         * Lấy dữ liệu tồn kho và tạo báo cáo
+         */
+        function generateInventoryReport() {
+            const data = typeof getData === 'function' ? getData() : { products: [] }; 
+            const products = data.products || [];
+            const report = [];
+
+            products.forEach(p => {
+                const endQty = p.qty || 0;
+                const lastUpdate = p.lastStockUpdate || null; 
+                const status = p.status || 'active'; // Mặc định là 'active'
+
+                let stockStatusText = '';
+                let rowClass = '';
+                let actionElements = '';
+                let statusBadge = '';
+
+                // Xác định trạng thái tồn kho
+                if (endQty <= 0) {
+                    stockStatusText = 'HẾT HÀNG';
+                    rowClass = 'table-danger'; 
+                } else if (endQty < LOW_STOCK_THRESHOLD) {
+                    stockStatusText = 'SẮP HẾT!';
+                    rowClass = 'table-warning'; 
+                } else {
+                    stockStatusText = 'Bình thường';
+                }
+
+                // Xác định trạng thái bán hàng và hành động
+                if (status === 'inactive') {
+                    statusBadge = '<span class="badge bg-secondary">KHÓA/DỪNG BÁN</span>';
+                    rowClass = 'table-secondary'; // Ưu tiên màu khóa/dừng bán
+                    actionElements = `<button class="btn btn-success btn-action-small" onclick="handleToggleStatus(${p.id}, '${p.name.replace(/'/g, "\\'")}', '${status}')">Bán Lại</button>`;
+                } else {
+                    statusBadge = `<span class="badge bg-${endQty < LOW_STOCK_THRESHOLD ? 'danger' : 'success'}">${stockStatusText}</span>`;
+                    
+                    // Thêm ô nhập số lượng
+                    actionElements += `<input type="number" id="inputQty_${p.id}" class="input-qty" value="10" min="1">`;
+                    actionElements += `<button class="btn btn-primary btn-action-small" onclick="handleImport(${p.id}, '${p.name.replace(/'/g, "\\'")}')">Nhập Thêm</button>`;
+                    
+                    // Nút Dừng Bán
+                    actionElements += `<button class="btn btn-danger btn-action-small" onclick="handleToggleStatus(${p.id}, '${p.name.replace(/'/g, "\\'")}', '${status}')">Dừng Bán</button>`;
+                }
+
+                report.push({
+                    id: p.id,
+                    sku: p.sku || 'N/A',
+                    name: p.name || 'Sản phẩm không tên',
+                    endQty: endQty,
+                    lastUpdate: formatDateTime(lastUpdate),
+                    rowClass: rowClass,
+                    statusBadge: statusBadge,
+                    actionElements: actionElements
+                });
+            });
+
+            return report;
+        }
+
+        /**
+         * Hiển thị dữ liệu báo cáo lên bảng.
+         */
+        function renderInventoryTable(reportData) {
+            const tableBody = document.getElementById('inventoryTableBody');
+            if (!tableBody) return;
+
+            let html = '';
+            
+            if (reportData.length === 0) {
+                html = '<tr><td colspan="6" class="text-center">Không có dữ liệu tồn kho sách.</td></tr>';
+            } else {
+                reportData.forEach(item => {
+                    const qtyClass = item.rowClass === 'table-danger' || item.rowClass === 'table-warning' ? 'text-danger fw-bold' : '';
+                    
+                    html += `
+                        <tr class="${item.rowClass}">
+                            <td>${item.sku}</td>
+                            <td>${item.name}</td>
+                            <td class="text-center ${qtyClass}">${item.endQty}</td>
+                            <td class="text-center">${item.statusBadge}</td>
+                            <td class="text-center">${item.lastUpdate}</td>
+                            <td class="text-center">${item.actionElements}</td>
+                        </tr>
+                    `;
+                });
+            }
+            tableBody.innerHTML = html;
+        }
+
+        /**
+         * Hàm khởi tạo chính
+         */
+        function initInventoryPage() {
+            if (typeof getData !== 'function') {
+                document.getElementById('inventoryTableBody').innerHTML = '<tr><td colspan="6" class="text-center text-danger fw-bold">Lỗi: Cần import main.js và đảm bảo hàm getData()/saveData() tồn tại.</td></tr>';
+                console.error("Lỗi: Hàm getData() không tồn tại. Vui lòng đảm bảo main.js đã được import.");
+                return;
+            }
+
+            const report = generateInventoryReport();
+            renderInventoryTable(report);
+        }
+
+        // Chạy hàm khởi tạo khi DOM đã load
+        document.addEventListener('DOMContentLoaded', initInventoryPage);
+
+    </script>
 </body>
 </html>
