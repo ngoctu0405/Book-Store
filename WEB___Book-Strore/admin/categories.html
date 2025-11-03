@@ -115,16 +115,10 @@
     // --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
     const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
 
-    // Dữ liệu mặc định cho lần chạy đầu tiên (để có sẵn menu bên user)
-    const defaultCategories = [
-        { name: 'Văn học', subcategories: ['Tiểu thuyết', 'Truyện ngắn', 'Thơ'], status: 'active' },
-        { name: 'Kinh tế', subcategories: ['Quản trị', 'Tài chính', 'Marketing'], status: 'active' },
-        { name: 'Thiếu nhi', subcategories: ['Truyện tranh', 'Giáo dục'], status: 'active' },
-        { name: 'Giáo khoa', subcategories: ['Cấp 1', 'Cấp 2', 'Cấp 3'], status: 'active' }
-    ];
-
     /**
      * Lấy danh sách categories từ Local Storage, nếu chưa có thì dùng mặc định
+     * CHÚ THÍCH: Hàm này đã được cập nhật để gọi hàm khởi tạo bên category.html nếu dữ liệu chưa tồn tại
+     * Hoặc đơn giản là đọc dữ liệu đã được khởi tạo bởi category.html
      */
     function getCategories() {
         const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY);
@@ -133,10 +127,13 @@
                 return JSON.parse(storedData);
             } catch (e) {
                 console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
-                return defaultCategories;
+                // Nếu lỗi, trả về mảng rỗng để admin có thể thêm mới
+                return []; 
             }
         }
-        return defaultCategories;
+        // Nếu admin truy cập lần đầu, dữ liệu đã được category.html tạo
+        // Nếu chưa có (vì chưa ai truy cập user): trả về mảng rỗng để loadCategories bên dưới tạo mới.
+        return []; 
     }
 
     /**
@@ -159,8 +156,10 @@
      * Render danh sách categories ra bảng
      */
     function renderCategories() {
-        // Lần đầu tiên, đảm bảo dữ liệu mặc định được lưu lại
-        saveCategories(categories);
+        // Lần đầu tiên, đảm bảo dữ liệu mặc định được lưu lại 
+        // -> **ĐÃ CHUYỂN LOGIC KHỞI TẠO SANG category.html**
+        // Do đó, chỉ cần kiểm tra nếu categories rỗng (admin truy cập lần đầu),
+        // Admin sẽ phải thêm category mới.
         
         tableBody.innerHTML = ''; // Xóa nội dung cũ
         
@@ -209,7 +208,8 @@
             // Logic Thêm mới
             const newCategory = {
                 name: newName,
-                subcategories: [`Tất cả ${newName}`], // Gán subcategory mặc định
+                // Lấy subcategories mặc định từ bên file category.html
+                subcategories: [`Tất cả ${newName}`], 
                 status: 'active'
             };
             categories.push(newCategory);
@@ -263,6 +263,17 @@
 
     // Khởi tạo bảng khi tải trang
     document.addEventListener('DOMContentLoaded', renderCategories);
+    // main.js - phần này không cần nữa vì đã chuyển sang category.html
+    // if (!localStorage.getItem("admin_categories_data")) {
+    //   const defaultCategories = [
+    //     { name: "Văn học", subcategories: ["Tiểu thuyết", "Truyện ngắn", "Thơ"] },
+    //     { name: "Kinh tế", subcategories: ["Quản trị", "Tài chính", "Khởi nghiệp"] },
+    //     { name: "Thiếu nhi", subcategories: ["Truyện tranh", "Sách tô màu", "Truyện cổ tích"] },
+    //     { name: "Giáo khoa", subcategories: ["Cấp 1", "Cấp 2", "Cấp 3"] }
+    //   ];
+    //   localStorage.setItem("admin_categories_data", JSON.stringify(defaultCategories));
+    // }
+
 </script>
 </body>
 </html>

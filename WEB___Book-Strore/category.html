@@ -375,52 +375,7 @@
           Danh mục sách ▾
         </button>
         <ul class="book-filter">
-          <li class="dropdown">
-            <a href="#" data-category="Văn học">Văn học ▸</a>
-            <ul class="dropdown-content">
-              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
-                  data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
-              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
-                  data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
-              <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
-                  data-subcategory="Thơ">Thơ</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" data-category="Kinh tế">Kinh tế ▸</a>
-            <ul class="dropdown-content">
-              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
-                  data-subcategory="Quản trị">Quản trị</a></li>
-              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
-                  data-subcategory="Tài chính">Tài chính</a></li>
-              <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
-                  data-subcategory="Marketing">Marketing</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" data-category="Thiếu nhi">Thiếu nhi ▸</a>
-            <ul class="dropdown-content">
-              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
-                  data-subcategory="Truyện tranh">Truyện tranh</a></li>
-              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
-                  data-subcategory="Giáo dục">Giáo dục</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" data-category="Giáo khoa">Giáo khoa ▸</a>
-            <ul class="dropdown-content">
-              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
-                  data-subcategory="Cấp 1">Cấp 1</a></li>
-              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
-                  data-subcategory="Cấp 2">Cấp 2</a></li>
-              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
-                  data-subcategory="Cấp 3">Cấp 3</a></li>
-            </ul>
-          </li>
-        </ul>
+          </ul>
       </div>
       <div class="dropdown" id="catDropdown"></div>
       </li>
@@ -716,6 +671,33 @@
   </a>
   
 <script>
+
+// ==================== KHỞI TẠO DỮ LIỆU MẶC ĐỊNH CHO USER ====================
+// --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
+const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
+
+// Dữ liệu mặc định cho lần chạy đầu tiên (để có sẵn menu bên user)
+const defaultCategories = [
+    { name: 'Văn học', subcategories: ['Tiểu thuyết', 'Truyện ngắn', 'Thơ'], status: 'active' },
+    { name: 'Kinh tế', subcategories: ['Quản trị', 'Tài chính', 'Marketing'], status: 'active' },
+    { name: 'Thiếu nhi', subcategories: ['Truyện tranh', 'Giáo dục'], status: 'active' },
+    { name: 'Giáo khoa', subcategories: ['Cấp 1', 'Cấp 2', 'Cấp 3'], status: 'active' }
+];
+
+// Hàm kiểm tra và lưu dữ liệu mặc định
+function initializeDefaultCategories() {
+    // Chỉ tạo dữ liệu mặc định nếu chưa có trong Local Storage
+    if (!localStorage.getItem(CATEGORIES_STORAGE_KEY)) {
+        localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(defaultCategories));
+        console.log('Đã khởi tạo dữ liệu category mặc định cho Local Storage.');
+    }
+}
+
+// Gọi hàm khởi tạo ngay khi script chạy
+initializeDefaultCategories(); 
+// ==================== KẾT THÚC KHỞI TẠO DỮ LIỆU MẶC ĐỊNH ====================
+
+
 // Biến toàn cục để lưu trạng thái filter
 let categoryFilters = {
   sortByName: null,
@@ -726,9 +708,6 @@ let categoryFilters = {
   subcategory: null,
   filterSubcategory: null // ✅ THÊM MỚI: Lọc theo subcategory từ dropdown
 };
-
-// Biến Local Storage Key phải khớp với bên Admin
-const CATEGORIES_STORAGE_KEY = 'admin_categories_data'; // ✅ KHAI BÁO KEY MỚI
 
 // Khởi tạo trang category
 function initCategoryPage() {
@@ -1217,8 +1196,9 @@ function loadCategoriesAndPopulateMenu() {
         categories = storedData ? JSON.parse(storedData) : [];
     } catch (e) {
         console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
-        // Nếu lỗi, sử dụng dữ liệu mặc định (nếu có logic khởi tạo default)
-        return; 
+        // Nếu lỗi, sử dụng dữ liệu mặc định (đã được gọi initializeDefaultCategories)
+        // Lấy lại dữ liệu an toàn (đã có mặc định nếu chưa có)
+        categories = JSON.parse(localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV)) || [];
     }
 
     // Lọc ra các category đang 'active'
@@ -1257,6 +1237,8 @@ function loadCategoriesAndPopulateMenu() {
 document.addEventListener('DOMContentLoaded', loadCategoriesAndPopulateMenu);
 
 // ==================== KẾT THÚC BỔ SUNG ====================
+
+
 </script>
 </body>
 
