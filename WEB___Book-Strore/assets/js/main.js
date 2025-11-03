@@ -465,7 +465,7 @@ const SAMPLE = {
       name: "Hóa học Lớp 8",
       author: "Nhiều tác giả",
       price: 25000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Giáo khoa",
       subcategory: "Cấp 2",
       desc: "Sách giáo khoa Hóa học lớp 8.",
@@ -478,7 +478,7 @@ const SAMPLE = {
       name: "Lịch sử Lớp 8",
       author: "Nhiều tác giả",
       price: 28000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Giáo khoa",
       subcategory: "Cấp 2",
       desc: "Sách giáo khoa Lịch sử lớp 7.",
@@ -491,7 +491,7 @@ const SAMPLE = {
       name: "Vật lí Lớp 11",
       author: "Nhiều tác giả",
       price: 27000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Giáo khoa",
       subcategory: "Cấp 3",
       desc: "Sách giáo khoa Vật lí lớp 11.",
@@ -504,7 +504,7 @@ const SAMPLE = {
       name: "Mỹ thuật Lớp 5",
       author: "Nhiều tác giả",
       price: 32000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Mỹ thuật lớp 5.",
@@ -517,7 +517,7 @@ const SAMPLE = {
       name: "Hóa Học Lớp 11",
       author: "Nhiều tác giả",
       price: 34000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Giáo khoa",
       subcategory: "Cấp 3",
       desc: "Sách giáo khoa Hóa học lớp 11.",
@@ -530,7 +530,7 @@ const SAMPLE = {
       name: "Đạo đức Lớp 4",
       author: "Nhiều tác giả",
       price: 36000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Đạo đức lớp 4.",
@@ -539,17 +539,6 @@ const SAMPLE = {
     },
   ],
 };
-// Khởi tạo costPrice và profitMargin cho tất cả sản phẩm
-if (!localStorage.getItem("bs_data")) {
-  SAMPLE.products.forEach(p => {
-    p.costPrice = p.price; // Giá vốn = giá ban đầu
-    p.profitMargin = 0;    // % lợi nhuận mặc định = 0
-  });
-  localStorage.setItem("bs_data", JSON.stringify(SAMPLE));
-}
-
-
-
 if (!localStorage.getItem("bs_data"))
   localStorage.setItem("bs_data", JSON.stringify(SAMPLE));
 if (!localStorage.getItem("bs_cart"))
