@@ -1067,16 +1067,14 @@
           }
         }
       });
-
-      // Giảm giá 5% nếu tổng tiền trên 500k
-      if (subtotal > 500000) {
-        discount = subtotal * 0.05;
-      }
-      
       // Nếu tổng tiền là 0 thì phí vận chuyển cũng bằng 0
       if (subtotal === 0) {
         shipping = 0;
       }
+      else if (subtotal >= 500000) {
+        // Miễn phí vận chuyển cho đơn hàng từ 500,000 VND trở lên
+        shipping = 0;
+      } 
 
       const total = subtotal - discount + shipping;
 
@@ -1166,10 +1164,7 @@
           <span>Phí vận chuyển</span>
           <span class="${shipping > 0 ? '' : 'text-success'}">${shipping > 0 ? formatter.format(shipping) : 'Miễn phí'}</span>
         </div>
-        <div class="summary-row">
-          <span>Giảm giá (5%)</span>
-          <span class="text-success">${formatter.format(-discount)}</span>
-        </div>
+        
         <div class="summary-row total">
           <span>Tổng cộng</span>
           <span>${formatter.format(total)}</span>
