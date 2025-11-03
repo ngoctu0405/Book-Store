@@ -1329,7 +1329,7 @@ function initDefaultAddress() {
 
 // Render phần địa chỉ giao hàng
 function renderShippingAddress() {
-  const user = JSON.parse(localStorage.getItem('bs_user_addresses'));
+  const user = JSON.parse(localStorage.getItem('bs_user'));
   
   if (!user) {
     return `

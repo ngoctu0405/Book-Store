@@ -1,3 +1,26 @@
+//  Kiểm tra tài khoản bị khóa
+document.addEventListener("DOMContentLoaded", function () {
+  const currentUser = JSON.parse(localStorage.getItem("bs_user"));
+  const allUsers = JSON.parse(localStorage.getItem("bs_users")) || [];
+
+  if (currentUser) {
+    const found = allUsers.find(u => u.username === currentUser.username);
+
+    // Nếu tài khoản bị khóa -> đăng xuất
+    if (found && found.status === "locked") {
+      alert("🚫 Tài khoản của bạn đã bị khóa. Bạn sẽ được đăng xuất.");
+      localStorage.removeItem("bs_user");
+      updateAuthUI();
+      renderMenu();
+      closeLoginModal?.();
+    }
+    // Nếu tài khoản được mở khóa -> đồng bộ lại thông tin mới
+    else if (found) {
+      localStorage.setItem("bs_user", JSON.stringify(found));
+    }
+  }
+});
+
 const SAMPLE = {
   products: [
     // ================= Văn học =================
@@ -1362,6 +1385,11 @@ function handleLogin(e) {
     return;
   }
 
+  if (user.status === "locked") {
+  alert(" Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.");
+  return;
+  }
+  
   localStorage.setItem(
     "bs_user",
     JSON.stringify({
