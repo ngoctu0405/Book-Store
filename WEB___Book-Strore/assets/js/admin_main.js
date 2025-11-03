@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let users = db_get('bs_users') || [];
 
-        //  Xử lý nút Khóa / Mở khóa
+        // 👉 Xử lý nút Khóa / Mở khóa
         if (target.classList.contains('btn-lock')) {
             users = users.map(u => {
                 if (u.id.toString() === userId) {
@@ -124,11 +124,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             db_save('bs_users', users);
-            alert(' Cập nhật trạng thái tài khoản thành công!');
+            alert('✅ Cập nhật trạng thái tài khoản thành công!');
             window.location.reload();
         }
 
-        //  Xử lý nút Reset mật khẩu
+        // 👉 Xử lý nút Reset mật khẩu
         if (target.classList.contains('btn-reset')) {
             const newPassword = prompt("Nhập mật khẩu mới (ít nhất 6 ký tự):");
             if (!newPassword) return;
@@ -145,10 +145,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             db_save('bs_users', users);
-            alert(' Reset mật khẩu thành công!');
+            alert('✅ Reset mật khẩu thành công!');
         }
     });
 }
+
 
     /**
      *  YÊU CẦU 3: Quản lý loại sản phẩm
