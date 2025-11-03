@@ -668,6 +668,18 @@
 
         saveUser(user);
 
+        const users = JSON.parse(localStorage.getItem('bs_users')) || [];
+        const index = users.findIndex(u => u.username === user.username);
+        if (index !== -1) {
+          const oldUser = users[index];
+          users[index] = {
+             ...oldUser,   // giữ lại các thuộc tính cũ
+             ...user
+          }
+          // cập nhật lại user trong danh sách
+          localStorage.setItem('bs_users', JSON.stringify(users));
+        }
+
         alert('✅ Cập nhật thông tin cá nhân thành công!');
         // Đã sửa để chuyển hướng đến index.html
         window.location.href = 'index.html'; 

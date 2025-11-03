@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Khách hàng</title>
      <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
@@ -27,7 +27,7 @@
                 <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
-                <li class="nav-item"><a href="login.html" class="nav-link">Đăng xuất</a></li>
+                <li class="nav-item"><a href="index.html" class="nav-link">Đăng xuất</a></li>
              </ul>
         </div>
     </aside>
@@ -60,35 +60,16 @@
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>hiule</td>
-                                    <td>hiule@gmail.com</td>
-                                    <td>20/10/2025</td>
-                                    <td><span class="status delivered">Hoạt động</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-warning">Reset MK</button>
-                                        <button class="btn btn-sm btn-outline-danger">Khóa</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>hiule1</td>
-                                    <td>hiule1@gmail.com</td>
-                                    <td>15/09/2025</td>
-                                    <td><span class="status pending">Đã khóa</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-warning">Reset MK</button>
-                                        <button class="btn btn-sm btn-outline-success">Mở khóa</button>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="user-table-body">
+                                </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <script src="../assets/js/admin_main.js"></script>
+
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/admin_main.js"></script>
 </body>
 </html>
