@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Giá bán</title>
-
-   <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <style>
+        .profit-input {
+            width: 80px;
+            text-align: center;
+        }
+        .price-changed {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .btn-reset {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-reset:hover {
+            background-color: #5a6268;
+        }
+    </style>
 </head>
 <body>
     
@@ -32,93 +48,75 @@
                 <a href="purchase-orders.html" class="nav-link">Nhập hàng</a>
             </li>
              <li class="nav-item">
-                <a href="pricing.html" class="nav-link active">Quản lý giá bán</a>
+                <a href="pricing.html" class="nav-link active">Quản lý giá</a>
             </li>
-             <li class="nav-item">
+            <li class="nav-item">
                 <a href="orders.html" class="nav-link">Đơn hàng</a>
             </li>
+            <li class="nav-item">
+                <a href="inventory.html" class="nav-link">Tồn kho</a>
+            </li>
+            <li class="nav-item">
+                <a href="reports.html" class="nav-link">Báo cáo</a>
+            </li>
         </ul>
-<<<<<<< HEAD
-        <div class="sidebar-footer">
-            <a href="#">Đăng xuất</a>
-=======
         
         <div class="mt-auto p-3">
              <ul class="nav nav-pills flex-column">
                 <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
-                <li class="nav-item"><a href="index.html" class="nav-link">Đăng xuất</a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link">Đăng xuất</a></li>
              </ul>
->>>>>>> 0f3068ca4757af65c3d35369f47d31497d4e0328
         </div>
     </aside>
 
     <main class="main-content">
-        <header class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <span class="navbar-brand">Quản lý Giá bán</span>
+        <header class="top-bar p-3 d-flex justify-content-between align-items-center">
+            <form class="search-bar d-flex align-items-center">
+                <input class="form-control" type="search" placeholder="Tìm kiếm...">
+            </form>
+            <div class="profile-area d-flex align-items-center">
+                <div class="profile-pic ms-3"></div>
             </div>
         </header>
 
-        <div class="container-fluid pt-4">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">⚙️ Thiết lập Lợi nhuận chung (Theo loại)</h5>
-                </div>
-                <div class="card-body">
-                    <form id="category-profit-form" class="row g-3 align-items-end">
-                        <div class="col-md-5">
-                            <label for="profit-category" class="form-label">Loại sản phẩm</label>
-                            <select id="profit-category" class="form-select">
-                                <option selected value="">-- Chọn loại SP --</option>
-                                </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="profit-percent" class="form-label">Tỉ lệ Lợi nhuận (%)</label>
-                            <input type="number" class="form-control" id="profit-percent" value="50" min="0" max="1000">
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary w-100">Áp dụng Lợi nhuận chung</button>
-                        </div>
-                    </form>
-                    <small class="text-muted mt-2 d-block">Lưu ý: Thao tác này sẽ ghi đè tỉ lệ lợi nhuận hiện tại của tất cả sản phẩm thuộc loại đã chọn.</small>
-                </div>
-            </div>
+        <div class="page-content p-4">
+            <h1 class="mb-4">Quản lý Giá bán</h1>
 
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center bg-info text-white">
-                    <h5 class="mb-0">📊 Tinh chỉnh Giá bán (Theo sản phẩm)</h5>
-                    <button id="save-all-changes-btn" class="btn btn-success">💾 Lưu tất cả thay đổi</button>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="h5 mb-0">Tra cứu và Tinh chỉnh Giá bán</h3>
                 </div>
                 <div class="card-body">
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" id="search-input" placeholder="Tìm kiếm theo Tên sản phẩm, SKU...">
+                    <form id="search-pricing-form" class="row g-3 mb-3">
+                        <div class="col-md-5">
+                            <input type="text" id="search-query" class="form-control" placeholder="Tìm theo tên hoặc mã sản phẩm...">
                         </div>
-                        <div class="col-md-4">
-                            <select id="filter-select" class="form-select">
-                                <option selected value="">Lọc theo loại sản phẩm</option>
-                                </select>
+                        <div class="col-md-5">
+                            <select id="category-filter" class="form-select">
+                                <option value="" selected>Lọc theo loại sản phẩm</option>
+                            </select>
                         </div>
                         <div class="col-md-2">
-                            <button id="search-button" class="btn btn-outline-secondary w-100">🔍 Tra cứu</button>
+                             <button type="submit" class="btn btn-primary w-100">Tra cứu</button>
                         </div>
-                    </div>
-
+                    </form>
+                
                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered">
+                        <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
                                     <th>Tên sản phẩm</th>
-                                    <th>Loại sản phẩm</th>
+                                    <th>Loại SP</th>
                                     <th class="text-end">Giá vốn</th>
-                                    <th class="text-center">Tỉ lệ Lợi nhuận (%)</th>
-                                    <th class="text-end">Giá bán (Tạm tính)</th>
+                                    <th class="text-center">% Lợi nhuận</th>
+                                    <th class="text-end">Giá bán</th>
+                                    <th class="text-center">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody id="pricing-table-body">
-                                <tr><td colspan="5" class="text-center">Đang tải dữ liệu...</td></tr>
+                                <tr><td colspan="6" class="text-center">Đang tải dữ liệu...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -126,343 +124,236 @@
             </div>
         </div>
     </main>
-
-    <script src="../assets/js/main.js"></script> 
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // ==========================================================
-        // KHAI BÁO BIẾN VÀ HÀM CƠ BẢN
-        // ==========================================================
-
-        let currentProducts = []; // Danh sách sản phẩm đang hiển thị
-
-        // Lấy dữ liệu từ Local Storage hoặc dùng SAMPLE nếu chưa có 
+        // Lấy dữ liệu từ LocalStorage
         function getData() {
-            try {
-                // Ưu tiên lấy dữ liệu đã được lưu trữ/cập nhật
-                const data = JSON.parse(localStorage.getItem("bs_data"));
-                
-                // Fallback: Nếu không có trong LocalStorage, dùng biến SAMPLE từ main.js
-                // Đảm bảo biến SAMPLE tồn tại
-                const fallbackData = (typeof SAMPLE !== 'undefined' && SAMPLE.products) ? SAMPLE : { products: [] };
-                
-                // Nếu data.products rỗng, trả về fallbackData
-                return (data && data.products && data.products.length > 0) ? data : fallbackData; 
-            } catch (e) {
-                console.error("Lỗi khi đọc dữ liệu từ LocalStorage:", e);
-                return (typeof SAMPLE !== 'undefined' && SAMPLE.products) ? SAMPLE : { products: [] };
-            }
+            const storedData = localStorage.getItem("bs_data");
+            return storedData ? JSON.parse(storedData) : { products: [] };
         }
 
+        // Lưu dữ liệu vào LocalStorage
         function saveData(data) {
             localStorage.setItem("bs_data", JSON.stringify(data));
         }
 
-        // Hàm định dạng tiền tệ
-        function formatCurrency(price) {
-            // Làm tròn và định dạng tiền tệ Việt Nam
-            return Math.round(price).toLocaleString("vi-VN") + "đ";
-        }
-        
-        /**
-         * Tính toán giá bán dựa trên giá vốn và phần trăm lợi nhuận
-         * @param {number} costPrice - Giá vốn
-         * @param {number} profitPercent - Phần trăm lợi nhuận (0-100)
-         * @returns {number} Giá bán
-         */
-        function calculateSellingPrice(costPrice, profitPercent) {
-            if (profitPercent < 0) profitPercent = 0;
-            return costPrice * (1 + profitPercent / 100);
+        // Tính giá bán dựa trên giá vốn và % lợi nhuận
+        function calculateSalePrice(costPrice, profitMargin) {
+            const salePrice = costPrice * (1 + profitMargin / 100);
+            return Math.round(salePrice / 1000) * 1000; // Làm tròn đến nghìn đồng
         }
 
-        // ==========================================================
-        // 1. HIỂN THỊ VÀ LỌC SẢN PHẨM (YÊU CẦU 2: HIỂN THỊ & TRA CỨU)
-        // ==========================================================
+        // Định dạng tiền tệ
+        function formatPrice(price) {
+            return price.toLocaleString("vi-VN") + "đ";
+        }
 
-        /**
-         * Lọc và render danh sách sản phẩm vào bảng
-         * @param {Array} products - Danh sách sản phẩm để render
-         */
+        // Render bảng giá
         function renderPricingTable(products) {
-            const tableBody = document.getElementById('pricing-table-body');
-            if (!tableBody) return;
-
-            tableBody.innerHTML = '';
-            currentProducts = products; // Cập nhật danh sách hiện tại
+            const tbody = document.getElementById("pricing-table-body");
+            if (!tbody) return;
 
             if (products.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Không tìm thấy sản phẩm nào.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy sản phẩm nào.</td></tr>';
                 return;
             }
 
-            products.forEach(p => {
-                // Giá vốn là p.price. Lợi nhuận mặc định là 50% nếu chưa được lưu
-                // YÊU CẦU 2: Hiển thị % Lợi nhuận
-                const profitPercent = p.profitPercent != null ? p.profitPercent : 50; 
-                const sellingPrice = calculateSellingPrice(p.price, profitPercent);
+            tbody.innerHTML = products.map(p => {
+                // Giá vốn từ main.js (giả định là price ban đầu)
+                const costPrice = p.costPrice || p.price;
+                
+                // % lợi nhuận hiện tại
+                const currentMargin = p.profitMargin !== undefined ? p.profitMargin : 0;
+                
+                // Tính giá bán
+                const salePrice = calculateSalePrice(costPrice, currentMargin);
 
-                const row = document.createElement('tr');
-                row.setAttribute('data-product-id', p.id); 
-                row.innerHTML = `
-                    <td>${p.name}</td>
-                    <td>${p.subcategory || p.category}</td>
-                    <td class="text-end">${formatCurrency(p.price)}</td>
-                    <td class="text-center">
-                        <input type="number" class="profit-input form-control text-center" value="${profitPercent}" min="0" max="1000" style="width: 80px; display: inline-block;">
-                    </td>
-                    <td class="text-end fw-bold selling-price">${formatCurrency(sellingPrice)}</td>
+                return `
+                    <tr data-id="${p.id}">
+                        <td>${p.name} <span class="text-muted small">(${p.sku})</span></td>
+                        <td>${p.category}</td>
+                        <td class="text-end text-danger">${formatPrice(costPrice)}</td>
+                        <td class="text-center">
+                            <input 
+                                type="number" 
+                                class="form-control profit-input" 
+                                id="profit-${p.id}" 
+                                value="${currentMargin}" 
+                                min="0" 
+                                max="200"
+                                step="0.5"
+                                oninput="updateSalePrice(${p.id})">
+                        </td>
+                        <td class="text-end">
+                            <span id="price-${p.id}" class="fw-bold">${formatPrice(salePrice)}</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-success" onclick="saveProductProfit(${p.id})">Lưu</button>
+                            <button class="btn btn-sm btn-reset" onclick="resetProductProfit(${p.id})">Reset</button>
+                        </td>
+                    </tr>
                 `;
-                tableBody.appendChild(row);
-            });
-
-            // Gắn sự kiện lắng nghe thay đổi input sau khi render
-            attachProfitChangeListener();
+            }).join("");
         }
 
-        /**
-         * Xử lý sự kiện tìm kiếm và lọc sản phẩm (YÊU CẦU 2: TRA CỨU)
-         */
-        function handleSearchAndFilter() {
+        // Cập nhật giá bán tạm tính khi % lợi nhuận thay đổi
+        function updateSalePrice(productId) {
+            const profitInput = document.getElementById(`profit-${productId}`);
+            const priceSpan = document.getElementById(`price-${productId}`);
+            const product = getData().products.find(p => p.id === productId);
+
+            if (!product || !profitInput || !priceSpan) return;
+
+            const costPrice = product.costPrice || product.price;
+            const profitMargin = Number(profitInput.value);
+
+            if (profitMargin < 0 || isNaN(profitMargin)) {
+                priceSpan.textContent = "Lỗi %";
+                priceSpan.classList.remove("price-changed");
+                return;
+            }
+
+            const newSalePrice = calculateSalePrice(costPrice, profitMargin);
+            priceSpan.textContent = formatPrice(newSalePrice);
+            priceSpan.classList.add("price-changed");
+        }
+
+        // Lưu % lợi nhuận cho sản phẩm
+        function saveProductProfit(productId) {
+            const profitInput = document.getElementById(`profit-${productId}`);
+            if (!profitInput) return;
+
+            const profitMargin = Number(profitInput.value);
+
+            if (profitMargin < 0 || isNaN(profitMargin)) {
+                alert("Vui lòng nhập tỉ lệ lợi nhuận hợp lệ (>= 0).");
+                return;
+            }
+
+            // Lấy dữ liệu hiện tại
             const data = getData();
-            const allProducts = data.products;
+            const product = data.products.find(p => p.id === productId);
 
-            const searchInput = document.getElementById('search-input').value.toLowerCase().trim();
-            const filterSelect = document.getElementById('filter-select').value;
-            
-            let filteredProducts = allProducts;
-
-            // 1. Lọc theo loại sản phẩm (subcategory hoặc category)
-            if (filterSelect) {
-                filteredProducts = filteredProducts.filter(p => p.subcategory === filterSelect || p.category === filterSelect);
-            }
-            
-            // 2. Lọc theo tên hoặc SKU
-            if (searchInput) {
-                filteredProducts = filteredProducts.filter(p => 
-                    p.name.toLowerCase().includes(searchInput) || 
-                    (p.sku && p.sku.toLowerCase().includes(searchInput))
-                );
+            if (!product) {
+                alert("Không tìm thấy sản phẩm!");
+                return;
             }
 
-            renderPricingTable(filteredProducts);
+            // Cập nhật profitMargin và price
+            product.profitMargin = profitMargin;
+            const costPrice = product.costPrice || product.price;
+            product.price = calculateSalePrice(costPrice, profitMargin);
+
+            // Lưu lại vào localStorage
+            saveData(data);
+
+            alert(`✅ Đã lưu thành công ${profitMargin}% lợi nhuận cho sản phẩm "${product.name}"`);
+
+            // Cập nhật lại bảng
+            const priceSpan = document.getElementById(`price-${productId}`);
+            if (priceSpan) {
+                priceSpan.classList.remove("price-changed");
+            }
         }
 
-        // ==========================================================
-        // 2. CẬP NHẬT GIÁ BÁN TRỰC TIẾP (YÊU CẦU 1: SỬA)
-        // ==========================================================
+        // Reset % lợi nhuận về 0
+        function resetProductProfit(productId) {
+            if (!confirm("Bạn có chắc muốn reset % lợi nhuận về 0?")) return;
 
-        /**
-         * Gắn sự kiện lắng nghe thay đổi cho input lợi nhuận
-         */
-        function attachProfitChangeListener() {
-            document.querySelectorAll('.profit-input').forEach(input => {
-                input.removeEventListener('input', updateSellingPrice); 
-                input.addEventListener('input', updateSellingPrice);
-            });
-        }
+            const data = getData();
+            const product = data.products.find(p => p.id === productId);
 
-        /**
-         * Cập nhật giá bán tạm tính khi thay đổi % Lợi nhuận
-         */
-        function updateSellingPrice(e) {
-            const input = e.target;
-            const row = input.closest('tr');
-            const productId = Number(row.getAttribute('data-product-id'));
-            let profitPercent = Number(input.value);
-
-            const product = currentProducts.find(p => p.id === productId);
             if (!product) return;
 
-            const costPrice = product.price;
+            // Reset về 0%
+            product.profitMargin = 0;
+            const costPrice = product.costPrice || product.price;
+            product.price = costPrice;
 
-            // Tính toán giá bán mới
-            const newSellingPrice = calculateSellingPrice(costPrice, profitPercent);
-
-            // Cập nhật giá bán hiển thị
-            row.querySelector('.selling-price').textContent = formatCurrency(newSellingPrice);
-            
-            // Đánh dấu dòng đã thay đổi
-            row.classList.add('table-warning');
-        }
-
-
-        // ==========================================================
-        // 3. LƯU THAY ĐỔI VÀ ÁP DỤNG CHUNG
-        // ==========================================================
-
-        /**
-         * Xử lý khi áp dụng tỉ lệ lợi nhuận chung cho một loại sản phẩm
-         */
-        function handleApplyCategoryProfit(e) {
-            e.preventDefault();
-            const categorySelect = document.getElementById('profit-category');
-            const profitInput = document.getElementById('profit-percent');
-            
-            const selectedCategory = categorySelect.value;
-            const profitPercent = Number(profitInput.value);
-
-            if (!selectedCategory) {
-                alert('Vui lòng chọn một loại sản phẩm.');
-                return;
-            }
-
-            if (isNaN(profitPercent) || profitPercent < 0) {
-                alert('Tỉ lệ lợi nhuận không hợp lệ. Vui lòng nhập số >= 0.');
-                return;
-            }
-
-            if (!confirm(`Bạn có chắc chắn muốn áp dụng Tỉ lệ Lợi nhuận ${profitPercent}% cho TẤT CẢ sản phẩm thuộc loại "${selectedCategory}" không?`)) {
-                return;
-            }
-
-            const data = getData();
-            let count = 0;
-
-            const updatedProducts = data.products.map(p => {
-                if (p.category === selectedCategory || p.subcategory === selectedCategory) {
-                    p.profitPercent = profitPercent; 
-                    count++;
-                    return p;
-                }
-                return p;
-            });
-
-            data.products = updatedProducts;
+            // Lưu lại
             saveData(data);
-            
-            alert(`✅ Đã áp dụng ${profitPercent}% lợi nhuận cho ${count} sản phẩm thuộc loại "${selectedCategory}".`);
-            
-            handleSearchAndFilter();
-        }
 
+            // Cập nhật UI
+            const profitInput = document.getElementById(`profit-${productId}`);
+            const priceSpan = document.getElementById(`price-${productId}`);
 
-        /**
-         * Xử lý lưu tất cả thay đổi từ bảng vào LocalStorage
-         */
-        function handleSaveAllChanges() {
-            const data = getData();
-            let changesCount = 0;
-            const rows = document.querySelectorAll('#pricing-table-body tr[data-product-id]');
-            
-            if (rows.length === 0) {
-                alert('Không có sản phẩm nào để lưu.');
-                return;
+            if (profitInput) profitInput.value = 0;
+            if (priceSpan) {
+                priceSpan.textContent = formatPrice(costPrice);
+                priceSpan.classList.remove("price-changed");
             }
 
-            rows.forEach(row => {
-                const productId = Number(row.getAttribute('data-product-id'));
-                const profitInput = row.querySelector('.profit-input');
-                
-                if (!profitInput) return;
+            alert("✅ Đã reset % lợi nhuận về 0%");
+        }
 
-                const newProfitPercent = Number(profitInput.value);
-
-                const productIndex = data.products.findIndex(p => p.id === productId);
-
-                if (productIndex > -1) {
-                    const currentProduct = data.products[productIndex];
-                    
-                    if (currentProduct.profitPercent !== newProfitPercent) {
-                         data.products[productIndex].profitPercent = newProfitPercent;
-                         changesCount++;
-                    }
-                }
+        // Lọc và tìm kiếm sản phẩm
+        function filterAndSearchProducts() {
+            const query = document.getElementById("search-query").value.trim().toLowerCase();
+            const category = document.getElementById("category-filter").value;
+            
+            const allProducts = getData().products;
+            
+            const filtered = allProducts.filter(p => {
+                const matchesQuery = !query || p.name.toLowerCase().includes(query) || p.sku.toLowerCase().includes(query);
+                const matchesCategory = !category || p.category === category;
+                return matchesQuery && matchesCategory;
             });
 
-            if (changesCount > 0) {
-                saveData(data);
-                alert(`✅ Đã lưu thành công ${changesCount} thay đổi về tỉ lệ lợi nhuận.`);
-                document.querySelectorAll('#pricing-table-body tr').forEach(row => row.classList.remove('table-warning'));
-            } else {
-                alert('Không có thay đổi nào để lưu.');
-            }
+            renderPricingTable(filtered);
         }
 
+        // Render danh mục filter
+        function renderCategoryFilter() {
+            const select = document.getElementById("category-filter");
+            if (!select) return;
 
-        // ==========================================================
-        // 4. KHỞI TẠO
-        // ==========================================================
+            const allProducts = getData().products;
+            const categories = [...new Set(allProducts.map(p => p.category))].sort();
+            
+            categories.forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat;
+                option.textContent = cat;
+                select.appendChild(option);
+            });
+        }
 
-        /**
-         * Điền các loại sản phẩm (subcategory ưu tiên, sau đó là category) vào các dropdown
-         */
-        function populateCategoryDropdowns() {
+        // Khởi tạo khi DOM load
+        document.addEventListener("DOMContentLoaded", function () {
+            // Đảm bảo tất cả sản phẩm có costPrice và profitMargin
             const data = getData();
-            const categories = new Set();
+            let needsSave = false;
 
             data.products.forEach(p => {
-                // Lấy subcategory nếu có, ngược lại lấy category (chỉ lấy unique values)
-                const catName = p.subcategory || p.category;
-                if (catName) {
-                    categories.add(catName);
+                if (!p.costPrice) {
+                    p.costPrice = p.price;
+                    needsSave = true;
+                }
+                if (p.profitMargin === undefined) {
+                    p.profitMargin = 0;
+                    needsSave = true;
                 }
             });
 
-            const categoryArray = Array.from(categories).sort();
-            
-            const profitCategorySelect = document.getElementById('profit-category');
-            const filterSelect = document.getElementById('filter-select');
-
-            categoryArray.forEach(cat => {
-                // Thêm vào dropdown Lợi nhuận chung
-                if (profitCategorySelect) {
-                    const option1 = document.createElement('option');
-                    option1.value = cat; 
-                    option1.textContent = cat;
-                    profitCategorySelect.appendChild(option1);
-                }
-
-                // Thêm vào dropdown Lọc sản phẩm
-                 if (filterSelect) {
-                    const option2 = document.createElement('option');
-                    option2.value = cat;
-                    option2.textContent = cat;
-                    filterSelect.appendChild(option2);
-                }
-            });
-        }
-
-
-        function initAdminPricing() {
-            // 1. Điền dữ liệu vào dropdown
-            populateCategoryDropdowns();
-            
-            // 2. Tải danh sách sản phẩm ban đầu
-            handleSearchAndFilter(); 
-            
-            // 3. Gắn sự kiện cho form Thiết lập Lợi nhuận chung
-            const categoryProfitForm = document.getElementById('category-profit-form');
-            if (categoryProfitForm) {
-                categoryProfitForm.addEventListener('submit', handleApplyCategoryProfit);
+            if (needsSave) {
+                saveData(data);
             }
-            
-            // 4. Gắn sự kiện cho nút Tra cứu
-            const searchButton = document.getElementById('search-button');
-            if (searchButton) {
-                searchButton.addEventListener('click', handleSearchAndFilter);
-            }
-            
-            // 5. Gắn sự kiện cho form tìm kiếm (cho phép nhấn Enter)
-            const searchInput = document.getElementById('search-input');
-            if (searchInput) {
-                searchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleSearchAndFilter();
-                    }
+
+            // Render
+            renderPricingTable(data.products);
+            renderCategoryFilter();
+
+            // Gán sự kiện form
+            const searchForm = document.getElementById("search-pricing-form");
+            if (searchForm) {
+                searchForm.addEventListener("submit", function(e) {
+                    e.preventDefault();
+                    filterAndSearchProducts();
                 });
             }
-
-            // 6. Gắn sự kiện cho nút Lưu tất cả thay đổi
-            const saveButton = document.getElementById('save-all-changes-btn');
-            if (saveButton) {
-                saveButton.addEventListener('click', handleSaveAllChanges);
-            }
-        }
-
-        // Khởi chạy khi DOM đã sẵn sàng
-        document.addEventListener('DOMContentLoaded', initAdminPricing);
+        });
     </script>
+
+    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
