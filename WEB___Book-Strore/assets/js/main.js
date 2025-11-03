@@ -710,27 +710,61 @@ function renderSearchResults() {
     : `<p class="no-results">Không tìm thấy sản phẩm nào với từ khóa "<strong>${q}</strong>"</p>`;
 }
 
+// SỬA: Cập nhật hàm renderProductDetail() trong main.js
 function renderProductDetail() {
-  const wrap = document.getElementById("product-detail");
-  if (!wrap) return;
-  const id = new URLSearchParams(location.search).get("id");
-  const p =
-    getData().products.find((x) => String(x.id) === String(id)) ||
-    getData().products[0];
-  wrap.innerHTML = `
-    <div class="product-card">
-      <img src="${p.img}" alt="">
-      <h2>${p.name}</h2>
-      <p class="price">${p.price.toLocaleString("vi-VN")}đ</p>
-      <p>${p.desc}</p>
-      <label>Số lượng 
-        <input id="qty" type="number" value="1" min="1" max="${p.stock}">
-      </label><br>
-      <button class="btn" onclick="addToCart(${
-        p.id
-      }, document.getElementById('qty').value)">Thêm vào giỏ</button>
-    </div>`;
+    const productId = getProductIdFromURL();
+    const product = findProductById(productId);
+    const mainContent = document.getElementById("mainContent");
+
+    if (!product || !mainContent) {
+        showError();
+        return;
+    }
+    
+    // THÊM: Lấy số lượng tồn kho thực tế từ dữ liệu
+    const productData = getData().products.find((p) => p.id === productId);
+    const stockQty = productData ? productData.qty : 'Không rõ'; // Lấy số lượng tồn kho
+    const maxQty = productData ? productData.qty : 10; // Thiết lập max qty cho input
+
+    // ... (Phần HTML khác)
+    
+    const mainHtml = `
+    <div class="product-actions">
+        <div class="quantity-controls">
+            <button class="qty-btn minus-btn" onclick="decreaseQty()">-</button>
+            <input type="number" id="qty" value="1" min="1" max="${maxQty}" readonly>
+            <button class="qty-btn plus-btn" onclick="increaseQty()">+</button>
+        </div>
+
+        <p id="stock-qty" class="stock-info" style="margin-top: 1rem; color: #7f8c8d; font-size: 0.95rem;">
+            Kho: <b>${stockQty}</b> sản phẩm có sẵn
+        </p>
+
+        <div class="action-buttons">
+            <button class="btn-add-to-cart" onclick="addToCart(${product.id}, document.getElementById('qty').value)">
+                <i class="bi bi-cart-plus-fill"></i> Thêm vào giỏ hàng
+            </button>
+            <button class="btn-buy-now">
+                <i class="bi bi-wallet-fill"></i> Mua ngay
+            </button>
+        </div>
+    </div>
+    `;
+    mainContent.innerHTML = mainHtml;
+    // ... (Phần cuối) ...
 }
+
+// SỬA: Cập nhật hàm increaseQty để tôn trọng giá trị max
+function increaseQty() {
+    const input = document.getElementById("qty");
+    if (!input) return;
+    // Lấy max từ thuộc tính của input đã được set trong renderProductDetail
+    const max = parseInt(input.getAttribute('max')); 
+    if (parseInt(input.value) < max) {
+        input.value = parseInt(input.value) + 1;
+    }
+}
+// Vị trí: Thay thế hàm renderProductDetail và increaseQty hiện có trong main.js.
 
 // BẮT ĐẦU PHẦN CHỈNH SỬA LOGIC GIỎ HÀNG
 // Sửa lại hàm addToCart để yêu cầu đăng nhập trước khi thêm vào giỏ
@@ -921,13 +955,11 @@ function renderProductDetailPage(product) {
           </div>
           <div class="shipping-row">
             <span class="shipping-label">Danh mục:</span>
-            <span class="shipping-value">${product.category} › ${
-    product.subcategory
-  }</span>
+            <span class="shipping-value">${product.category} › ${ product.subcategory }</span>
           </div>
           <div class="shipping-row">
-            <span class="shipping-label">Tình trạng:</span>
-            <span class="shipping-value">Còn hàng</span>
+            <span class="shipping-label">Số lượng sách  :</span>
+            <span class="shipping-value">${product.qty} quyển </span>
           </div>
         </div>
 
@@ -1756,3 +1788,82 @@ document.addEventListener("DOMContentLoaded", function () {
     loadSearchQuery();
   }
 });
+// THÊM MỚI: Hàm xử lý trừ số lượng tồn kho sau khi thanh toán thành công
+function updateProductStock(selectedItems) {
+    if (!selectedItems || selectedItems.length === 0) return;
+
+    // Lấy toàn bộ dữ liệu từ localStorage
+    let data = getData(); // Giả định getData() và saveData() có sẵn trong main.js
+    let products = data.products;
+    let hasUpdated = false;
+
+    // Lặp qua các sản phẩm đã mua
+    selectedItems.forEach(cartItem => {
+        // Tìm sản phẩm trong danh sách toàn bộ sản phẩm
+        const productIndex = products.findIndex(p => p.id === cartItem.id);
+
+        if (productIndex > -1) {
+            const purchasedQty = cartItem.qty;
+            const currentStock = products[productIndex].qty;
+            
+            // Trừ số lượng tồn kho
+            products[productIndex].qty = currentStock - purchasedQty;
+
+            // Đảm bảo số lượng không âm
+            if (products[productIndex].qty < 0) {
+                 products[productIndex].qty = 0;
+            }
+            hasUpdated = true;
+        }
+    });
+
+    if (hasUpdated) {
+        // Lưu dữ liệu đã cập nhật trở lại localStorage
+        saveData(data); // Giả định saveData(data) có sẵn trong main.js
+        console.log('Stock updated successfully.');
+    }
+}
+// Vị trí: Đặt hàm này ở cuối file main.js hoặc gần các hàm quản lý data khác.
+// THÊM MỚI: Các hàm tiện ích để quản lý dữ liệu gốc
+function getData() {
+    // Lấy dữ liệu từ localStorage (giả định products được lưu trong bs_data)
+    const dataString = localStorage.getItem('bs_data');
+    return JSON.parse(dataString || JSON.stringify(SAMPLE)); // SAMPLE là dữ liệu mẫu ban đầu
+}
+
+function saveData(data) {
+    // Lưu dữ liệu đã thay đổi vào localStorage
+    localStorage.setItem('bs_data', JSON.stringify(data));
+}
+
+// THÊM MỚI: Hàm chính để cập nhật tồn kho
+function updateProductStock(selectedItems) {
+    if (!selectedItems || selectedItems.length === 0) return;
+
+    let data = getData();
+    let products = data.products;
+    let hasUpdated = false;
+
+    selectedItems.forEach(cartItem => {
+        const productIndex = products.findIndex(p => p.id === cartItem.id);
+
+        if (productIndex > -1) {
+            const purchasedQty = cartItem.qty;
+            const currentStock = products[productIndex].qty || 0; // Đảm bảo có giá trị mặc định
+            
+            // Trừ số lượng tồn kho
+            products[productIndex].qty = currentStock - purchasedQty;
+
+            // Đảm bảo số lượng không âm
+            if (products[productIndex].qty < 0) {
+                 products[productIndex].qty = 0;
+            }
+            hasUpdated = true;
+        }
+    });
+
+    if (hasUpdated) {
+        saveData(data);
+        console.log('Stock updated successfully.');
+    }
+}
