@@ -1660,7 +1660,7 @@ footer {
 .news-category {
   background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
   color: white;
-  padding: 0.3rem 0.8rem;
+  padding: 0.3rem 0.5rem;
   border-radius: 20px;
   font-weight: 600;
 }
@@ -1833,7 +1833,7 @@ footer {
   top: 2rem;
   width: 100%;
   border-radius: 16px;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 /* 📦 Card container */
@@ -2818,8 +2818,85 @@ footer {
 }
 
 /* Ngăn card nhảy layout khi hover */
+/* CARD TIN TỨC CỐ ĐỊNH BỐ CỤC */
+.news-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 35em;
+  border-radius: 0.8rem;
+  background: #fff;
+  overflow: hidden;
+  height: 36rem;
+  width: 15rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* HÌNH ẢNH CỐ ĐỊNH TRÊN CÙNG */
+.news-card .news-img {
+  flex: 0 0 200px; /* luôn cao 200px */
+  overflow: hidden;
+}
+.news-card .news-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* PHẦN NỘI DUNG */
+.news-card .news-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* đẩy “Đọc thêm” xuống đáy */
+  padding: 1rem;
+}
+
+/* THÔNG TIN META (loại & ngày) */
+.news-card .news-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 0.5rem;
+}
+
+/* TIÊU ĐỀ */
+.news-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin: 0.5rem 0;
+  min-height: 2.8em; /* giữ chiều cao cố định cho tiêu đề */
+}
+
+/* MÔ TẢ */
+.news-card p {
+  flex-grow: 1;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* NÚT ĐỌC THÊM Ở CỐ ĐỊNH DƯỚI */
+.news-card .read-more {
+  align-self: flex-start;
+  color: #f8f9fa;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.news-card .read-more:hover {
+  color: #eaeef1;
+}
+
+/* KHÔNG CHO NỘI DUNG BỊ NHẢY LAYOUT */
 .news-card * {
-  transition: none;
+  transition: none !important;
 }
 
 /*************************************/

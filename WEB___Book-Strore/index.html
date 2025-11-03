@@ -64,6 +64,55 @@
         text-decoration: underline;
       }
 
+      .carousel-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: transform 0.45s ease, opacity 0.45s ease;
+      }
+
+      .carousel-item.active {
+        position: relative;
+        opacity: 1;
+        transform: translateX(0);
+        z-index: 2;
+      }
+
+      /* Khi trượt qua trái */
+      .carousel-item.slide-left-enter {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      .carousel-item.slide-left-leave {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      /* Khi trượt qua phải */
+      .carousel-item.slide-right-enter {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      .carousel-item.slide-right-leave {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      .section-title.text-center.mb-4 {
+        background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+        color: white;
+        border-radius: 3rem;
+        width: 10rem;
+        padding: 1rem;
+      }
+      .text-events {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
       /* ================= Hot Sale ================= */
       .title-hot-sale {
         background-color: #fff;
@@ -373,12 +422,123 @@
           btn.style.display = "none";
         }
       };
-
       document
         .getElementById("backToTop")
         .addEventListener("click", function () {
           window.scrollTo({ top: 0, behavior: "smooth" });
         });
+
+      // Ghi đè bootrap
+      document.addEventListener("DOMContentLoaded", () => {
+        const carousels = document.querySelectorAll(".carousel");
+
+        carousels.forEach((carousel) => {
+          const slides = Array.from(
+            carousel.querySelectorAll(".carousel-item")
+          );
+          const prevBtn = carousel.querySelector(".carousel-control-prev");
+          const nextBtn = carousel.querySelector(".carousel-control-next");
+
+          if (!slides.length) return;
+
+          let index = slides.findIndex((s) => s.classList.contains("active"));
+          if (index === -1) index = 0;
+          // đảm bảo chỉ 1 active ban đầu
+          slides.forEach((s, i) =>
+            i === index
+              ? s.classList.add("active")
+              : s.classList.remove("active")
+          );
+
+          let isAnimating = false;
+
+          function cleanupClasses(current, next) {
+            // dọn mọi lớp tạm thời, chỉ giữ active cho next
+            slides.forEach((s) =>
+              s.classList.remove(
+                "slide-left-enter",
+                "slide-right-enter",
+                "slide-left-leave",
+                "slide-right-leave"
+              )
+            );
+            current.classList.remove("active");
+            next.classList.add("active");
+          }
+
+          function showSlide(newIndex, direction) {
+            if (isAnimating || newIndex === index) return;
+            isAnimating = true;
+
+            const current = slides[index];
+            const next = slides[newIndex];
+
+            // trước hết dọn lớp có thể còn sót (an toàn)
+            slides.forEach((s) =>
+              s.classList.remove(
+                "slide-left-enter",
+                "slide-right-enter",
+                "slide-left-leave",
+                "slide-right-leave"
+              )
+            );
+
+            // gán lớp leave/enter tương ứng
+            current.classList.add(
+              direction === "left" ? "slide-left-leave" : "slide-right-leave"
+            );
+            next.classList.add(
+              direction === "left" ? "slide-left-enter" : "slide-right-enter"
+            );
+
+            // force reflow để đảm bảo transition kích hoạt (an toàn trên nhiều trình duyệt)
+            // eslint-disable-next-line no-unused-expressions
+            next.offsetWidth;
+
+            // lắng nghe transitionend trên phần tử "next" (hoặc current) và chỉ chạy 1 lần
+            const onEnd = (e) => {
+              // một số trình duyệt sẽ fire nhiều lần (opacity, transform...), nên kiểm tra target là next
+              if (e.target !== next) return;
+              // cleanup và cập nhật index
+              cleanupClasses(current, next);
+              index = newIndex;
+              isAnimating = false;
+            };
+
+            next.addEventListener("transitionend", onEnd, { once: true });
+
+            // Fallback: nếu transitionend không fire (ví dụ CSS bị ghi đè), đặt timeout đảm bảo unlock
+            const fallback = setTimeout(() => {
+              if (isAnimating) {
+                cleanupClasses(current, next);
+                index = newIndex;
+                isAnimating = false;
+              }
+            }, 600); // bằng với thời lượng transition trong CSS (ví dụ 450ms), đặt cao hơn tí
+
+            // đảm bảo clear fallback khi onEnd chạy
+            next.addEventListener(
+              "transitionend",
+              () => clearTimeout(fallback),
+              { once: true }
+            );
+          }
+
+          prevBtn &&
+            prevBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              const newIndex = (index - 1 + slides.length) % slides.length;
+              showSlide(newIndex, "left");
+            });
+
+          nextBtn &&
+            nextBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              const newIndex = (index + 1) % slides.length;
+              showSlide(newIndex, "right");
+            });
+        });
+      });
     </script>
   </head>
 
@@ -866,11 +1026,13 @@
       </div>
 
       <!-- Phần tin tức và sự kiện -->
-      <section class="container py-6">
+      <section class="container_py-6">
         <div class="row g-4">
           <!-- 📰 CỘT TIN TỨC -->
           <div class="col-md-6">
-            <h2 class="section-title text-center mb-4">TIN TỨC</h2>
+            <div class="text-events">
+              <h2 class="section-title text-center mb-4">TIN TỨC</h2>
+            </div>
 
             <div
               id="newsCarousel"
@@ -1016,7 +1178,9 @@
 
           <!-- 🎪 CỘT SỰ KIỆN -->
           <div class="col-md-6">
-            <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
+            <div class="text-events">
+              <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
+            </div>
 
             <div
               id="eventCarousel"
