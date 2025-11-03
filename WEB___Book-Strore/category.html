@@ -437,14 +437,11 @@
       </button>
     </div>
     
-    <!-- ✅ PHẦN TÌM KIẾM NÂNG CAO - ĐÃ THÊM BỘ LỌC PHÂN LOẠI -->
     <div class="advanced-filters">
-      <!-- ✅ BỘ LỌC THEO PHÂN LOẠI/THỂ LOẠI - ĐẶT LÊN ĐẦU -->
       <div class="filter-item">
         <button class="filter-btn">Theo thể loại ▾</button>
         <ul class="filter-dropdown" id="subcategory-dropdown">
-          <!-- Sẽ được populate tự động bằng JavaScript -->
-        </ul>
+          </ul>
       </div>
       
       <div class="filter-item">
@@ -545,7 +542,6 @@
     </div>
   </footer>
   
-  <!-- Modals giữ nguyên -->
   <div id="loginModal" class="auth-modal">
     <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
     <div class="auth-modal-content">
@@ -719,7 +715,6 @@
     </i>
   </a>
   
-<!-- ==================== INLINE JAVASCRIPT CHO CATEGORY PAGE - ĐÃ THÊM BỘ LỌC PHÂN LOẠI ==================== -->
 <script>
 // Biến toàn cục để lưu trạng thái filter
 let categoryFilters = {
@@ -731,6 +726,9 @@ let categoryFilters = {
   subcategory: null,
   filterSubcategory: null // ✅ THÊM MỚI: Lọc theo subcategory từ dropdown
 };
+
+// Biến Local Storage Key phải khớp với bên Admin
+const CATEGORIES_STORAGE_KEY = 'admin_categories_data'; // ✅ KHAI BÁO KEY MỚI
 
 // Khởi tạo trang category
 function initCategoryPage() {
@@ -774,7 +772,21 @@ function updateCategoryBreadcrumb() {
   }
 }
 
-// ✅ THÊM MỚI: Populate subcategory dropdown dựa trên dữ liệu có sẵn
+// ✅ THÊM MỚI: Hàm lấy dữ liệu Category từ Local Storage
+function getCategoriesFromStorage() {
+    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+    let categories;
+    try {
+        // Trả về dữ liệu đã lưu nếu tồn tại, ngược lại trả về mảng rỗng
+        categories = storedData ? JSON.parse(storedData) : []; 
+    } catch (e) {
+        console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
+        return []; 
+    }
+    return categories;
+}
+
+// ✅ CẬP NHẬT: Populate subcategory dropdown dựa trên dữ liệu từ Local Storage
 function populateSubcategoryDropdown() {
   const subcategoryDropdown = document.getElementById('subcategory-dropdown');
   if (!subcategoryDropdown) {
@@ -782,21 +794,35 @@ function populateSubcategoryDropdown() {
     return;
   }
   
-  const products = getData().products;
+  // Lấy dữ liệu category từ Local Storage
+  const allCategories = getCategoriesFromStorage();
+  // Lọc ra các category đang 'active'
+  const activeCategories = allCategories.filter(cat => cat.status === 'active');
   
-  // Lấy danh sách subcategory duy nhất và sắp xếp
-  const subcategories = [...new Set(products.map(p => p.subcategory))].sort((a, b) => 
+  // Tập hợp tất cả subcategory duy nhất từ các category đang active
+  const allSubcategories = [];
+  activeCategories.forEach(cat => {
+      cat.subcategories.forEach(sub => {
+          // Chỉ thêm vào nếu subcategory chưa có trong danh sách
+          if (!allSubcategories.includes(sub)) {
+              allSubcategories.push(sub);
+          }
+      });
+  });
+  
+  // Sắp xếp các subcategory
+  allSubcategories.sort((a, b) => 
     a.localeCompare(b, 'vi')
   );
   
-  console.log('Found subcategories:', subcategories);
+  console.log('Found subcategories for filter:', allSubcategories);
   
   // Tạo HTML cho dropdown
   let html = '<li><a href="#" data-subcategory="">✨ Tất cả thể loại</a></li>';
   
-  subcategories.forEach(sub => {
-    // Thêm prefix "GK " cho các cấp học
+  allSubcategories.forEach(sub => {
     let displayName = sub;
+    // Thêm prefix "GK " cho các cấp học (giữ nguyên logic gốc)
     if (sub === 'Cấp 1' || sub === 'Cấp 2' || sub === 'Cấp 3') {
       displayName = 'GK ' + sub;
     }
@@ -805,7 +831,7 @@ function populateSubcategoryDropdown() {
   
   subcategoryDropdown.innerHTML = html;
   
-  // Gán sự kiện click cho các link
+  // Gán sự kiện click cho các link (giữ nguyên logic gốc)
   subcategoryDropdown.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -820,7 +846,7 @@ function populateSubcategoryDropdown() {
     });
   });
   
-  console.log('Subcategory dropdown populated successfully');
+  console.log('Subcategory dropdown populated successfully from Local Storage data');
 }
 
 // Setup event listeners
@@ -1168,7 +1194,7 @@ if (document.readyState === 'loading') {
 }
 // ==================== BỔ SUNG: CẬP NHẬT MENU DANH MỤC TỪ ADMIN ====================
 // Biến Local Storage Key phải khớp với bên Admin
-const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
+const CATEGORIES_STORAGE_KEY_NAV = 'admin_categories_data';
 
 // Hàm Tải Danh mục từ Local Storage và Cập nhật menu điều hướng
 function loadCategoriesAndPopulateMenu() {
@@ -1185,7 +1211,7 @@ function loadCategoriesAndPopulateMenu() {
     }
 
     // 1. Tải dữ liệu từ Local Storage
-    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV);
     let categories;
     try {
         categories = storedData ? JSON.parse(storedData) : [];

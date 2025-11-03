@@ -100,31 +100,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Tiểu thuyết</td>
-                                            <td><span class="status delivered">Đang hiển thị</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">Sửa</button>
-                                                <button class="btn btn-sm btn-outline-danger">Ẩn</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>SGK Cấp 1</td>
-                                            <td><span class="status delivered">Đang hiển thị</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">Sửa</button>
-                                                <button class="btn btn-sm btn-outline-danger">Ẩn</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Thơ</td>
-                                            <td><span class="status pending">Đã ẩn</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">Sửa</button>
-                                                <button class="btn btn-sm btn-outline-success">Hiện</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                        </tbody>
                                 </table>
                             </div>
                         </div>
@@ -133,7 +109,9 @@
             </div>
         </div>
     </main>
-    <script>
+    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/admin_main.js"></script>
+<script>
     // --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
     const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
 
@@ -226,7 +204,7 @@
             editingIndex = -1;
             categoryForm.querySelector('button[type="submit"]').textContent = 'Lưu';
             formTitle.textContent = 'Thêm loại mới';
-            categoryForm.querySelector('.btn-secondary').textContent = 'Hủy';
+            // Không cần reset nút Hủy/Hủy sửa nếu dùng button type="submit"
         } else {
             // Logic Thêm mới
             const newCategory = {
@@ -245,7 +223,7 @@
     /**
      * Chuyển chế độ sang Sửa (Edit)
      */
-    function editCategory(index) {
+    window.editCategory = function(index) {
         const cat = categories[index];
         isEditing = true;
         editingIndex = index;
@@ -258,7 +236,7 @@
     /**
      * Chuyển đổi trạng thái category (Ẩn/Hiện)
      */
-    function toggleCategoryStatus(index) {
+    window.toggleCategoryStatus = function(index) {
         const currentStatus = categories[index].status;
         categories[index].status = currentStatus === 'active' ? 'hidden' : 'active';
         saveCategories(categories);
@@ -286,7 +264,5 @@
     // Khởi tạo bảng khi tải trang
     document.addEventListener('DOMContentLoaded', renderCategories);
 </script>
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/admin_main.js"></script>
 </body>
 </html>
