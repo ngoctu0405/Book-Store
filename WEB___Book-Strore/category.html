@@ -963,6 +963,10 @@ function applyCategoryFilters() {
   let products = getData().products;
   console.log('Total products before filter:', products.length);
   
+  // 💡 BỔ SUNG: Lọc những sản phẩm bị DỪNG BÁN (status = 'inactive')
+  products = products.filter(p => p.status !== 'inactive'); 
+  console.log('After filtering inactive status:', products.length); //
+
   // Lọc theo category từ URL
   if (categoryFilters.category) {
     products = products.filter(p => p.category === categoryFilters.category);
@@ -1238,7 +1242,77 @@ document.addEventListener('DOMContentLoaded', loadCategoriesAndPopulateMenu);
 
 // ==================== KẾT THÚC BỔ SUNG ====================
 
+// Hàm này giả định được sử dụng để hiển thị các sản phẩm
+        function renderProducts(products) {
+            const productListElement = document.getElementById('productList');
+            const noProductsMessage = document.getElementById('noProductsMessage');
+            productListElement.innerHTML = '';
 
+            if (products.length === 0) {
+                noProductsMessage.classList.remove('d-none');
+                return;
+            }
+            noProductsMessage.classList.add('d-none');
+
+            let html = '';
+            products.forEach(p => {
+                html += `
+                    <div class="product-card">
+                        <a href="product-detail.html?id=${p.id}" class="d-block text-decoration-none text-dark">
+                            <div class="product-image">
+                                <img src="${p.img}" alt="${p.name}">
+                            </div>
+                            <div class="product-info">
+                                <h3>${p.name}</h3>
+                                <p class="author text-muted">${p.author}</p>
+                                <p class="price">${p.price.toLocaleString('vi-VN')} VNĐ</p>
+                                <button class="btn btn-sm btn-primary mt-2">Xem chi tiết</button>
+                            </div>
+                        </a>
+                    </div>
+                `;
+            });
+            productListElement.innerHTML = html;
+        }
+
+        /**
+         * Hàm chính để tải và lọc sản phẩm
+         */
+        function loadProducts() {
+            const data = typeof getData === 'function' ? getData() : { products: [] };
+            let products = data.products;
+            
+            // Lấy tham số category từ URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentCategory = urlParams.get('category');
+            const currentSubcategory = urlParams.get('subcategory');
+
+            // =============================================================
+            // [FIX LỖI QUAN TRỌNG]: LỌC THEO TRẠNG THÁI DỪNG BÁN
+            // =============================================================
+            // Chỉ giữ lại những sản phẩm có status là 'active' (hoặc chưa định nghĩa)
+            products = products.filter(p => p.status !== 'inactive'); 
+
+            // =============================================================
+
+            // Lọc theo category và subcategory
+            if (currentCategory) {
+                products = products.filter(p => p.category === currentCategory);
+                document.getElementById('categoryTitle').textContent = `Danh mục: ${currentCategory}`;
+                if (currentSubcategory) {
+                    products = products.filter(p => p.subcategory === currentSubcategory);
+                    document.getElementById('categoryTitle').textContent += ` - ${currentSubcategory}`;
+                }
+            } else {
+                 document.getElementById('categoryTitle').textContent = `Tất Cả Sản Phẩm`;
+            }
+
+            // ... (Thêm logic sắp xếp nếu cần) ...
+            
+            renderProducts(products);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProducts);
 </script>
 </body>
 
