@@ -1,9 +1,3 @@
-/*
- * ===============================================
- * TẬP TIN JAVASCRIPT CHÍNH CHO TRANG ADMIN
- * Phiên bản: Đầy đủ (Mô phỏng 8 yêu cầu)
- * ===============================================
- */
 
 // --- 1. HÀM HỖ TRỢ (HELPER FUNCTIONS) ---
 
@@ -64,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- 4. LOGIC TỪNG TRANG ---
 
     /**
-     * 🚀 YÊU CẦU 2: Quản lý người dùng (ĐÃ HOÀN THÀNH)
+     *  YÊU CẦU 2: Quản lý người dùng
      * - Trang: users.html (Cần: <tbody id="user-table-body">)
      */
     function initUsersPage() {
@@ -121,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * 🚀 YÊU CẦU 2: Reset Mật khẩu (ĐÃ HOÀN THÀNH)
+     * YÊU CẦU 2: Reset Mật khẩu 
      * - Trang: user-edit.html (Cần: <form id="resetPasswordForm">)
      */
     function initUserEditPage() {
@@ -154,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * 🚀 YÊU CẦU 3: Quản lý loại sản phẩm (HOÀN THÀNH)
+     *  YÊU CẦU 3: Quản lý loại sản phẩm
      * - Trang: categories.html (Cần: <form id="categoryForm">, <tbody id="category-table-body">, <input id="category-name">)
      */
     function initCategoriesPage() {
@@ -225,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     /**
-     * 🚀 YÊU CẦU 4: Quản lý danh mục sản phẩm (HOÀN THÀNH)
+     * YÊU CẦU 4: Quản lý danh mục sản phẩm
      * - Trang: products.html (Cần: <tbody id="product-table-body">)
      */
     function initProductsPage() {
@@ -264,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * 🚀 YÊU CẦU 4: Thêm/Sửa sản phẩm (HOÀN THÀNH)
+     * YÊU CẦU 4: Thêm/Sửa sản phẩm
      * - Trang: product-edit.html (Cần: <form id="productForm">, <select id="product-category">)
      */
     function initProductEditPage() {
@@ -280,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
             categorySelect.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
         });
 
-        // 2. Xử lý xem trước ảnh (như cũ)
+        // 2. Xử lý xem trước ảnh
         let preview = document.getElementById('image-preview');
         if (!preview) {
             preview = document.createElement('img');
@@ -326,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * 🚀 YÊU CẦU 5: Quản lý Nhập sản phẩm (HOÀN THÀNH)
+     *  YÊU CẦU 5: Quản lý Nhập sản phẩm
      * - Trang: purchase-orders.html (Cần: <tbody id="purchase-table-body">)
      */
     function initPurchaseOrdersPage() {
@@ -357,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * 🚀 YÊU CẦU 5: Thêm/Sửa phiếu nhập (HOÀN THÀNH)
+     * YÊU CẦU 5: Thêm/Sửa phiếu nhập
      * - Trang: purchase-edit.html (Cần: <tbody id="purchase-items-body">, <tfoot id="purchase-total">, <select id="product-select">)
      */
     function initPurchaseEditPage() {
@@ -469,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * 🚀 YÊU CẦU 6: Quản lý giá bán (ĐÃ HOÀN THÀNH)
+     *  YÊU CẦU 6: Quản lý giá bán
      * - Trang: pricing.html (Cần: <table> có class "table" và <input class="profit-input">)
      */
     function initPricingPage() {
@@ -493,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * 🚀 YÊU CẦU 7: Quản lý đơn đặt hàng (HOÀN THÀNH)
+     * YÊU CẦU 7: Quản lý đơn đặt hàng
      * - Trang: orders.html (Cần: <tbody id="order-table-body">)
      */
     function initOrdersPage() {
@@ -526,8 +520,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    /**
-     * 🚀 YÊU CẦU 7 & 8: Chi tiết đơn hàng (HOÀN THÀNH)
+    /*
+     *YÊU CẦU 7 & 8: Chi tiết đơn hàng 
      * - Trang: order-detail.html (Cần: <form id="orderDetailForm">, <select id="order-status">)
      */
     function initOrderDetailPage() {
@@ -599,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     /**
-     * 🚀 YÊU CẦU 8: Quản lý số lượng tồn (HOÀN THÀNH)
+     * YÊU CẦU 8: Quản lý số lượng tồn
      * - Trang: inventory.html (Cần: <tbody id="inventory-table-body">)
      */
     function initInventoryPage() {
