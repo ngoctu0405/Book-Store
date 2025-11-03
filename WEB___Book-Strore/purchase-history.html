@@ -796,7 +796,6 @@
     </div>
   </div>
 
-  <!-- Modal Đăng Nhập -->
   <div id="loginModal" class="auth-modal">
     <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
     <div class="auth-modal-content">
@@ -852,7 +851,6 @@
     </div>
   </div>
 
-  <!-- Modal Đăng Ký -->
   <div id="registerModal" class="auth-modal">
     <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
     <div class="auth-modal-content">
@@ -966,7 +964,6 @@
     </div>
   </div>
 
-  <!-- Modal Profile (Hiển thị khi đã đăng nhập) -->
   <div id="profileModal" class="auth-modal">
     <div class="auth-modal-overlay" onclick="closeProfileModal()"></div>
     <div class="auth-modal-content">
@@ -1177,6 +1174,10 @@
           <div class="info-item">
             <div class="info-label">Ngày đặt</div>
             <div class="info-value">${formatDate(order.date)}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Phương thức TT</div>
+            <div class="info-value">${order.paymentMethod || 'Không rõ'}</div>
           </div>
           <div class="info-item">
             <div class="info-label">Tổng tiền</div>

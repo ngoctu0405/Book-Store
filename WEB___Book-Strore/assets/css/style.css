@@ -6,6 +6,7 @@
   padding: 0;
   /* đặt box-sizing để bao gồm padding và border trong kích thước phần tử */
   box-sizing: border-box;
+  
 }
 
 /* Phần thân của trang: font, nền và màu chữ chính */
