@@ -1166,6 +1166,71 @@ if (document.readyState === 'loading') {
 } else {
   initCategoryPage();
 }
+// ==================== BỔ SUNG: CẬP NHẬT MENU DANH MỤC TỪ ADMIN ====================
+// Biến Local Storage Key phải khớp với bên Admin
+const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
+
+// Hàm Tải Danh mục từ Local Storage và Cập nhật menu điều hướng
+function loadCategoriesAndPopulateMenu() {
+    const categoriesMenu = document.querySelector('#mainMenu .book-filter');
+    if (!categoriesMenu) {
+        console.error("Không tìm thấy phần tử .book-filter");
+        return;
+    }
+    
+    // Đảm bảo menu đã sẵn sàng trước khi ghi đè, nếu không nó sẽ ghi đè lên menu ban đầu
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadCategoriesAndPopulateMenu);
+        return;
+    }
+
+    // 1. Tải dữ liệu từ Local Storage
+    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+    let categories;
+    try {
+        categories = storedData ? JSON.parse(storedData) : [];
+    } catch (e) {
+        console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
+        // Nếu lỗi, sử dụng dữ liệu mặc định (nếu có logic khởi tạo default)
+        return; 
+    }
+
+    // Lọc ra các category đang 'active'
+    const activeCategories = categories.filter(cat => cat.status === 'active');
+
+    let menuHTML = '';
+
+    // 2. Tạo HTML cho menu
+    activeCategories.forEach(cat => {
+        let subMenuHTML = '';
+        cat.subcategories.forEach(sub => {
+            // Tạm thời tạo link có tham số category và subcategory
+            subMenuHTML += `
+                <li><a href="category.html?category=${encodeURIComponent(cat.name)}&subcategory=${encodeURIComponent(sub)}" 
+                    data-category="${cat.name}" data-subcategory="${sub}">${sub}</a></li>
+            `;
+        });
+
+        menuHTML += `
+            <li class="dropdown">
+                <a href="#" data-category="${cat.name}">${cat.name} ▸</a>
+                <ul class="dropdown-content">
+                    ${subMenuHTML}
+                </ul>
+            </li>
+        `;
+    });
+
+    // 3. Cập nhật menu điều hướng
+    categoriesMenu.innerHTML = menuHTML;
+    
+    console.log('Menu danh mục đã được cập nhật từ Local Storage.');
+}
+
+// Gọi hàm này khi DOM đã sẵn sàng (thay thế cho menu tĩnh trong HTML)
+document.addEventListener('DOMContentLoaded', loadCategoriesAndPopulateMenu);
+
+// ==================== KẾT THÚC BỔ SUNG ====================
 </script>
 </body>
 

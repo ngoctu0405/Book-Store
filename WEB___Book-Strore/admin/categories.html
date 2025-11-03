@@ -133,6 +133,159 @@
             </div>
         </div>
     </main>
+    <script>
+    // --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
+    const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
+
+    // Dữ liệu mặc định cho lần chạy đầu tiên (để có sẵn menu bên user)
+    const defaultCategories = [
+        { name: 'Văn học', subcategories: ['Tiểu thuyết', 'Truyện ngắn', 'Thơ'], status: 'active' },
+        { name: 'Kinh tế', subcategories: ['Quản trị', 'Tài chính', 'Marketing'], status: 'active' },
+        { name: 'Thiếu nhi', subcategories: ['Truyện tranh', 'Giáo dục'], status: 'active' },
+        { name: 'Giáo khoa', subcategories: ['Cấp 1', 'Cấp 2', 'Cấp 3'], status: 'active' }
+    ];
+
+    /**
+     * Lấy danh sách categories từ Local Storage, nếu chưa có thì dùng mặc định
+     */
+    function getCategories() {
+        const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+        if (storedData) {
+            try {
+                return JSON.parse(storedData);
+            } catch (e) {
+                console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
+                return defaultCategories;
+            }
+        }
+        return defaultCategories;
+    }
+
+    /**
+     * Lưu danh sách categories vào Local Storage
+     */
+    function saveCategories(categories) {
+        localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(categories));
+    }
+
+    // --- LOGIC FORM VÀ BẢNG ---
+    const categoryForm = document.getElementById('categoryForm');
+    const categoryNameInput = document.getElementById('category-name');
+    const tableBody = document.querySelector('.table tbody');
+    const formTitle = document.getElementById('category-form-title');
+    let categories = getCategories();
+    let isEditing = false;
+    let editingIndex = -1;
+
+    /**
+     * Render danh sách categories ra bảng
+     */
+    function renderCategories() {
+        // Lần đầu tiên, đảm bảo dữ liệu mặc định được lưu lại
+        saveCategories(categories);
+        
+        tableBody.innerHTML = ''; // Xóa nội dung cũ
+        
+        categories.forEach((cat, index) => {
+            const statusClass = cat.status === 'active' ? 'delivered' : 'pending';
+            const statusText = cat.status === 'active' ? 'Đang hiển thị' : 'Đã ẩn';
+            const actionButton = cat.status === 'active' 
+                ? `<button class="btn btn-sm btn-outline-danger" onclick="toggleCategoryStatus(${index})">Ẩn</button>`
+                : `<button class="btn btn-sm btn-outline-success" onclick="toggleCategoryStatus(${index})">Hiện</button>`;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${cat.name}</td>
+                <td><span class="status ${statusClass}">${statusText}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary" onclick="editCategory(${index})">Sửa</button>
+                    ${actionButton}
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    /**
+     * Xử lý khi submit form: Thêm hoặc Sửa category
+     */
+    categoryForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = categoryNameInput.value.trim();
+        if (!name) return;
+
+        // Chuẩn hóa tên (ví dụ: viết hoa chữ cái đầu)
+        const newName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+
+        if (isEditing) {
+            // Logic Sửa
+            categories[editingIndex].name = newName;
+            
+            // Đặt lại trạng thái form
+            isEditing = false;
+            editingIndex = -1;
+            categoryForm.querySelector('button[type="submit"]').textContent = 'Lưu';
+            formTitle.textContent = 'Thêm loại mới';
+            categoryForm.querySelector('.btn-secondary').textContent = 'Hủy';
+        } else {
+            // Logic Thêm mới
+            const newCategory = {
+                name: newName,
+                subcategories: [`Tất cả ${newName}`], // Gán subcategory mặc định
+                status: 'active'
+            };
+            categories.push(newCategory);
+        }
+
+        categoryNameInput.value = '';
+        saveCategories(categories);
+        renderCategories();
+    });
+
+    /**
+     * Chuyển chế độ sang Sửa (Edit)
+     */
+    function editCategory(index) {
+        const cat = categories[index];
+        isEditing = true;
+        editingIndex = index;
+        categoryNameInput.value = cat.name;
+        formTitle.textContent = `Sửa loại: ${cat.name}`;
+        categoryForm.querySelector('button[type="submit"]').textContent = 'Cập nhật';
+        categoryForm.querySelector('.btn-secondary').textContent = 'Hủy sửa';
+    }
+    
+    /**
+     * Chuyển đổi trạng thái category (Ẩn/Hiện)
+     */
+    function toggleCategoryStatus(index) {
+        const currentStatus = categories[index].status;
+        categories[index].status = currentStatus === 'active' ? 'hidden' : 'active';
+        saveCategories(categories);
+        renderCategories();
+    }
+    
+    /**
+     * Xử lý nút Hủy
+     */
+    document.querySelector('.form-actions .btn-secondary').addEventListener('click', function() {
+        if (isEditing) {
+            // Hủy chế độ chỉnh sửa
+            isEditing = false;
+            editingIndex = -1;
+            categoryNameInput.value = '';
+            formTitle.textContent = 'Thêm loại mới';
+            categoryForm.querySelector('button[type="submit"]').textContent = 'Lưu';
+            this.textContent = 'Hủy';
+        } else {
+            // Xóa nội dung input
+            categoryNameInput.value = '';
+        }
+    });
+
+    // Khởi tạo bảng khi tải trang
+    document.addEventListener('DOMContentLoaded', renderCategories);
+</script>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/admin_main.js"></script>
 </body>
