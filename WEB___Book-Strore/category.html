@@ -672,32 +672,6 @@
   
 <script>
 
-// ==================== KHỞI TẠO DỮ LIỆU MẶC ĐỊNH CHO USER ====================
-// --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
-const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
-
-// Dữ liệu mặc định cho lần chạy đầu tiên (để có sẵn menu bên user)
-const defaultCategories = [
-    { name: 'Văn học', subcategories: ['Tiểu thuyết', 'Truyện ngắn', 'Thơ'], status: 'active' },
-    { name: 'Kinh tế', subcategories: ['Quản trị', 'Tài chính', 'Marketing'], status: 'active' },
-    { name: 'Thiếu nhi', subcategories: ['Truyện tranh', 'Giáo dục'], status: 'active' },
-    { name: 'Giáo khoa', subcategories: ['Cấp 1', 'Cấp 2', 'Cấp 3'], status: 'active' }
-];
-
-// Hàm kiểm tra và lưu dữ liệu mặc định
-function initializeDefaultCategories() {
-    // Chỉ tạo dữ liệu mặc định nếu chưa có trong Local Storage
-    if (!localStorage.getItem(CATEGORIES_STORAGE_KEY)) {
-        localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(defaultCategories));
-        console.log('Đã khởi tạo dữ liệu category mặc định cho Local Storage.');
-    }
-}
-
-// Gọi hàm khởi tạo ngay khi script chạy
-initializeDefaultCategories(); 
-// ==================== KẾT THÚC KHỞI TẠO DỮ LIỆU MẶC ĐỊNH ====================
-
-
 // Biến toàn cục để lưu trạng thái filter
 let categoryFilters = {
   sortByName: null,
@@ -706,7 +680,7 @@ let categoryFilters = {
   maxPrice: null,
   category: null,
   subcategory: null,
-  filterSubcategory: null // ✅ THÊM MỚI: Lọc theo subcategory từ dropdown
+  filterSubcategory: null // THÊM MỚI: Lọc theo subcategory từ dropdown
 };
 
 // Khởi tạo trang category
@@ -960,12 +934,8 @@ function applyPriceFilter() {
 function applyCategoryFilters() {
   console.log('Applying filters:', categoryFilters);
   
-  let products = getData().products;
+  let products = getVisibleProducts(); // Đã lọc category ẩn từ main.js
   console.log('Total products before filter:', products.length);
-  
-  // 💡 BỔ SUNG: Lọc những sản phẩm bị DỪNG BÁN (status = 'inactive')
-  products = products.filter(p => p.status !== 'inactive'); 
-  console.log('After filtering inactive status:', products.length); //
 
   // Lọc theo category từ URL
   if (categoryFilters.category) {
@@ -1175,70 +1145,6 @@ if (document.readyState === 'loading') {
 } else {
   initCategoryPage();
 }
-// ==================== BỔ SUNG: CẬP NHẬT MENU DANH MỤC TỪ ADMIN ====================
-// Biến Local Storage Key phải khớp với bên Admin
-const CATEGORIES_STORAGE_KEY_NAV = 'admin_categories_data';
-
-// Hàm Tải Danh mục từ Local Storage và Cập nhật menu điều hướng
-function loadCategoriesAndPopulateMenu() {
-    const categoriesMenu = document.querySelector('#mainMenu .book-filter');
-    if (!categoriesMenu) {
-        console.error("Không tìm thấy phần tử .book-filter");
-        return;
-    }
-    
-    // Đảm bảo menu đã sẵn sàng trước khi ghi đè, nếu không nó sẽ ghi đè lên menu ban đầu
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', loadCategoriesAndPopulateMenu);
-        return;
-    }
-
-    // 1. Tải dữ liệu từ Local Storage
-    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV);
-    let categories;
-    try {
-        categories = storedData ? JSON.parse(storedData) : [];
-    } catch (e) {
-        console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
-        // Nếu lỗi, sử dụng dữ liệu mặc định (đã được gọi initializeDefaultCategories)
-        // Lấy lại dữ liệu an toàn (đã có mặc định nếu chưa có)
-        categories = JSON.parse(localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV)) || [];
-    }
-
-    // Lọc ra các category đang 'active'
-    const activeCategories = categories.filter(cat => cat.status === 'active');
-
-    let menuHTML = '';
-
-    // 2. Tạo HTML cho menu
-    activeCategories.forEach(cat => {
-        let subMenuHTML = '';
-        cat.subcategories.forEach(sub => {
-            // Tạm thời tạo link có tham số category và subcategory
-            subMenuHTML += `
-                <li><a href="category.html?category=${encodeURIComponent(cat.name)}&subcategory=${encodeURIComponent(sub)}" 
-                    data-category="${cat.name}" data-subcategory="${sub}">${sub}</a></li>
-            `;
-        });
-
-        menuHTML += `
-            <li class="dropdown">
-                <a href="#" data-category="${cat.name}">${cat.name} ▸</a>
-                <ul class="dropdown-content">
-                    ${subMenuHTML}
-                </ul>
-            </li>
-        `;
-    });
-
-    // 3. Cập nhật menu điều hướng
-    categoriesMenu.innerHTML = menuHTML;
-    
-    console.log('Menu danh mục đã được cập nhật từ Local Storage.');
-}
-
-// Gọi hàm này khi DOM đã sẵn sàng (thay thế cho menu tĩnh trong HTML)
-document.addEventListener('DOMContentLoaded', loadCategoriesAndPopulateMenu);
 
 // ==================== KẾT THÚC BỔ SUNG ====================
 

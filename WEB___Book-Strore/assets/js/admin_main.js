@@ -221,78 +221,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 }
-
-    /**
-     *  YÊU CẦU 3: Quản lý loại sản phẩm
-     * - Trang: categories.html (Cần: <form id="categoryForm">, <tbody id="category-table-body">, <input id="category-name">)
-     */
-    function initCategoriesPage() {
-        const form = document.getElementById('categoryForm');
-        const tableBody = document.getElementById('category-table-body');
-        if (!form || !tableBody) return;
-
-        let categories = db_get('db_categories');
-
-        // Hàm render
-        function renderCategories() {
-            tableBody.innerHTML = '';
-            categories.forEach(cat => {
-                const row = document.createElement('tr');
-                const statusText = (cat.status === 'visible') ? 'Đang hiển thị' : 'Đã ẩn';
-                const statusClass = (cat.status === 'visible') ? 'delivered' : 'pending';
-                const toggleButtonText = (cat.status === 'visible') ? 'Ẩn' : 'Hiện';
-                const toggleButtonClass = (cat.status === 'visible') ? 'btn-outline-danger' : 'btn-outline-success';
-
-                row.innerHTML = `
-                    <td>${cat.name}</td>
-                    <td><span class="status ${statusClass}">${statusText}</span></td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary btn-edit" data-id="${cat.id}">Sửa</button>
-                        <button class="btn btn-sm ${toggleButtonClass} btn-toggle" data-id="${cat.id}">
-                            ${toggleButtonText}
-                        </button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Xử lý Thêm/Sửa
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const categoryName = document.getElementById('category-name').value.trim();
-            if (!categoryName) return;
-
-            const newCategory = {
-                id: Date.now(),
-                name: categoryName,
-                status: 'visible'
-            };
-            categories.push(newCategory);
-            db_save('db_categories', categories);
-            form.reset();
-            renderCategories();
-        });
-
-        // Xử lý nút Ẩn/Hiện
-        tableBody.addEventListener('click', function (e) {
-            if (e.target.classList.contains('btn-toggle')) {
-                const catId = e.target.dataset.id;
-                categories = categories.map(cat => {
-                    if (cat.id.toString() === catId) {
-                        cat.status = (cat.status === 'visible') ? 'hidden' : 'visible';
-                    }
-                    return cat;
-                });
-                db_save('db_categories', categories);
-                renderCategories();
-            }
-            // (Bạn có thể tự thêm logic cho nút Sửa)
-        });
-
-        renderCategories(); // Chạy lần đầu
-    }
-
     /**
      * YÊU CẦU 4: Quản lý danh mục sản phẩm
      * - Trang: products.html (Cần: <tbody id="product-table-body">)
@@ -725,9 +653,6 @@ document.addEventListener('DOMContentLoaded', function () {
     switch (currentPage) {
         case 'users.html':
             initUsersPage();
-            break;
-        case 'categories.html':
-            initCategoriesPage();
             break;
         case 'products.html':
             initProductsPage();

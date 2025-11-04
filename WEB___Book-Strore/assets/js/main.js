@@ -563,6 +563,85 @@ if (!localStorage.getItem("bs_orders"))
 if (!localStorage.getItem("bs_users"))
   localStorage.setItem("bs_users", JSON.stringify(SAMPLE_USERS));
 
+// ==================== KHỞI TẠO DỮ LIỆU MẶC ĐỊNH CHO USER ====================
+// --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
+const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
+
+// Dữ liệu mặc định cho lần chạy đầu tiên (để có sẵn menu bên user)
+const defaultCategories = [
+    { name: 'Văn học', subcategories: ['Tiểu thuyết', 'Truyện ngắn', 'Thơ'], status: 'active' },
+    { name: 'Kinh tế', subcategories: ['Quản trị', 'Tài chính', 'Marketing'], status: 'active' },
+    { name: 'Thiếu nhi', subcategories: ['Truyện tranh', 'Giáo dục'], status: 'active' },
+    { name: 'Giáo khoa', subcategories: ['Cấp 1', 'Cấp 2', 'Cấp 3'], status: 'active' }
+];
+
+// Hàm kiểm tra và lưu dữ liệu mặc định
+function initializeDefaultCategories() {
+    // Chỉ tạo dữ liệu mặc định nếu chưa có trong Local Storage
+    if (!localStorage.getItem(CATEGORIES_STORAGE_KEY)) {
+        localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(defaultCategories));
+        console.log('Đã khởi tạo dữ liệu category mặc định cho Local Storage.');
+    }
+}
+initializeDefaultCategories();
+// ==================== KẾT THÚC KHỞI TẠO DỮ LIỆU MẶC ĐỊNH ====================
+// ==================== CẬP NHẬT MENU DANH MỤC TỪ ADMIN ====================
+// Biến Local Storage Key phải khớp với bên Admin
+const CATEGORIES_STORAGE_KEY_NAV = 'admin_categories_data';
+
+// Hàm Tải Danh mục từ Local Storage và Cập nhật menu điều hướng
+function loadCategoriesAndPopulateMenu() {
+    const categoriesMenu = document.querySelector('#mainMenu .book-filter');
+    if (!categoriesMenu) {
+        // Không báo lỗi ở đây vì một số trang có thể không có menu này
+        return;
+    }
+    
+    // 1. Tải dữ liệu từ Local Storage
+    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV);
+    let categories;
+    try {
+        categories = storedData ? JSON.parse(storedData) : [];
+    } catch (e) {
+        console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
+        categories = JSON.parse(localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV)) || [];
+    }
+
+    // Lọc ra các category đang 'active' (ĐÂY LÀ CHỖ XỬ LÝ ẨN/HIỆN)
+    const activeCategories = categories.filter(cat => cat.status === 'active');
+
+    let menuHTML = '';
+
+    // 2. Tạo HTML cho menu
+    activeCategories.forEach(cat => {
+        let subMenuHTML = '';
+        // Đảm bảo subcategories là một mảng
+        if (Array.isArray(cat.subcategories)) {
+            cat.subcategories.forEach(sub => {
+                subMenuHTML += `
+                    <li><a href="category.html?category=${encodeURIComponent(cat.name)}&subcategory=${encodeURIComponent(sub)}" 
+                        data-category="${cat.name}" data-subcategory="${sub}">${sub}</a></li>
+                `;
+            });
+        }
+
+        menuHTML += `
+            <li class="dropdown">
+                <a href="category.html?category=${encodeURIComponent(cat.name)}" data-category="${cat.name}">${cat.name} ▸</a>
+                <ul class="dropdown-content">
+                    ${subMenuHTML}
+                </ul>
+            </li>
+        `;
+    });
+
+    // 3. Cập nhật menu điều hướng
+    categoriesMenu.innerHTML = menuHTML;
+    
+    console.log('Menu danh mục đã được cập nhật từ Local Storage.');
+}
+// ==================== KẾT THÚC BỔ SUNG ====================
+
 function getData() {
   return JSON.parse(localStorage.getItem("bs_data"));
 }
@@ -572,6 +651,58 @@ function getCart() {
 function saveCart(c) {
   localStorage.setItem("bs_cart", JSON.stringify(c));
 }
+
+// ==================== BẮT ĐẦU: LỌC SẢN PHẨM THEO CATEGORY ADMIN ====================
+
+/**
+ * Lấy danh sách TÊN của các category đang 'active'
+ */
+function getActiveCategoryNames() {
+    // Dùng CATEGORIES_STORAGE_KEY_NAV vì nó đã được định nghĩa ở trên
+    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV);
+    if (!storedData) {
+        // Nếu không có dữ liệu admin, tạm thời coi như tất cả đều active
+        // Dữ liệu này sẽ được initializeDefaultCategories() tạo ra ngay sau đó
+        console.warn("Chưa có dữ liệu category, tạm thời hiển thị tất cả.");
+        return null; 
+    }
+    try {
+        const categories = JSON.parse(storedData);
+        // Trả về một mảng chỉ chứa TÊN của category active
+        return categories
+            .filter(cat => cat.status === 'active')
+            .map(cat => cat.name);
+    } catch (e) {
+        console.error("Lỗi khi đọc dữ liệu categories, tạm thời hiển thị tất cả:", e);
+        return null; // Trả về null để biết là có lỗi và không lọc
+    }
+}
+
+/**
+ * Lấy danh sách sản phẩm (đã lọc) MÀ USER ĐƯỢC PHÉP XEM
+ */
+function getVisibleProducts() {
+    let allProducts = getData().products; // getData() gốc trả về TẤT CẢ
+    
+    // 1. Lọc các sản phẩm bị DỪNG BÁN (status = 'inactive')
+    // (Logic này đã có trong file category.html, nay chuyển về đây)
+    allProducts = allProducts.filter(p => p.status !== 'inactive');
+    
+    // 2. Lọc theo category 'active' (Yêu cầu mới của bạn)
+    const activeCategoryNames = getActiveCategoryNames();
+    
+    if (activeCategoryNames === null) {
+        // Nếu có lỗi đọc category hoặc chưa có, không lọc, trả về ds đã lọc status
+        return allProducts; 
+    }
+    
+    // Chỉ giữ lại sản phẩm nào có 'product.category' nằm trong ds active
+    return allProducts.filter(product => 
+        activeCategoryNames.includes(product.category)
+    );
+}
+// ==================== KẾT THÚC: LỌC SẢN PHẨM ====================
+
 // Sửa lại hàm updateCartCount để hiển thị số lượng chính xác trên giỏ hàng
 function updateCartCount() {
   // 1. Tính tổng số lượng từ giỏ hàng.
@@ -591,7 +722,7 @@ function updateCartCount() {
 //-----------------------------------------------------------------------------------------------------------------
 let currentPage = 1;
 const perPage = 8;
-let currentList = getData().products;
+let currentList = getVisibleProducts(); // Đã lọc sản phẩm và category ẩn
 
 function renderProductList(page = 1) {
   const wrap = document.getElementById("product-list");
@@ -701,7 +832,7 @@ function renderSearchResults() {
     .split(/\s+/)
     .filter((k) => k);
 
-  const res = getData().products.filter((p) =>
+  const res = getVisibleProducts().filter((p) =>
     keywords.every((k) => p.name.toLowerCase().includes(k))
   );
 
@@ -739,7 +870,7 @@ function renderProductDetail() {
     }
     
     // THÊM: Lấy số lượng tồn kho thực tế từ dữ liệu
-    const productData = getData().products.find((p) => p.id === productId);
+    const productData = getVisibleProducts().find((p) => p.id === productId);
     const stockQty = productData ? productData.qty : 'Không rõ'; // Lấy số lượng tồn kho
     const maxQty = productData ? productData.qty : 10; // Thiết lập max qty cho input
 
@@ -1167,7 +1298,7 @@ document.addEventListener("DOMContentLoaded", function () {
   renderCart();
   renderMenu();
   initProductDetail(); // Init product detail page
-
+  loadCategoriesAndPopulateMenu(); // Cập nhật menu danh mục từ Local Storage
   const categoryBtn = document.querySelector(".category-btn");
   if (categoryBtn) {
     categoryBtn.addEventListener("click", function () {
