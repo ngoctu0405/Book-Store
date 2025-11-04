@@ -104,6 +104,66 @@
         background: #0056b3;
         color: #fff;
       }
+      /* ============================= */
+      /* 📱 MOBILE GÓC NHÌN RỘNG (480px → 620px) */
+      /* ============================= */
+      @media (min-width: 480px) and (max-width: 620px) {
+        body {
+          font-size: 1rem;
+          background-color: #f8f9fa;
+          display: flex;
+          justify-content: center;
+        }
+
+        #page {
+          width: 90%; /* thay vì full width */
+          max-width: 500px; /* giữ khung kiểu tờ A4 đứng */
+          padding: 30px 25px;
+          margin: 40px auto;
+          top: 2rem;
+          border-radius: 12px;
+          background: #fff;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+
+        #title {
+          font-size: 1.7rem;
+          line-height: 1.4;
+          margin-bottom: 15px;
+        }
+
+        #meta {
+          font-size: 0.95rem;
+          gap: 12px;
+          margin-bottom: 18px;
+        }
+
+        #image {
+          height: 260px;
+          width: 100%;
+          object-fit: cover;
+          border-radius: 10px;
+          margin: 18px 0;
+        }
+
+        #content {
+          font-size: 1.05rem;
+          line-height: 1.8;
+          text-align: justify;
+          padding: 0 2px;
+        }
+
+        #back {
+          display: block;
+          width: 100%;
+          text-align: center;
+          background: #007bff;
+          color: #fff;
+          border-radius: 6px;
+          margin-top: 25px;
+          padding: 10px 0;
+        }
+      }
 
       /* Hiệu ứng mượt */
       @keyframes fadeIn {
@@ -604,7 +664,7 @@
         document.getElementById("title").innerText = "Không tìm thấy bài viết!";
       }
     </script>
-    <a href="#top" class="back-to-top" title="Lên đầu trang">
+    <a href="#" class="back-to-top" title="Lên đầu trang">
       <i class="bi bi-chevron-up">
         <img class="go-up" src="./images/muiten.svg" alt="Về trang chủ" />
       </i>

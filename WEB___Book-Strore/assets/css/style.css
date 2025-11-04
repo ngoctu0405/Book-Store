@@ -6,7 +6,6 @@
   padding: 0;
   /* đặt box-sizing để bao gồm padding và border trong kích thước phần tử */
   box-sizing: border-box;
-  
 }
 
 /* Phần thân của trang: font, nền và màu chữ chính */
@@ -282,7 +281,7 @@ body {
   /* khoảng cách dưới */
   margin-bottom: 2rem;
   /* màu chữ cho mô tả */
-  color: #3c8088;
+  color: #ffffff;
   /* độ đậm vừa */
   font-weight: 500;
 }
@@ -2710,9 +2709,9 @@ footer {
 /* Container chính */
 .container_py-6 {
   position: relative;
-  top: 13rem;
+  top: 10rem;
   padding: 2rem;
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 3rem;
 }
 

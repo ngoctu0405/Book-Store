@@ -20,9 +20,38 @@
           width: 100%;
           max-width: 100vw !important;
           --bs-gutter-x: 0 !important;
-          height: 460rem;
+          height: 355rem;
         }
       }
+
+      /* ================= Banner ================= */
+      .all-books a {
+        border-radius: 3rem;
+      }
+      /* ================= About us ================= */
+      .intro-title {
+        font-family: "Times New Roman", Times, serif;
+        font-size: 3rem;
+      }
+      .intro-title span {
+        font-family: "Times New Roman", Times, serif;
+      }
+
+      @media (max-width: 575px) {
+        .about-us-index .col-md-6 {
+          display: flex;
+          flex-direction: column; /* xếp dọc */
+          align-items: center; /* canh giữa ngang */
+          justify-content: center; /* canh giữa dọc (nếu có chiều cao) */
+        }
+        .intro-title {
+          display: flex;
+          flex-direction: column; /* xếp dọc */
+          align-items: center; /* canh giữa ngang */
+          justify-content: center; /* canh giữa dọc (nếu có chiều cao) */
+        }
+      }
+
       /* ================= Tin tức & Sự kiện ================= */
       .news-card {
         background: #fff;
@@ -43,6 +72,23 @@
         object-fit: cover;
       }
 
+      .news-title {
+        text-decoration: none;
+      }
+
+      .news-category,
+      .news-date {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .news-date {
+        border: 1px solid black;
+        border-radius: 3rem;
+        min-width: 8rem;
+        padding: 0.3rem 0.5rem;
+      }
       .news-content {
         padding: 1rem;
       }
@@ -64,14 +110,14 @@
         border-radius: 0.8rem;
         background: #fff;
         overflow: hidden;
-        height: 36rem;
-        width: 15rem;
+        height: 40rem;
+        width: 25rem;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
 
       /* HÌNH ẢNH CỐ ĐỊNH TRÊN CÙNG */
       .news-card .news-img {
-        flex: 0 0 200px; /* luôn cao 200px */
+        flex: 0 0 300px; /* luôn cao 200px */
         overflow: hidden;
       }
       .news-card .news-img img {
@@ -100,7 +146,7 @@
 
       /* TIÊU ĐỀ */
       .news-card h3 {
-        font-size: 1rem;
+        font-size: 1.5rem;
         font-weight: 600;
         color: #333;
         line-height: 1.4;
@@ -112,7 +158,7 @@
       .news-card p {
         flex-grow: 1;
         color: #555;
-        font-size: 0.9rem;
+        font-size: 1rem;
         line-height: 1.5;
         margin-bottom: 1rem;
         overflow: hidden;
@@ -131,6 +177,30 @@
         color: #eaeef1;
       }
 
+      /* Mỗi box chiếm ít hơn 50% để có khoảng cách ở giữa */
+      .news-column-box {
+        border: 2px solid #e0e0e0;
+        border-radius: 3rem;
+        padding: 1.5rem;
+        background: linear-gradient(90deg, #ffffff 0%, #7fb3d3 100%);
+        flex: 0 0 48%; /* mỗi cột ~48% chiều rộng container */
+        height: 60rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      /* Căn cho hàng chứa 2 cột */
+      .row.g-4.align-items-stretch {
+        display: flex;
+        align-items: stretch; /* làm 2 cột cao bằng nhau */
+      }
+      .text-events {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
       /* KHÔNG CHO NỘI DUNG BỊ NHẢY LAYOUT */
       .news-card * {
         transition: none !important;
@@ -158,6 +228,9 @@
         position: relative;
         opacity: 1;
         transform: translateX(0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
         z-index: 2;
       }
 
@@ -230,7 +303,10 @@
           gap: 1rem;
         }
       }
-      /* ================= Hot Sale ================= */
+
+      /* ========================================================= */
+      /* 5. HOT SALE SECTION */
+      /* ========================================================= */
       .title-hot-sale {
         background-color: #fff;
         border-radius: 1rem;
@@ -246,6 +322,12 @@
         padding: 4rem;
         border-radius: 3rem;
         margin: 2rem 0;
+      }
+      .card-actions .btn-small,
+      .card-actions .btn-cart {
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .product-card {
@@ -272,14 +354,6 @@
         border-radius: 16px;
       }
 
-      .card-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 0.75rem;
-        min-height: 50px;
-      }
-
       .price {
         font-size: 1.3rem;
         font-weight: 700;
@@ -303,6 +377,7 @@
         transition: all 0.3s ease;
         color: white;
       }
+
       .btn-small {
         background: #5dade2;
       }
@@ -315,23 +390,6 @@
       .btn-cart:hover {
         background: #e74c3c;
       }
-
-      /* ================= Media ================= */
-      @media (max-width: 575px) {
-        .hot_sale_selection {
-          min-height: auto;
-        }
-        .product-card {
-          margin-bottom: 1.5rem;
-        }
-        .Top-sale {
-          width: 23rem;
-        }
-      }
-
-      /* ========================================================= */
-      /* 5. HOT SALE SECTION */
-      /* ========================================================= */
       .title-hot-sale {
         background-color: #ffffff;
         border-radius: 1rem;
@@ -388,7 +446,7 @@
       }
 
       .card-title {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         font-weight: 600;
         color: #333;
         margin-bottom: 0.75rem;
@@ -435,7 +493,7 @@
       .btn-cart:hover {
         background: #e74c3c;
       }
-      /* Media */
+      /* ================= Media ================= */
       @media (max-width: 575px) {
         .hot_sale_selection {
           /* display: flex; */
@@ -446,6 +504,16 @@
         }
         .Top-sale {
           width: 23rem;
+        }
+
+        .product-card {
+          margin-bottom: 1.5rem;
+        }
+        .Top-sale {
+          width: 23rem;
+        }
+        .hot_sale_selection {
+          height: 120rem;
         }
       }
 
@@ -1111,333 +1179,346 @@
                 </div>
               </div>
             </div>
-
-            <!-- Nút điều hướng Carousel -->
-            <button
-              class="carousel-control-prev"
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="prev"
-            >
-              <span
-                class="carousel-control-prev-icon"
-                aria-hidden="true"
-              ></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-
-            <button
-              class="carousel-control-next"
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="next"
-            >
-              <span
-                class="carousel-control-next-icon"
-                aria-hidden="true"
-              ></span>
-              <span class="visually-hidden">Next</span>
-            </button>
           </div>
+          <!-- Nút điều hướng Carousel -->
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
       </div>
 
-      <!-- Phần tin tức và sự kiện -->
+      <!-- 📰 TIN TỨC & SỰ KIỆN -->
       <section class="container_py-6">
         <div class="row g-4">
           <!-- 📰 CỘT TIN TỨC -->
           <div class="col-md-6">
-            <div class="text-events">
-              <h2 class="section-title text-center mb-4">TIN TỨC</h2>
-            </div>
-
-            <div
-              id="newsCarousel"
-              class="carousel slide"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-inner">
-                <!-- Slide 1 -->
-                <div class="carousel-item active">
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <article class="news-card">
-                        <div class="news-img">
-                          <img
-                            src="./images/Mãi mãi tuổi hai mươi.jpg"
-                            alt="Alpha Books và Tinh Vân"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">📰 Tin tức</span>
-                            <span class="news-date">📅 15/09/2025</span>
-                          </div>
-                          <h3>
-                            'Mãi mãi tuổi hai mươi' - nhật ký vượt thời gian
-                          </h3>
-                          <p>
-                            Nhật ký ghi lại tinh thần chiến đấu, những nỗi niềm
-                            riêng của liệt sĩ Nguyễn Văn Thạc...
-                          </p>
-                          <a href="news-detail.html?id=1" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-                    <div class="col-md-6">
-                      <article class="news-card">
-                        <div class="news-img">
-                          <img
-                            src="./images/Tư_duy_phản_biện.jpg"
-                            alt="Tư Duy Phản Biện"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">📰 Tin tức</span>
-                            <span class="news-date">📅 12/09/2025</span>
-                          </div>
-                          <h3>
-                            Tư Duy Phản Biện Thông Minh – Rèn Kỹ Năng Phân...
-                          </h3>
-                          <p>
-                            Trong bối cảnh bùng nổ của thông tin, nơi mà fake
-                            news và định kiến lan truyền...
-                          </p>
-                          <a href="news-detail.html?id=2" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <article class="news-card">
-                        <div class="news-img">
-                          <img
-                            src="./images/Top sách 2025.jpg"
-                            alt="Tình hình nhân sự"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">📰 Tin tức</span>
-                            <span class="news-date">📅 27/02/2024</span>
-                          </div>
-                          <h3>Những cuốn sách mới đáng chú ý nửa cuối 2025</h3>
-                          <p>
-                            Thị trường sách nửa cuối năm 2025 chứng kiến sự xuất
-                            hiện của nhiều tác phẩm đáng chú ý...
-                          </p>
-                          <a href="news-detail.html?id=3" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-                    <div class="col-md-6">
-                      <article class="news-card">
-                        <div class="news-img">
-                          <img
-                            src="./images/Phong trào đọc sách.jpg"
-                            alt="Phong trào đọc sách"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">📰 Tin tức</span>
-                            <span class="news-date">📅 10/03/2024</span>
-                          </div>
-                          <h3>Phong trào đọc sách đang quay trở lại mạnh mẽ</h3>
-                          <p>
-                            Nhiều trường học và tổ chức đang đẩy mạnh phong trào
-                            đọc sách cho học sinh và sinh viên...
-                          </p>
-                          <a href="news-detail.html?id=4" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-                  </div>
-                </div>
+            <div class="news-column-box">
+              <div class="text-events">
+                <a href="./news.html" class="news-title"
+                  ><h2 class="section-title text-center mb-4">TIN TỨC</h2></a
+                >
               </div>
 
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#newsCarousel"
-                data-bs-slide="prev"
+              <div
+                id="newsCarousel"
+                class="carousel slide"
+                data-bs-ride="carousel"
               >
-                <span class="carousel-control-prev-icon"></span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#newsCarousel"
-                data-bs-slide="next"
-              >
-                <span class="carousel-control-next-icon"></span>
-              </button>
+                <div class="carousel-inner">
+                  <!-- Slide 1 -->
+                  <div class="carousel-item active">
+                    <article class="news-card">
+                      <div class="news-img">
+                        <img
+                          src="./images/Mãi mãi tuổi hai mươi.jpg"
+                          alt="Alpha Books và Tinh Vân"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="news-content">
+                        <div class="news-meta">
+                          <a href="news-detail.html?id=1" class="news-title">
+                            <span class="news-category">📰 Tin tức</span></a
+                          >
+                          <span class="news-date">📅 15/09/2025</span>
+                        </div>
+                        <h3>
+                          'Mãi mãi tuổi hai mươi' - nhật ký vượt thời gian
+                        </h3>
+                        <p>
+                          Nhật ký ghi lại tinh thần chiến đấu, những nỗi niềm
+                          riêng của liệt sĩ Nguyễn Văn Thạc...
+                        </p>
+                        <a href="news-detail.html?id=1" class="read-more"
+                          >Đọc thêm →</a
+                        >
+                      </div>
+                    </article>
+                  </div>
+
+                  <!-- Slide 2 -->
+                  <div class="carousel-item">
+                    <article class="news-card">
+                      <div class="news-img">
+                        <img
+                          src="./images/Tư_duy_phản_biện.jpg"
+                          alt="Tư duy phản biện"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="news-content">
+                        <div class="news-meta">
+                          <a href="news-detail.html?id=2" class="news-title"
+                            ><span class="news-category">📰 Tin tức</span></a
+                          >
+                          <span class="news-date">📅 12/09/2025</span>
+                        </div>
+                        <h3>
+                          Tư Duy Phản Biện Thông Minh – Rèn Kỹ Năng Phân...
+                        </h3>
+                        <p>
+                          Trong bối cảnh bùng nổ của thông tin, nơi mà fake news
+                          và định kiến lan truyền...
+                        </p>
+                        <a href="news-detail.html?id=2" class="read-more"
+                          >Đọc thêm →</a
+                        >
+                      </div>
+                    </article>
+                  </div>
+
+                  <!-- Slide 3 -->
+                  <div class="carousel-item">
+                    <article class="news-card">
+                      <div class="news-img">
+                        <img
+                          src="./images/Top sách 2025.jpg"
+                          alt="Top sách 2025"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="news-content">
+                        <div class="news-meta">
+                          <a href="news-detail.html?id=3" class="news-title"
+                            ><span class="news-category">📰 Tin tức</span></a
+                          >
+                          <span class="news-date">📅 27/02/2024</span>
+                        </div>
+                        <h3>Những cuốn sách mới đáng chú ý nửa cuối 2025</h3>
+                        <p>
+                          Thị trường sách nửa cuối năm 2025 chứng kiến sự xuất
+                          hiện của nhiều tác phẩm đáng chú ý...
+                        </p>
+                        <a href="news-detail.html?id=3" class="read-more"
+                          >Đọc thêm →</a
+                        >
+                      </div>
+                    </article>
+                  </div>
+
+                  <!-- Slide 4 -->
+                  <div class="carousel-item">
+                    <article class="news-card">
+                      <div class="news-img">
+                        <img
+                          src="./images/Phong trào đọc sách.jpg"
+                          alt="Phong trào đọc sách"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="news-content">
+                        <div class="news-meta">
+                          <a href="news-detail.html?id=4" class="news-title"
+                            ><span class="news-category">📰 Tin tức</span></a
+                          >
+                          <span class="news-date">📅 10/03/2024</span>
+                        </div>
+                        <h3>Phong trào đọc sách đang quay trở lại mạnh mẽ</h3>
+                        <p>
+                          Nhiều trường học và tổ chức đang đẩy mạnh phong trào
+                          đọc sách cho học sinh và sinh viên...
+                        </p>
+                        <a href="news-detail.html?id=4" class="read-more"
+                          >Đọc thêm →</a
+                        >
+                      </div>
+                    </article>
+                  </div>
+                </div>
+
+                <!-- Nút điều hướng -->
+                <button
+                  class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#newsCarousel"
+                  data-bs-slide="prev"
+                >
+                  <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button
+                  class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#newsCarousel"
+                  data-bs-slide="next"
+                >
+                  <span class="carousel-control-next-icon"></span>
+                </button>
+              </div>
             </div>
           </div>
 
           <!-- 🎪 CỘT SỰ KIỆN -->
           <div class="col-md-6">
-            <div class="text-events">
-              <h2 class="section-title text-center mb-4">SỰ KIỆN</h2>
-            </div>
-
-            <div
-              id="eventCarousel"
-              class="carousel slide"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-inner">
-                <!-- Slide 1 -->
-                <div class="carousel-item active">
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <article class="news-card">
-                        <div class="news-img">
-                          <img
-                            src="./images/Talk show.png"
-                            alt="Talkshow Sao Hỏa"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">🎪 Sự kiện</span>
-                            <span class="news-date">📅 18/01/2024</span>
-                          </div>
-                          <h3>
-                            TALKSHOW CUỐI NĂM: HÀNH TRÌNH TỚI SAO HỎA & TƯƠNG
-                            LAI
-                          </h3>
-                          <p>
-                            2023 là một năm kinh tế đầy biến động, đã đến lúc
-                            nhìn lại hành trình đã qua...
-                          </p>
-                          <a href="news-detail.html?id=5" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-                    <div class="col-md-6">
-                      <article class="news-card">
-                        <div class="news-img">
-                          <img
-                            src="./images/Hội sách.jpg"
-                            alt="Hội sách mùa hè 2024"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">Văn hóa - Sách</span>
-                            <span class="news-date">📅 31/10/2025</span>
-                          </div>
-                          <h3>HỘI SÁCH MÙA HÈ 2024 – KẾT NỐI TRI THỨC</h3>
-                          <p>
-                            Một sự kiện thường niên nhằm lan tỏa văn hóa đọc và
-                            kết nối những người yêu sách...
-                          </p>
-                          <a href="news-detail.html?id=6" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-                  </div>
-                </div>
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                  <div class="row g-3">
-                    <div class="col-md-6">
-                      <article class="news-card">
-                        <div class="news-img">
-                          <img
-                            src="./images/Hành trình tri thức.jpg"
-                            alt="Hành trình tri thức"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">Văn hóa - Sách</span>
-                            <span class="news-date">📅 28/10/2025</span>
-                          </div>
-                          <h3>Ra mắt bộ sách mới “Hành Trình Tri Thức 2025”</h3>
-                          <p>
-                            Mới đây, tại Hà Nội, nhà xuất bản Tri Thức Việt đã
-                            tổ chức lễ ra mắt bộ sách...
-                          </p>
-                          <a href="news-detail.html?id=7" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-                    <div class="col-md-6">
-                      <article class="news-card">
-                        <div class="news-img">
-                          <img
-                            src="./images/Work shop.jpg"
-                            alt="Workshop sáng tạo"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="news-content">
-                          <div class="news-meta">
-                            <span class="news-category">🎪 Sự kiện</span>
-                            <span class="news-date">📅 15/06/2024</span>
-                          </div>  
-                          <h3>
-                            WORKSHOP: SÁNG TẠO TRONG CÔNG NGHỆ & XU HƯỚNG MỚI
-                          </h3>
-                          <p>
-                            Chương trình quy tụ các chuyên gia hàng đầu chia sẻ
-                            kinh nghiệm sáng tạo trong công nghệ số...
-                          </p>
-                          <a href="news-detail.html?id=8" class="read-more"
-                            >Đọc thêm →</a
-                          >
-                        </div>
-                      </article>
-                    </div>
-                  </div>
-                </div>
+            <div class="news-column-box">
+              <div class="text-events">
+                <a href="./news.html" class="news-title"
+                  ><h2 class="section-title text-center mb-4">SỰ KIỆN</h2></a
+                >
               </div>
 
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#eventCarousel"
-                data-bs-slide="prev"
+              <div
+                id="eventCarousel"
+                class="carousel slide"
+                data-bs-ride="carousel"
               >
-                <span class="carousel-control-prev-icon"></span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#eventCarousel"
-                data-bs-slide="next"
-              >
-                <span class="carousel-control-next-icon"></span>
-              </button>
+                <div class="carousel-inner">
+                  <!-- Slide 1 -->
+                  <div class="carousel-item active">
+                    <article class="news-card">
+                      <div class="news-img">
+                        <img
+                          src="./images/Talk show.png"
+                          alt="Talkshow Sao Hỏa"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="news-content">
+                        <div class="news-meta">
+                          <a href="news-detail.html?id=5" class="news-title"
+                            ><span class="news-category">🎪 Sự kiện</span></a
+                          >
+                          <span class="news-date">📅 18/01/2024</span>
+                        </div>
+                        <h3>TALKSHOW: HÀNH TRÌNH TỚI SAO HỎA & TƯƠNG LAI</h3>
+                        <p>
+                          2023 là một năm kinh tế đầy biến động, đã đến lúc nhìn
+                          lại hành trình đã qua...
+                        </p>
+                        <a href="news-detail.html?id=5" class="read-more"
+                          >Đọc thêm →</a
+                        >
+                      </div>
+                    </article>
+                  </div>
+
+                  <!-- Slide 2 -->
+                  <div class="carousel-item">
+                    <article class="news-card">
+                      <div class="news-img">
+                        <img
+                          src="./images/Hội sách.jpg"
+                          alt="Hội sách mùa hè 2024"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="news-content">
+                        <div class="news-meta">
+                          <a href="news-detail.html?id=6" class="news-title"
+                            ><span class="news-category"
+                              >📚 Văn hóa - Sách</span
+                            ></a
+                          >
+                          <span class="news-date">📅 31/10/2025</span>
+                        </div>
+                        <h3>HỘI SÁCH MÙA HÈ 2024 – KẾT NỐI TRI THỨC</h3>
+                        <p>
+                          Một sự kiện thường niên nhằm lan tỏa văn hóa đọc và
+                          kết nối những người yêu sách...
+                        </p>
+                        <a href="news-detail.html?id=6" class="read-more"
+                          >Đọc thêm →</a
+                        >
+                      </div>
+                    </article>
+                  </div>
+
+                  <!-- Slide 3 -->
+                  <div class="carousel-item">
+                    <article class="news-card">
+                      <div class="news-img">
+                        <img
+                          src="./images/Hành trình tri thức.jpg"
+                          alt="Hành trình tri thức"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="news-content">
+                        <div class="news-meta">
+                          <a href="news-detail.html?id=7" class="news-title">
+                            <span class="news-category"
+                              >📚 Văn hóa - Sách</span
+                            ></a
+                          >
+                          <span class="news-date">📅 28/10/2025</span>
+                        </div>
+                        <h3>Ra mắt bộ sách mới “Hành Trình Tri Thức 2025”</h3>
+                        <p>
+                          Mới đây, tại Hà Nội, nhà xuất bản Tri Thức Việt đã tổ
+                          chức lễ ra mắt bộ sách...
+                        </p>
+                        <a href="news-detail.html?id=7" class="read-more"
+                          >Đọc thêm →</a
+                        >
+                      </div>
+                    </article>
+                  </div>
+
+                  <!-- Slide 4 -->
+                  <div class="carousel-item">
+                    <article class="news-card">
+                      <div class="news-img">
+                        <img
+                          src="./images/Work shop.jpg"
+                          alt="Workshop sáng tạo"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div class="news-content">
+                        <div class="news-meta">
+                          <a href="news-detail.html?id=8" class="news-title"
+                            ><span class="news-category">🎪 Sự kiện</span></a
+                          >
+                          <span class="news-date">📅 15/06/2024</span>
+                        </div>
+                        <h3>
+                          WORKSHOP: SÁNG TẠO TRONG CÔNG NGHỆ & XU HƯỚNG MỚI
+                        </h3>
+                        <p>
+                          Chương trình quy tụ các chuyên gia hàng đầu chia sẻ
+                          kinh nghiệm sáng tạo trong công nghệ số...
+                        </p>
+                        <a href="news-detail.html?id=8" class="read-more"
+                          >Đọc thêm →</a
+                        >
+                      </div>
+                    </article>
+                  </div>
+                </div>
+
+                <!-- Nút điều hướng -->
+                <button
+                  class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#eventCarousel"
+                  data-bs-slide="prev"
+                >
+                  <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button
+                  class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#eventCarousel"
+                  data-bs-slide="next"
+                >
+                  <span class="carousel-control-next-icon"></span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1445,7 +1526,7 @@
     </main>
 
     <!-- Nút quay lên đầu trang -->
-    <a href="#top" class="back-to-top" title="Lên đầu trang">
+    <a href="#" class="back-to-top" title="Lên đầu trang">
       <i class="bi bi-chevron-up">
         <img class="go-up" src="./images/muiten.svg" alt="Về trang chủ" />
       </i>
