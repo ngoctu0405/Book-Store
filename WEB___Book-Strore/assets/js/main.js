@@ -539,12 +539,29 @@ const SAMPLE = {
     },
   ],
 };
+
+const SAMPLE_USERS = [
+  {
+    id: 10001, // ID mẫu
+    status: "active",
+    fullName: "Giáo Viên (Khách Hàng)",
+    username: "khachhang1",
+    password: "123456",
+    email: "teacher@gmail.com",
+    phone: "0987654321",
+    address: "123 Đường ABC, Q1, TPHCM",
+    createdAt: new Date().toISOString(),
+  }
+];
+  
 if (!localStorage.getItem("bs_data"))
   localStorage.setItem("bs_data", JSON.stringify(SAMPLE));
 if (!localStorage.getItem("bs_cart"))
   localStorage.setItem("bs_cart", JSON.stringify([]));
 if (!localStorage.getItem("bs_orders"))
   localStorage.setItem("bs_orders", JSON.stringify([]));
+if (!localStorage.getItem("bs_users"))
+  localStorage.setItem("bs_users", JSON.stringify(SAMPLE_USERS));
 
 function getData() {
   return JSON.parse(localStorage.getItem("bs_data"));
