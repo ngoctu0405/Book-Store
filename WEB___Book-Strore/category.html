@@ -375,52 +375,7 @@
           Danh mục sách ▾
         </button>
         <ul class="book-filter">
-          <li class="dropdown">
-            <a href="#" data-category="Văn học">Văn học ▸</a>
-            <ul class="dropdown-content">
-              <li><a href="category.html?category=Văn học&subcategory=Tiểu thuyết" data-category="Văn học"
-                  data-subcategory="Tiểu thuyết">Tiểu thuyết</a></li>
-              <li><a href="category.html?category=Văn học&subcategory=Truyện ngắn" data-category="Văn học"
-                  data-subcategory="Truyện ngắn">Truyện ngắn</a></li>
-              <li><a href="category.html?category=Văn học&subcategory=Thơ" data-category="Văn học"
-                  data-subcategory="Thơ">Thơ</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" data-category="Kinh tế">Kinh tế ▸</a>
-            <ul class="dropdown-content">
-              <li><a href="category.html?category=Kinh tế&subcategory=Quản trị" data-category="Kinh tế"
-                  data-subcategory="Quản trị">Quản trị</a></li>
-              <li><a href="category.html?category=Kinh tế&subcategory=Tài chính" data-category="Kinh tế"
-                  data-subcategory="Tài chính">Tài chính</a></li>
-              <li><a href="category.html?category=Kinh tế&subcategory=Marketing" data-category="Kinh tế"
-                  data-subcategory="Marketing">Marketing</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" data-category="Thiếu nhi">Thiếu nhi ▸</a>
-            <ul class="dropdown-content">
-              <li><a href="category.html?category=Thiếu nhi&subcategory=Truyện tranh" data-category="Thiếu nhi"
-                  data-subcategory="Truyện tranh">Truyện tranh</a></li>
-              <li><a href="category.html?category=Thiếu nhi&subcategory=Giáo dục" data-category="Thiếu nhi"
-                  data-subcategory="Giáo dục">Giáo dục</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" data-category="Giáo khoa">Giáo khoa ▸</a>
-            <ul class="dropdown-content">
-              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 1" data-category="Giáo khoa"
-                  data-subcategory="Cấp 1">Cấp 1</a></li>
-              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 2" data-category="Giáo khoa"
-                  data-subcategory="Cấp 2">Cấp 2</a></li>
-              <li><a href="category.html?category=Giáo khoa&subcategory=Cấp 3" data-category="Giáo khoa"
-                  data-subcategory="Cấp 3">Cấp 3</a></li>
-            </ul>
-          </li>
-        </ul>
+          </ul>
       </div>
       <div class="dropdown" id="catDropdown"></div>
       </li>
@@ -437,14 +392,11 @@
       </button>
     </div>
     
-    <!-- ✅ PHẦN TÌM KIẾM NÂNG CAO - ĐÃ THÊM BỘ LỌC PHÂN LOẠI -->
     <div class="advanced-filters">
-      <!-- ✅ BỘ LỌC THEO PHÂN LOẠI/THỂ LOẠI - ĐẶT LÊN ĐẦU -->
       <div class="filter-item">
         <button class="filter-btn">Theo thể loại ▾</button>
         <ul class="filter-dropdown" id="subcategory-dropdown">
-          <!-- Sẽ được populate tự động bằng JavaScript -->
-        </ul>
+          </ul>
       </div>
       
       <div class="filter-item">
@@ -545,7 +497,6 @@
     </div>
   </footer>
   
-  <!-- Modals giữ nguyên -->
   <div id="loginModal" class="auth-modal">
     <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
     <div class="auth-modal-content">
@@ -719,8 +670,34 @@
     </i>
   </a>
   
-<!-- ==================== INLINE JAVASCRIPT CHO CATEGORY PAGE - ĐÃ THÊM BỘ LỌC PHÂN LOẠI ==================== -->
 <script>
+
+// ==================== KHỞI TẠO DỮ LIỆU MẶC ĐỊNH CHO USER ====================
+// --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
+const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
+
+// Dữ liệu mặc định cho lần chạy đầu tiên (để có sẵn menu bên user)
+const defaultCategories = [
+    { name: 'Văn học', subcategories: ['Tiểu thuyết', 'Truyện ngắn', 'Thơ'], status: 'active' },
+    { name: 'Kinh tế', subcategories: ['Quản trị', 'Tài chính', 'Marketing'], status: 'active' },
+    { name: 'Thiếu nhi', subcategories: ['Truyện tranh', 'Giáo dục'], status: 'active' },
+    { name: 'Giáo khoa', subcategories: ['Cấp 1', 'Cấp 2', 'Cấp 3'], status: 'active' }
+];
+
+// Hàm kiểm tra và lưu dữ liệu mặc định
+function initializeDefaultCategories() {
+    // Chỉ tạo dữ liệu mặc định nếu chưa có trong Local Storage
+    if (!localStorage.getItem(CATEGORIES_STORAGE_KEY)) {
+        localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(defaultCategories));
+        console.log('Đã khởi tạo dữ liệu category mặc định cho Local Storage.');
+    }
+}
+
+// Gọi hàm khởi tạo ngay khi script chạy
+initializeDefaultCategories(); 
+// ==================== KẾT THÚC KHỞI TẠO DỮ LIỆU MẶC ĐỊNH ====================
+
+
 // Biến toàn cục để lưu trạng thái filter
 let categoryFilters = {
   sortByName: null,
@@ -774,7 +751,21 @@ function updateCategoryBreadcrumb() {
   }
 }
 
-// ✅ THÊM MỚI: Populate subcategory dropdown dựa trên dữ liệu có sẵn
+// ✅ THÊM MỚI: Hàm lấy dữ liệu Category từ Local Storage
+function getCategoriesFromStorage() {
+    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+    let categories;
+    try {
+        // Trả về dữ liệu đã lưu nếu tồn tại, ngược lại trả về mảng rỗng
+        categories = storedData ? JSON.parse(storedData) : []; 
+    } catch (e) {
+        console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
+        return []; 
+    }
+    return categories;
+}
+
+// ✅ CẬP NHẬT: Populate subcategory dropdown dựa trên dữ liệu từ Local Storage
 function populateSubcategoryDropdown() {
   const subcategoryDropdown = document.getElementById('subcategory-dropdown');
   if (!subcategoryDropdown) {
@@ -782,21 +773,35 @@ function populateSubcategoryDropdown() {
     return;
   }
   
-  const products = getData().products;
+  // Lấy dữ liệu category từ Local Storage
+  const allCategories = getCategoriesFromStorage();
+  // Lọc ra các category đang 'active'
+  const activeCategories = allCategories.filter(cat => cat.status === 'active');
   
-  // Lấy danh sách subcategory duy nhất và sắp xếp
-  const subcategories = [...new Set(products.map(p => p.subcategory))].sort((a, b) => 
+  // Tập hợp tất cả subcategory duy nhất từ các category đang active
+  const allSubcategories = [];
+  activeCategories.forEach(cat => {
+      cat.subcategories.forEach(sub => {
+          // Chỉ thêm vào nếu subcategory chưa có trong danh sách
+          if (!allSubcategories.includes(sub)) {
+              allSubcategories.push(sub);
+          }
+      });
+  });
+  
+  // Sắp xếp các subcategory
+  allSubcategories.sort((a, b) => 
     a.localeCompare(b, 'vi')
   );
   
-  console.log('Found subcategories:', subcategories);
+  console.log('Found subcategories for filter:', allSubcategories);
   
   // Tạo HTML cho dropdown
   let html = '<li><a href="#" data-subcategory="">✨ Tất cả thể loại</a></li>';
   
-  subcategories.forEach(sub => {
-    // Thêm prefix "GK " cho các cấp học
+  allSubcategories.forEach(sub => {
     let displayName = sub;
+    // Thêm prefix "GK " cho các cấp học (giữ nguyên logic gốc)
     if (sub === 'Cấp 1' || sub === 'Cấp 2' || sub === 'Cấp 3') {
       displayName = 'GK ' + sub;
     }
@@ -805,7 +810,7 @@ function populateSubcategoryDropdown() {
   
   subcategoryDropdown.innerHTML = html;
   
-  // Gán sự kiện click cho các link
+  // Gán sự kiện click cho các link (giữ nguyên logic gốc)
   subcategoryDropdown.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -820,7 +825,7 @@ function populateSubcategoryDropdown() {
     });
   });
   
-  console.log('Subcategory dropdown populated successfully');
+  console.log('Subcategory dropdown populated successfully from Local Storage data');
 }
 
 // Setup event listeners
@@ -958,6 +963,10 @@ function applyCategoryFilters() {
   let products = getData().products;
   console.log('Total products before filter:', products.length);
   
+  // 💡 BỔ SUNG: Lọc những sản phẩm bị DỪNG BÁN (status = 'inactive')
+  products = products.filter(p => p.status !== 'inactive'); 
+  console.log('After filtering inactive status:', products.length); //
+
   // Lọc theo category từ URL
   if (categoryFilters.category) {
     products = products.filter(p => p.category === categoryFilters.category);
@@ -1166,6 +1175,144 @@ if (document.readyState === 'loading') {
 } else {
   initCategoryPage();
 }
+// ==================== BỔ SUNG: CẬP NHẬT MENU DANH MỤC TỪ ADMIN ====================
+// Biến Local Storage Key phải khớp với bên Admin
+const CATEGORIES_STORAGE_KEY_NAV = 'admin_categories_data';
+
+// Hàm Tải Danh mục từ Local Storage và Cập nhật menu điều hướng
+function loadCategoriesAndPopulateMenu() {
+    const categoriesMenu = document.querySelector('#mainMenu .book-filter');
+    if (!categoriesMenu) {
+        console.error("Không tìm thấy phần tử .book-filter");
+        return;
+    }
+    
+    // Đảm bảo menu đã sẵn sàng trước khi ghi đè, nếu không nó sẽ ghi đè lên menu ban đầu
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadCategoriesAndPopulateMenu);
+        return;
+    }
+
+    // 1. Tải dữ liệu từ Local Storage
+    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV);
+    let categories;
+    try {
+        categories = storedData ? JSON.parse(storedData) : [];
+    } catch (e) {
+        console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
+        // Nếu lỗi, sử dụng dữ liệu mặc định (đã được gọi initializeDefaultCategories)
+        // Lấy lại dữ liệu an toàn (đã có mặc định nếu chưa có)
+        categories = JSON.parse(localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV)) || [];
+    }
+
+    // Lọc ra các category đang 'active'
+    const activeCategories = categories.filter(cat => cat.status === 'active');
+
+    let menuHTML = '';
+
+    // 2. Tạo HTML cho menu
+    activeCategories.forEach(cat => {
+        let subMenuHTML = '';
+        cat.subcategories.forEach(sub => {
+            // Tạm thời tạo link có tham số category và subcategory
+            subMenuHTML += `
+                <li><a href="category.html?category=${encodeURIComponent(cat.name)}&subcategory=${encodeURIComponent(sub)}" 
+                    data-category="${cat.name}" data-subcategory="${sub}">${sub}</a></li>
+            `;
+        });
+
+        menuHTML += `
+            <li class="dropdown">
+                <a href="#" data-category="${cat.name}">${cat.name} ▸</a>
+                <ul class="dropdown-content">
+                    ${subMenuHTML}
+                </ul>
+            </li>
+        `;
+    });
+
+    // 3. Cập nhật menu điều hướng
+    categoriesMenu.innerHTML = menuHTML;
+    
+    console.log('Menu danh mục đã được cập nhật từ Local Storage.');
+}
+
+// Gọi hàm này khi DOM đã sẵn sàng (thay thế cho menu tĩnh trong HTML)
+document.addEventListener('DOMContentLoaded', loadCategoriesAndPopulateMenu);
+
+// ==================== KẾT THÚC BỔ SUNG ====================
+
+// Hàm này giả định được sử dụng để hiển thị các sản phẩm
+        function renderProducts(products) {
+            const productListElement = document.getElementById('productList');
+            const noProductsMessage = document.getElementById('noProductsMessage');
+            productListElement.innerHTML = '';
+
+            if (products.length === 0) {
+                noProductsMessage.classList.remove('d-none');
+                return;
+            }
+            noProductsMessage.classList.add('d-none');
+
+            let html = '';
+            products.forEach(p => {
+                html += `
+                    <div class="product-card">
+                        <a href="product-detail.html?id=${p.id}" class="d-block text-decoration-none text-dark">
+                            <div class="product-image">
+                                <img src="${p.img}" alt="${p.name}">
+                            </div>
+                            <div class="product-info">
+                                <h3>${p.name}</h3>
+                                <p class="author text-muted">${p.author}</p>
+                                <p class="price">${p.price.toLocaleString('vi-VN')} VNĐ</p>
+                                <button class="btn btn-sm btn-primary mt-2">Xem chi tiết</button>
+                            </div>
+                        </a>
+                    </div>
+                `;
+            });
+            productListElement.innerHTML = html;
+        }
+
+        /**
+         * Hàm chính để tải và lọc sản phẩm
+         */
+        function loadProducts() {
+            const data = typeof getData === 'function' ? getData() : { products: [] };
+            let products = data.products;
+            
+            // Lấy tham số category từ URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentCategory = urlParams.get('category');
+            const currentSubcategory = urlParams.get('subcategory');
+
+            // =============================================================
+            // [FIX LỖI QUAN TRỌNG]: LỌC THEO TRẠNG THÁI DỪNG BÁN
+            // =============================================================
+            // Chỉ giữ lại những sản phẩm có status là 'active' (hoặc chưa định nghĩa)
+            products = products.filter(p => p.status !== 'inactive'); 
+
+            // =============================================================
+
+            // Lọc theo category và subcategory
+            if (currentCategory) {
+                products = products.filter(p => p.category === currentCategory);
+                document.getElementById('categoryTitle').textContent = `Danh mục: ${currentCategory}`;
+                if (currentSubcategory) {
+                    products = products.filter(p => p.subcategory === currentSubcategory);
+                    document.getElementById('categoryTitle').textContent += ` - ${currentSubcategory}`;
+                }
+            } else {
+                 document.getElementById('categoryTitle').textContent = `Tất Cả Sản Phẩm`;
+            }
+
+            // ... (Thêm logic sắp xếp nếu cần) ...
+            
+            renderProducts(products);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProducts);
 </script>
 </body>
 

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập Admin</title>
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            background-color: #c1c2c2;
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .login-card-title {
+            color: #3a3a8d;
+            font-weight: 700;
+        }
+        /* Thêm style cho thông báo lỗi (nếu cần) */
+        .error-message {
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container login-container">
+        <div class="card login-card p-4">
+            <div class="card-body">
+                <h1 class="card-title text-center mb-4 login-card-title">Literary Haven - Admin</h1>
+                
+                <form id="adminLoginForm" action="dashboard.html">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Tên đăng nhập</label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mật khẩu</label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+
+                    <div id="errorMessage" class="text-danger mb-3 error-message" style="display: none;"></div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Đăng nhập</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Đảm bảo DOM đã tải xong trước khi chạy script
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Lấy form và phần tử thông báo lỗi
+            const loginForm = document.getElementById('adminLoginForm');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Thêm sự kiện 'submit' cho form
+            loginForm.addEventListener('submit', function(event) {
+                // 1. Ngăn chặn form gửi đi theo cách thông thường
+                event.preventDefault();
+
+                // 2. Lấy giá trị từ các ô input
+                const usernameInput = document.getElementById('username').value;
+                const passwordInput = document.getElementById('password').value;
+
+                // 3. Định nghĩa tài khoản chính xác
+                const correctUsername = 'quanly1';
+                const correctPassword = 'abcd1234';
+
+                // 4. Kiểm tra logic
+                if (usernameInput === correctUsername && passwordInput === correctPassword) {
+                    // Nếu ĐÚNG:
+                    // Ẩn thông báo lỗi (nếu đang hiển thị)
+                    errorMessage.style.display = 'none';
+                    
+                    // Chuyển hướng đến trang dashboard
+                    // Chúng ta lấy 'action' từ chính thuộc tính của form
+                    window.location.href = loginForm.getAttribute('action');
+                } else {
+                    // Nếu SAI:
+                    // Hiển thị thông báo lỗi
+                    errorMessage.textContent = 'Tên đăng nhập hoặc mật khẩu không chính xác.';
+                    errorMessage.style.display = 'block'; // 'block' để làm nó hiện ra
+                }
+            });
+        });
+    </script>
+    </body>
+</html>

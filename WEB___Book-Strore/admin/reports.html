@@ -3,140 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Báo cáo</title>
+    <title>Báo Cáo Tồn Kho - Literary Haven Admin</title>
 
-     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
+    
+    <style>
+        .report-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        .report-header {
+            background-color: #4f9da6;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            font-size: 0.95rem;
+        }
+        .table th {
+             font-weight: 600;
+             color: #343a40;
+        }
+        .total-row {
+            font-weight: bold;
+            background-color: #e9ecef !important;
+        }
+    </style>
 </head>
 <body>
     
     <aside class="sidebar d-flex flex-column vh-100">
         <div class="sidebar-header">
-            Literary Haven - Admin
+             Literary Haven - Admin
         </div>
 
         <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="dashboard.html" class="nav-link">Bảng điều khiển</a>
-            </li>
-            <li class="nav-item">
-                <a href="users.html" class="nav-link">Khách hàng</a>
-            </li>
-            <li class="nav-item">
-                <a href="categories.html" class="nav-link">Loại sản phẩm</a>
-            </li>
-            <li class="nav-item">
-                <a href="products.html" class="nav-link">Sản phẩm</a>
-            </li>
-            <li class="nav-item">
-                <a href="purchase-orders.html" class="nav-link">Nhập hàng</a>
-            </li>
-             <li class="nav-item">
-                <a href="pricing.html" class="nav-link">Quản lý giá</a>
-            </li>
-            <li class="nav-item">
-                <a href="orders.html" class="nav-link">Đơn hàng</a>
-            </li>
-            <li class="nav-item">
-                <a href="inventory.html" class="nav-link">Tồn kho</a>
-            </li>
-            <li class="nav-item">
-                <a href="reports.html" class="nav-link">Báo cáo</a>
-            </li>
+            <li class="nav-item"><a href="dashboard.html" class="nav-link">Bảng điều khiển</a></li>
+            <li class="nav-item"><a href="users.html" class="nav-link">Khách hàng</a></li>
+            <li class="nav-item"><a href="categories.html" class="nav-link">Loại sản phẩm</a></li>
+            <li class="nav-item"><a href="products.html" class="nav-link">Sản phẩm</a></li>
+            <li class="nav-item"><a href="purchase-orders.html" class="nav-link">Nhập hàng</a></li>
+            <li class="nav-item"><a href="sales-orders.html" class="nav-link">Đơn hàng</a></li>
+            <li class="nav-item"><a href="inventory.html" class="nav-link">Tồn kho</a></li>
+            <li class="nav-item"><a href="reports.html" class="nav-link active">Báo cáo & Thống kê</a></li>
         </ul>
-        
-        <div class="mt-auto p-3">
-             <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
-                <li class="nav-item"><a href="login.html" class="nav-link">Đăng xuất</a></li>
-             </ul>
-        </div>
+        <div class="sidebar-footer"><a href="../index.html">Về trang chủ</a></div>
     </aside>
 
     <main class="main-content">
-        <header class="top-bar p-3 d-flex justify-content-between align-items-center">
-            <form class="search-bar d-flex align-items-center">
-                <input class="form-control" type="search" placeholder="Tìm kiếm...">
-            </form>
-            <div class="profile-area d-flex align-items-center">
-                <div class="profile-pic ms-3"></div>
+        <div class="top-nav">
+             <span class="user-welcome">Chào mừng, Admin!</span>
+             <button class="btn btn-sm btn-outline-light">Đăng xuất</button>
+        </div>
+
+        <div class="container-fluid py-4">
+            <h1 class="mb-4">Báo Cáo Nhập - Xuất - Tồn</h1>
+
+            <div class="filter-section">
+                <h3 class="h5 mb-3">Lọc theo khoảng thời gian</h3>
+                <div class="row align-items-end">
+                    <div class="col-md-4 mb-3">
+                        <label for="startDate" class="form-label">Từ ngày:</label>
+                        <input type="date" id="startDate" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="endDate" class="form-label">Đến ngày:</label>
+                        <input type="date" id="endDate" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button class="btn btn-primary w-100" onclick="initReport()">
+                            <i class="bi bi-search"></i> Xem Báo Cáo
+                        </button>
+                    </div>
+                </div>
             </div>
-        </header>
 
-        <div class="page-content p-4">
-            <h1 class="mb-4">Báo cáo</h1>
-
-            <div class="card mb-4">
+            <div class="card report-card">
+                <div class="report-header">
+                   Kết Quả Báo Cáo Tồn Kho
+                   <small class="float-end pt-1" id="reportTimeRange"></small>
+                </div>
                 <div class="card-body">
-                    <form class="row g-3 align-items-end">
-                        <div class="col-md-4">
-                            <label for="filter-start-date" class="form-label">Từ ngày</label>
-                            <input type="date" class="form-control" id="filter-start-date">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="filter-end-date" class="form-label">Đến ngày</label>
-                            <input type="date" class="form-control" id="filter-end-date">
-                        </div>
-                        <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary w-100">Tạo báo cáo</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header"><h3 class="h5 mb-0">Báo cáo Doanh thu</h3></div>
-                        <div class="card-body">
-                            <h4 class="h1 text-center">150.000.000đ</h4>
-                            <p class="text-center text-muted">Tổng doanh thu trong kỳ</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header"><h3 class="h5 mb-0">Báo cáo Đơn hàng</h3></div>
-                        <div class="card-body">
-                            <h4 class="h1 text-center">320</h4>
-                            <p class="text-center text-muted">Tổng đơn hàng đã giao</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header"><h3 class="h5 mb-0">Sản phẩm bán chạy nhất</h3></div>
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Mã SP</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Số lượng đã bán</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>SP001</td>
-                                        <td>Harry Potter</td>
-                                        <td>150</td>
-                                    </tr>
-                                    <tr>
-                                        <td>SP002</td>
-                                        <td>Nhật Ký Trong Tù</td>
-                                        <td>95</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Mã SP</th>
+                                    <th scope="col">Tên Sách</th>
+                                    <th scope="col" class="text-center">Tồn Đầu Kỳ</th>
+                                    <th scope="col" class="text-center text-success">Nhập Trong Kỳ</th>
+                                    <th scope="col" class="text-center text-danger">Xuất Trong Kỳ</th>
+                                    <th scope="col" class="text-center">Tồn Cuối Kỳ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody">
+                                <tr><td colspan="6" class="text-center">Vui lòng chọn khoảng thời gian và nhấn 'Xem Báo Cáo'.</td></tr>
+                            </tbody>
+                            <tfoot id="reportTableFooter">
+                                </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-   <script src="../assets/js/admin_main.js"></script>
+    
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/main.js"></script> 
+
+    <script>
+        // === MOCK DATA SETUP ===
+        // GIẢ ĐỊNH: Bạn cần tích hợp việc ghi log này vào main.js (hoặc file admin_main.js)
+        // để lưu trữ vào localStorage key 'bs_transactions'
+        function getTransactionLog() {
+            try {
+                 const logString = localStorage.getItem('bs_transactions');
+                 return JSON.parse(logString) || [];
+            } catch (e) {
+                // Mock data nếu không tìm thấy log hoặc lỗi
+                const today = new Date();
+                const pastDate = new Date();
+                pastDate.setDate(today.getDate() - 30); // 30 ngày trước
+
+                return [
+                    // Nhập hàng (IMPORT)
+                    { id: 1, type: 'IMPORT', productId: 1, qty: 100, date: pastDate.toISOString() }, 
+                    { id: 2, type: 'IMPORT', productId: 2, qty: 50, date: pastDate.toISOString() }, 
+                    
+                    // Bán hàng (SALE/XUẤT)
+                    { id: 3, type: 'SALE', productId: 1, qty: 5, date: '2025-10-15T10:00:00.000Z' },
+                    { id: 4, type: 'SALE', productId: 2, qty: 10, date: '2025-10-20T11:00:00.000Z' },
+                    { id: 5, type: 'SALE', productId: 1, qty: 15, date: '2025-10-25T14:30:00.000Z' },
+                    { id: 6, type: 'IMPORT', productId: 1, qty: 50, date: '2025-10-26T09:00:00.000Z' }, 
+                    { id: 7, type: 'SALE', productId: 3, qty: 2, date: today.toISOString() },
+                ];
+            }
+        }
+        
+        /**
+         * Lấy tất cả dữ liệu sản phẩm hiện tại.
+         * (Giả định hàm getData() đã được định nghĩa trong main.js)
+         */
+        function getProductsData() {
+            const data = typeof getData === 'function' ? getData() : { products: [] };
+            return data.products || [];
+        }
+
+        // === CORE LOGIC ===
+
+        /**
+         * Tạo báo cáo Nhập - Xuất - Tồn theo khoảng thời gian.
+         * @param {Date} start - Ngày bắt đầu.
+         * @param {Date} end - Ngày kết thúc.
+         */
+        function generateInventoryReport(start, end) {
+            const products = getProductsData();
+            const log = getTransactionLog();
+
+            // Sắp xếp log theo thời gian để đảm bảo tính toán Tồn Đầu chính xác
+            log.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            const report = {}; // Dùng object để lưu trữ theo productId
+
+            // 1. Khởi tạo Tồn Đầu Kỳ cho tất cả sản phẩm
+            products.forEach(p => {
+                report[p.id] = {
+                    id: p.id,
+                    sku: p.sku || 'N/A',
+                    name: p.name || 'Sản phẩm không rõ',
+                    initialStock: 0,
+                    importQty: 0,
+                    exportQty: 0,
+                    finalStock: p.qty || 0 // Lấy Tồn Cuối (hiện tại)
+                };
+            });
+
+            // 2. Phân tích Log để tính toán
+            // Logic tính Tồn Đầu/Cuối:
+            // Tồn Đầu Kỳ = Tồn Cuối Kỳ (hiện tại) + Tổng Xuất (từ ngày Start đến nay) - Tổng Nhập (từ ngày Start đến nay)
+            
+            // Tính tổng Nhập/Xuất trong và ngoài kỳ
+            log.forEach(item => {
+                const itemDate = new Date(item.date);
+                const productId = item.productId;
+                const qty = item.qty || 0;
+                
+                if (!report[productId]) return; // Bỏ qua nếu không tìm thấy sản phẩm
+
+                // Kiểm tra xem giao dịch có nằm trong khoảng thời gian báo cáo không
+                const isWithinPeriod = itemDate >= start && itemDate <= end;
+
+                if (item.type === 'IMPORT') {
+                    if (isWithinPeriod) {
+                        report[productId].importQty += qty;
+                    } 
+                    // Để tính Tồn Đầu Kỳ, ta cần đảo ngược các giao dịch xảy ra SAU Tồn Đầu
+                    else if (itemDate > start) {
+                        report[productId].initialStock -= qty; // Đảo ngược nhập
+                    }
+                } else if (item.type === 'SALE') {
+                    if (isWithinPeriod) {
+                        report[productId].exportQty += qty;
+                    } 
+                    else if (itemDate > start) {
+                        report[productId].initialStock += qty; // Đảo ngược xuất
+                    }
+                }
+            });
+
+            // 3. Tính toán Tồn Đầu và Tồn Cuối chính xác
+            Object.values(report).forEach(item => {
+                 // Tồn Đầu Kỳ = Tồn Cuối Kỳ (hiện tại) + Tổng Xuất (từ Start đến nay) - Tổng Nhập (từ Start đến nay)
+                 // Do ta đã đảo ngược các giao dịch sau Start Date vào initialStock ở bước 2, 
+                 // ta chỉ cần cộng thêm Tồn Cuối (p.qty) để ra Tồn Đầu Kỳ:
+                 item.initialStock = item.finalStock + item.initialStock;
+                 
+                 // Tồn Cuối Kỳ trong kỳ báo cáo (đã tính Nhập/Xuất trong kỳ)
+                 item.finalStock = item.initialStock + item.importQty - item.exportQty;
+
+                 // Đảm bảo số lượng không âm
+                 item.initialStock = Math.max(0, item.initialStock);
+                 item.finalStock = Math.max(0, item.finalStock);
+            });
+
+            return Object.values(report);
+        }
+
+        /**
+         * Hiển thị dữ liệu báo cáo lên bảng.
+         */
+        function renderReport(reportData, start, end) {
+            const tableBody = document.getElementById('reportTableBody');
+            const tableFooter = document.getElementById('reportTableFooter');
+            const timeRangeElement = document.getElementById('reportTimeRange');
+            if (!tableBody || !tableFooter) return;
+
+            let html = '';
+            let totalInitial = 0;
+            let totalImport = 0;
+            let totalExport = 0;
+            let totalFinal = 0;
+
+            if (reportData.length === 0) {
+                html = '<tr><td colspan="6" class="text-center">Không tìm thấy dữ liệu giao dịch hoặc sản phẩm trong khoảng thời gian này.</td></tr>';
+            } else {
+                reportData.forEach(item => {
+                    html += `
+                        <tr>
+                            <td>${item.sku}</td>
+                            <td>${item.name}</td>
+                            <td class="text-center">${item.initialStock}</td>
+                            <td class="text-center text-success fw-bold">${item.importQty}</td>
+                            <td class="text-center text-danger fw-bold">${item.exportQty}</td>
+                            <td class="text-center fw-bold">${item.finalStock}</td>
+                        </tr>
+                    `;
+                    totalInitial += item.initialStock;
+                    totalImport += item.importQty;
+                    totalExport += item.exportQty;
+                    totalFinal += item.finalStock;
+                });
+            }
+            tableBody.innerHTML = html;
+
+            // Render Footer (Tổng cộng)
+            tableFooter.innerHTML = `
+                <tr class="total-row">
+                    <td colspan="2" class="text-end">TỔNG CỘNG:</td>
+                    <td class="text-center">${totalInitial}</td>
+                    <td class="text-center text-success">${totalImport}</td>
+                    <td class="text-center text-danger">${totalExport}</td>
+                    <td class="text-center">${totalFinal}</td>
+                </tr>
+            `;
+
+            // Cập nhật khoảng thời gian hiển thị
+            const startDisplay = start.toLocaleDateString('vi-VN');
+            const endDisplay = end.toLocaleDateString('vi-VN');
+            timeRangeElement.textContent = `(${startDisplay} - ${endDisplay})`;
+        }
+
+        /**
+         * Hàm khởi tạo chính
+         */
+        function initReport() {
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            
+            // Lấy giá trị ngày tháng từ input
+            let startDate = startDateInput.value ? new Date(startDateInput.value) : null;
+            let endDate = endDateInput.value ? new Date(endDateInput.value) : null;
+            
+            if (!startDate || !endDate) {
+                alert('Vui lòng chọn cả "Từ ngày" và "Đến ngày".');
+                return;
+            }
+
+            // Đặt thời gian End Date đến cuối ngày để bao gồm cả giao dịch cuối ngày đó
+            endDate.setHours(23, 59, 59, 999);
+
+            if (startDate > endDate) {
+                alert('Ngày bắt đầu không được lớn hơn Ngày kết thúc.');
+                return;
+            }
+
+            if (typeof getData !== 'function') {
+                document.getElementById('reportTableBody').innerHTML = '<tr><td colspan="6" class="text-center text-danger fw-bold">Lỗi: Cần import main.js và đảm bảo hàm getData() tồn tại.</td></tr>';
+                console.error("Lỗi: Hàm getData() không tồn tại. Vui lòng đảm bảo main.js đã được import.");
+                return;
+            }
+
+            const reportData = generateInventoryReport(startDate, endDate);
+            renderReport(reportData, startDate, endDate);
+        }
+        
+        // Khởi tạo ngày mặc định khi tải trang
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today);
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+
+            // Định dạng YYYY-MM-DD
+            const formatDate = (date) => date.toISOString().split('T')[0];
+
+            document.getElementById('startDate').value = formatDate(thirtyDaysAgo);
+            document.getElementById('endDate').value = formatDate(today);
+            
+            // Tự động load báo cáo 30 ngày gần nhất khi vào trang
+            // initReport();
+        });
+        
+    </script>
 </body>
 </html>

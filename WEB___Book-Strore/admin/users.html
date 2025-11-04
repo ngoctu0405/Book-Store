@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Khách hàng</title>
      <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
@@ -27,7 +27,7 @@
                 <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
-                <li class="nav-item"><a href="login.html" class="nav-link">Đăng xuất</a></li>
+                <li class="nav-item"><a href="index.html" class="nav-link">Đăng xuất</a></li>
              </ul>
         </div>
     </aside>
@@ -47,7 +47,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="h5 mb-0">Danh sách khách hàng</h3>
-                </div>
+                    
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                        + Thêm khách hàng
+                    </button>
+                    </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -60,35 +64,65 @@
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>hiule</td>
-                                    <td>hiule@gmail.com</td>
-                                    <td>20/10/2025</td>
-                                    <td><span class="status delivered">Hoạt động</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-warning">Reset MK</button>
-                                        <button class="btn btn-sm btn-outline-danger">Khóa</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>hiule1</td>
-                                    <td>hiule1@gmail.com</td>
-                                    <td>15/09/2025</td>
-                                    <td><span class="status pending">Đã khóa</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-warning">Reset MK</button>
-                                        <button class="btn btn-sm btn-outline-success">Mở khóa</button>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="user-table-body">
+                                </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <script src="../assets/js/admin_main.js"></script>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="addUserForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addUserModalLabel">Tạo tài khoản khách hàng mới</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="add-fullName" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="add-fullName" required>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="add-username" class="form-label">Tài khoản (Tên đăng nhập)</label>
+                                <input type="text" class="form-control" id="add-username" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="add-password" class="form-label">Mật khẩu (tối thiểu 6 ký tự)</label>
+                                <input type="text" class="form-control" id="add-password" required minlength="6">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="add-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="add-email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="add-phone" class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" id="add-phone">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="add-address" class="form-label">Địa chỉ</label>
+                            <input type="text" class="form-control" id="add-address">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu tài khoản</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/admin_main.js"></script>
 </body>
 </html>
