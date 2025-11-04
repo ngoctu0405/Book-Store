@@ -61,10 +61,83 @@ document.addEventListener('DOMContentLoaded', function () {
      * - Trang: users.html (Cần: <tbody id="user-table-body">)
      */
 
-    function initUsersPage() {
+     function initUsersPage() {
     const tableBody = document.getElementById('user-table-body');
     if (!tableBody) return; // Chỉ chạy trên trang users.html
 
+    // ==========================================================
+    // ===== BẮT ĐẦU CODE: XỬ LÝ MODAL THÊM NGƯỜI DÙNG (LƯU MẬT KHẨU) =====
+    // ==========================================================
+    const addUserForm = document.getElementById('addUserForm');
+    const addUserModalElement = document.getElementById('addUserModal');
+    
+    // Kiểm tra nếu form và modal tồn tại
+    if (addUserForm && addUserModalElement) {
+        // Lấy đối tượng modal của Bootstrap
+        const addUserModal = new bootstrap.Modal(addUserModalElement);
+
+        addUserForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // 1. Lấy dữ liệu từ form
+            const fullName = document.getElementById('add-fullName').value;
+            const username = document.getElementById('add-username').value; 
+            const email = document.getElementById('add-email').value;
+            // LẤY MẬT KHẨU TỪ Ô INPUT
+            const password = document.getElementById('add-password').value; 
+            const phone = document.getElementById('add-phone').value; 
+            const address = document.getElementById('add-address').value; 
+
+            // 2. Validate
+            if (password.length < 6) {
+                alert('Mật khẩu phải có ít nhất 6 ký tự.');
+                return;
+            }
+
+            // 3. Lấy danh sách users hiện tại và kiểm tra trùng
+            let users = db_get('bs_users') || [];
+            const emailExists = users.some(user => user.email === email);
+            const usernameExists = users.some(user => user.username === username); 
+
+            if (emailExists) {
+                alert('Email này đã được sử dụng. Vui lòng chọn email khác.');
+                return;
+            }
+            if (usernameExists) {
+                alert('Tên tài khoản này đã được sử dụng. Vui lòng chọn tên khác.');
+                return;
+            }
+
+            // 4. Tạo đối tượng user mới
+            const newUser = {
+                id: Date.now(),
+                fullName: fullName,
+                username: username, 
+                email: email,
+                password: password, // LƯU MẬT KHẨU VÀO ĐÂY
+                phone: phone, 
+                address: address, 
+                status: 'active',
+                createdAt: new Date().toISOString()
+            };
+
+            // 5. Thêm user mới và lưu lại
+            users.push(newUser);
+            db_save('bs_users', users);
+
+            // 6. Thông báo, đóng modal, reset form và tải lại trang
+            alert('Tạo tài khoản khách hàng thành công!');
+            addUserForm.reset();
+            addUserModal.hide();
+            window.location.reload(); 
+        });
+    }
+    // ========================================================
+    // ===== KẾT THÚC CODE MỚI ===============================
+    // ========================================================
+
+
+    // ----- (Code render bảng) -----
     const users = db_get('bs_users') || [];
     tableBody.innerHTML = '';
 
@@ -84,7 +157,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const lockButtonText = (user.status === 'active') ? 'Khóa' : 'Mở khóa';
         const lockButtonClass = (user.status === 'active') ? 'btn-outline-danger' : 'btn-outline-success';
 
-        // Xử lý lỗi createdAt invalid date
         const registerDate = user.createdAt
             ? new Date(user.createdAt).toLocaleDateString('vi-VN')
             : 'Không xác định';
@@ -114,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let users = db_get('bs_users') || [];
 
-        // 👉 Xử lý nút Khóa / Mở khóa
+        //  Xử lý nút Khóa / Mở khóa
         if (target.classList.contains('btn-lock')) {
             users = users.map(u => {
                 if (u.id.toString() === userId) {
@@ -124,11 +196,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             db_save('bs_users', users);
-            alert('✅ Cập nhật trạng thái tài khoản thành công!');
+            alert(' Cập nhật trạng thái tài khoản thành công!');
             window.location.reload();
         }
 
-        // 👉 Xử lý nút Reset mật khẩu
+        //  Xử lý nút Reset mật khẩu (để admin TỰ NHẬP mật khẩu mới)
         if (target.classList.contains('btn-reset')) {
             const newPassword = prompt("Nhập mật khẩu mới (ít nhất 6 ký tự):");
             if (!newPassword) return;
@@ -145,11 +217,10 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             db_save('bs_users', users);
-            alert('✅ Reset mật khẩu thành công!');
+            alert(' Reset mật khẩu thành công!');
         }
     });
 }
-
 
     /**
      *  YÊU CẦU 3: Quản lý loại sản phẩm
