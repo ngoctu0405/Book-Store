@@ -496,114 +496,223 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
-     * YÊU CẦU 7: Quản lý đơn đặt hàng
-     * - Trang: orders.html (Cần: <tbody id="order-table-body">)
+     * Quản lý Đơn hàng (orders.html)
      */
     function initOrdersPage() {
         const tableBody = document.getElementById('order-table-body');
         if (!tableBody) return;
 
-        const orders = db_get('db_orders'); // Giả sử khách hàng đã đặt và lưu vào đây
+        // SỬA KEY: Đọc từ 'bs_orders' thay vì 'db_orders'
+        const orders = db_get('bs_orders');
         tableBody.innerHTML = '';
 
-        orders.forEach(order => {
-            const row = document.createElement('tr');
-            const statusClassMap = {
-                'new': 'pending',
-                'processed': 'processed',
-                'delivered': 'delivered',
-                'cancelled': 'cancelled'
-            };
-            const statusTextMap = {
-                'new': 'Mới đặt',
-                'processed': 'Đã xử lý',
-                'delivered': 'Đã giao',
-                'cancelled': 'Đã hủy'
-            };
+        if (orders.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Chưa có đơn hàng nào.</td></tr>`;
+            return;
+        }
+   
+        // Lọc và hiển thị
+        function renderTable(filteredOrders) {
+            tableBody.innerHTML = '';
+            filteredOrders.forEach(order => {
+                const row = document.createElement('tr');
+                
+                // SỬA CẤU TRÚC: 'bs_orders' dùng 'status' (chuỗi)
+                const statusClassMap = {
+                    'Chờ xử lý': 'pending',
+                    'Đã xử lý': 'processed',
+                    'Đã giao': 'delivered',
+                    'Đã hủy': 'cancelled'
+                };
+                
+                // SỬA CẤU TRÚC: 'bs_orders' dùng 'userId'
+                row.innerHTML = `
+                    <td>#${order.id}</td>
+                    <td>${order.userId}</td>
+                    <td>${new Date(order.date).toLocaleDateString('vi-VN')}</td>
+                    <td>${formatCurrency(order.total)}</td>
+                    <td><span class="status ${statusClassMap[order.status] || 'pending'}">${order.status}</span></td>
+                    <td>
+                        <a href="order-detail.html?id=${order.id}" class="btn btn-sm btn-outline-primary">Xem</a>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Hiển thị tất cả ban đầu (sắp xếp mới nhất lên đầu)
+        renderTable(orders.slice().reverse());
 
-            row.innerHTML = `
-                <td>#${order.id}</td>
-                <td>${order.customerName}</td>
-                <td>${new Date(order.date).toLocaleDateString('vi-VN')}</td>
-                <td>${formatCurrency(order.total)}</td>
-                <td><span class="status ${statusClassMap[order.status] || 'pending'}">${statusTextMap[order.status] || 'N/A'}</span></td>
-                <td>
-                    <a href="order-detail.html?id=${order.id}" class="btn btn-sm btn-outline-primary">Xem</a>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
+        // Gắn sự kiện cho nút Lọc
+        const filterBtn = document.getElementById('filter-btn');
+        if(filterBtn) {
+            filterBtn.addEventListener('click', function() {
+                const statusFilter = document.getElementById('filter-status').value;
+                let filtered = orders;
+                
+                if (statusFilter) {
+                    filtered = filtered.filter(o => o.status === statusFilter);
+                }
+                // (Bạn có thể thêm logic lọc ngày ở đây)
+                
+                renderTable(filtered.slice().reverse());
+            });
+        }
     }
 
     /*
-     *YÊU CẦU 7 & 8: Chi tiết đơn hàng 
-     * - Trang: order-detail.html (Cần: <form id="orderDetailForm">, <select id="order-status">)
+     * Chi tiết đơn hàng (order-detail.html)
      */
     function initOrderDetailPage() {
-        const form = document.getElementById('orderDetailForm'); // Cần <form id="orderDetailForm">
+        // SỬA ID: Đảm bảo ID form là 'orderDetailForm'
+        const form = document.getElementById('orderDetailForm');
         const statusSelect = document.getElementById('order-status');
         if (!form || !statusSelect) return;
 
         const urlParams = new URLSearchParams(window.location.search);
         const orderId = parseInt(urlParams.get('id'));
 
-        let orders = db_get('db_orders');
+        if (!orderId) {
+            alert('Không tìm thấy ID đơn hàng.');
+            window.location.href = 'orders.html';
+            return;
+        }
+
+        // SỬA KEY: Đọc từ 'bs_orders'
+        let orders = db_get('bs_orders');
         let order = orders.find(o => o.id === orderId);
 
         if (!order) {
             alert('Không tìm thấy đơn hàng');
+            window.location.href = 'orders.html';
             return;
         }
 
-        // Đổ dữ liệu vào (Tên, địa chỉ, sản phẩm...)
-        // ... (code hiển thị chi tiết sản phẩm...)
+        // --- 1. Đổ dữ liệu vào HTML ---
+        document.getElementById('order-title').textContent = `Chi tiết Đơn hàng #${order.id}`;
+        
+        // Đổ thông tin khách hàng
+        const customerInfo = document.getElementById('customer-info');
+        if(customerInfo) {
+            const addr = order.shippingAddress;
+            customerInfo.innerHTML = `
+                <strong>${addr.name} (User: ${order.userId})</strong>
+                <p class="mb-1">${order.paymentMethod}</p>
+                <p class="mb-0">${addr.phone}</p>
+                <hr>
+                <strong>Địa chỉ giao hàng</strong>
+                <p class="mb-0">${addr.address}</p>
+            `;
+        }
+        
+        // Đổ danh sách sản phẩm
+        const productTable = document.getElementById('product-items-table');
+        if(productTable) {
+            productTable.innerHTML = ''; // Xóa placeholder
+            order.items.forEach(item => {
+                // SỬA CẤU TRÚC: Dữ liệu sản phẩm nằm trong item.product
+                const product = item.product;
+                productTable.innerHTML += `
+                    <tr>
+                        <td>
+                            <img src="../${product.img}" alt="${product.name}" class="item-image" style="width: 60px; height: 80px; object-fit: cover;">
+                        </td>
+                        <td>
+                            <strong>${product.name}</strong><br>
+                            <span class="text-muted">SKU: ${product.sku}</span>
+                        </td>
+                        <td>x ${item.qty}</td>
+                        <td class="text-end">${formatCurrency(item.itemTotal)}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Đổ tóm tắt đơn hàng
+        const subtotal = order.total - (order.shippingAddress.shipping || 30000); // Tính lại tạm tính
+        const shipping = order.total - subtotal;
+        
+        document.getElementById('summary-subtotal').textContent = formatCurrency(subtotal);
+        document.getElementById('summary-shipping').textContent = formatCurrency(shipping);
+        document.getElementById('summary-total').textContent = formatCurrency(order.total);
+        
+        // --- 2. Xử lý Cập nhật trạng thái ---
         statusSelect.value = order.status; // Hiển thị status hiện tại
 
-        // Xử lý Cập nhật trạng thái
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             const newStatus = statusSelect.value;
+            const oldStatus = order.status;
 
-            // YÊU CẦU 8: CẬP NHẬT TỒN KHO KHI GIAO HÀNG
-            // Kiểm tra nếu trạng thái CŨ là chưa giao và trạng thái MỚI là đã giao
-            if (order.status !== 'delivered' && newStatus === 'delivered') {
-                let products = db_get('db_products');
+            // Kiểm tra nếu không thay đổi
+            if (newStatus === oldStatus) {
+                alert('Trạng thái không đổi.');
+                return;
+            }
+            
+            // --- 3. Cập nhật tồn kho (Nếu cần) ---
+            // ✅ SỬA LOGIC: Chỉ trừ kho khi chuyển TỪ trạng thái KHÁC "Đã giao" -> SANG "Đã giao"
+            if (oldStatus !== 'Đã giao' && newStatus === 'Đã giao') {
+                
+                // ✅ SỬA KEY: Đọc/ghi 'bs_data'
+                let data = db_get('bs_data');
+                let products = data.products;
                 let stockOk = true;
 
                 // Kiểm tra kho trước khi trừ
-                order.items.forEach(item => {
-                    const product = products.find(p => p.id === item.productId);
-                    if (!product || (product.stock || 0) < item.quantity) {
+                for (const item of order.items) {
+                    const product = products.find(p => p.id === item.id); // 'item.id' là ID sản phẩm
+                    if (!product || (product.qty || 0) < item.qty) {
                         stockOk = false;
-                        alert(`Không đủ tồn kho cho sản phẩm: ${product.name}`);
+                        alert(`Không đủ tồn kho cho sản phẩm: ${product.name} (Còn ${product.qty || 0}, Cần ${item.qty})`);
+                        break; // Dừng vòng lặp
                     }
-                });
+                }
 
                 if (!stockOk) return; // Dừng lại nếu không đủ kho
 
                 // Trừ kho
                 order.items.forEach(item => {
                     products = products.map(p => {
-                        if (p.id === item.productId) {
-                            p.stock -= item.quantity;
+                        if (p.id === item.id) {
+                            p.qty = (p.qty || 0) - item.qty;
                         }
                         return p;
                     });
                 });
-                db_save('db_products', products); // Lưu lại kho
+                
+                data.products = products;
+                db_save('bs_data', data); // Lưu lại kho
 
-            } else if (order.status === 'delivered' && newStatus !== 'delivered') {
-                // (Tùy chọn: Thêm logic hoàn trả kho nếu Hủy đơn sau khi đã giao)
+            } 
+            // ✅ SỬA LOGIC: Hoàn kho khi HỦY đơn hàng MÀ TRƯỚC ĐÓ đã "Đã giao"
+            else if (oldStatus === 'Đã giao' && (newStatus === 'Đã hủy' || newStatus === 'Chờ xử lý')) {
+                let data = db_get('bs_data');
+                let products = data.products;
+                
+                order.items.forEach(item => {
+                    products = products.map(p => {
+                        if (p.id === item.id) {
+                            p.qty = (p.qty || 0) + item.qty;
+                        }
+                        return p;
+                    });
+                });
+                
+                data.products = products;
+                db_save('bs_data', data);
+                alert('Đã hoàn kho cho đơn hàng bị hủy/trả lại.');
             }
 
-            // Cập nhật trạng thái đơn hàng
+            // --- 4. Cập nhật trạng thái đơn hàng ---
             orders = orders.map(o => {
                 if (o.id === orderId) {
                     o.status = newStatus;
                 }
                 return o;
             });
-            db_save('db_orders', orders);
+            // ✅ SỬA KEY: Lưu vào 'bs_orders'
+            db_save('bs_orders', orders);
 
             alert('Cập nhật trạng thái đơn hàng thành công!');
             window.location.reload();

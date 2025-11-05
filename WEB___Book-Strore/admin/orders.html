@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Đơn hàng</title>
      <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
@@ -43,7 +43,7 @@
         </header>
 
         <div class="page-content p-4">
-            <h1 class="mb-4">Quản lý Đơn hàng (Yêu cầu 7)</h1>
+            <h1 class="mb-4">Quản lý Đơn hàng</h1>
 
             <div class="card mb-4">
                 <div class="card-body">
@@ -58,16 +58,16 @@
                         </div>
                         <div class="col-md-3">
                             <label for="filter-status" class="form-label">Tình trạng</label>
-                            <select id="filter-status" class="form-select">
+                            <select id="filter-status" class="form-select"> 
                                 <option value="" selected>Tất cả</option>
-                                <option value="pending">Mới đặt (Chờ xử lý)</option>
-                                <option value="processed">Đã xử lý</option>
-                                <option value="delivered">Đã giao</option>
-                                <option value="cancelled">Đã hủy</option>
+                                <option value="Chờ xử lý">Mới đặt (Chờ xử lý)</option>
+                                <option value="Đã xử lý">Đã xử lý</option>
+                                <option value="Đã giao">Đã giao</option>
+                                <option value="Đã hủy">Đã hủy</option>
                             </select>
                         </div>
                         <div class="col-md-1">
-                            <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                            <button type="button" class="btn btn-primary w-100" id="filter-btn">Lọc</button>
                         </div>
                     </form>
                 </div>
@@ -81,47 +81,15 @@
                             <thead>
                                 <tr>
                                     <th>Mã ĐH</th>
-                                    <th>Khách hàng</th>
+                                    <th>Khách hàng (User)</th>
                                     <th>Ngày đặt</th>
                                     <th>Tổng tiền</th>
                                     <th>Tình trạng</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#12345</td>
-                                    <td>John Doe</td>
-                                    <td>01/11/2025</td>
-                                    <td>300.000đ</td>
-                                    <td><span class="status delivered">Đã giao</span></td>
-                                    <td><a href="order-detail.html" class="btn btn-sm btn-outline-primary">Xem</a></td>
-                                </tr>
-                                <tr>
-                                    <td>#12344</td>
-                                    <td>David</td>
-                                    <td>31/10/2025</td>
-                                    <td>450.000đ</td>
-                                    <td><span class="status pending">Chờ xử lý</span></td>
-                                    <td><a href="order-detail.html" class="btn btn-sm btn-outline-primary">Xem</a></td>
-                                </tr>
-                                <tr>
-                                    <td>#12343</td>
-                                    <td>Sarah K.</td>
-                                    <td>30/10/2025</td>
-                                    <td>150.000đ</td>
-                                    <td><span class="status cancelled">Đã hủy</span></td>
-                                    <td><a href="order-detail.html" class="btn btn-sm btn-outline-primary">Xem</a></td>
-                                </tr>
-                                 <tr>
-                                    <td>#12342</td>
-                                    <td>Michael B.</td>
-                                    <td>29/10/2025</td>
-                                    <td>750.000đ</td>
-                                    <td><span class="status processed">Đã xử lý</span></td>
-                                    <td><a href="order-detail.html" class="btn btn-sm btn-outline-primary">Xem</a></td>
-                                </tr>
-                            </tbody>
+                            <tbody id="order-table-body">
+                                </tbody>
                         </table>
                     </div>
                 </div>

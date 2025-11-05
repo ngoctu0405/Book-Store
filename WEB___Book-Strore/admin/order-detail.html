@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết Đơn hàng</title>
      <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
@@ -44,7 +44,7 @@
 
         <div class="page-content p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="mb-0">Chi tiết Đơn hàng #12344</h1>
+                <h1 class="mb-0" id="order-title">Chi tiết Đơn hàng</h1>
                 <a href="orders.html" class="btn btn-secondary">Quay lại danh sách</a>
             </div>
 
@@ -54,36 +54,27 @@
                         <div class="card-header"><h3 class="h5 mb-0">Sản phẩm</h3></div>
                         <div class="card-body">
                             <table class="table align-middle">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <img src="https://via.placeholder.com/60" alt="Product Image" class="item-image">
-                                        </td>
-                                        <td>
-                                            <strong>Sáp vuốt tóc Blumaan Gold</strong><br>
-                                            <span class="text-muted">SKU: SP002</span>
-                                        </td>
-                                        <td>x 1</td>
-                                        <td class="text-end">450.000đ</td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="product-items-table">
+                                    </tbody>
                             </table>
                             
                             <hr>
                             <div class="row justify-content-end">
                                 <div class="col-md-6">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Tạm tính</span>
-                                        <span>450.000đ</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Phí vận chuyển</span>
-                                        <span>0đ</span>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex justify-content-between h4">
-                                        <strong>Tổng cộng</strong>
-                                        <strong>450.000đ</strong>
+                                    <div id="order-summary">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Tạm tính</span>
+                                            <span id="summary-subtotal">0đ</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Phí vận chuyển</span>
+                                            <span id="summary-shipping">0đ</span>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-between h4">
+                                            <strong>Tổng cộng</strong>
+                                            <strong id="summary-total">0đ</strong>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -94,27 +85,27 @@
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-header"><h3 class="h5 mb-0">Khách hàng</h3></div>
-                        <div class="card-body">
-                            <strong>David</strong>
-                            <p class="mb-1">david@example.com</p>
-                            <p class="mb-0">0901234567</p>
+                        <div class="card-body" id="customer-info">
+                            <strong>Đang tải...</strong>
+                            <p class="mb-1"></p>
+                            <p class="mb-0"></p>
                             <hr>
                             <strong>Địa chỉ giao hàng</strong>
-                            <p class="mb-0">123 Đường ABC, Phường X, Quận Y, TP. HCM</p>
+                            <p class="mb-0"></p>
                         </div>
                     </div>
 
                     <div class="card">
                         <div class="card-header"><h3 class="h5 mb-0">Cập nhật trạng thái</h3></div>
                         <div class="card-body">
-                            <form>
+                            <form id="orderDetailForm">
                                 <div class="mb-3">
-                                    <label for="order-status" class="form-label">Trạng thái</hlabel>
+                                    <label for="order-status" class="form-label">Trạng thái</label>
                                     <select class="form-select" id="order-status">
-                                        <option value="pending" selected>Chờ xử lý</option>
-                                        <option value="processed">Đã xử lý</option>
-                                        <option value="delivered">Đã giao</option>
-                                        <option value"cancelled">Hủy đơn hàng</option>
+                                        <option value="Chờ xử lý">Chờ xử lý</option>
+                                        <option value="Đã xử lý">Đã xử lý</option>
+                                        <option value="Đã giao">Đã giao</option>
+                                        <option value="Đã hủy">Đã hủy</option>
                                     </select>
                                 </div>
                                 <div class="d-grid">
