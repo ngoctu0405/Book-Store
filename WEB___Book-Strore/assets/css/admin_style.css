@@ -173,3 +173,19 @@ body {
     object-fit: cover;
     border-radius: 4px;
 }
+
+.sidebar .logout-link {
+    margin: 15px; /* Tách biệt khỏi các nav-link khác */
+    padding: 12px 20px;
+    text-align: center;
+    background-color: #f8e0e0; /* Màu đỏ nhạt (giống màu .status.cancelled) */
+    color: #dc3545; /* Màu đỏ đậm */
+    font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+    display: block; /* Làm cho nó full-width trong P-3 */
+}
+.sidebar .logout-link:hover {
+    background-color: #dc3545; /* Đỏ đậm khi hover */
+    color: white;
+}
