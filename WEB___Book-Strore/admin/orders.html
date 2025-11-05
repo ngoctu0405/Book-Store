@@ -34,7 +34,7 @@
 
     <main class="main-content">
         <header class="top-bar p-3 d-flex justify-content-between align-items-center">
-            <form class="search-bar d-flex align-items-center">
+             <form class="search-bar d-flex align-items-center">
                 <input class="form-control" type="search" placeholder="Tìm kiếm...">
             </form>
             <div class="profile-area d-flex align-items-center">
@@ -48,15 +48,19 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <form class="row g-3 align-items-end">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="filter-start-date" class="form-label">Từ ngày</label>
                             <input type="date" class="form-control" id="filter-start-date">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="filter-end-date" class="form-label">Đến ngày</label>
                             <input type="date" class="form-control" id="filter-end-date">
                         </div>
                         <div class="col-md-3">
+                            <label for="filter-address" class="form-label">Địa chỉ</label>
+                            <input type="text" class="form-control" id="filter-address" placeholder="Nhập quận, thành phố...">
+                        </div>
+                        <div class="col-md-2">
                             <label for="filter-status" class="form-label">Tình trạng</label>
                             <select id="filter-status" class="form-select"> 
                                 <option value="" selected>Tất cả</option>
@@ -70,7 +74,7 @@
                             <button type="button" class="btn btn-primary w-100" id="filter-btn">Lọc</button>
                         </div>
                     </form>
-                </div>
+                    </div>
             </div>
 
             <div class="card">

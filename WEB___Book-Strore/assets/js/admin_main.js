@@ -498,11 +498,10 @@ document.addEventListener('DOMContentLoaded', function () {
     /**
      * Quản lý Đơn hàng (orders.html)
      */
-    function initOrdersPage() {
+   function initOrdersPage() {
         const tableBody = document.getElementById('order-table-body');
         if (!tableBody) return;
 
-        // SỬA KEY: Đọc từ 'bs_orders' thay vì 'db_orders'
         const orders = db_get('bs_orders');
         tableBody.innerHTML = '';
 
@@ -514,10 +513,15 @@ document.addEventListener('DOMContentLoaded', function () {
         // Lọc và hiển thị
         function renderTable(filteredOrders) {
             tableBody.innerHTML = '';
+            
+            if (filteredOrders.length === 0) {
+                 tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Không tìm thấy đơn hàng nào khớp.</td></tr>`;
+                 return;
+            }
+            
             filteredOrders.forEach(order => {
                 const row = document.createElement('tr');
                 
-                // SỬA CẤU TRÚC: 'bs_orders' dùng 'status' (chuỗi)
                 const statusClassMap = {
                     'Chờ xử lý': 'pending',
                     'Đã xử lý': 'processed',
@@ -525,7 +529,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Đã hủy': 'cancelled'
                 };
                 
-                // SỬA CẤU TRÚC: 'bs_orders' dùng 'userId'
                 row.innerHTML = `
                     <td>#${order.id}</td>
                     <td>${order.userId}</td>
@@ -543,28 +546,59 @@ document.addEventListener('DOMContentLoaded', function () {
         // Hiển thị tất cả ban đầu (sắp xếp mới nhất lên đầu)
         renderTable(orders.slice().reverse());
 
-        // Gắn sự kiện cho nút Lọc
+        // ✅ BẮT ĐẦU THAY ĐỔI: Gắn sự kiện cho nút Lọc
         const filterBtn = document.getElementById('filter-btn');
         if(filterBtn) {
             filterBtn.addEventListener('click', function() {
+                // Lấy tất cả giá trị lọc
                 const statusFilter = document.getElementById('filter-status').value;
-                let filtered = orders;
-                
+                const addressFilter = document.getElementById('filter-address').value.toLowerCase().trim();
+                const startDate = document.getElementById('filter-start-date').value;
+                const endDate = document.getElementById('filter-end-date').value;
+
+                let filtered = orders; // Bắt đầu với tất cả đơn hàng
+
+                // 1. Lọc theo Trạng thái
                 if (statusFilter) {
                     filtered = filtered.filter(o => o.status === statusFilter);
                 }
-                // (Bạn có thể thêm logic lọc ngày ở đây)
+
+                // 2. Lọc theo Địa chỉ (kiểm tra có chứa chuỗi nhập vào)
+                if (addressFilter) {
+                    filtered = filtered.filter(o => 
+                        o.shippingAddress && 
+                        o.shippingAddress.address.toLowerCase().includes(addressFilter)
+                    );
+                }
+
+                // 3. Lọc theo Ngày
+                const start = startDate ? new Date(startDate) : null;
+                const end = endDate ? new Date(endDate) : null;
+
+                // Đặt giờ về đầu ngày cho ngày bắt đầu
+                if (start) start.setHours(0, 0, 0, 0);
                 
+                // Đặt giờ về cuối ngày cho ngày kết thúc (để bao gồm cả ngày đó)
+                if (end) end.setHours(23, 59, 59, 999); 
+
+                if (start) {
+                    filtered = filtered.filter(o => new Date(o.date) >= start);
+                }
+                if (end) {
+                    filtered = filtered.filter(o => new Date(o.date) <= end);
+                }
+
+                // Sắp xếp kết quả (mới nhất lên đầu) và hiển thị
                 renderTable(filtered.slice().reverse());
             });
         }
+        // ✅ KẾT THÚC THAY ĐỔI
     }
 
     /*
      * Chi tiết đơn hàng (order-detail.html)
      */
     function initOrderDetailPage() {
-        // SỬA ID: Đảm bảo ID form là 'orderDetailForm'
         const form = document.getElementById('orderDetailForm');
         const statusSelect = document.getElementById('order-status');
         if (!form || !statusSelect) return;
@@ -578,7 +612,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // SỬA KEY: Đọc từ 'bs_orders'
         let orders = db_get('bs_orders');
         let order = orders.find(o => o.id === orderId);
 
@@ -591,7 +624,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // --- 1. Đổ dữ liệu vào HTML ---
         document.getElementById('order-title').textContent = `Chi tiết Đơn hàng #${order.id}`;
         
-        // Đổ thông tin khách hàng
         const customerInfo = document.getElementById('customer-info');
         if(customerInfo) {
             const addr = order.shippingAddress;
@@ -605,12 +637,10 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
         }
         
-        // Đổ danh sách sản phẩm
         const productTable = document.getElementById('product-items-table');
         if(productTable) {
-            productTable.innerHTML = ''; // Xóa placeholder
+            productTable.innerHTML = ''; 
             order.items.forEach(item => {
-                // SỬA CẤU TRÚC: Dữ liệu sản phẩm nằm trong item.product
                 const product = item.product;
                 productTable.innerHTML += `
                     <tr>
@@ -628,8 +658,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Đổ tóm tắt đơn hàng
-        const subtotal = order.total - (order.shippingAddress.shipping || 30000); // Tính lại tạm tính
+        const subtotal = order.total - (order.shippingAddress.shipping || 30000); 
         const shipping = order.total - subtotal;
         
         document.getElementById('summary-subtotal').textContent = formatCurrency(subtotal);
@@ -637,41 +666,32 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('summary-total').textContent = formatCurrency(order.total);
         
         // --- 2. Xử lý Cập nhật trạng thái ---
-        statusSelect.value = order.status; // Hiển thị status hiện tại
+        statusSelect.value = order.status; 
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             const newStatus = statusSelect.value;
             const oldStatus = order.status;
 
-            // Kiểm tra nếu không thay đổi
             if (newStatus === oldStatus) {
                 alert('Trạng thái không đổi.');
                 return;
             }
-            
-            // --- 3. Cập nhật tồn kho (Nếu cần) ---
-            // ✅ SỬA LOGIC: Chỉ trừ kho khi chuyển TỪ trạng thái KHÁC "Đã giao" -> SANG "Đã giao"
-            if (oldStatus !== 'Đã giao' && newStatus === 'Đã giao') {
-                
-                // ✅ SỬA KEY: Đọc/ghi 'bs_data'
-                let data = db_get('bs_data');
-                let products = data.products;
-                let stockOk = true;
 
-                // Kiểm tra kho trước khi trừ
+            // Logic trừ/hoàn kho (đã chính xác từ lần trước)
+            if (oldStatus !== 'Đã giao' && newStatus === 'Đã giao') {
+                let data = db_get('bs_data');
+                let products = data.products || [];
+                let stockOk = true;
                 for (const item of order.items) {
-                    const product = products.find(p => p.id === item.id); // 'item.id' là ID sản phẩm
+                    const product = products.find(p => p.id === item.id); 
                     if (!product || (product.qty || 0) < item.qty) {
                         stockOk = false;
                         alert(`Không đủ tồn kho cho sản phẩm: ${product.name} (Còn ${product.qty || 0}, Cần ${item.qty})`);
-                        break; // Dừng vòng lặp
+                        break; 
                     }
                 }
-
-                if (!stockOk) return; // Dừng lại nếu không đủ kho
-
-                // Trừ kho
+                if (!stockOk) return; 
                 order.items.forEach(item => {
                     products = products.map(p => {
                         if (p.id === item.id) {
@@ -680,16 +700,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         return p;
                     });
                 });
-                
                 data.products = products;
-                db_save('bs_data', data); // Lưu lại kho
-
+                db_save('bs_data', data); 
             } 
-            // ✅ SỬA LOGIC: Hoàn kho khi HỦY đơn hàng MÀ TRƯỚC ĐÓ đã "Đã giao"
             else if (oldStatus === 'Đã giao' && (newStatus === 'Đã hủy' || newStatus === 'Chờ xử lý')) {
                 let data = db_get('bs_data');
-                let products = data.products;
-                
+                let products = data.products || [];
                 order.items.forEach(item => {
                     products = products.map(p => {
                         if (p.id === item.id) {
@@ -698,20 +714,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         return p;
                     });
                 });
-                
                 data.products = products;
                 db_save('bs_data', data);
                 alert('Đã hoàn kho cho đơn hàng bị hủy/trả lại.');
             }
 
-            // --- 4. Cập nhật trạng thái đơn hàng ---
+            // Cập nhật trạng thái đơn hàng
             orders = orders.map(o => {
                 if (o.id === orderId) {
                     o.status = newStatus;
                 }
                 return o;
             });
-            // ✅ SỬA KEY: Lưu vào 'bs_orders'
+            
             db_save('bs_orders', orders);
 
             alert('Cập nhật trạng thái đơn hàng thành công!');
