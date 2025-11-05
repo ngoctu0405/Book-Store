@@ -2,64 +2,96 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
-    <title>Bảng điều khiển Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng điều khiển Admin - Literary Haven</title>
     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
 </head>
 <body>
     
+    <!-- SIDEBAR -->
     <aside class="sidebar d-flex flex-column vh-100">
         <div class="sidebar-header">
-          Literary Haven - Admin
+            Literary Haven
         </div>
 
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a href="dashboard.html" class="nav-link">Bảng điều khiển</a>
+                <a href="dashboard.html" class="nav-link">
+                    <span class="nav-icon">◈</span>
+                    <span>Bảng điều khiển</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a href="users.html" class="nav-link">Khách hàng</a>
+                <a href="users.html" class="nav-link">
+                    <span class="nav-icon">◉</span>
+                    <span>Khách hàng</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a href="categories.html" class="nav-link">Loại sản phẩm</a>
+                <a href="categories.html" class="nav-link">
+                    <span class="nav-icon">◫</span>
+                    <span>Loại sản phẩm</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a href="products.html" class="nav-link">Sản phẩm</a>
+                <a href="products.html" class="nav-link">
+                    <span class="nav-icon">◪</span>
+                    <span>Sản phẩm</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a href="purchase-orders.html" class="nav-link">Nhập hàng</a>
-            </li>
-             <li class="nav-item">
-                <a href="pricing.html" class="nav-link">Quản lý giá</a>
-            </li>
-            <li class="nav-item">
-                <a href="orders.html" class="nav-link">Đơn hàng</a>
+                <a href="purchase-orders.html" class="nav-link">
+                    <span class="nav-icon">◩</span>
+                    <span>Nhập hàng</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a href="inventory.html" class="nav-link">Tồn kho</a>
+                <a href="pricing.html" class="nav-link">
+                    <span class="nav-icon">◎</span>
+                    <span>Quản lý giá</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a href="reports.html" class="nav-link">Báo cáo</a>
+                <a href="orders.html" class="nav-link">
+                    <span class="nav-icon">◧</span>
+                    <span>Đơn hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html" class="nav-link">
+                    <span class="nav-icon">◨</span>
+                    <span>Tồn kho</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="reports.html" class="nav-link">
+                    <span class="nav-icon">◔</span>
+                    <span>Báo cáo</span>
+                </a>
             </li>
         </ul>
         
         <div class="mt-auto p-3">
-             <a href="index.html" class="logout-link">Đăng xuất</a>
+            <a href="index.html" class="logout-link">
+                <span>◀</span>
+                <span>Đăng xuất</span>
+            </a>
         </div>
     </aside>
 
+    <!-- MAIN CONTENT -->
     <main class="main-content">
-
         <div class="page-content p-4">
-            <h1 class="mb-4">Bảng điều khiển</h1>
+            <h1>Bảng điều khiển</h1>
 
+            <!-- STAT CARDS -->
             <div class="row g-4 mb-4">
                 <div class="col-xl-3 col-md-6">
                     <div class="card stat-card">
-                        <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="card-body">
                             <div>
-                                <h2 class="h1 mb-0">1,504</h2>
+                                <h2>1,504</h2>
                                 <span>Lượt xem</span>
                             </div>
                         </div>
@@ -67,9 +99,9 @@
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card stat-card dark">
-                        <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="card-body">
                             <div>
-                                <h2 class="h1 mb-0">80</h2>
+                                <h2>80</h2>
                                 <span>Doanh số</span>
                             </div>
                         </div>
@@ -77,9 +109,9 @@
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card stat-card">
-                        <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="card-body">
                             <div>
-                                <h2 class="h1 mb-0">284</h2>
+                                <h2>284</h2>
                                 <span>Bình luận</span>
                             </div>
                         </div>
@@ -87,9 +119,9 @@
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card stat-card">
-                        <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="card-body">
                             <div>
-                                <h2 class="h1 mb-0">36.3Mđ</h2>
+                                <h2>36.3M₫</h2>
                                 <span>Doanh thu</span>
                             </div>
                         </div>
@@ -97,9 +129,10 @@
                 </div>
             </div>
 
+            <!-- RECENT ORDERS TABLE -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="h5 mb-0">Đơn hàng gần đây</h3>
+                    <h3 class="mb-0">Đơn hàng gần đây</h3>
                     <a href="orders.html" class="btn btn-sm btn-primary">Xem tất cả</a>
                 </div>
                 <div class="card-body">
@@ -116,15 +149,27 @@
                             <tbody>
                                 <tr>
                                     <td>Đắc Nhân Tâm</td>
-                                    <td>300.000đ</td>
+                                    <td>300.000₫</td>
                                     <td>Đã thanh toán</td>
-                                    <td><span class="status delivered">Đã vận chuyển</span></td>
+                                    <td><span class="status delivered">Đã giao</span></td>
                                 </tr>
                                 <tr>
                                     <td>Nhật Ký Trong Tù</td>
-                                    <td>450.000đ</td>
+                                    <td>450.000₫</td>
                                     <td>Chưa thanh toán</td>
                                     <td><span class="status pending">Chờ xử lý</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Sapiens: Lược Sử Loài Người</td>
+                                    <td>380.000₫</td>
+                                    <td>Đã thanh toán</td>
+                                    <td><span class="status processed">Đã xử lý</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Muôn Kiếp Nhân Sinh</td>
+                                    <td>250.000₫</td>
+                                    <td>Chưa thanh toán</td>
+                                    <td><span class="status cancelled">Đã hủy</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -132,8 +177,9 @@
                 </div>
             </div>
         </div>
-        </main>
+    </main>
+
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-       <script src="../assets/js/admin_main.js"></script>
+    <script src="../assets/js/admin_main.js"></script>
 </body>
 </html>
