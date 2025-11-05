@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const allUsers = JSON.parse(localStorage.getItem("bs_users")) || [];
 
   if (currentUser) {
-    const found = allUsers.find(u => u.username === currentUser.username);
+    const found = allUsers.find((u) => u.username === currentUser.username);
 
     // Nếu tài khoản bị khóa -> đăng xuất
     if (found && found.status === "locked") {
@@ -30,7 +30,7 @@ const SAMPLE = {
       name: "Đắc Nhân Tâm",
       author: "Dale Carnegie",
       price: 85000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm kinh điển về nghệ thuật giao tiếp.",
@@ -43,7 +43,7 @@ const SAMPLE = {
       name: "Tuổi Trẻ Đáng Giá Bao Nhiêu",
       author: "Rosie Nguyễn",
       price: 90000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Truyện cảm hứng cho bạn trẻ tìm kiếm chính mình.",
@@ -56,7 +56,7 @@ const SAMPLE = {
       name: "Truyện Kiều",
       author: "Nguyễn Du",
       price: 70000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Thơ",
       desc: "Kiệt tác văn học Việt Nam.",
@@ -69,7 +69,7 @@ const SAMPLE = {
       name: "Tắt Đèn",
       author: "Ngô Tất Tố",
       price: 65000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Tác phẩm hiện thực phê phán sâu sắc.",
@@ -82,7 +82,7 @@ const SAMPLE = {
       name: "Lão Hạc",
       author: "Nam Cao",
       price: 60000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Câu chuyện đầy nhân văn về thân phận người nông dân.",
@@ -95,7 +95,7 @@ const SAMPLE = {
       name: "Nhật Ký Trong Tù",
       author: "Hồ Chí Minh",
       price: 80000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Thơ",
       desc: "Tập thơ giàu triết lý và tinh thần cách mạng.",
@@ -108,11 +108,11 @@ const SAMPLE = {
       name: "Số Đỏ",
       author: "Vũ Trọng Phụng",
       price: 95000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm trào phúng đặc sắc.",
-      img: "images/Số_Đỏ.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/Số_đỏ.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -121,7 +121,7 @@ const SAMPLE = {
       name: "Chí Phèo",
       author: "Nam Cao",
       price: 60000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Bi kịch của người nông dân trong xã hội cũ.",
@@ -134,7 +134,7 @@ const SAMPLE = {
       name: "Tôi Thấy Hoa Vàng Trên Cỏ Xanh",
       author: "Nguyễn Nhật Ánh",
       price: 100000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Câu chuyện tuổi thơ đầy xúc động.",
@@ -147,7 +147,7 @@ const SAMPLE = {
       name: "Người Lái Đò Sông Đà",
       author: "Nguyễn Tuân",
       price: 72000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Tác phẩm tiêu biểu cho phong cách tùy bút độc đáo.",
@@ -160,7 +160,7 @@ const SAMPLE = {
       name: "Nhật Ký Đặng Thùy Trâm",
       author: "Đặng Thùy Trâm",
       price: 85000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tấm gương sáng của một nữ bác sĩ trong chiến tranh.",
@@ -173,7 +173,7 @@ const SAMPLE = {
       name: "Ánh Trăng",
       author: "Nguyễn Duy",
       price: 55000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Thơ",
       desc: "Tập thơ nổi tiếng với nhiều bài thơ sâu sắc.",
@@ -186,7 +186,7 @@ const SAMPLE = {
       name: "Harry Potter và Hòn Đá Phù Thủy",
       author: "J. K. Rowling",
       price: 120000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tập đầu tiên của loạt Harry Potter.",
@@ -201,7 +201,7 @@ const SAMPLE = {
       name: "Cha Giàu Cha Nghèo",
       author: "Robert Kiyosaki",
       price: 120000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Sách tài chính cá nhân nổi tiếng.",
@@ -214,7 +214,7 @@ const SAMPLE = {
       name: "Quốc Gia Khởi Nghiệp",
       author: "Dan Senor",
       price: 140000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Bài học khởi nghiệp từ Israel.",
@@ -227,7 +227,7 @@ const SAMPLE = {
       name: "7 Thói Quen Hiệu Quả",
       author: "Stephen Covey",
       price: 135000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Hướng dẫn kỹ năng lãnh đạo cá nhân.",
@@ -240,7 +240,7 @@ const SAMPLE = {
       name: "Dạy Con Làm Giàu",
       author: "Robert Kiyosaki",
       price: 150000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Loạt sách tài chính cá nhân nổi tiếng.",
@@ -253,7 +253,7 @@ const SAMPLE = {
       name: "Lợi Thế Cạnh Tranh",
       author: "Michael Porter",
       price: 160000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Marketing",
       desc: "Tác phẩm tâm lý học ứng dụng trong kinh tế.",
@@ -266,7 +266,7 @@ const SAMPLE = {
       name: "Tư Duy Phản Biện",
       author: "Richard Paul",
       price: 180000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Sách chiến lược kinh doanh kinh điển.",
@@ -279,7 +279,7 @@ const SAMPLE = {
       name: "Marketing 4.0",
       author: "Philip Kotler",
       price: 140000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Marketing",
       desc: "Xu hướng marketing hiện đại.",
@@ -292,7 +292,7 @@ const SAMPLE = {
       name: "Kinh Tế Dành Cho Doanh Nhân",
       author: "Nguyễn Đình Cungx`",
       price: 125000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Sách làm giàu kinh điển.",
@@ -305,7 +305,7 @@ const SAMPLE = {
       name: "Chiến Lược Đại Dương Xanh",
       author: "W. Chan Kim",
       price: 170000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Mô hình chiến lược kinh doanh đột phá.",
@@ -318,7 +318,7 @@ const SAMPLE = {
       name: "Những Đoạn Tâm Lý Thuyết Phục",
       author: "Dan Ariely",
       price: 110000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Kinh tế học giản lược, dễ hiểu.",
@@ -331,7 +331,7 @@ const SAMPLE = {
       name: "Cách Nghĩ Để Thành Công",
       author: "Dale Carnegie",
       price: 160000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Marketing",
       desc: "Cuốn sách kinh điển về nghệ thuật thuyết phục.",
@@ -344,7 +344,7 @@ const SAMPLE = {
       name: "Lãnh Đạo Không Chức Danh",
       author: "Robin Sharma",
       price: 145000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Nghệ thuật lãnh đạo bản thân và tổ chức.",
@@ -359,7 +359,7 @@ const SAMPLE = {
       name: "Doraemon Tập 29",
       author: "Fujiko F. Fujio",
       price: 25000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Truyện tranh nổi tiếng Nhật Bản.",
@@ -372,7 +372,7 @@ const SAMPLE = {
       name: "Conan Tập 5",
       author: "Gosho Aoyama",
       price: 30000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Thám tử lừng danh Conan.",
@@ -385,7 +385,7 @@ const SAMPLE = {
       name: "Miko Tập 33",
       author: "Nhiều tác giả",
       price: 85000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Thiếu nhi",
       subcategory: "Giáo dục",
       desc: "Câu chuyện giáo dục đầy cảm hứng.",
@@ -398,7 +398,7 @@ const SAMPLE = {
       name: "Dragon Ball Tập 19",
       author: "Akira Toriyama",
       price: 35000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Bộ manga nổi tiếng toàn cầu.",
@@ -411,7 +411,7 @@ const SAMPLE = {
       name: "Thần Đồng Đất Việt Tập 1",
       author: "Lê Linh",
       price: 28000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Truyện tranh Việt Nam nổi bật.",
@@ -424,7 +424,7 @@ const SAMPLE = {
       name: "Shin - cậu bé bút chì ",
       author: "Takahashi Yoshito",
       price: 90000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Thiếu nhi",
       subcategory: "Giáo dục",
       desc: "Tác phẩm văn học thiếu nhi nổi bật.",
@@ -439,7 +439,7 @@ const SAMPLE = {
       name: "Toán Lớp 1",
       author: "Nhiều tác giả",
       price: 18000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Toán lớp 1.",
@@ -452,7 +452,7 @@ const SAMPLE = {
       name: "Tiếng Việt Lớp 2",
       author: "Nhiều tác giả",
       price: 20000,
-       profitMargin: 0,
+      profitMargin: 0,
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Tiếng Việt lớp 2.",
@@ -551,9 +551,9 @@ const SAMPLE_USERS = [
     phone: "0987654321",
     address: "123 Đường ABC, Q1, TPHCM",
     createdAt: new Date().toISOString(),
-  }
+  },
 ];
-  
+
 if (!localStorage.getItem("bs_data"))
   localStorage.setItem("bs_data", JSON.stringify(SAMPLE));
 if (!localStorage.getItem("bs_cart"))
@@ -565,80 +565,106 @@ if (!localStorage.getItem("bs_users"))
 
 // ==================== KHỞI TẠO DỮ LIỆU MẶC ĐỊNH CHO USER ====================
 // --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
-const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
+const CATEGORIES_STORAGE_KEY = "admin_categories_data";
 
 // Dữ liệu mặc định cho lần chạy đầu tiên (để có sẵn menu bên user)
 const defaultCategories = [
-    { name: 'Văn học', subcategories: ['Tiểu thuyết', 'Truyện ngắn', 'Thơ'], status: 'active' },
-    { name: 'Kinh tế', subcategories: ['Quản trị', 'Tài chính', 'Marketing'], status: 'active' },
-    { name: 'Thiếu nhi', subcategories: ['Truyện tranh', 'Giáo dục'], status: 'active' },
-    { name: 'Giáo khoa', subcategories: ['Cấp 1', 'Cấp 2', 'Cấp 3'], status: 'active' }
+  {
+    name: "Văn học",
+    subcategories: ["Tiểu thuyết", "Truyện ngắn", "Thơ"],
+    status: "active",
+  },
+  {
+    name: "Kinh tế",
+    subcategories: ["Quản trị", "Tài chính", "Marketing"],
+    status: "active",
+  },
+  {
+    name: "Thiếu nhi",
+    subcategories: ["Truyện tranh", "Giáo dục"],
+    status: "active",
+  },
+  {
+    name: "Giáo khoa",
+    subcategories: ["Cấp 1", "Cấp 2", "Cấp 3"],
+    status: "active",
+  },
 ];
 
 // Hàm kiểm tra và lưu dữ liệu mặc định
 function initializeDefaultCategories() {
-    // Chỉ tạo dữ liệu mặc định nếu chưa có trong Local Storage
-    if (!localStorage.getItem(CATEGORIES_STORAGE_KEY)) {
-        localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(defaultCategories));
-        console.log('Đã khởi tạo dữ liệu category mặc định cho Local Storage.');
-    }
+  // Chỉ tạo dữ liệu mặc định nếu chưa có trong Local Storage
+  if (!localStorage.getItem(CATEGORIES_STORAGE_KEY)) {
+    localStorage.setItem(
+      CATEGORIES_STORAGE_KEY,
+      JSON.stringify(defaultCategories)
+    );
+    console.log("Đã khởi tạo dữ liệu category mặc định cho Local Storage.");
+  }
 }
 initializeDefaultCategories();
 // ==================== KẾT THÚC KHỞI TẠO DỮ LIỆU MẶC ĐỊNH ====================
 // ==================== CẬP NHẬT MENU DANH MỤC TỪ ADMIN ====================
 // Biến Local Storage Key phải khớp với bên Admin
-const CATEGORIES_STORAGE_KEY_NAV = 'admin_categories_data';
+const CATEGORIES_STORAGE_KEY_NAV = "admin_categories_data";
 
 // Hàm Tải Danh mục từ Local Storage và Cập nhật menu điều hướng
 function loadCategoriesAndPopulateMenu() {
-    const categoriesMenu = document.querySelector('#mainMenu .book-filter');
-    if (!categoriesMenu) {
-        // Không báo lỗi ở đây vì một số trang có thể không có menu này
-        return;
-    }
-    
-    // 1. Tải dữ liệu từ Local Storage
-    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV);
-    let categories;
-    try {
-        categories = storedData ? JSON.parse(storedData) : [];
-    } catch (e) {
-        console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
-        categories = JSON.parse(localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV)) || [];
-    }
+  const categoriesMenu = document.querySelector("#mainMenu .book-filter");
+  if (!categoriesMenu) {
+    // Không báo lỗi ở đây vì một số trang có thể không có menu này
+    return;
+  }
 
-    // Lọc ra các category đang 'active' (ĐÂY LÀ CHỖ XỬ LÝ ẨN/HIỆN)
-    const activeCategories = categories.filter(cat => cat.status === 'active');
+  // 1. Tải dữ liệu từ Local Storage
+  const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV);
+  let categories;
+  try {
+    categories = storedData ? JSON.parse(storedData) : [];
+  } catch (e) {
+    console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
+    categories =
+      JSON.parse(localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV)) || [];
+  }
 
-    let menuHTML = '';
+  // Lọc ra các category đang 'active' (ĐÂY LÀ CHỖ XỬ LÝ ẨN/HIỆN)
+  const activeCategories = categories.filter((cat) => cat.status === "active");
 
-    // 2. Tạo HTML cho menu
-    activeCategories.forEach(cat => {
-        let subMenuHTML = '';
-        // Đảm bảo subcategories là một mảng
-        if (Array.isArray(cat.subcategories)) {
-            cat.subcategories.forEach(sub => {
-                subMenuHTML += `
-                    <li><a href="category.html?category=${encodeURIComponent(cat.name)}&subcategory=${encodeURIComponent(sub)}" 
-                        data-category="${cat.name}" data-subcategory="${sub}">${sub}</a></li>
+  let menuHTML = "";
+
+  // 2. Tạo HTML cho menu
+  activeCategories.forEach((cat) => {
+    let subMenuHTML = "";
+    // Đảm bảo subcategories là một mảng
+    if (Array.isArray(cat.subcategories)) {
+      cat.subcategories.forEach((sub) => {
+        subMenuHTML += `
+                    <li><a href="category.html?category=${encodeURIComponent(
+                      cat.name
+                    )}&subcategory=${encodeURIComponent(sub)}" 
+                        data-category="${
+                          cat.name
+                        }" data-subcategory="${sub}">${sub}</a></li>
                 `;
-            });
-        }
+      });
+    }
 
-        menuHTML += `
+    menuHTML += `
             <li class="dropdown">
-                <a href="category.html?category=${encodeURIComponent(cat.name)}" data-category="${cat.name}">${cat.name} ▸</a>
+                <a href="category.html?category=${encodeURIComponent(
+                  cat.name
+                )}" data-category="${cat.name}">${cat.name} ▸</a>
                 <ul class="dropdown-content">
                     ${subMenuHTML}
                 </ul>
             </li>
         `;
-    });
+  });
 
-    // 3. Cập nhật menu điều hướng
-    categoriesMenu.innerHTML = menuHTML;
-    
-    console.log('Menu danh mục đã được cập nhật từ Local Storage.');
+  // 3. Cập nhật menu điều hướng
+  categoriesMenu.innerHTML = menuHTML;
+
+  console.log("Menu danh mục đã được cập nhật từ Local Storage.");
 }
 // ==================== KẾT THÚC BỔ SUNG ====================
 
@@ -658,48 +684,51 @@ function saveCart(c) {
  * Lấy danh sách TÊN của các category đang 'active'
  */
 function getActiveCategoryNames() {
-    // Dùng CATEGORIES_STORAGE_KEY_NAV vì nó đã được định nghĩa ở trên
-    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV);
-    if (!storedData) {
-        // Nếu không có dữ liệu admin, tạm thời coi như tất cả đều active
-        // Dữ liệu này sẽ được initializeDefaultCategories() tạo ra ngay sau đó
-        console.warn("Chưa có dữ liệu category, tạm thời hiển thị tất cả.");
-        return null; 
-    }
-    try {
-        const categories = JSON.parse(storedData);
-        // Trả về một mảng chỉ chứa TÊN của category active
-        return categories
-            .filter(cat => cat.status === 'active')
-            .map(cat => cat.name);
-    } catch (e) {
-        console.error("Lỗi khi đọc dữ liệu categories, tạm thời hiển thị tất cả:", e);
-        return null; // Trả về null để biết là có lỗi và không lọc
-    }
+  // Dùng CATEGORIES_STORAGE_KEY_NAV vì nó đã được định nghĩa ở trên
+  const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY_NAV);
+  if (!storedData) {
+    // Nếu không có dữ liệu admin, tạm thời coi như tất cả đều active
+    // Dữ liệu này sẽ được initializeDefaultCategories() tạo ra ngay sau đó
+    console.warn("Chưa có dữ liệu category, tạm thời hiển thị tất cả.");
+    return null;
+  }
+  try {
+    const categories = JSON.parse(storedData);
+    // Trả về một mảng chỉ chứa TÊN của category active
+    return categories
+      .filter((cat) => cat.status === "active")
+      .map((cat) => cat.name);
+  } catch (e) {
+    console.error(
+      "Lỗi khi đọc dữ liệu categories, tạm thời hiển thị tất cả:",
+      e
+    );
+    return null; // Trả về null để biết là có lỗi và không lọc
+  }
 }
 
 /**
  * Lấy danh sách sản phẩm (đã lọc) MÀ USER ĐƯỢC PHÉP XEM
  */
 function getVisibleProducts() {
-    let allProducts = getData().products; // getData() gốc trả về TẤT CẢ
-    
-    // 1. Lọc các sản phẩm bị DỪNG BÁN (status = 'inactive')
-    // (Logic này đã có trong file category.html, nay chuyển về đây)
-    allProducts = allProducts.filter(p => p.status !== 'inactive');
-    
-    // 2. Lọc theo category 'active' (Yêu cầu mới của bạn)
-    const activeCategoryNames = getActiveCategoryNames();
-    
-    if (activeCategoryNames === null) {
-        // Nếu có lỗi đọc category hoặc chưa có, không lọc, trả về ds đã lọc status
-        return allProducts; 
-    }
-    
-    // Chỉ giữ lại sản phẩm nào có 'product.category' nằm trong ds active
-    return allProducts.filter(product => 
-        activeCategoryNames.includes(product.category)
-    );
+  let allProducts = getData().products; // getData() gốc trả về TẤT CẢ
+
+  // 1. Lọc các sản phẩm bị DỪNG BÁN (status = 'inactive')
+  // (Logic này đã có trong file category.html, nay chuyển về đây)
+  allProducts = allProducts.filter((p) => p.status !== "inactive");
+
+  // 2. Lọc theo category 'active' (Yêu cầu mới của bạn)
+  const activeCategoryNames = getActiveCategoryNames();
+
+  if (activeCategoryNames === null) {
+    // Nếu có lỗi đọc category hoặc chưa có, không lọc, trả về ds đã lọc status
+    return allProducts;
+  }
+
+  // Chỉ giữ lại sản phẩm nào có 'product.category' nằm trong ds active
+  return allProducts.filter((product) =>
+    activeCategoryNames.includes(product.category)
+  );
 }
 // ==================== KẾT THÚC: LỌC SẢN PHẨM ====================
 
@@ -860,23 +889,23 @@ function renderSearchResults() {
 
 // SỬA: Cập nhật hàm renderProductDetail() trong main.js
 function renderProductDetail() {
-    const productId = getProductIdFromURL();
-    const product = findProductById(productId);
-    const mainContent = document.getElementById("mainContent");
+  const productId = getProductIdFromURL();
+  const product = findProductById(productId);
+  const mainContent = document.getElementById("mainContent");
 
-    if (!product || !mainContent) {
-        showError();
-        return;
-    }
-    
-    // THÊM: Lấy số lượng tồn kho thực tế từ dữ liệu
-    const productData = getVisibleProducts().find((p) => p.id === productId);
-    const stockQty = productData ? productData.qty : 'Không rõ'; // Lấy số lượng tồn kho
-    const maxQty = productData ? productData.qty : 10; // Thiết lập max qty cho input
+  if (!product || !mainContent) {
+    showError();
+    return;
+  }
 
-    // ... (Phần HTML khác)
-    
-    const mainHtml = `
+  // THÊM: Lấy số lượng tồn kho thực tế từ dữ liệu
+  const productData = getVisibleProducts().find((p) => p.id === productId);
+  const stockQty = productData ? productData.qty : "Không rõ"; // Lấy số lượng tồn kho
+  const maxQty = productData ? productData.qty : 10; // Thiết lập max qty cho input
+
+  // ... (Phần HTML khác)
+
+  const mainHtml = `
     <div class="product-actions">
         <div class="quantity-controls">
             <button class="qty-btn minus-btn" onclick="decreaseQty()">-</button>
@@ -898,19 +927,19 @@ function renderProductDetail() {
         </div>
     </div>
     `;
-    mainContent.innerHTML = mainHtml;
-    // ... (Phần cuối) ...
+  mainContent.innerHTML = mainHtml;
+  // ... (Phần cuối) ...
 }
 
 // SỬA: Cập nhật hàm increaseQty để tôn trọng giá trị max
 function increaseQty() {
-    const input = document.getElementById("qty");
-    if (!input) return;
-    // Lấy max từ thuộc tính của input đã được set trong renderProductDetail
-    const max = parseInt(input.getAttribute('max')); 
-    if (parseInt(input.value) < max) {
-        input.value = parseInt(input.value) + 1;
-    }
+  const input = document.getElementById("qty");
+  if (!input) return;
+  // Lấy max từ thuộc tính của input đã được set trong renderProductDetail
+  const max = parseInt(input.getAttribute("max"));
+  if (parseInt(input.value) < max) {
+    input.value = parseInt(input.value) + 1;
+  }
 }
 // Vị trí: Thay thế hàm renderProductDetail và increaseQty hiện có trong main.js.
 
@@ -1018,7 +1047,7 @@ function login(username) {
 function logout() {
   localStorage.removeItem("bs_user");
   // THÊM: Xóa giỏ hàng khi đăng xuất để reset về 0
-  localStorage.setItem("bs_cart", JSON.stringify([])); 
+  localStorage.setItem("bs_cart", JSON.stringify([]));
   renderMenu();
   if (typeof updateCartCount === "function") updateCartCount();
   location.reload();
@@ -1103,7 +1132,9 @@ function renderProductDetailPage(product) {
           </div>
           <div class="shipping-row">
             <span class="shipping-label">Danh mục:</span>
-            <span class="shipping-value">${product.category} › ${ product.subcategory }</span>
+            <span class="shipping-value">${product.category} › ${
+    product.subcategory
+  }</span>
           </div>
           <div class="shipping-row">
             <span class="shipping-label">Số lượng sách  :</span>
@@ -1605,10 +1636,10 @@ function handleLogin(e) {
   }
 
   if (user.status === "locked") {
-  alert(" Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.");
-  return;
+    alert(" Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.");
+    return;
   }
-  
+
   localStorage.setItem(
     "bs_user",
     JSON.stringify({
@@ -1734,7 +1765,7 @@ function handleLogoutModal() {
   if (confirm("Bạn có chắc muốn đăng xuất?")) {
     localStorage.removeItem("bs_user");
     // THÊM: Xóa giỏ hàng khi đăng xuất để reset về 0
-    localStorage.setItem("bs_cart", JSON.stringify([])); 
+    localStorage.setItem("bs_cart", JSON.stringify([]));
     closeProfileModal();
     updateAuthUI();
     if (typeof updateCartCount === "function") updateCartCount();
@@ -1850,7 +1881,7 @@ function handleLogoutDropdown(e) {
   if (confirm("Bạn có chắc muốn đăng xuất?")) {
     localStorage.removeItem("bs_user");
     // THÊM: Xóa giỏ hàng khi đăng xuất để reset về 0
-    localStorage.setItem("bs_cart", JSON.stringify([])); 
+    localStorage.setItem("bs_cart", JSON.stringify([]));
     updateAuthUI();
     if (typeof updateCartCount === "function") updateCartCount();
     location.reload();
@@ -1938,101 +1969,101 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 // THÊM MỚI: Hàm xử lý trừ số lượng tồn kho sau khi thanh toán thành công
 function updateProductStock(selectedItems) {
-    if (!selectedItems || selectedItems.length === 0) return;
+  if (!selectedItems || selectedItems.length === 0) return;
 
-    // Lấy toàn bộ dữ liệu từ localStorage
-    let data = getData(); // Giả định getData() và saveData() có sẵn trong main.js
-    let products = data.products;
-    let hasUpdated = false;
+  // Lấy toàn bộ dữ liệu từ localStorage
+  let data = getData(); // Giả định getData() và saveData() có sẵn trong main.js
+  let products = data.products;
+  let hasUpdated = false;
 
-    // Lặp qua các sản phẩm đã mua
-    selectedItems.forEach(cartItem => {
-        // Tìm sản phẩm trong danh sách toàn bộ sản phẩm
-        const productIndex = products.findIndex(p => p.id === cartItem.id);
-
-        if (productIndex > -1) {
-            const purchasedQty = cartItem.qty;
-            const currentStock = products[productIndex].qty;
-            
-            // Trừ số lượng tồn kho
-            products[productIndex].qty = currentStock - purchasedQty;
-
-            // Đảm bảo số lượng không âm
-            if (products[productIndex].qty < 0) {
-                 products[productIndex].qty = 0;
-            }
-            hasUpdated = true;
-        }
-        selectedItems.forEach(cartItem => {
-    const productIndex = products.findIndex(p => p.id === cartItem.id);
+  // Lặp qua các sản phẩm đã mua
+  selectedItems.forEach((cartItem) => {
+    // Tìm sản phẩm trong danh sách toàn bộ sản phẩm
+    const productIndex = products.findIndex((p) => p.id === cartItem.id);
 
     if (productIndex > -1) {
+      const purchasedQty = cartItem.qty;
+      const currentStock = products[productIndex].qty;
+
+      // Trừ số lượng tồn kho
+      products[productIndex].qty = currentStock - purchasedQty;
+
+      // Đảm bảo số lượng không âm
+      if (products[productIndex].qty < 0) {
+        products[productIndex].qty = 0;
+      }
+      hasUpdated = true;
+    }
+    selectedItems.forEach((cartItem) => {
+      const productIndex = products.findIndex((p) => p.id === cartItem.id);
+
+      if (productIndex > -1) {
         const purchasedQty = cartItem.qty;
-        const currentStock = products[productIndex].qty || 0; 
-        
+        const currentStock = products[productIndex].qty || 0;
+
         // Trừ số lượng tồn kho
         products[productIndex].qty = currentStock - purchasedQty;
 
         // --- BỔ SUNG QUAN TRỌNG: GHI NHẬN THỜI GIAN CẬP NHẬT CUỐI CÙNG ---
-        products[productIndex].lastStockUpdate = new Date().toISOString(); 
+        products[productIndex].lastStockUpdate = new Date().toISOString();
         // -----------------------------------------------------------------
 
         // Đảm bảo số lượng không âm
         if (products[productIndex].qty < 0) {
-             products[productIndex].qty = 0;
+          products[productIndex].qty = 0;
         }
         // ...
-    }
-});
+      }
     });
+  });
 
-    if (hasUpdated) {
-        // Lưu dữ liệu đã cập nhật trở lại localStorage
-        saveData(data); // Giả định saveData(data) có sẵn trong main.js
-        console.log('Stock updated successfully.');
-    }
+  if (hasUpdated) {
+    // Lưu dữ liệu đã cập nhật trở lại localStorage
+    saveData(data); // Giả định saveData(data) có sẵn trong main.js
+    console.log("Stock updated successfully.");
+  }
 }
 // Vị trí: Đặt hàm này ở cuối file main.js hoặc gần các hàm quản lý data khác.
 // THÊM MỚI: Các hàm tiện ích để quản lý dữ liệu gốc
 function getData() {
-    // Lấy dữ liệu từ localStorage (giả định products được lưu trong bs_data)
-    const dataString = localStorage.getItem('bs_data');
-    return JSON.parse(dataString || JSON.stringify(SAMPLE)); // SAMPLE là dữ liệu mẫu ban đầu
+  // Lấy dữ liệu từ localStorage (giả định products được lưu trong bs_data)
+  const dataString = localStorage.getItem("bs_data");
+  return JSON.parse(dataString || JSON.stringify(SAMPLE)); // SAMPLE là dữ liệu mẫu ban đầu
 }
 
 function saveData(data) {
-    // Lưu dữ liệu đã thay đổi vào localStorage
-    localStorage.setItem('bs_data', JSON.stringify(data));
+  // Lưu dữ liệu đã thay đổi vào localStorage
+  localStorage.setItem("bs_data", JSON.stringify(data));
 }
 
 // THÊM MỚI: Hàm chính để cập nhật tồn kho
 function updateProductStock(selectedItems) {
-    if (!selectedItems || selectedItems.length === 0) return;
+  if (!selectedItems || selectedItems.length === 0) return;
 
-    let data = getData();
-    let products = data.products;
-    let hasUpdated = false;
+  let data = getData();
+  let products = data.products;
+  let hasUpdated = false;
 
-    selectedItems.forEach(cartItem => {
-        const productIndex = products.findIndex(p => p.id === cartItem.id);
+  selectedItems.forEach((cartItem) => {
+    const productIndex = products.findIndex((p) => p.id === cartItem.id);
 
-        if (productIndex > -1) {
-            const purchasedQty = cartItem.qty;
-            const currentStock = products[productIndex].qty || 0; // Đảm bảo có giá trị mặc định
-            
-            // Trừ số lượng tồn kho
-            products[productIndex].qty = currentStock - purchasedQty;
+    if (productIndex > -1) {
+      const purchasedQty = cartItem.qty;
+      const currentStock = products[productIndex].qty || 0; // Đảm bảo có giá trị mặc định
 
-            // Đảm bảo số lượng không âm
-            if (products[productIndex].qty < 0) {
-                 products[productIndex].qty = 0;
-            }
-            hasUpdated = true;
-        }
-    });
+      // Trừ số lượng tồn kho
+      products[productIndex].qty = currentStock - purchasedQty;
 
-    if (hasUpdated) {
-        saveData(data);
-        console.log('Stock updated successfully.');
+      // Đảm bảo số lượng không âm
+      if (products[productIndex].qty < 0) {
+        products[productIndex].qty = 0;
+      }
+      hasUpdated = true;
     }
+  });
+
+  if (hasUpdated) {
+    saveData(data);
+    console.log("Stock updated successfully.");
+  }
 }
