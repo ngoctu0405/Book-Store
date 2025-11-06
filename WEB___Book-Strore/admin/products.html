@@ -269,46 +269,59 @@
          * Tải và hiển thị danh sách sản phẩm ra bảng.
          */
         function renderProductTable() {
-            // Lấy dữ liệu từ LocalStorage (thông qua main.js)
-            const data = getData(); 
-            const products = data.products || [];
-            
-            const tableBody = document.getElementById('productListTableBody');
-            tableBody.innerHTML = ''; // Xóa bảng cũ
+        // Lấy dữ liệu từ LocalStorage (thông qua main.js)
+        const data = getData(); 
+        const products = data.products || [];
+        
+        const tableBody = document.getElementById('productListTableBody');
+        tableBody.innerHTML = ''; // Xóa bảng cũ
 
-            if (products.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Chưa có sản phẩm nào.</td></tr>';
-                return;
-            }
-
-            products.forEach(p => {
-                // Định dạng trạng thái
-                const statusClass = (p.status === 'active') ? 'status-active' : 'status-inactive';
-                const statusText = (p.status === 'active') ? 'Đang bán' : 'Dừng bán';
-
-                // Sửa lỗi đường dẫn ảnh: Thêm ../
-                const imagePath = p.img ? '../' + p.img : '../images/placeholder.png'; // Giả định có ảnh placeholder
-
-                const row = `
-                    <tr>
-                        <td>${p.id}</td>
-                        <td>${p.sku}</td>
-                        <td>${p.name}</td>
-                        <td>${p.category}</td>
-                        <td class="text-end">${(p.price || 0).toLocaleString('vi-VN')}đ</td>
-                        <td class="text-center">${p.qty}</td>
-                        <td><span class="status-tag ${statusClass}">${statusText}</span></td>
-                        <td>
-                            <img src="${imagePath}" alt="${p.name}" class="product-image-thumbnail">
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary" onclick="openProductModal(${p.id})">Sửa</button>
-                        </td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
+        if (products.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Chưa có sản phẩm nào.</td></tr>';
+            return;
         }
+
+        products.forEach(p => {
+            
+            // ✅ SỬA LỖI LOGIC HIỂN THỊ STATUS
+            let statusClass = '';
+            let statusText = '';
+
+            if (p.status === 'inactive') {
+                // 1. Nếu sản phẩm bị DỪNG BÁN
+                statusClass = 'status-inactive';
+                statusText = 'Dừng bán';
+            } else {
+                // 2. Nếu là 'active' (sản phẩm mới) HOẶC 'undefined' (sản phẩm cũ)
+                //    thì đều coi là ĐANG BÁN.
+                statusClass = 'status-active';
+                statusText = 'Đang bán';
+            }
+            // KẾT THÚC SỬA LỖI
+
+            // Sửa lỗi đường dẫn ảnh: Thêm ../
+            const imagePath = p.img ? '../' + p.img : '../images/placeholder.png'; // Giả định có ảnh placeholder
+
+            const row = `
+                <tr>
+                    <td>${p.id}</td>
+                    <td>${p.sku}</td>
+                    <td>${p.name}</td>
+                    <td>${p.category}</td>
+                    <td class="text-end">${(p.price || 0).toLocaleString('vi-VN')}đ</td>
+                    <td class="text-center">${p.qty}</td>
+                    <td><span class="status-tag ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <img src="${imagePath}" alt="${p.name}" class="product-image-thumbnail">
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openProductModal(${p.id})">Sửa</button>
+                    </td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    }
 
         /**
          * Mở Modal để Thêm (id=null) hoặc Sửa (id=productId).
