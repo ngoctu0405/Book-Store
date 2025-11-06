@@ -1777,6 +1777,7 @@ footer {
 
 #mainNav {
   position: fixed;
+  top: 8.5rem;
 }
 
 /* Responsive */
@@ -2966,7 +2967,7 @@ footer {
   display: flex;
   justify-content: center;
   position: fixed;
-  top: 7.5rem;
+  top: 3.6rem;
   width: 100vw;
   background: #ffffff;
   height: 5rem;
