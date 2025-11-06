@@ -1704,8 +1704,9 @@ footer {
 
 /* Featured News */
 .featured-news {
-  padding-top: 6rem;
-  margin-bottom: 1rem;
+ color: #000000; /* Màu xanh teal chủ đạo của bạn */
+  font-weight: 800; /* Có thể giảm độ đậm một chút */
+  margin-bottom: 20px;
 }
 
 .featured-card {
