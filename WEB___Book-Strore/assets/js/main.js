@@ -1356,12 +1356,10 @@ function initProductDetail() {
 
 document.addEventListener("DOMContentLoaded", function () {
   let storedData = JSON.parse(localStorage.getItem("bs_data"));
-  if (
-    !storedData ||
-    !storedData.products ||
-    storedData.products.length !== SAMPLE.products.length
-  ) {
-    localStorage.setItem("bs_data", JSON.stringify(SAMPLE));
+ // Chỉ tạo dữ liệu SAMPLE nếu CHƯA CÓ
+  if (!storedData) {
+       localStorage.setItem("bs_data", JSON.stringify(SAMPLE));
+       console.log("Khởi tạo bs_data lần đầu.");
   }
   renderProductList(1);
   updateCartCount();

@@ -958,7 +958,7 @@
       // HÀM NÀY CẦN PHẢI ĐƯỢC ĐỊNH NGHĨA TRONG main.js CÙNG VỚI HẰNG SỐ CATEGORIES_STORAGE_KEY
       function getCategoriesFromStorage() {
         // Lưu ý: Cần đảm bảo hằng số CATEGORIES_STORAGE_KEY được định nghĩa trong main.js
-        const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+        const storedData = localStorage.getItem("admin_categories_data");
         let categories;
         try {
           // Trả về dữ liệu đã lưu nếu tồn tại, ngược lại trả về mảng rỗng
@@ -1427,14 +1427,6 @@
       } else {
         initCategoryPage();
       }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        const data = JSON.parse(localStorage.getItem("bs_data")) || {
-          products: [],
-        };
-        const active = data.products.filter((p) => p.status === "active");
-        renderProducts(active);
-      });
     </script>
   </body>
 </html>
