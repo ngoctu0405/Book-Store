@@ -39,7 +39,7 @@ body {
 
 .search-center {
   flex: 1;
-  max-width: 500px;
+  max-width: 800px;
   margin: 0 2rem;
 }
 
@@ -64,15 +64,30 @@ body {
 
 /* Logo */
 .logo {
-  display: fle x;
+  display: flex;
   align-items: center;
   position: relative;
 }
 
 .logo img {
   height: 150px;
-  width: auto;
-  display: block;
+  width: 14rem;
+  /* display: block; */
+  border-radius: 3rem;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+  transition: transform 0.3s ease;
+}
+.logo .Word {
+  position: relative;
+  top: 1rem;
+}
+
+.logo .Logo {
+  height: 150px;
+  width: 5rem;
+  /* display: block; */
+  border-radius: 3rem;
   object-fit: contain;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
   transition: transform 0.3s ease;
@@ -151,7 +166,7 @@ body {
   position: relative;
   top: 3.5rem;
   /* nền gradient cho banner */
-  background: linear-gradient(135deg, #75b7d1 0%, #269de7 50%, #3571c0 100%);
+  background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
   /* chiếm toàn chiều ngang viewport */
   width: 100vw;
   /* đảm bảo không vượt max-width */
@@ -805,12 +820,6 @@ form select:focus {
     align-items: flex-start;
   }
 
-  .search-bar {
-    /* trên mobile search-bar sẽ chồng dọc */
-    flex-direction: column;
-    max-width: 100%;
-  }
-
   .container {
     /* giảm padding container trên mobile */
     padding: 1rem;
@@ -1371,6 +1380,7 @@ select {
 /* ===== CART FLOAT ===== */
 .cart-float {
   position: absolute;
+  top: 1rem;
   right: 2rem;
   display: flex;
   align-items: center;
@@ -1495,9 +1505,6 @@ section {
 }
 
 @media (max-width: 720px) {
-  .search-input {
-    display: none;
-  }
   .navbar {
     overflow: auto;
   }
@@ -1704,7 +1711,7 @@ footer {
 
 /* Featured News */
 .featured-news {
- color: #000000; /* Màu xanh teal chủ đạo của bạn */
+  color: #000000; /* Màu xanh teal chủ đạo của bạn */
   font-weight: 800; /* Có thể giảm độ đậm một chút */
   margin-bottom: 20px;
 }
@@ -1767,6 +1774,7 @@ footer {
 
 #mainNav {
   position: fixed;
+  top: 8.5rem;
 }
 
 /* Responsive */
@@ -1777,9 +1785,9 @@ footer {
     gap: 1rem;
   }
 
-  .search-center {
+  /* .search-center {
     display: none;
-  }
+  } */
 
   .navbar {
     overflow: auto;
@@ -2190,7 +2198,7 @@ footer {
 .search-center {
   position: relative;
   flex: 1;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 20px;
 }
 
@@ -2233,7 +2241,7 @@ footer {
   top: 50%;
   transform: translateY(-50%);
   padding: 8px 20px;
-  background: linear-gradient(135deg, #4caf50, #45a049);
+  background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
   color: white;
   border: none;
   border-radius: 20px;
@@ -2950,4 +2958,59 @@ footer {
 
 .clear-filters-btn:hover {
   background-color: #d32f2f;
+}
+
+.nav_2 {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 3.6rem;
+  width: 100vw;
+  background: #ffffff;
+  height: 5rem;
+  z-index: 999;
+  /* border-radius: 3rem; */
+  /* flex: 1; */
+}
+.search-input {
+  position: relative;
+  top: 1rem;
+}
+/* Media thanh nav */
+@media (max-width: 575px) {
+  .search-input {
+    position: relative;
+    top: -1px;
+  }
+  .user-profile-dropdown {
+    position: relative;
+    top: -1rem;
+    left: 5rem;
+    width: 15rem;
+    height: 1rem;
+  }
+  .logo .Logo {
+    position: relative;
+    top: 1rem;
+    left: -2rem;
+  }
+  .logo .Word {
+    position: relative;
+    top: -4rem;
+    left: 2rem;
+  }
+  .navbar .menu li a {
+    width: 7.5rem;
+  }
+  .search-center {
+    position: relative;
+    left: 2rem;
+    max-width: 25rem;
+    border: solid #e0e0e0;
+    border-radius: 3rem;
+    height: 3rem;
+  }
+  .category-btn {
+    width: 9rem;
+  }
 }
