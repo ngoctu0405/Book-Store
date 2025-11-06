@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="../assets/css/admin_style.css">
     
     <style>
-        /* CSS nội bộ chỉ để định dạng ảnh trong bảng */
         .product-image-thumbnail {
             width: 60px;
             height: 60px;
@@ -17,7 +16,6 @@
             border-radius: 4px;
         }
 
-        /* Định dạng trạng thái sản phẩm */
         .status-tag {
             padding: 4px 8px;
             border-radius: 12px;
@@ -35,7 +33,6 @@
             color: #721c24;
         }
 
-        /* CSS cho nút xóa ảnh */
         .image-preview-container {
             position: relative;
             display: inline-block;
@@ -57,7 +54,6 @@
             font-weight: bold;
         }
         
-        /* Đảm bảo trường giá bán tính toán nổi bật và khác biệt */
         #product-price {
             background-color: #e9f5ff; 
             font-weight: bold;
@@ -74,7 +70,7 @@
 
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a href="dashboard.html" class="nav-link ">
+                <a href="dashboard.html" class="nav-link">
                     <span class="nav-icon">◈</span>
                     <span>Bảng điều khiển</span>
                 </a>
@@ -87,12 +83,12 @@
             </li>
             <li class="nav-item">
                 <a href="categories.html" class="nav-link">
-                    <span class="nav-icon">◫</span>
+                    <span class="nav-icon">○</span>
                     <span>Loại sản phẩm</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="products.html" class="nav-link">
+                <a href="products.html" class="nav-link active">
                     <span class="nav-icon">◪</span>
                     <span>Sản phẩm</span>
                 </a>
@@ -163,7 +159,7 @@
                                 </tr>
                             </thead>
                             <tbody id="productListTableBody">
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -262,19 +258,14 @@
    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
    <script src="../assets/js/main.js"></script>
    <script>
-        // Khởi tạo modal của Bootstrap
         const productModal = new bootstrap.Modal(document.getElementById('productModal'));
         
-        /**
-         * Tải và hiển thị danh sách sản phẩm ra bảng.
-         */
         function renderProductTable() {
-        // Lấy dữ liệu từ LocalStorage (thông qua main.js)
         const data = getData(); 
         const products = data.products || [];
         
         const tableBody = document.getElementById('productListTableBody');
-        tableBody.innerHTML = ''; // Xóa bảng cũ
+        tableBody.innerHTML = '';
 
         if (products.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Chưa có sản phẩm nào.</td></tr>';
@@ -283,24 +274,18 @@
 
         products.forEach(p => {
             
-            // ✅ SỬA LỖI LOGIC HIỂN THỊ STATUS
             let statusClass = '';
             let statusText = '';
 
             if (p.status === 'inactive') {
-                // 1. Nếu sản phẩm bị DỪNG BÁN
                 statusClass = 'status-inactive';
                 statusText = 'Dừng bán';
             } else {
-                // 2. Nếu là 'active' (sản phẩm mới) HOẶC 'undefined' (sản phẩm cũ)
-                //    thì đều coi là ĐANG BÁN.
                 statusClass = 'status-active';
                 statusText = 'Đang bán';
             }
-            // KẾT THÚC SỬA LỖI
 
-            // Sửa lỗi đường dẫn ảnh: Thêm ../
-            const imagePath = p.img ? '../' + p.img : '../images/placeholder.png'; // Giả định có ảnh placeholder
+            const imagePath = p.img ? '../' + p.img : '../images/placeholder.png';
 
             const row = `
                 <tr>
@@ -323,15 +308,11 @@
         });
     }
 
-        /**
-         * Mở Modal để Thêm (id=null) hoặc Sửa (id=productId).
-         */
         function openProductModal(productId = null) {
             document.getElementById('productForm').reset(); 
             removeImagePreview(); 
             
             if (productId) {
-                // --- CHẾ ĐỘ SỬA ---
                 document.getElementById('productModalLabel').textContent = 'Sửa Sản phẩm';
                 
                 const data = getData();
@@ -342,7 +323,6 @@
                     return;
                 }
 
-                // Sửa lỗi ID trùng lặp: Dùng đúng ID
                 document.getElementById('product-edit-id').value = product.id; 
                 document.getElementById('product-id-display').value = product.id; 
                 
@@ -350,7 +330,7 @@
                 document.getElementById('product-name').value = product.name;
                 document.getElementById('product-author').value = product.author;
                 document.getElementById('product-category').value = product.category;
-                document.getElementById('product-subcategory').value = product.subcategory; // Đảm bảo tải subcategory
+                document.getElementById('product-subcategory').value = product.subcategory;
                 document.getElementById('product-unit').value = product.unit || 'Quyển';
                 document.getElementById('product-desc').value = product.desc;
                 document.getElementById('product-qty').value = product.qty;
@@ -360,14 +340,12 @@
                 
                 if (product.img) {
                     document.getElementById('product-img-path').value = product.img;
-                    showImagePreview('../' + product.img); // Sửa lỗi đường dẫn ảnh: Thêm ../
+                    showImagePreview('../' + product.img);
                 }
                 
             } else {
-                // --- CHẾ ĐỘ THÊM MỚI ---
                 document.getElementById('productModalLabel').textContent = 'Thêm Sản phẩm Mới';
                 
-                // Sửa lỗi ID trùng lặp
                 document.getElementById('product-edit-id').value = ''; 
                 document.getElementById('product-id-display').value = '(Tự động tạo)';
                 
@@ -379,48 +357,38 @@
             productModal.show();
         }
 
-        /**
-         * Xử lý lưu (Thêm mới hoặc Cập nhật).
-         */
         function handleSaveProduct() {
-            // Sửa lỗi ID trùng lặp: Lấy ID từ input ẩn
             const id = document.getElementById('product-edit-id').value ? parseInt(document.getElementById('product-edit-id').value) : null;
             
-            // Đây là đối tượng sẽ được lưu.
-            // Nó thu thập TẤT CẢ các trường trong form.
             const productData = {
                 id: id,
                 sku: document.getElementById('product-sku').value,
                 name: document.getElementById('product-name').value,
                 author: document.getElementById('product-author').value,
                 category: document.getElementById('product-category').value,
-                subcategory: document.getElementById('product-subcategory').value, // Sẽ lưu
+                subcategory: document.getElementById('product-subcategory').value,
                 unit: document.getElementById('product-unit').value,
                 desc: document.getElementById('product-desc').value,
                 qty: parseInt(document.getElementById('product-qty').value) || 0,
                 costPrice: parseFloat(document.getElementById('product-costPrice').value) || 0,
                 profitMargin: parseFloat(document.getElementById('product-profitMargin').value) || 0,
                 price: parseFloat(document.getElementById('product-price').value) || 0,
-                status: document.getElementById('product-status').value, // Sẽ lưu "active"
+                status: document.getElementById('product-status').value,
                 img: document.getElementById('product-img-path').value 
             };
             
-            // Lấy dữ liệu từ main.js
             let data = getData();
             
             if (id) {
-                // --- CẬP NHẬT (Sửa) ---
                 const index = data.products.findIndex(p => p.id === id);
                 if (index > -1) {
                     data.products[index] = { ...data.products[index], ...productData };
                 }
             } else {
-                // --- THÊM MỚI ---
                 productData.id = (data.products.reduce((max, p) => p.id > max ? p.id : max, 0) + 1);
                 data.products.push(productData);
             }
 
-            // LƯU DỮ LIỆU (Hàm này từ main.js)
             saveData(data); 
 
             productModal.hide();
@@ -428,9 +396,6 @@
             alert('Lưu sản phẩm thành công!');
         }
 
-        /**
-         * Tính giá bán tự động.
-         */
         function calculateSellingPrice() {
             const costPrice = parseFloat(document.getElementById('product-costPrice').value) || 0;
             const profitMargin = parseFloat(document.getElementById('product-profitMargin').value) || 0;
@@ -439,9 +404,6 @@
             document.getElementById('product-price').value = roundedPrice;
         }
 
-        /**
-         * Xử lý khi người dùng upload ảnh mới.
-         */
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -449,16 +411,12 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const base64Image = e.target.result;
-                // Lưu ảnh (tạm thời dùng Base64 vì không có server)
                 document.getElementById('product-img-path').value = base64Image;
                 showImagePreview(base64Image);
             }
             reader.readAsDataURL(file);
         }
 
-        /**
-         * Hiển thị ảnh preview và nút "Xóa ảnh".
-         */
         function showImagePreview(imageBase64OrPath) {
             const previewArea = document.getElementById('image-preview-area');
             previewArea.innerHTML = `
@@ -469,21 +427,16 @@
             `;
         }
 
-        /**
-         * Xóa ảnh (khi sửa sản phẩm).
-         */
         function removeImagePreview() {
             document.getElementById('image-preview-area').innerHTML = ''; 
             document.getElementById('product-img-path').value = ''; 
             document.getElementById('product-image-upload').value = null; 
         }
         
-        // --- Gắn sự kiện cho các input ---
         document.getElementById('product-image-upload').addEventListener('change', handleImageUpload);
         document.getElementById('product-costPrice').addEventListener('input', calculateSellingPrice);
         document.getElementById('product-profitMargin').addEventListener('input', calculateSellingPrice);
 
-        // --- Chạy lần đầu khi trang tải ---
         document.addEventListener('DOMContentLoaded', renderProductTable);
    </script>
 </body>

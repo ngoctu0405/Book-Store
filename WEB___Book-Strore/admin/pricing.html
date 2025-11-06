@@ -29,7 +29,7 @@
             </li>
             <li class="nav-item">
                 <a href="categories.html" class="nav-link">
-                    <span class="nav-icon">◫</span>
+                    <span class="nav-icon">○</span>
                     <span>Loại sản phẩm</span>
                 </a>
             </li>
@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="pricing.html" class="nav-link">
+                <a href="pricing.html" class="nav-link active">
                     <span class="nav-icon">◎</span>
                     <span>Quản lý giá</span>
                 </a>
@@ -126,29 +126,24 @@
     </main>
     
     <script>
-        // Lấy dữ liệu từ LocalStorage
         function getData() {
             const storedData = localStorage.getItem("bs_data");
             return storedData ? JSON.parse(storedData) : { products: [] };
         }
 
-        // Lưu dữ liệu vào LocalStorage
         function saveData(data) {
             localStorage.setItem("bs_data", JSON.stringify(data));
         }
 
-        // Tính giá bán dựa trên giá vốn và % lợi nhuận
         function calculateSalePrice(costPrice, profitMargin) {
             const salePrice = costPrice * (1 + profitMargin / 100);
-            return Math.round(salePrice / 1000) * 1000; // Làm tròn đến nghìn đồng
+            return Math.round(salePrice / 1000) * 1000;
         }
 
-        // Định dạng tiền tệ
         function formatPrice(price) {
             return price.toLocaleString("vi-VN") + "đ";
         }
 
-        // Render bảng giá
         function renderPricingTable(products) {
             const tbody = document.getElementById("pricing-table-body");
             if (!tbody) return;
@@ -159,13 +154,8 @@
             }
 
             tbody.innerHTML = products.map(p => {
-                // Giá vốn từ main.js (giả định là price ban đầu)
                 const costPrice = p.costPrice || p.price;
-                
-                // % lợi nhuận hiện tại
                 const currentMargin = p.profitMargin !== undefined ? p.profitMargin : 0;
-                
-                // Tính giá bán
                 const salePrice = calculateSalePrice(costPrice, currentMargin);
 
                 return `
@@ -196,7 +186,6 @@
             }).join("");
         }
 
-        // Cập nhật giá bán tạm tính khi % lợi nhuận thay đổi
         function updateSalePrice(productId) {
             const profitInput = document.getElementById(`profit-${productId}`);
             const priceSpan = document.getElementById(`price-${productId}`);
@@ -218,7 +207,6 @@
             priceSpan.classList.add("price-changed");
         }
 
-        // Lưu % lợi nhuận cho sản phẩm
         function saveProductProfit(productId) {
             const profitInput = document.getElementById(`profit-${productId}`);
             if (!profitInput) return;
@@ -230,7 +218,6 @@
                 return;
             }
 
-            // Lấy dữ liệu hiện tại
             const data = getData();
             const product = data.products.find(p => p.id === productId);
 
@@ -239,24 +226,20 @@
                 return;
             }
 
-            // Cập nhật profitMargin và price
             product.profitMargin = profitMargin;
             const costPrice = product.costPrice || product.price;
             product.price = calculateSalePrice(costPrice, profitMargin);
 
-            // Lưu lại vào localStorage
             saveData(data);
 
             alert(`✅ Đã lưu thành công ${profitMargin}% lợi nhuận cho sản phẩm "${product.name}"`);
 
-            // Cập nhật lại bảng
             const priceSpan = document.getElementById(`price-${productId}`);
             if (priceSpan) {
                 priceSpan.classList.remove("price-changed");
             }
         }
 
-        // Reset % lợi nhuận về 0
         function resetProductProfit(productId) {
             if (!confirm("Bạn có chắc muốn reset % lợi nhuận về 0?")) return;
 
@@ -265,15 +248,12 @@
 
             if (!product) return;
 
-            // Reset về 0%
             product.profitMargin = 0;
             const costPrice = product.costPrice || product.price;
             product.price = costPrice;
 
-            // Lưu lại
             saveData(data);
 
-            // Cập nhật UI
             const profitInput = document.getElementById(`profit-${productId}`);
             const priceSpan = document.getElementById(`price-${productId}`);
 
@@ -286,7 +266,6 @@
             alert("✅ Đã reset % lợi nhuận về 0%");
         }
 
-        // Lọc và tìm kiếm sản phẩm
         function filterAndSearchProducts() {
             const query = document.getElementById("search-query").value.trim().toLowerCase();
             const category = document.getElementById("category-filter").value;
@@ -302,7 +281,6 @@
             renderPricingTable(filtered);
         }
 
-        // Render danh mục filter
         function renderCategoryFilter() {
             const select = document.getElementById("category-filter");
             if (!select) return;
@@ -318,9 +296,7 @@
             });
         }
 
-        // Khởi tạo khi DOM load
         document.addEventListener("DOMContentLoaded", function () {
-            // Đảm bảo tất cả sản phẩm có costPrice và profitMargin
             const data = getData();
             let needsSave = false;
 
@@ -339,11 +315,9 @@
                 saveData(data);
             }
 
-            // Render
             renderPricingTable(data.products);
             renderCategoryFilter();
 
-            // Gán sự kiện form
             const searchForm = document.getElementById("search-pricing-form");
             if (searchForm) {
                 searchForm.addEventListener("submit", function(e) {
