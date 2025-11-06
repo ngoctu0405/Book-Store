@@ -663,7 +663,8 @@
   </div>
   
   <script src="assets/js/main.js"></script>
-  <script src="bootstrap-5.3.2-dist/css/bootstrap.min.js"></script>
+  <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+  
   <a href="#" class="back-to-top" title="Lên đầu trang">
     <i class="bi bi-chevron-up">
       <img class="go-up" src="./images/muiten.svg" alt="Về trang chủ" />
@@ -726,8 +727,10 @@ function updateCategoryBreadcrumb() {
 }
 
 // ✅ THÊM MỚI: Hàm lấy dữ liệu Category từ Local Storage
+// HÀM NÀY CẦN PHẢI ĐƯỢC ĐỊNH NGHĨA TRONG main.js CÙNG VỚI HẰNG SỐ CATEGORIES_STORAGE_KEY
 function getCategoriesFromStorage() {
-    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+    // Lưu ý: Cần đảm bảo hằng số CATEGORIES_STORAGE_KEY được định nghĩa trong main.js
+    const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY); 
     let categories;
     try {
         // Trả về dữ liệu đã lưu nếu tồn tại, ngược lại trả về mảng rỗng
@@ -934,7 +937,8 @@ function applyPriceFilter() {
 function applyCategoryFilters() {
   console.log('Applying filters:', categoryFilters);
   
-  let products = getVisibleProducts(); // Đã lọc category ẩn từ main.js
+  // GIẢ ĐỊNH getVisibleProducts() ĐƯỢC ĐỊNH NGHĨA TRONG main.js
+  let products = getVisibleProducts(); // Đã lọc category ẩn, status='active', và qty > 0 từ main.js
   console.log('Total products before filter:', products.length);
 
   // Lọc theo category từ URL
@@ -975,8 +979,8 @@ function applyCategoryFilters() {
       
       if (nameCompare === 0) {
         return categoryFilters.sortByAuthor === 'asc'
-          ? a.author.localeCompare(b.author, 'vi')
-          : b.author.localeCompare(a.author, 'vi');
+          ? (a.author || '').localeCompare((b.author || ''), 'vi')
+          : (b.author || '').localeCompare((a.author || ''), 'vi');
       }
       
       return nameCompare;
@@ -992,14 +996,15 @@ function applyCategoryFilters() {
   } else if (categoryFilters.sortByAuthor) {
     products.sort((a, b) => {
       return categoryFilters.sortByAuthor === 'asc'
-        ? a.author.localeCompare(b.author, 'vi')
-        : b.author.localeCompare(a.author, 'vi');
+        ? (a.author || '').localeCompare((b.author || ''), 'vi')
+        : (b.author || '').localeCompare((a.author || ''), 'vi');
     });
     console.log('Sorted by author only');
   }
   
   console.log('Final products count:', products.length);
   
+  // HÀM NÀY CŨNG CẦN ĐƯỢC ĐỊNH NGHĨA TRONG main.js HOẶC KHÁC
   currentList = products;
   renderProductList(1);
 }
@@ -1110,7 +1115,8 @@ function updateClearButton() {
 }
 
 // Override renderProductList để hiển thị tác giả
-function renderProductList(page = 1) {
+// GIẢ ĐỊNH perPage, currentPage, và currentList ĐƯỢC KHỞI TẠO VÀ SỬ DỤNG TRONG main.js
+function renderProductList(page = 1) { 
   const wrap = document.getElementById('product-list');
   if (!wrap) return;
   
@@ -1125,8 +1131,8 @@ function renderProductList(page = 1) {
       <img src="${it.img}" alt="${it.name}">
       <div class="product-info">
         <h3>${it.name}</h3>
-        <p class="product-author">Tác giả: ${it.author}</p>
-        <div class="price">${it.price.toLocaleString('vi-VN')}₫</div>
+        <p class="product-author">Tác giả: ${it.author || 'Đang cập nhật'}</p>
+        <div class="price">${(it.price || 0).toLocaleString('vi-VN')}₫</div>
         <div class="button-row">
           <a class="btn btn-small" href="product-detail.html?id=${it.id}">Xem</a>
           <button class="btn btn-cart" onclick="addToCart(${it.id}, 1)">Thêm vào giỏ</button>
@@ -1136,6 +1142,7 @@ function renderProductList(page = 1) {
     `)
     .join('');
 
+  // HÀM NÀY CŨNG CẦN ĐƯỢC ĐỊNH NGHĨA TRONG main.js HOẶC KHÁC
   renderPagination(Math.ceil(all.length / perPage));
 }
 
@@ -1146,78 +1153,137 @@ if (document.readyState === 'loading') {
   initCategoryPage();
 }
 
-// ==================== KẾT THÚC BỔ SUNG ====================
 
-// Hàm này giả định được sử dụng để hiển thị các sản phẩm
-        function renderProducts(products) {
-            const productListElement = document.getElementById('productList');
-            const noProductsMessage = document.getElementById('noProductsMessage');
-            productListElement.innerHTML = '';
+ document.addEventListener("DOMContentLoaded", () => {
+  const data = JSON.parse(localStorage.getItem("bs_data")) || { products: [] };
+  const active = data.products.filter(p => p.status === "active");
+  renderProducts(active);
+});
 
-            if (products.length === 0) {
-                noProductsMessage.classList.remove('d-none');
-                return;
-            }
-            noProductsMessage.classList.add('d-none');
+// =======================================================================
+// === LOGIC SẢN PHẨM CÔNG KHAI (Dành cho category.html) ===
+// =======================================================================
 
-            let html = '';
-            products.forEach(p => {
-                html += `
-                    <div class="product-card">
-                        <a href="product-detail.html?id=${p.id}" class="d-block text-decoration-none text-dark">
-                            <div class="product-image">
-                                <img src="${p.img}" alt="${p.name}">
-                            </div>
-                            <div class="product-info">
-                                <h3>${p.name}</h3>
-                                <p class="author text-muted">${p.author}</p>
-                                <p class="price">${p.price.toLocaleString('vi-VN')} VNĐ</p>
-                                <button class="btn btn-sm btn-primary mt-2">Xem chi tiết</button>
-                            </div>
-                        </a>
-                    </div>
-                `;
-            });
-            productListElement.innerHTML = html;
+// Biến toàn cục để lưu danh sách sản phẩm sau khi lọc
+let allProducts = [];
+let currentList = [];
+let currentPage = 1;
+const perPage = 8; // Số lượng sản phẩm trên mỗi trang (Giả định)
+
+/**
+ * Lấy dữ liệu sản phẩm từ nguồn (localStorage) và áp dụng bộ lọc.
+ * Hàm này đảm bảo dữ liệu luôn mới nhất sau khi admin cập nhật.
+ */
+function loadCategoryProducts() {
+    // Giả định hàm getData() đã tồn tại và trả về đối tượng chứa data.products
+    const data = getData(); 
+    allProducts = data.products || []; 
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const catName = urlParams.get('category');
+    
+    // 1. Áp dụng bộ lọc
+    if (catName) {
+        // Lọc sản phẩm theo tên danh mục trong URL (Dựa trên cấu trúc sản phẩm mẫu của bạn)
+        currentList = allProducts.filter(p => p.category === catName);
+        
+        // Cập nhật tiêu đề trang
+        const titleEl = document.querySelector('h1.page-title');
+        if (titleEl) {
+             titleEl.textContent = `Sản phẩm thuộc Danh mục: ${catName}`;
         }
+    } else {
+        // Nếu không có bộ lọc, hiển thị tất cả
+        currentList = allProducts;
+    }
+    
+    // 2. Gọi hàm render danh sách với trang đầu tiên
+    renderProductList(1);
+}
 
-        /**
-         * Hàm chính để tải và lọc sản phẩm
-         */
-        function loadProducts() {
-            const data = typeof getData === 'function' ? getData() : { products: [] };
-            let products = data.products;
-            
-            // Lấy tham số category từ URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const currentCategory = urlParams.get('category');
-            const currentSubcategory = urlParams.get('subcategory');
+/**
+ * Render danh sách sản phẩm hiện tại (Hàm đã được nhắc đến trong category.html).
+ * @param {number} page - Trang hiện tại.
+ */
+function renderProductList(page = 1) { 
+    const wrap = document.getElementById('product-list');
+    if (!wrap) return;
+    
+    currentPage = page;
+    const all = currentList; // Sử dụng danh sách đã được lọc/cập nhật
+    const start = (page - 1) * perPage;
+    const list = all.slice(start, start + perPage);
 
-            // =============================================================
-            // [FIX LỖI QUAN TRỌNG]: LỌC THEO TRẠNG THÁI DỪNG BÁN
-            // =============================================================
-            // Chỉ giữ lại những sản phẩm có status là 'active' (hoặc chưa định nghĩa)
-            products = products.filter(p => p.status !== 'inactive'); 
+    // Nếu không có sản phẩm nào
+    if (list.length === 0) {
+        wrap.innerHTML = '<p class="text-center w-100">Không tìm thấy sản phẩm nào trong danh mục này.</p>';
+        renderPagination(0);
+        return;
+    }
+    
+    // Render product cards (Sử dụng mẫu HTML từ category.html)
+    wrap.innerHTML = list
+      .map((it) => `
+      <div class="product-card">
+        <img src="${it.img}" alt="${it.name}">
+        <div class="product-info">
+          <h3>${it.name}</h3>
+          <p class="product-author">Tác giả: ${it.author || 'Đang cập nhật'}</p>
+          <div class="price">${(it.price || 0).toLocaleString('vi-VN')}₫</div>
+          <div class="button-row">
+            <a class="btn btn-small" href="product-detail.html?id=${it.id}">Xem</a>
+            <button class="btn btn-cart" onclick="addToCart(${it.id}, 1)">Thêm vào giỏ</button>
+          </div>
+        </div>
+      </div>
+      `)
+      .join('');
 
-            // =============================================================
+    // Gọi hàm render phân trang
+    renderPagination(Math.ceil(all.length / perPage), currentPage);
+}
 
-            // Lọc theo category và subcategory
-            if (currentCategory) {
-                products = products.filter(p => p.category === currentCategory);
-                document.getElementById('categoryTitle').textContent = `Danh mục: ${currentCategory}`;
-                if (currentSubcategory) {
-                    products = products.filter(p => p.subcategory === currentSubcategory);
-                    document.getElementById('categoryTitle').textContent += ` - ${currentSubcategory}`;
-                }
-            } else {
-                 document.getElementById('categoryTitle').textContent = `Tất Cả Sản Phẩm`;
-            }
+/**
+ * Hàm render phân trang (Cần thiết cho category.html)
+ */
+function renderPagination(totalPages, currentPage) {
+    const paginationWrap = document.getElementById('pagination-wrap');
+    if (!paginationWrap) return;
+    
+    // Thêm logic tạo nút phân trang ở đây...
+    // (Giả định rằng bạn có một hàm chi tiết hơn)
+    let paginationHtml = '';
+    for (let i = 1; i <= totalPages; i++) {
+        paginationHtml += `<button class="page-link ${i === currentPage ? 'active' : ''}" onclick="renderProductList(${i})">${i}</button>`;
+    }
+    paginationWrap.innerHTML = paginationHtml;
+}
 
-            // ... (Thêm logic sắp xếp nếu cần) ...
-            
-            renderProducts(products);
-        }
- 
+
+// =======================================================================
+// === SỬA ĐỔI HOOK KHỞI TẠO CUỐI main.js ===
+// =======================================================================
+
+// Sửa đổi hàm khởi tạo chính trong main.js để gọi loadCategoryProducts()
+document.addEventListener("DOMContentLoaded", function () {
+    // ... [Logic kiểm tra tài khoản bị khóa] ...
+
+    // This is always the first thing we do. It ensures our "database" exists.
+    // initDatabase(); // Giả định hàm này được gọi ở đầu
+
+    // Check which HTML page is currently loaded and run its specific logic.
+    const page = window.location.pathname.split('/').pop();
+
+    if (page === 'index.html' || page === '') {
+        // initializeLoginPage(); 
+    } else if (page === 'dashboard.html') {
+        // initializeDashboard(); 
+    } else if (page === 'category.html') {
+        // ✅ THÊM DÒNG NÀY ĐỂ TẢI DỮ LIỆU SẢN PHẨM MỚI NHẤT KHI TRANG PUBLIC TẢI
+        loadCategoryProducts(); 
+    }
+});
+
 </script>
 </body>
 
