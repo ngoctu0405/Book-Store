@@ -1527,12 +1527,6 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCategoryBreadcrumb();
 });
 
-const categoryBtnElement = document.querySelector(".category-btn");
-if (categoryBtnElement) {
-  categoryBtnElement.addEventListener("click", () => {
-    window.location.href = "category.html";
-  });
-}
 
 // ==================== MODAL FUNCTIONS ====================
 
