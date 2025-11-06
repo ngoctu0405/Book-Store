@@ -555,13 +555,54 @@ const SAMPLE_USERS = [
 ];
 
 if (!localStorage.getItem("bs_data"))
-  localStorage.setItem("bs_data", JSON.stringify(SAMPLE));
+  localStorage.setItem("bs_data", JSON.stringify(SAMPLE || bs_data));
 if (!localStorage.getItem("bs_cart"))
   localStorage.setItem("bs_cart", JSON.stringify([]));
 if (!localStorage.getItem("bs_orders"))
   localStorage.setItem("bs_orders", JSON.stringify([]));
 if (!localStorage.getItem("bs_users"))
   localStorage.setItem("bs_users", JSON.stringify(SAMPLE_USERS));
+
+
+
+let bs_data;
+
+if (localStorage.getItem("bs_data")) {
+  // ✅ ĐỌC DỮ LIỆU THẬT TỪ LOCALSTORAGE
+  bs_data = JSON.parse(localStorage.getItem("bs_data"));
+} else {
+  // ❌ CHỈ DÙNG SAMPLE LẦN ĐẦU KHI CHƯA CÓ DỮ LIỆU
+  bs_data = SAMPLE;
+  localStorage.setItem("bs_data", JSON.stringify(bs_data));
+}
+
+// ✅ KHÔNG CẦN DÒNG NÀY NỮA VÌ getVisibleProducts() ĐÃ LỌC
+// const allProducts = bs_data.products.filter(p => p.status === "active");
+
+// =================== SAU KHI CÓ DỮ LIỆU ===================
+// Lọc ra những sản phẩm đang bán (active)
+const allProducts = bs_data.products.filter(p => p.status === "active");
+
+function getVisibleProducts() {
+  // ✅ ĐỌC TRỰC TIẾP TỪ LOCALSTORAGE
+  const dataString = localStorage.getItem("bs_data");
+  let allProducts = [];
+  
+  if (dataString) {
+    try {
+      const data = JSON.parse(dataString);
+      allProducts = data.products || [];
+    } catch (e) {
+      console.error("Lỗi đọc bs_data:", e);
+      allProducts = [];
+    }
+  }
+
+  // ✅ CHỈ LỌC STATUS = 'active' (không lọc category nữa)
+  return allProducts.filter((p) => p.status === "active");
+}
+
+
 
 // ==================== KHỞI TẠO DỮ LIỆU MẶC ĐỊNH CHO USER ====================
 // --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
@@ -2066,4 +2107,139 @@ function updateProductStock(selectedItems) {
     saveData(data);
     console.log("Stock updated successfully.");
   }
+}
+// =============================================================
+// PHẦN ĐẦU: Xử lý Đăng nhập/Đăng xuất, UI, SAMPLE DATA...
+// (Giữ nguyên các đoạn code hiện có của bạn)
+// =============================================================
+
+// ... (Các hàm và biến hiện có của main.js, ví dụ: updateProductStock, getData, saveData, SAMPLE) ...
+
+// Vị trí: Đặt hàm này ở cuối file main.js hoặc gần các hàm quản lý data khác.
+// THÊM MỚI: Các hàm tiện ích để quản lý dữ liệu gốc
+function getData() {
+  // Lấy dữ liệu từ localStorage (giả định products được lưu trong bs_data)
+  const dataString = localStorage.getItem("bs_data");
+  // SAMPLE là dữ liệu mẫu ban đầu, đảm bảo nó được định nghĩa ở đâu đó trong main.js
+  return JSON.parse(dataString || JSON.stringify(SAMPLE)); 
+}
+
+function saveData(data) {
+  // Lưu dữ liệu đã thay đổi vào localStorage
+  localStorage.setItem("bs_data", JSON.stringify(data));
+}
+
+// THÊM MỚI: Hàm chính để cập nhật tồn kho
+function updateProductStock(selectedItems) {
+  if (!selectedItems || selectedItems.length === 0) return;
+
+  let data = getData();
+  let products = data.products;
+  let hasUpdated = false;
+
+  selectedItems.forEach((cartItem) => {
+    const productIndex = products.findIndex((p) => p.id === cartItem.id);
+
+    if (productIndex > -1) {
+      const purchasedQty = cartItem.qty;
+      const currentStock = products[productIndex].qty || 0; // Đảm bảo có giá trị mặc định
+
+      // Trừ số lượng tồn kho
+      products[productIndex].qty = currentStock - purchasedQty;
+      hasUpdated = true;
+    }
+  });
+
+  if (hasUpdated) {
+    saveData(data); // Lưu lại toàn bộ data sau khi cập nhật stock
+    // Lưu ý: Cần đảm bảo hàm saveData(data) có sẵn trong main.js
+    console.log("Stock updated successfully.");
+  }
+}
+
+// =============================================================
+// PHẦN BỔ SUNG: QUẢN LÝ SẢN PHẨM (CRUD) cho products.html
+// =============================================================
+
+/**
+ * Lấy toàn bộ danh sách sản phẩm.
+ */
+function getAllProducts() {
+    return getData().products;
+}
+
+/**
+ * Tạo ID mới và thêm một sản phẩm mới vào danh sách.
+ * @param {object} newProduct - Đối tượng sản phẩm mới.
+ */
+function addProduct(newProduct) {
+    let data = getData();
+    let products = data.products;
+    
+    // 1. Tự động gán ID mới (lớn hơn ID hiện tại lớn nhất)
+    const maxId = products.reduce((max, p) => (p.id > max ? p.id : max), 0);
+    newProduct.id = maxId + 1;
+    
+    // 2. Thiết lập trạng thái mặc định và giá trị mặc định cho qty nếu thiếu
+    if (!newProduct.status) {
+        newProduct.status = 'active'; 
+    }
+    if (typeof newProduct.qty === 'undefined' || newProduct.qty === null) {
+        newProduct.qty = 100; // Mặc định số lượng 100
+    }
+    
+    // 3. Thêm sản phẩm vào mảng
+    products.push(newProduct);
+    
+    // 4. Lưu lại dữ liệu vào localStorage
+    saveData(data);
+    
+    console.log(`✅ Sản phẩm mới ID:${newProduct.id} đã được thêm.`);
+    return newProduct;
+}
+
+/**
+ * Cập nhật thông tin của một sản phẩm hiện có.
+ * @param {object} updatedProduct - Đối tượng sản phẩm đã chỉnh sửa (PHẢI có thuộc tính 'id').
+ */
+function updateProduct(updatedProduct) {
+    let data = getData();
+    let products = data.products;
+    
+    const index = products.findIndex(p => p.id === updatedProduct.id);
+    
+    if (index > -1) {
+        // Cập nhật thông tin sản phẩm
+        products[index] = { ...products[index], ...updatedProduct };
+        
+        // Lưu lại dữ liệu
+        saveData(data);
+        console.log(`✅ Sản phẩm ID:${updatedProduct.id} đã được cập nhật.`);
+        return true;
+    }
+    
+    console.error(`🚫 Không tìm thấy sản phẩm ID:${updatedProduct.id} để cập nhật.`);
+    return false;
+}
+
+/**
+ * Thay đổi trạng thái sản phẩm (ví dụ: 'active' hoặc 'inactive').
+ * @param {number} productId - ID của sản phẩm.
+ * @param {string} status - Trạng thái mới.
+ */
+function setProductStatus(productId, status) {
+    let data = getData();
+    let products = data.products;
+    
+    const product = products.find(p => p.id === productId);
+    
+    if (product) {
+        product.status = status;
+        saveData(data);
+        console.log(`✅ Trạng thái sản phẩm ID:${productId} đã đổi thành '${status}'.`);
+        return true;
+    }
+    
+    console.error(`🚫 Không tìm thấy sản phẩm ID:${productId} để thay đổi trạng thái.`);
+    return false;
 }
