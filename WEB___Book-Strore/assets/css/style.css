@@ -1009,7 +1009,7 @@ select {
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 100;
+  z-index: 1000;
   animation: dropdownFade 0.25s ease;
 }
 
@@ -2442,12 +2442,14 @@ footer {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1rem;
+  z-index: 1000;
 }
 
 .user-profile-btn:hover {
   background: linear-gradient(135deg, #7fb3d3 0%, #82c09a 100%);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
 .user-dropdown-icon {
@@ -2497,6 +2499,7 @@ footer {
   position: relative;
   padding-left: 0 !important;
   margin-left: 0 !important;
+  z-index: 1000;
 }
 
 .user-dropdown-menu > li > a,
@@ -2504,6 +2507,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 10px;
+  z-index: 1000;
   padding: 10px 10px;
   padding-left: 0 !important;
   margin-left: 0 !important;
@@ -2806,10 +2810,34 @@ footer {
 #back {
   position: fixed;
   left: 3rem;
-  top: 8rem;
+  top: 7rem;
   z-index: 1000;
 }
+/* Nút quay lại */
+#back {
+  display: inline-block;
+  margin-top: 35px;
+  background: #007bff;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  transition: 0.25s ease;
+}
 
+#back:hover {
+  background: #0056b3;
+  color: #fff;
+}
+
+@media (max-width: 575px) {
+  #back {
+    position: fixed;
+    left: 1rem;
+    top: 12rem;
+    z-index: 1000;
+  }
+}
 /* Nút logout */
 .btn-logout-modal {
   height: 3rem;
@@ -2968,7 +2996,7 @@ footer {
   width: 100vw;
   background: #ffffff;
   height: 5rem;
-  z-index: 999;
+  z-index: 99;
   /* border-radius: 3rem; */
   /* flex: 1; */
 }

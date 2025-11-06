@@ -15,7 +15,7 @@
         position: relative;
         top: 2rem;
         max-width: 800px;
-        margin: 50px auto;
+        margin: 200px auto;
         padding: 20px;
         background: #fff;
         border-radius: 10px;
@@ -82,18 +82,14 @@
     <!-- HEADER -->
     <header class="topbar">
       <div class="logo">
-        <a href="index.html"><img src="images/Logo.png" alt="Logo" /> </a>
-      </div>
-
-      <div class="search-center">
-        <input
-          id="topSearch"
-          class="search-input"
-          type="text"
-          placeholder="Nhập tên cuốn sách bạn đang tìm ..."
-          autocomplete="off"
-        />
-        <button class="search-btn" type="button">Tìm kiếm</button>
+        <a href="index.html">
+          <img class="Logo" src="images/Logo_removebg.png" alt="Logo" />
+          <img
+            class="Word"
+            src="images/Logo_word_removebg.png"
+            alt="Literary Haven"
+          />
+        </a>
       </div>
 
       <div class="auth-cart">
@@ -116,7 +112,7 @@
             class="category-btn"
             onclick="window.location.href='category.html'"
           >
-            Danh mục sách ▾
+            Danh mục ▾
           </button>
 
           <ul class="book-filter">
@@ -208,13 +204,30 @@
         </div>
         <li><a href="news.html">Tin tức</a></li>
       </ul>
+    </nav>
+
+    <!-- Tìm kiếm và giỏ hàng -->
+    <div class="nav_2">
+      <div class="search-center">
+        <input
+          id="topSearch"
+          class="search-input"
+          type="text"
+          placeholder="Nhập tên cuốn sách bạn đang tìm ..."
+          autocomplete="off"
+        />
+        <button class="search-btn" type="button">Tìm kiếm</button>
+      </div>
       <div class="cart-float" id="cartFloat">
         <button id="cartBtnFloat" class="btn">
           <span class="cart-icon">🛒</span>
           <span id="cart-count" class="cart-count">0</span>
         </button>
       </div>
-    </nav>
+    </div>
+
+    <a id="back" href="index.html">&larr; Quay lại trang chủ</a>
+
     <div class="container">
       <h1>Câu hỏi thường gặp (FAQ)</h1>
 
