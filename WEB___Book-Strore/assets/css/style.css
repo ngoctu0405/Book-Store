@@ -2815,7 +2815,7 @@ footer {
 }
 /* Nút quay lại */
 #back {
-  display: inline-block;
+  /* display: inline-block; */
   margin-top: 35px;
   background: #007bff;
   color: #fff;

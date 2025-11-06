@@ -91,7 +91,6 @@
 
       /* Nút quay lại */
       #back {
-        display: inline-block;
         margin-top: 35px;
         background: #007bff;
         color: #fff;
@@ -106,14 +105,27 @@
         color: #fff;
       }
       /* ============================= */
-      /* 📱 MOBILE GÓC NHÌN RỘNG (480px → 620px) */
+      /* 📱 MOBILE GÓC NHÌN RỘNG 575px */
       /* ============================= */
-      @media (min-width: 480px) and (max-width: 620px) {
+      @media (max-width: 575px) {
+        .search-input {
+          width: 90%;
+        }
         body {
           font-size: 1rem;
           background-color: #f8f9fa;
           display: flex;
           justify-content: center;
+        }
+
+        #back {
+          margin-top: 130px;
+          background: #007bff;
+          color: #fff;
+          text-decoration: none;
+          padding: 10px 20px;
+          border-radius: 6px;
+          transition: 0.25s ease;
         }
 
         #page {
@@ -152,17 +164,6 @@
           line-height: 1.8;
           text-align: justify;
           padding: 0 2px;
-        }
-
-        #back {
-          display: block;
-          width: 100%;
-          text-align: center;
-          background: #007bff;
-          color: #fff;
-          border-radius: 6px;
-          margin-top: 25px;
-          padding: 10px 0;
         }
       }
 
