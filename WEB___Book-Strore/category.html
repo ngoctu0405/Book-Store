@@ -9,9 +9,7 @@
 
     <style>
       .container {
-        position: relative;
-        top: 4rem;
-        margin: 3rem auto;
+        margin: 5rem auto;
       }
       /* Container chính cho bộ lọc nâng cao */
       .advanced-filters {
@@ -643,30 +641,32 @@
         </div>
 
         <div class="footer-section contact-info">
-        <h3>Liên hệ</h3>
-        <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
-        <p>📞 Hotline: 1900 xxxx</p>
-        <p>✉️ Email: support@bookstore.vn</p>
-        <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
-        <div class="social-links">
-          <a
-            href="https://www.facebook.com/profile.php?id=100052833923582"
-            target="_blank"
-            >f</a
-          >
-          <a href="https://www.instagram.com/tungoc0405/" target="_blank">📷</a>
-          <a
-            href="https://www.tiktok.com/@traitehaykhoc?_r=1&_t=ZS-91B13gORPSj&fbclid=IwY2xjawN5oDdleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEeiMoX6IjEFBeNLnfX-py5cmpb7Jgn6OXNenvCTQMTmY3ovQAOjYmzsv--T9c_aem_FPRe5Jbt4h2M9pfrpkpJ_g"
-            target="_blank"
-            >♪</a
-          >
-          <a
-            href="https://www.messenger.com/t/6985295158239286/"
-            target="_blank"
-            >📱</a
-          >
+          <h3>Liên hệ</h3>
+          <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
+          <p>📞 Hotline: 1900 xxxx</p>
+          <p>✉️ Email: support@bookstore.vn</p>
+          <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
+          <div class="social-links">
+            <a
+              href="https://www.facebook.com/profile.php?id=100052833923582"
+              target="_blank"
+              >f</a
+            >
+            <a href="https://www.instagram.com/tungoc0405/" target="_blank"
+              >📷</a
+            >
+            <a
+              href="https://www.tiktok.com/@traitehaykhoc?_r=1&_t=ZS-91B13gORPSj&fbclid=IwY2xjawN5oDdleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEeiMoX6IjEFBeNLnfX-py5cmpb7Jgn6OXNenvCTQMTmY3ovQAOjYmzsv--T9c_aem_FPRe5Jbt4h2M9pfrpkpJ_g"
+              target="_blank"
+              >♪</a
+            >
+            <a
+              href="https://www.messenger.com/t/6985295158239286/"
+              target="_blank"
+              >📱</a
+            >
+          </div>
         </div>
-      </div>
       </div>
       <div class="footer-bottom">
         <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
@@ -1435,143 +1435,6 @@
         const active = data.products.filter((p) => p.status === "active");
         renderProducts(active);
       });
-
-      // =======================================================================
-      // === LOGIC SẢN PHẨM CÔNG KHAI (Dành cho category.html) ===
-      // =======================================================================
-
-
-      // Biến toàn cục để lưu danh sách sản phẩm sau khi lọc
-      let allProducts = [];
-      let currentList = [];
-      let currentPage = 1;
-      const perPage = 8; // Số lượng sản phẩm trên mỗi trang (Giả định)
-
-      /**
-       * Lấy dữ liệu sản phẩm từ nguồn (localStorage) và áp dụng bộ lọc.
-       * Hàm này đảm bảo dữ liệu luôn mới nhất sau khi admin cập nhật.
-       */
-      function loadCategoryProducts() {
-        // Giả định hàm getData() đã tồn tại và trả về đối tượng chứa data.products
-        const data = getData();
-        allProducts = data.products || [];
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const catName = urlParams.get("category");
-
-        // 1. Áp dụng bộ lọc
-        if (catName) {
-          // Lọc sản phẩm theo tên danh mục trong URL (Dựa trên cấu trúc sản phẩm mẫu của bạn)
-          currentList = allProducts.filter((p) => p.category === catName);
-
-          // Cập nhật tiêu đề trang
-          const titleEl = document.querySelector("h1.page-title");
-          if (titleEl) {
-            titleEl.textContent = `Sản phẩm thuộc Danh mục: ${catName}`;
-          }
-        } else {
-          // Nếu không có bộ lọc, hiển thị tất cả
-          currentList = allProducts;
-        }
-
-        // 2. Gọi hàm render danh sách với trang đầu tiên
-        renderProductList(1);
-      }
-
-      /**
-       * Render danh sách sản phẩm hiện tại (Hàm đã được nhắc đến trong category.html).
-       * @param {number} page - Trang hiện tại.
-       */
-      function renderProductList(page = 1) {
-        const wrap = document.getElementById("product-list");
-        if (!wrap) return;
-
-        currentPage = page;
-        const all = currentList; // Sử dụng danh sách đã được lọc/cập nhật
-        const start = (page - 1) * perPage;
-        const list = all.slice(start, start + perPage);
-
-        // Nếu không có sản phẩm nào
-        if (list.length === 0) {
-          wrap.innerHTML =
-            '<p class="text-center w-100">Không tìm thấy sản phẩm nào trong danh mục này.</p>';
-          renderPagination(0);
-          return;
-        }
-
-        // Render product cards (Sử dụng mẫu HTML từ category.html)
-        wrap.innerHTML = list
-          .map(
-            (it) => `
-      <div class="product-card">
-        <img src="${it.img}" alt="${it.name}">
-        <div class="product-info">
-          <h3>${it.name}</h3>
-          <p class="product-author">Tác giả: ${it.author || "Đang cập nhật"}</p>
-          <div class="price">${(it.price || 0).toLocaleString("vi-VN")}₫</div>
-          <div class="button-row">
-            <a class="btn btn-small" href="product-detail.html?id=${
-              it.id
-            }">Xem</a>
-            <button class="btn btn-cart" onclick="addToCart(${
-              it.id
-            }, 1)">Thêm vào giỏ</button>
-          </div>
-        </div>
-      </div>
-      `
-          )
-          .join("");
-
-        // Gọi hàm render phân trang
-        renderPagination(Math.ceil(all.length / perPage), currentPage);
-      }
-
-      /**
-       * Hàm render phân trang (Cần thiết cho category.html)
-       */
-      function renderPagination(totalPages, currentPage) {
-        const paginationWrap = document.getElementById("pagination-wrap");
-        if (!paginationWrap) return;
-
-        // Thêm logic tạo nút phân trang ở đây...
-        // (Giả định rằng bạn có một hàm chi tiết hơn)
-        let paginationHtml = "";
-        for (let i = 1; i <= totalPages; i++) {
-          paginationHtml += `<button class="page-link ${
-            i === currentPage ? "active" : ""
-          }" onclick="renderProductList(${i})">${i}</button>`;
-        }
-        paginationWrap.innerHTML = paginationHtml;
-      }
-
-      // =======================================================================
-      // === SỬA ĐỔI HOOK KHỞI TẠO CUỐI main.js ===
-      // =======================================================================
-
-      // Sửa đổi hàm khởi tạo chính trong main.js để gọi loadCategoryProducts()
-      document.addEventListener("DOMContentLoaded", function () {
-        // ... [Logic kiểm tra tài khoản bị khóa] ...
-
-        // This is always the first thing we do. It ensures our "database" exists.
-        // initDatabase(); // Giả định hàm này được gọi ở đầu
-
-        // Check which HTML page is currently loaded and run its specific logic.
-        const page = window.location.pathname.split("/").pop();
-
-        if (page === "index.html" || page === "") {
-          // initializeLoginPage();
-        } else if (page === "dashboard.html") {
-          // initializeDashboard();
-        } else if (page === "category.html") {
-          // ✅ THÊM DÒNG NÀY ĐỂ TẢI DỮ LIỆU SẢN PHẨM MỚI NHẤT KHI TRANG PUBLIC TẢI
-          loadCategoryProducts();
-        }
-      });
     </script>
   </body>
-</html>
-</script>
-</body>
-
 </html>
