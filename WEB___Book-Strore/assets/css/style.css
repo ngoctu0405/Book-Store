@@ -1505,9 +1505,6 @@ section {
 }
 
 @media (max-width: 720px) {
-  .search-input {
-    display: none;
-  }
   .navbar {
     overflow: auto;
   }
@@ -2981,6 +2978,10 @@ footer {
 }
 /* Media thanh nav */
 @media (max-width: 575px) {
+  .search-input {
+    position: relative;
+    top: -1px;
+  }
   .user-profile-dropdown {
     position: relative;
     top: -1rem;
