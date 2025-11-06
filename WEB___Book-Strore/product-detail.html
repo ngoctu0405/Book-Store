@@ -996,6 +996,41 @@
   </div>
 </div>
 </body>
+<script >
+  document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = parseInt(urlParams.get('id')); // Giả sử bạn truyền ID sản phẩm
+    
+    if (productId) {
+        // 1. Lấy toàn bộ danh sách sản phẩm mới nhất
+        const products = getAllProducts(); 
+        
+        // 2. Tìm sản phẩm chi tiết
+        const product = products.find(p => p.id === productId);
+        
+        if (product && product.status !== 'inactive') {
+            // 3. Hiển thị chi tiết sản phẩm
+            renderProductDetail(product); 
+        } else {
+            document.getElementById('product-detail-container').innerHTML = '<h2>Sản phẩm không tồn tại hoặc đã ngừng bán.</h2>';
+        }
+    }
+});
+const productDetailContainerEl = document.getElementById('product-detail-container');
+
+if (productId) {
+    // ... logic tìm sản phẩm ...
+    
+    if (product && product.status !== 'inactive') {
+        // ...
+    } else {
+        // Chỉ cố gắng thiết lập innerHTML nếu phần tử container tồn tại
+        if (productDetailContainerEl) { 
+            productDetailContainerEl.innerHTML = '<h2>Sản phẩm không tồn tại hoặc đã ngừng bán.</h2>';
+        }
+    }
+}
+</script>
 <script src="assets/js/main.js"></script>
 <script src="bootstrap-5.3.2-dist/css/bootstrap.min.js"></script>
 </html>
