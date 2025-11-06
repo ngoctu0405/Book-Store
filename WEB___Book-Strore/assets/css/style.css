@@ -39,7 +39,7 @@ body {
 
 .search-center {
   flex: 1;
-  max-width: 500px;
+  max-width: 800px;
   margin: 0 2rem;
 }
 
@@ -1380,6 +1380,7 @@ select {
 /* ===== CART FLOAT ===== */
 .cart-float {
   position: absolute;
+  top: 1rem;
   right: 2rem;
   display: flex;
   align-items: center;
@@ -2199,7 +2200,7 @@ footer {
 .search-center {
   position: relative;
   flex: 1;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 20px;
 }
 
@@ -2964,12 +2965,14 @@ footer {
 .nav_2 {
   display: flex;
   justify-content: center;
-  position: relative;
-  top: 3.5rem;
+  position: fixed;
+  top: 7.5rem;
   width: 100vw;
   background: #ffffff;
   height: 5rem;
+  z-index: 999;
   /* border-radius: 3rem; */
+  /* flex: 1; */
 }
 .search-input {
   position: relative;
@@ -3005,11 +3008,7 @@ footer {
     border-radius: 3rem;
     height: 3rem;
   }
-  .search-input {
-  }
   .category-btn {
     width: 9rem;
-  }
-  #cartBtnFloat {
   }
 }
