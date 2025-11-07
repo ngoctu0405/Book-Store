@@ -15,7 +15,7 @@
       .container {
         position: relative;
         top: 8rem;
-        height: 190rem;
+        height: 210rem;
       }
 
       /* ================= Banner ================= */
@@ -503,6 +503,57 @@
         font-weight: 700;
         margin-bottom: 1rem;
       }
+      /* Responsive cho thiết bị di động (dưới 768px) */
+      @media (max-width: 767px) {
+        .container {
+          height: 350rem;
+          max-width: 700px;
+        }
+        /* About us */
+        .col-md-6 {
+          position: relative;
+          top: 2rem;
+        }
+        .py-5 {
+          padding: 15rem 0;
+          height: 60rem;
+        }
+        .col-md-6-nd {
+          position: relative;
+          top: 10rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        .hot_sale_selection {
+          height: 120rem;
+        }
+        .col-12 {
+          margin: 1rem 9rem;
+        }
+      }
+
+      /* Responsive cho thiết bị di động (trên 769px) */
+      @media (min-width: 768px) {
+        .logo .Word {
+          position: relative;
+          left: -3rem;
+        }
+        .logo .Logo {
+          position: relative;
+          left: -3rem;
+        }
+        .search-center {
+          margin: 0 150px;
+        }
+        .navbar .menu li a {
+          width: 8rem;
+        }
+        .category-btn {
+          width: 9rem;
+        }
+      }
     </style>
 
     <!-- Nút back to top -->
@@ -826,7 +877,7 @@
             </div>
 
             <!-- CỘT PHẢI: NỘI DUNG -->
-            <div class="col-md-6">
+            <div class="col-md-6-nd">
               <h2 class="intro-title">
                 Giới thiệu <span>Literary Haven!</span>
               </h2>

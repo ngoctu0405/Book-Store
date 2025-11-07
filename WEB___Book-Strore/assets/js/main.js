@@ -1016,57 +1016,59 @@ function increaseQty() {
 // BẮT ĐẦU PHẦN CHỈNH SỬA LOGIC GIỎ HÀNG
 // Sửa lại hàm addToCart để yêu cầu đăng nhập trước khi thêm vào giỏ
 function addToCart(id, qty = 1) {
-    // Lấy thông tin sản phẩm (CẦN CÓ HÀM findProductById() TỒN TẠI)
-    const product = findProductById(id);
-    if (!product) return alert("Sản phẩm không tồn tại.");
+  // LOGIC BẮT BUỘC ĐĂNG NHẬP
+  const user = localStorage.getItem("bs_user");
+  if (!user) {
+    // Nếu chưa đăng nhập, HIỆN MODAL ĐĂNG NHẬP
+    openLoginModal();
+    return;
+  }
+  // KẾT THÚC LOGIC BẮT BUỘC ĐĂNG NHẬP
 
-    // 1. Lấy số lượng tồn kho thực tế
-    const realStockQty = parseInt(product.qty) || 0;
-    
-    // Ép kiểu số lượng muốn mua và kiểm tra
-    const requestedQty = Number(qty);
+  // *** BẮT ĐẦU KIỂM TRA TỒN KHO ***
+  const quantityToAdd = Number(qty);
+  const productId = id;
+  
+  const cart = getCart();
+  const product = findProductById(productId); // Sử dụng hàm đã sửa ở trên
+  
+  // Kiểm tra nếu không tìm thấy sản phẩm (có thể đã bị xóa)
+  if (!product) {
+      alert("Lỗi: Không tìm thấy thông tin sản phẩm.");
+      return;
+  }
 
-    if (requestedQty <= 0) {
-        return alert("Vui lòng chọn số lượng lớn hơn 0.");
-    }
+  const itemInCart = cart.find(i => i.id === productId);
+  const qtyInCart = itemInCart ? itemInCart.qty : 0;
+  const stockQty = product.qty; // Lấy tồn kho từ dữ liệu
 
-    // 2. KIỂM TRA GIỚI HẠN TỒN KHO
-    if (requestedQty > realStockQty) {
-        return alert(`🚫 Số lượng tối đa có thể mua là ${realStockQty} sản phẩm.`);
-    }
+  if (qtyInCart + quantityToAdd > stockQty) {
+      alert(`Số lượng tồn kho của sản phẩm "${product.name}" không đủ.\n\nTồn kho: ${stockQty}\nTrong giỏ: ${qtyInCart}\n\nBạn không thể thêm ${quantityToAdd} sản phẩm nữa.`);
+      return;
+  }
+  // *** KẾT THÚC KIỂM TRA TỒN KHO ***
 
-    // LOGIC BẮT BUỘC ĐĂNG NHẬP (Giữ nguyên)
-    const user = localStorage.getItem("bs_user");
-    if (!user) {
-        openLoginModal();
-        return;
-    }
-    // KẾT THÚC LOGIC BẮT BUỘC ĐĂNG NHẬP
+  // Kiểm tra xem sản phẩm đã có trong giỏ chưa
+  const ex = cart.find((i) => i.id === id);
 
-    const cart = getCart();
-    const ex = cart.find((i) => i.id === id);
-    
-    // Tính toán số lượng sau khi thêm vào giỏ hàng
-    const totalQtyInCart = ex ? ex.qty + requestedQty : requestedQty;
-    
-    // 3. KIỂM TRA LẠI GIỚI HẠN KHI GỘP ĐƠN HÀNG (đã có trong giỏ + số lượng muốn mua)
-    if (totalQtyInCart > realStockQty) {
-        return alert(`🚫 Bạn đã có ${ex.qty} sản phẩm trong giỏ. Số lượng tối đa còn lại có thể mua là ${realStockQty - ex.qty} sản phẩm.`);
-    }
+  if (ex) {
+    // Nếu có, tăng số lượng
+    ex.qty += Number(qty);
+  } else {
+    // Nếu chưa, thêm mới sản phẩm
+    cart.push({ id: id, qty: Number(qty) });
+  }
 
-    if (ex) {
-        // Nếu có, tăng số lượng
-        ex.qty = totalQtyInCart; // Dùng giá trị đã tính toán
-    } else {
-        // Nếu chưa, thêm mới sản phẩm
-        cart.push({ id: id, qty: requestedQty });
-    }
+  // Lưu giỏ hàng đã cập nhật vào LocalStorage
+  saveCart(cart);
 
-    // Lưu và Cập nhật
-    saveCart(cart);
-    if (typeof updateCartCount === "function") updateCartCount();
-    alert("✅ Đã thêm sản phẩm vào giỏ hàng thành công!");
-    if (typeof renderCart === "function") renderCart();
+  // Cập nhật số lượng hiển thị trên icon giỏ hàng
+  if (typeof updateCartCount === "function") updateCartCount();
+
+  alert("✅ Đã thêm sản phẩm vào giỏ hàng thành công!");
+
+  // Nếu bạn đang ở trang giỏ hàng (cart.html), renderCart sẽ cập nhật lại danh sách
+  if (typeof renderCart === "function") renderCart();
 }
 // KẾT THÚC PHẦN CHỈNH SỬA LOGIC GIỎ HÀNG
 
@@ -1155,7 +1157,7 @@ function formatPrice(price) {
 
 function findProductById(id) {
   return getData().products.find((p) => p.id === id);
-}
+} 
 
 function goBack() {
   if (document.referrer && document.referrer.includes("category.html")) {
@@ -1231,11 +1233,11 @@ function renderProductDetailPage(product) {
           </div>
         </div>
 
-        <div class="quantity-selector">
+       <div class="quantity-selector">
           <span class="shipping-label">Số lượng:</span>
           <div class="quantity-controls">
             <button class="qty-btn" onclick="decreaseQty()">−</button>
-            <input type="number" class="qty-input" value="1" id="qty" min="1" max="100000" >
+            <input type="number" class="qty-input" value="1" id="qty" min="1" max="${product.qty}" onchange="validateQtyInput()">
             <button class="qty-btn" onclick="increaseQty()">+</button>
           </div>
           <span class="stock-status">Còn hàng</span>
@@ -1300,6 +1302,31 @@ function renderProductDetailPage(product) {
   `;
 }
 
+function validateQtyInput() {
+    const input = document.getElementById("qty");
+    if (!input) return;
+
+    const min = parseInt(input.min);
+    const max = parseInt(input.max);
+    let value = parseInt(input.value);
+
+    // Kiểm tra nếu giá trị không phải là số hoặc nhỏ hơn 1
+    if (isNaN(value) || value < min) {
+        input.value = min;
+        return;
+    }
+
+    // Kiểm tra nếu giá trị lớn hơn tồn kho
+    if (value > max) {
+        input.value = max;
+        alert(`Số lượng tồn kho chỉ còn ${max} sản phẩm.`);
+        return;
+    }
+
+    // Ghi lại giá trị đã làm tròn (nếu người dùng nhập số thập phân)
+    input.value = value;
+}
+
 // Cập nhật hàm tăng số lượng (increaseQty) để giới hạn theo số lượng tồn kho (max attribute)
 function increaseQty() {
     const input = document.getElementById("qty");
@@ -1330,7 +1357,7 @@ function decreaseQty() {
 // BẮT ĐẦU PHẦN CHỈNH SỬA LOGIC CHI TIẾT SẢN PHẨM
 function addToCartDetail(productId) {
   const qtyInput = document.getElementById("qty");
-  const qty = qtyInput ? parseInt(qtyInput.value) : 1;
+  const quantityToAdd = qtyInput ? parseInt(qtyInput.value) : 1;
   const product = findProductById(productId);
 
   // LOGIC BẮT BUỘC ĐĂNG NHẬP (HIỆN MODAL)
@@ -1341,11 +1368,22 @@ function addToCartDetail(productId) {
   }
   // KẾT THÚC LOGIC BẮT BUỘC ĐĂNG NHẬP
 
-  // Add to cart
+  // *** BẮT ĐẦU KIỂM TRA TỒN KHO ***
   const cart = getCart();
+  const itemInCart = cart.find(i => i.id === productId);
+  const qtyInCart = itemInCart ? itemInCart.qty : 0;
+  const stockQty = product.qty; // Lấy tồn kho từ dữ liệu
+
+  if (qtyInCart + quantityToAdd > stockQty) {
+      alert(`Số lượng tồn kho của sản phẩm "${product.name}" không đủ.\n\nTồn kho: ${stockQty}\nTrong giỏ: ${qtyInCart}\n\nBạn không thể thêm ${quantityToAdd} sản phẩm nữa.`);
+      return;
+  }
+  // *** KẾT THÚC KIỂM TRA TỒN KHO ***
+
+  // Add to cart
   const ex = cart.find((i) => i.id === productId);
-  if (ex) ex.qty += Number(qty);
-  else cart.push({ id: productId, qty: Number(qty) });
+  if (ex) ex.qty += Number(quantityToAdd);
+  else cart.push({ id: productId, qty: Number(quantityToAdd) });
   saveCart(cart);
   updateCartCount();
 
@@ -1353,15 +1391,15 @@ function addToCartDetail(productId) {
   const cartCount = document.getElementById("cartCount");
   if (cartCount) {
     const currentCount = parseInt(cartCount.textContent);
-    cartCount.textContent = currentCount + qty;
+    cartCount.textContent = currentCount + quantityToAdd;
   }
 
-  alert(`Đã thêm ${qty} × "${product.name}" vào giỏ hàng!`);
+  alert(`Đã thêm ${quantityToAdd} × "${product.name}" vào giỏ hàng!`);
 }
 
 function buyNow(productId) {
   const qtyInput = document.getElementById("qty");
-  const qty = qtyInput ? parseInt(qtyInput.value) : 1;
+  const quantityToAdd = qtyInput ? parseInt(qtyInput.value) : 1;
 
   // LOGIC BẮT BUỘC ĐĂNG NHẬP (HIỆN MODAL)
   const user = localStorage.getItem("bs_user");
@@ -1371,11 +1409,23 @@ function buyNow(productId) {
   }
   // KẾT THÚC LOGIC BẮT BUỘC ĐĂNG NHẬP
 
-  // Add to cart first
+  // *** BẮT ĐẦU KIỂM TRA TỒN KHO ***
   const cart = getCart();
+  const product = findProductById(productId);
+  const itemInCart = cart.find(i => i.id === productId);
+  const qtyInCart = itemInCart ? itemInCart.qty : 0;
+  const stockQty = product.qty; // Lấy tồn kho từ dữ liệu
+
+  if (qtyInCart + quantityToAdd > stockQty) {
+      alert(`Số lượng tồn kho của sản phẩm "${product.name}" không đủ.\n\nTồn kho: ${stockQty}\nTrong giỏ: ${qtyInCart}\n\nBạn không thể thêm ${quantityToAdd} sản phẩm nữa.`);
+      return;
+  }
+  // *** KẾT THÚC KIỂM TRA TỒN KHO ***
+
+  // Add to cart first
   const ex = cart.find((i) => i.id === productId);
-  if (ex) ex.qty += Number(qty);
-  else cart.push({ id: productId, qty: Number(qty) });
+  if (ex) ex.qty += Number(quantityToAdd);
+  else cart.push({ id: productId, qty: Number(quantityToAdd) });
   saveCart(cart);
 
   // Redirect to cart page
