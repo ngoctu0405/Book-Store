@@ -1,195 +1,310 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý Loại Sản phẩm</title>
+
      <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <style>
+        /* Responsive cho thiết bị di động (max-width: 768px) */
+@media (max-width: 768px) {
+    /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
+    body {
+        display: flex !important;
+        flex-direction: column !important; /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
+        overflow-x: hidden; /* Tắt cuộn ngang vì đã xếp chồng */
+    }
+
+    /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
+    .sidebar {
+        width: 100% !important; 
+        /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
+        height: auto !important; 
+        flex-shrink: 0;
+        display: flex !important;
+        
+        /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
+        overflow-x: auto; /* Cho phép menu cuộn ngang nếu có nhiều mục */
+        white-space: nowrap; /* Ngăn các mục menu xuống dòng */
+    }
+    
+    /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
+    .main-content {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
+    .page-content {
+        padding: 15px !important;
+    }
+
+    .page-content h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
+    .table-responsive {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        min-width: 600px; /* Vẫn cần min-width cho bảng */
+    }
+
+    .table thead th, 
+    .table tbody td {
+        padding: 8px 6px; 
+        font-size: 12px; 
+    }
+    
+    .profit-input {
+        width: 50px;
+        padding: 4px 2px;
+        font-size: 12px;
+    }
+
+    .btn-sm {
+        padding: 3px 6px; 
+        font-size: 10px;
+    }
+    
+    .table tbody td span.small {
+        display: none;
+    }
+}
+
+/* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
+@media (min-width: 769px) {
+    body {
+        display: flex !important; 
+        flex-direction: row !important; /* Khôi phục thành row trên desktop */
+        overflow-x: hidden; 
+    }
+    .sidebar {
+        /* Giả sử chiều rộng desktop là 250px */
+        width: 250px !important; 
+        height: 100vh !important; /* Khôi phục vh-100 trên desktop */
+        display: flex !important;
+    }
+    .main-content {
+        width: 100%;
+    }
+}
+    </style>
 </head>
 <body>
     
+
+    <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
+    <link
+      rel="stylesheet"
+      href="../bootstrap-5.3.2-dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/admin_style.css" />
+  </head>
+  <body>
+
     <!-- SIDEBAR -->
     <aside class="sidebar d-flex flex-column vh-100">
-        <div class="sidebar-header">
-            Literary Haven
-        </div>
+      <div class="sidebar-header">Literary Haven</div>
 
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="dashboard.html" class="nav-link">
-                    <span class="nav-icon">◈</span>
-                    <span>Bảng điều khiển</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="users.html" class="nav-link">
-                    <span class="nav-icon">◉</span>
-                    <span>Khách hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="categories.html" class="nav-link">
-                    <span class="nav-icon">◫</span>
-                    <span>Loại sản phẩm</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="products.html" class="nav-link">
-                    <span class="nav-icon">◪</span>
-                    <span>Sản phẩm</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="purchase-orders.html" class="nav-link">
-                    <span class="nav-icon">◩</span>
-                    <span>Nhập hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="pricing.html" class="nav-link">
-                    <span class="nav-icon">◎</span>
-                    <span>Quản lý giá</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="orders.html" class="nav-link">
-                    <span class="nav-icon">◧</span>
-                    <span>Đơn hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="inventory.html" class="nav-link">
-                    <span class="nav-icon">◨</span>
-                    <span>Tồn kho</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="reports.html" class="nav-link">
-                    <span class="nav-icon">◔</span>
-                    <span>Báo cáo</span>
-                </a>
-            </li>
-        </ul>
-        
-        <div class="mt-auto p-3">
-            <a href="index.html" class="logout-link">
-                <span>◀</span>
-                <span>Đăng xuất</span>
-            </a>
-        </div>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">◈</span>
+            <span>Bảng điều khiển</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="users.html" class="nav-link">
+            <span class="nav-icon">◉</span>
+            <span>Khách hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="categories.html" class="nav-link">
+            <span class="nav-icon">◫</span>
+            <span>Loại sản phẩm</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="products.html" class="nav-link">
+            <span class="nav-icon">◪</span>
+            <span>Sản phẩm</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="purchase-orders.html" class="nav-link">
+            <span class="nav-icon">◩</span>
+            <span>Nhập hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="pricing.html" class="nav-link">
+            <span class="nav-icon">◎</span>
+            <span>Quản lý giá</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="orders.html" class="nav-link">
+            <span class="nav-icon">◧</span>
+            <span>Đơn hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="inventory.html" class="nav-link">
+            <span class="nav-icon">◨</span>
+            <span>Tồn kho</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="reports.html" class="nav-link">
+            <span class="nav-icon">◔</span>
+            <span>Báo cáo</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="mt-auto p-3">
+        <a href="index.html" class="logout-link">
+          <span>◀</span>
+          <span>Đăng xuất</span>
+        </a>
+      </div>
     </aside>
 
     <main class="main-content">
+      <div class="page-content p-4">
+        <h1 class="mb-4">Quản lý Loại Sản phẩm</h1>
 
-        <div class="page-content p-4">
-            <h1 class="mb-4">Quản lý Loại Sản phẩm</h1>
-
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="form-container p-4">
-                        <h3 class="h5 mb-3" id="category-form-title">Thêm loại mới</h3>
-                        <form id="categoryForm">
-                            <div class="mb-3">
-                                <label for="category-name" class="form-label">Tên loại sản phẩm</label>
-                                <input type="text" class="form-control" id="category-name" required>
-                            </div>
-                            <div class="form-actions">
-                                <button type="button" class="btn btn-secondary">Hủy</button>
-                                <button type="submit" class="btn btn-primary ms-2">Lưu</button>
-                            </div>
-                        </form>
-                    </div>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="form-container p-4">
+              <h3 class="h5 mb-3" id="category-form-title">Thêm loại mới</h3>
+              <form id="categoryForm">
+                <div class="mb-3">
+                  <label for="category-name" class="form-label"
+                    >Tên loại sản phẩm</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="category-name"
+                    required
+                  />
                 </div>
-
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="h5 mb-0">Danh sách loại sản phẩm</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Tên loại</th>
-                                            <th>Trạng thái</th>
-                                            <th>Hành động</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-actions">
+                  <button type="button" class="btn btn-secondary">Hủy</button>
+                  <button type="submit" class="btn btn-primary ms-2">
+                    Lưu
+                  </button>
                 </div>
+              </form>
             </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="h5 mb-0">Danh sách loại sản phẩm</h3>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Tên loại</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </main>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/admin_main.js"></script>
-<script>
-    // --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
-    const CATEGORIES_STORAGE_KEY = 'admin_categories_data';
+    <script>
+      // --- KHAI BÁO VÀ KHỞI TẠO DỮ LIỆU ---
+      const CATEGORIES_STORAGE_KEY = "admin_categories_data";
 
-    /**
-     * Lấy danh sách categories từ Local Storage, nếu chưa có thì dùng mặc định
-     * CHÚ THÍCH: Hàm này đã được cập nhật để gọi hàm khởi tạo bên category.html nếu dữ liệu chưa tồn tại
-     * Hoặc đơn giản là đọc dữ liệu đã được khởi tạo bởi category.html
-     */
-    function getCategories() {
+      /**
+       * Lấy danh sách categories từ Local Storage, nếu chưa có thì dùng mặc định
+       * CHÚ THÍCH: Hàm này đã được cập nhật để gọi hàm khởi tạo bên category.html nếu dữ liệu chưa tồn tại
+       * Hoặc đơn giản là đọc dữ liệu đã được khởi tạo bởi category.html
+       */
+      function getCategories() {
         const storedData = localStorage.getItem(CATEGORIES_STORAGE_KEY);
         if (storedData) {
-            try {
-                return JSON.parse(storedData);
-            } catch (e) {
-                console.error("Lỗi khi phân tích dữ liệu categories từ localStorage:", e);
-                // Nếu lỗi, trả về mảng rỗng để admin có thể thêm mới
-                return []; 
-            }
+          try {
+            return JSON.parse(storedData);
+          } catch (e) {
+            console.error(
+              "Lỗi khi phân tích dữ liệu categories từ localStorage:",
+              e
+            );
+            // Nếu lỗi, trả về mảng rỗng để admin có thể thêm mới
+            return [];
+          }
         }
         // Nếu admin truy cập lần đầu, dữ liệu đã được category.html tạo
         // Nếu chưa có (vì chưa ai truy cập user): trả về mảng rỗng để loadCategories bên dưới tạo mới.
-        return []; 
-    }
+        return [];
+      }
 
-    /**
-     * Lưu danh sách categories vào Local Storage
-     */
-    function saveCategories(categories) {
-        localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(categories));
-    }
+      /**
+       * Lưu danh sách categories vào Local Storage
+       */
+      function saveCategories(categories) {
+        localStorage.setItem(
+          CATEGORIES_STORAGE_KEY,
+          JSON.stringify(categories)
+        );
+      }
 
-    // --- LOGIC FORM VÀ BẢNG ---
-    const categoryForm = document.getElementById('categoryForm');
-    const categoryNameInput = document.getElementById('category-name');
-    const tableBody = document.querySelector('.table tbody');
-    const formTitle = document.getElementById('category-form-title');
-    let categories = getCategories();
-    let isEditing = false;
-    let editingIndex = -1;
+      // --- LOGIC FORM VÀ BẢNG ---
+      const categoryForm = document.getElementById("categoryForm");
+      const categoryNameInput = document.getElementById("category-name");
+      const tableBody = document.querySelector(".table tbody");
+      const formTitle = document.getElementById("category-form-title");
+      let categories = getCategories();
+      let isEditing = false;
+      let editingIndex = -1;
 
-    /**
-     * Render danh sách categories ra bảng
-     */
-    function renderCategories() {
-        // Lần đầu tiên, đảm bảo dữ liệu mặc định được lưu lại 
+      /**
+       * Render danh sách categories ra bảng
+       */
+      function renderCategories() {
+        // Lần đầu tiên, đảm bảo dữ liệu mặc định được lưu lại
         // -> **ĐÃ CHUYỂN LOGIC KHỞI TẠO SANG category.html**
         // Do đó, chỉ cần kiểm tra nếu categories rỗng (admin truy cập lần đầu),
         // Admin sẽ phải thêm category mới.
-        
-        tableBody.innerHTML = ''; // Xóa nội dung cũ
-        
-        categories.forEach((cat, index) => {
-            const statusClass = cat.status === 'active' ? 'delivered' : 'pending';
-            const statusText = cat.status === 'active' ? 'Đang hiển thị' : 'Đã ẩn';
-            const actionButton = cat.status === 'active' 
-                ? `<button class="btn btn-sm btn-outline-danger" onclick="toggleCategoryStatus(${index})">Ẩn</button>`
-                : `<button class="btn btn-sm btn-outline-success" onclick="toggleCategoryStatus(${index})">Hiện</button>`;
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
+        tableBody.innerHTML = ""; // Xóa nội dung cũ
+
+        categories.forEach((cat, index) => {
+          const statusClass = cat.status === "active" ? "delivered" : "pending";
+          const statusText =
+            cat.status === "active" ? "Đang hiển thị" : "Đã ẩn";
+          const actionButton =
+            cat.status === "active"
+              ? `<button class="btn btn-sm btn-outline-danger" onclick="toggleCategoryStatus(${index})">Ẩn</button>`
+              : `<button class="btn btn-sm btn-outline-success" onclick="toggleCategoryStatus(${index})">Hiện</button>`;
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
                 <td>${cat.name}</td>
                 <td><span class="status ${statusClass}">${statusText}</span></td>
                 <td>
@@ -197,101 +312,107 @@
                     ${actionButton}
                 </td>
             `;
-            tableBody.appendChild(row);
+          tableBody.appendChild(row);
         });
-    }
+      }
 
-    /**
-     * Xử lý khi submit form: Thêm hoặc Sửa category
-     */
-    categoryForm.addEventListener('submit', function(e) {
+      /**
+       * Xử lý khi submit form: Thêm hoặc Sửa category
+       */
+      categoryForm.addEventListener("submit", function (e) {
         e.preventDefault();
         const name = categoryNameInput.value.trim();
         if (!name) return;
 
         // Chuẩn hóa tên (ví dụ: viết hoa chữ cái đầu)
-        const newName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+        const newName =
+          name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 
         if (isEditing) {
-            // Logic Sửa
-            categories[editingIndex].name = newName;
-            
-            // Đặt lại trạng thái form
-            isEditing = false;
-            editingIndex = -1;
-            categoryForm.querySelector('button[type="submit"]').textContent = 'Lưu';
-            formTitle.textContent = 'Thêm loại mới';
-            // Không cần reset nút Hủy/Hủy sửa nếu dùng button type="submit"
+          // Logic Sửa
+          categories[editingIndex].name = newName;
+
+          // Đặt lại trạng thái form
+          isEditing = false;
+          editingIndex = -1;
+          categoryForm.querySelector('button[type="submit"]').textContent =
+            "Lưu";
+          formTitle.textContent = "Thêm loại mới";
+          // Không cần reset nút Hủy/Hủy sửa nếu dùng button type="submit"
         } else {
-            // Logic Thêm mới
-            const newCategory = {
-                name: newName,
-                // Lấy subcategories mặc định từ bên file category.html
-                subcategories: [`Tất cả ${newName}`], 
-                status: 'active'
-            };
-            categories.push(newCategory);
+          // Logic Thêm mới
+          const newCategory = {
+            name: newName,
+            // Lấy subcategories mặc định từ bên file category.html
+            subcategories: [`Tất cả ${newName}`],
+            status: "active",
+          };
+          categories.push(newCategory);
         }
 
-        categoryNameInput.value = '';
+        categoryNameInput.value = "";
         saveCategories(categories);
         renderCategories();
-    });
+      });
 
-    /**
-     * Chuyển chế độ sang Sửa (Edit)
-     */
-    window.editCategory = function(index) {
+      /**
+       * Chuyển chế độ sang Sửa (Edit)
+       */
+      window.editCategory = function (index) {
         const cat = categories[index];
         isEditing = true;
         editingIndex = index;
         categoryNameInput.value = cat.name;
         formTitle.textContent = `Sửa loại: ${cat.name}`;
-        categoryForm.querySelector('button[type="submit"]').textContent = 'Cập nhật';
-        categoryForm.querySelector('.btn-secondary').textContent = 'Hủy sửa';
-    }
-    
-    /**
-     * Chuyển đổi trạng thái category (Ẩn/Hiện)
-     */
-    window.toggleCategoryStatus = function(index) {
+        categoryForm.querySelector('button[type="submit"]').textContent =
+          "Cập nhật";
+        categoryForm.querySelector(".btn-secondary").textContent = "Hủy sửa";
+      };
+
+      /**
+       * Chuyển đổi trạng thái category (Ẩn/Hiện)
+       */
+      window.toggleCategoryStatus = function (index) {
         const currentStatus = categories[index].status;
-        categories[index].status = currentStatus === 'active' ? 'hidden' : 'active';
+        categories[index].status =
+          currentStatus === "active" ? "hidden" : "active";
         saveCategories(categories);
         renderCategories();
-    }
-    
-    /**
-     * Xử lý nút Hủy
-     */
-    document.querySelector('.form-actions .btn-secondary').addEventListener('click', function() {
-        if (isEditing) {
+      };
+
+      /**
+       * Xử lý nút Hủy
+       */
+      document
+        .querySelector(".form-actions .btn-secondary")
+        .addEventListener("click", function () {
+          if (isEditing) {
             // Hủy chế độ chỉnh sửa
             isEditing = false;
             editingIndex = -1;
-            categoryNameInput.value = '';
-            formTitle.textContent = 'Thêm loại mới';
-            categoryForm.querySelector('button[type="submit"]').textContent = 'Lưu';
-            this.textContent = 'Hủy';
-        } else {
+            categoryNameInput.value = "";
+            formTitle.textContent = "Thêm loại mới";
+            categoryForm.querySelector('button[type="submit"]').textContent =
+              "Lưu";
+            this.textContent = "Hủy";
+          } else {
             // Xóa nội dung input
-            categoryNameInput.value = '';
-        }
-    });
+            categoryNameInput.value = "";
+          }
+        });
 
-    // Khởi tạo bảng khi tải trang
-    document.addEventListener('DOMContentLoaded', renderCategories);
-    // main.js - phần này không cần nữa vì đã chuyển sang category.html
-    // if (!localStorage.getItem("admin_categories_data")) {
-    //   const defaultCategories = [
-    //     { name: "Văn học", subcategories: ["Tiểu thuyết", "Truyện ngắn", "Thơ"] },
-    //     { name: "Kinh tế", subcategories: ["Quản trị", "Tài chính", "Khởi nghiệp"] },
-    //     { name: "Thiếu nhi", subcategories: ["Truyện tranh", "Sách tô màu", "Truyện cổ tích"] },
-    //     { name: "Giáo khoa", subcategories: ["Cấp 1", "Cấp 2", "Cấp 3"] }
-    //   ];
-    //   localStorage.setItem("admin_categories_data", JSON.stringify(defaultCategories));
-    // }
-
-</script>
-</body>
+      // Khởi tạo bảng khi tải trang
+      document.addEventListener("DOMContentLoaded", renderCategories);
+      // main.js - phần này không cần nữa vì đã chuyển sang category.html
+      // if (!localStorage.getItem("admin_categories_data")) {
+      //   const defaultCategories = [
+      //     { name: "Văn học", subcategories: ["Tiểu thuyết", "Truyện ngắn", "Thơ"] },
+      //     { name: "Kinh tế", subcategories: ["Quản trị", "Tài chính", "Khởi nghiệp"] },
+      //     { name: "Thiếu nhi", subcategories: ["Truyện tranh", "Sách tô màu", "Truyện cổ tích"] },
+      //     { name: "Giáo khoa", subcategories: ["Cấp 1", "Cấp 2", "Cấp 3"] }
+      //   ];
+      //   localStorage.setItem("admin_categories_data", JSON.stringify(defaultCategories));
+      // }
+    </script>
+  </body>
 </html>

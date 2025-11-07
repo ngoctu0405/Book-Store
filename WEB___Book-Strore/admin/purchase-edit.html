@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết Phiếu nhập hàng</title>
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+
+     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
 </head>
 <body>
@@ -77,37 +78,48 @@
                 <span>Đăng xuất</span>
             </a>
         </div>
-    </aside>
+    </aside>>
 
     <main class="main-content">
+        <header class="top-bar p-3 d-flex justify-content-between align-items-center">
+            <form class="search-bar d-flex align-items-center">
+                <input class="form-control" type="search" placeholder="Tìm kiếm...">
+            </form>
+            <div class="profile-area d-flex align-items-center">
+                <div class="profile-pic ms-3"></div>
+            </div>
+        </header>
+
         <div class="page-content p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="mb-0" id="po-page-title">Thêm Phiếu nhập hàng mới</h1>
+                <h1 class="mb-0">Thêm Phiếu nhập hàng mới</h1>
                 <a href="purchase-orders.html" class="btn btn-secondary">Quay lại danh sách</a>
             </div>
 
             <div class="row g-4">
                 <div class="col-lg-8">
-                    <div class="card mb-4" id="po-add-item-card">
+                    <div class="card mb-4">
                         <div class="card-header"><h3 class="h5 mb-0">Thêm sản phẩm vào phiếu</h3></div>
                         <div class="card-body">
                             <form class="row g-3 align-items-end">
                                 <div class="col-md-5">
-                                    <label class="form-label">Chọn sản phẩm (Sách)</label>
-                                    <select class="form-select" id="po-product-select">
-                                        <option selected value="">-- Đang tải sản phẩm --</option>
+                                    <label class="form-label">Chọn sản phẩm</label>
+                                    <select class="form-select">
+                                        <option selected>-- Tìm & chọn sản phẩm --</option>
+                                        <option value="1">Sáp vuốt tóc Apestomen Nitro</option>
+                                        <option value="2">Sáp vuốt tóc Blumaan Gold</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="form-label">Giá nhập (Cost)</label>
-                                    <input type="number" class="form-control" id="po-cost-price" placeholder="0">
+                                    <label class="form-label">Giá nhập</label>
+                                    <input type="number" class="form-control" placeholder="0">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Số lượng</label>
-                                    <input type="number" class="form-control" id="po-quantity" value="1" min="1">
+                                    <input type="number" class="form-control" value="1">
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="btn btn-primary w-100" id="po-add-item-btn">Thêm</button>
+                                    <button type="button" class="btn btn-primary w-100">Thêm</button>
                                 </div>
                             </form>
                         </div>
@@ -127,12 +139,30 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="po-items-tbody">
-                                        </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td>Sáp vuốt tóc Apestomen Nitro</td>
+                                            <td>200.000đ</td>
+                                            <td>50</td>
+                                            <td class="text-end">10.000.000đ</td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-danger">Xóa</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sáp vuốt tóc Blumaan Gold</td>
+                                            <td>300.000đ</td>
+                                            <td>20</td>
+                                            <td class="text-end">6.000.000đ</td>
+                                            <td class="text-end">
+                                                <button class="btn btn-sm btn-outline-danger">Xóa</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="3" class="text-end fw-bold h5">Tổng cộng</td>
-                                            <td class="text-end fw-bold h5" id="po-total-cost">0đ</td>
+                                            <td classd="text-end fw-bold h5">16.000.000đ</td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
@@ -143,31 +173,29 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header"><h3 class="h5 mb-0">Thông tin Phiếu nhập</h3></div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label class="form-label">Ngày nhập</label>
-                                <input type="date" class="form-control" id="po-date">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Trạng thái</label>
-                                <div id="po-status-display">
-                                    <span class="status pending d-block w-100">Chưa hoàn thành</span>
-                                </div>
-                            </div>
-                            
-                            <hr>
-                            
-                            <div class="d-grid gap-2" id="po-action-buttons">
-                                <button class="btn btn-secondary" id="po-save-draft-btn">Lưu tạm (Chưa nhập kho)</button>
-                                <button class="btn btn-success" id="po-complete-btn">Hoàn thành (Nhập hàng vào kho)</button>
-                            </div>
+                    <div class="form-container p-4">
+                        <h3 class="h5 mb-3">Thông tin Phiếu nhập</h3>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Ngày nhập</label>
+                            <input type="date" class="form-control" value="2025-11-02">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <span class="status pending d-block w-100">Chưa hoàn thành</span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-secondary">Lưu tạm (Chưa nhập kho)</button>
+                            <button class="btn btn-success">Hoàn thành (Nhập hàng vào kho)</button>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </main>
     <script src="../assets/js/admin_main.js"></script>
