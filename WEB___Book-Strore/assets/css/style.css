@@ -128,11 +128,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 575px) {
-  .btn-auth {
-    width: 8rem;
-  }
-}
+
 .btn-signup {
   background: linear-gradient(135deg, #7fb3d3 0%, #4f9da6 100%);
 }
@@ -209,59 +205,7 @@ body {
   /* animation quay nhẹ */
   animation: rotate 20s linear infinite;
 }
-/* Media banner */
-/* 🌙 Responsive Banner cho điện thoại (màn hình < 576px) */
-@media (max-width: 575px) {
-  .banner {
-    top: 4rem;
-    padding: 3rem 1rem; /* thu gọn khoảng cách để vừa khung nhỏ */
-    border-radius: 1rem;
-  }
 
-  .banner-content h1 {
-    font-size: 1.6rem; /* tiêu đề chính nhỏ lại */
-    line-height: 1.3;
-  }
-
-  .banner-content h2 {
-    font-size: 1rem; /* tagline phụ */
-    margin-top: 0.5rem;
-  }
-
-  .banner-content p {
-    font-size: 0.9rem; /* mô tả ngắn hơn, gọn gàng hơn */
-    margin-top: 0.75rem;
-  }
-
-  .all-books {
-    margin-top: 1.5rem;
-  }
-
-  .all-books a {
-    font-size: 0.9rem; /* nút CTA nhỏ hơn */
-    padding: 0.5rem 1rem;
-    border-radius: 0.75rem;
-    display: inline-block;
-  }
-  .banner:before {
-    /* tạo phần tử giả để làm hiệu ứng nền */
-    content: "";
-    /* vị trí tuyệt đối so với .banner */
-    position: absolute;
-    /* đặt lớn vượt ra ngoài để làm hiệu ứng */
-    top: -50%;
-    left: -50%;
-    /* rộng gấp đôi để cover */
-    width: 200px;
-    height: 200px;
-    /* nền radial mờ */
-    background: radial-gradient(
-      circle,
-      rgba(245, 242, 232, 0.2) 0%,
-      transparent 70%
-    );
-  }
-}
 
 @keyframes rotate {
   from {
@@ -427,21 +371,7 @@ body {
   margin-top: 2rem;
 }
 
-/* iPad/Tablet: 3 cột */
-@media (max-width: 1024px) {
-  .products-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-}
 
-/* Điện thoại: 2 cột */
-@media (max-width: 768px) {
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-}
 
 /* Card sản phẩm: kiểu dáng và bóng */
 .product-card {
@@ -785,51 +715,7 @@ form select:focus {
   font-weight: 500;
 }
 
-/* Responsive: điều chỉnh cho màn nhỏ */
-@media (max-width: 768px) {
-  .header {
-    /* tăng padding cho header trên màn nhỏ */
-    padding: 1rem;
-  }
 
-  .logo img {
-    /* giảm kích thước logo trên mobile */
-    height: 40px;
-  }
-
-  .nav {
-    /* chuyển nav thành cột trên thiết bị nhỏ */
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .banner h1 {
-    /* giảm kích thước tiêu đề trên mobile */
-    font-size: 2.5rem;
-  }
-
-  .banner p {
-    /* giảm kích thước đoạn mô tả */
-    font-size: 1.1rem;
-  }
-
-  .products-grid {
-    /* giảm kích thước cột tối thiểu cho grid */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-
-  .products-top {
-    /* xếp các công cụ lọc theo cột */
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .container {
-    /* giảm padding container trên mobile */
-    padding: 1rem;
-  }
-}
 
 /* Hiệu ứng fade-in cho product-card */
 @keyframes fadeInUp {
@@ -1529,16 +1415,7 @@ section {
   animation: slideInLeft 1.2s ease-out;
 }
 
-@media (max-width: 720px) {
-  .navbar {
-    overflow: auto;
-  }
-  .cart-float {
-    position: static;
-    margin-left: auto;
-    box-shadow: none;
-  }
-}
+
 
 /* Footer extended layout */
 footer {
@@ -1802,38 +1679,7 @@ footer {
   top: 8.5rem;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .topbar {
-    padding: 15px 30px;
-    height: 55px;
-    gap: 1rem;
-  }
 
-  /* .search-center {
-    display: none;
-  } */
-
-  .navbar {
-    overflow: auto;
-  }
-
-  .cart-float {
-    margin-left: auto;
-  }
-
-  .news-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .featured-card {
-    grid-template-columns: 1fr;
-  }
-
-  .page-title h1 {
-    font-size: 2rem;
-  }
-}
 
 /* 🌟 PHẦN HOT SALE 🌟 */
 .hot-sale {
@@ -2198,26 +2044,7 @@ footer {
   }
 }
 
-/* Responsive */
-@media (max-width: 576px) {
-  .auth-modal-content {
-    padding: 1.5rem;
-    width: 95%;
-  }
 
-  .auth-modal-header h2 {
-    font-size: 1.5rem;
-  }
-
-  .auth-modal-form input {
-    padding: 0.8rem 0.8rem 0.8rem 2.5rem;
-  }
-
-  .input-icon {
-    left: 0.8rem;
-    font-size: 1rem;
-  }
-}
 /* Cập nhật CSS cho thanh tìm kiếm */
 
 .search-center {
@@ -2304,43 +2131,9 @@ footer {
   color: #4caf50;
 }
 
-/* Responsive cho mobile */
-@media (max-width: 768px) {
-  .search-center {
-    margin: 10px 0;
-    max-width: 100%;
-  }
 
-  .search-input {
-    font-size: 14px;
-    padding: 10px 100px 10px 40px;
-  }
 
-  .search-btn {
-    padding: 6px 15px;
-    font-size: 13px;
-    border-radius: 18px;
-  }
-}
 
-/* Responsive cho màn hình rất nhỏ */
-@media (max-width: 480px) {
-  .search-input {
-    padding: 8px 90px 8px 35px;
-    font-size: 13px;
-    max-width: 120px;
-  }
-
-  .search-btn {
-    padding: 5px 12px;
-    font-size: 12px;
-  }
-
-  .search-center::before {
-    font-size: 16px;
-    left: 12px;
-  }
-}
 /* PHẦN GIỚI THIỆU */
 .about-section {
   position: relative;
@@ -2414,24 +2207,7 @@ footer {
   z-index: 10; /* nổi lên trên cùng */
 }
 
-/* Responsive cho mobile */
-@media (max-width: 768px) {
-  .col-md-6 {
-    /* position: relative;
-    top: 1rem; */
-    min-height: 25rem;
-  }
-  .image-stack {
-    position: relative;
-    left: 2rem;
-    /* top: -4rem; */
-  }
 
-  .image-stack img {
-    width: 200px; /* kích thước ảnh */
-    height: 200px;
-  }
-}
 
 /* Hover phóng to nhẹ */
 .image-stack img:hover {
@@ -2680,25 +2456,7 @@ footer {
   text-indent: 0 !important;
 }
 
-/* Responsive - Giữ nguyên hoặc cập nhật */
-@media (max-width: 768px) {
-  .user-dropdown-menu {
-    right: -20px;
-    min-width: 200px;
-  }
 
-  /* SỬA: Trên mobile, submenu vẫn xổ sang phải */
-  .user-submenu-content {
-    right: 100%;
-    left: auto;
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .user-submenu > .dropdown-item::after {
-    content: "\25C0"; /* Giữ mũi tên trái */
-  }
-}
 
 .logout-link {
   color: red !important;
@@ -2856,14 +2614,6 @@ footer {
   color: #fff;
 }
 
-@media (max-width: 575px) {
-  #back {
-    position: fixed;
-    left: 1rem;
-    top: 12rem;
-    z-index: 1000;
-  }
-}
 /* Nút logout */
 .btn-logout-modal {
   height: 3rem;
@@ -3029,42 +2779,4 @@ footer {
 .search-input {
   position: relative;
   top: 1rem;
-}
-/* Media thanh nav */
-@media (max-width: 575px) {
-  .search-input {
-    position: relative;
-    top: -1px;
-  }
-  .user-profile-dropdown {
-    position: relative;
-    top: -1rem;
-    left: 5rem;
-    width: 15rem;
-    height: 1rem;
-  }
-  .logo .Logo {
-    position: relative;
-    top: 1rem;
-    left: -2rem;
-  }
-  .logo .Word {
-    position: relative;
-    top: -4rem;
-    left: 2rem;
-  }
-  .navbar .menu li a {
-    width: 7.5rem;
-  }
-  .search-center {
-    position: relative;
-    left: 2rem;
-    max-width: 25rem;
-    border: solid #e0e0e0;
-    border-radius: 3rem;
-    height: 3rem;
-  }
-  .category-btn {
-    width: 9rem;
-  }
 }

@@ -34,7 +34,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm kinh điển về nghệ thuật giao tiếp.",
-      img: "images/Đắc_Nhân_Tâm.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/dacNhanTam.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -47,7 +47,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Truyện cảm hứng cho bạn trẻ tìm kiếm chính mình.",
-      img: "images/Tuoi_tre_dang_gia_bao_nhiêu.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/tuoiTreDangGiaBaonNhieu.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -60,7 +60,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Thơ",
       desc: "Kiệt tác văn học Việt Nam.",
-      img: "images/Truyện_Kiều.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/truyenKieu.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -73,7 +73,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Tác phẩm hiện thực phê phán sâu sắc.",
-      img: "images/Tắt_Đèn.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/tatDen.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -86,7 +86,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Câu chuyện đầy nhân văn về thân phận người nông dân.",
-      img: "images/Lão_Hạc.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/laoHac.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -99,7 +99,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Thơ",
       desc: "Tập thơ giàu triết lý và tinh thần cách mạng.",
-      img: "images/Nhật_Ký_Trong_Tù.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/nhatKyTrongTu.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -112,7 +112,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tác phẩm trào phúng đặc sắc.",
-      img: "images/Số_đỏ.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/soDo.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -125,7 +125,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Bi kịch của người nông dân trong xã hội cũ.",
-      img: "images/Chí_Phèo.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/chiPheo.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -138,7 +138,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Câu chuyện tuổi thơ đầy xúc động.",
-      img: "images/Tôi_thấy_hoa_vàng_trên_cỏ_xanh.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/toiThayHoaVangTrenCoXanh.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -151,7 +151,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Tác phẩm tiêu biểu cho phong cách tùy bút độc đáo.",
-      img: "images/Người_lái_đò_sông_Đà.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/nguoiLaiDoSongĐa.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -164,7 +164,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tấm gương sáng của một nữ bác sĩ trong chiến tranh.",
-      img: "images/Nhật_ký_Đặng_Thùy_Trâm.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/nhatKyĐangThuyTram.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -177,7 +177,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Thơ",
       desc: "Tập thơ nổi tiếng với nhiều bài thơ sâu sắc.",
-      img: "images/Ánh_Trắng.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/anhTrang.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -190,7 +190,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Tập đầu tiên của loạt Harry Potter.",
-      img: "images/Harry_Potter_và_Hòn_Đá_Phù_Thủy.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/harryPotter.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
 
@@ -205,7 +205,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Sách tài chính cá nhân nổi tiếng.",
-      img: "images/Cha_Giàu_Cha_Nghèo.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/chaGiauChaNgheo.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -218,7 +218,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Bài học khởi nghiệp từ Israel.",
-      img: "images/Quốc_gia_khởi_nghiệp.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/quocGiaKhoiNghiep.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -231,7 +231,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Hướng dẫn kỹ năng lãnh đạo cá nhân.",
-      img: "images/7_Thói_Quen_Hiệu_Quả.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/thoiQuenHieuQua.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -244,7 +244,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Loạt sách tài chính cá nhân nổi tiếng.",
-      img: "images/Dạy_con_làm_giàu_III.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/dayConLamGiauIII.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -257,7 +257,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Marketing",
       desc: "Tác phẩm tâm lý học ứng dụng trong kinh tế.",
-      img: "images/Lợi_Thế_Cạnh_Tranh.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/loiTheCanhTranh.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -270,7 +270,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Sách chiến lược kinh doanh kinh điển.",
-      img: "images/Tư_duy_phản_biện.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/tuDuyPhanBien.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -283,7 +283,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Marketing",
       desc: "Xu hướng marketing hiện đại.",
-      img: "images/Marketing_4.0.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/marketing.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -296,7 +296,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Sách làm giàu kinh điển.",
-      img: "images/Kinh_doanh.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/kinhDoanh.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -309,7 +309,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Mô hình chiến lược kinh doanh đột phá.",
-      img: "images/Chiến_lược_đại_dương_xanh.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/chienLuocDaiDươngXanh.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -322,7 +322,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Tài chính",
       desc: "Kinh tế học giản lược, dễ hiểu.",
-      img: "images/Những_đoàn_tâm_lý_thuyết_phục.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/nhungDoanTamLyThuyetPhuc.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -335,7 +335,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Marketing",
       desc: "Cuốn sách kinh điển về nghệ thuật thuyết phục.",
-      img: "images/Cách_Nghĩ_Để_Thành_Công.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/cachNghiĐeThanhCong.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -348,7 +348,7 @@ const SAMPLE = {
       category: "Kinh tế",
       subcategory: "Quản trị",
       desc: "Nghệ thuật lãnh đạo bản thân và tổ chức.",
-      img: "images/Nhà_lãnh_đạo_không_chức_danh.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/nhaLanhDaoKhongChucDanh.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
 
@@ -363,7 +363,7 @@ const SAMPLE = {
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Truyện tranh nổi tiếng Nhật Bản.",
-      img: "images/Doreamon_tập_29.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/doreamonTap29.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -376,7 +376,7 @@ const SAMPLE = {
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Thám tử lừng danh Conan.",
-      img: "images/Conan_tập_5.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/conanTap5.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -389,7 +389,7 @@ const SAMPLE = {
       category: "Thiếu nhi",
       subcategory: "Giáo dục",
       desc: "Câu chuyện giáo dục đầy cảm hứng.",
-      img: "images/MIKO_tập_33.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/mikoTap33.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -402,7 +402,7 @@ const SAMPLE = {
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Bộ manga nổi tiếng toàn cầu.",
-      img: "images/Dragon_Ball_Tập_19.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/dragonBallTap19.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -415,7 +415,7 @@ const SAMPLE = {
       category: "Thiếu nhi",
       subcategory: "Truyện tranh",
       desc: "Truyện tranh Việt Nam nổi bật.",
-      img: "images/Thần_đồng_đất_Việt_tập_1.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/thanDongDatVietTap1.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -428,7 +428,7 @@ const SAMPLE = {
       category: "Thiếu nhi",
       subcategory: "Giáo dục",
       desc: "Tác phẩm văn học thiếu nhi nổi bật.",
-      img: "images/Cậu_bé_bút_chì.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/cauBeButChi.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
 
@@ -443,7 +443,7 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Toán lớp 1.",
-      img: "images/Toan_Lop_1.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/toanLop1.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -456,7 +456,7 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Tiếng Việt lớp 2.",
-      img: "images/Tieng_Viet_lớp_2.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/tiengVietLop2.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -469,7 +469,7 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 2",
       desc: "Sách giáo khoa Hóa học lớp 8.",
-      img: "images/Hóa_học_lớp_8.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/hoaHocLop11.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -482,7 +482,7 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 2",
       desc: "Sách giáo khoa Lịch sử lớp 7.",
-      img: "images/Lịch_sử_lớp_8.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/lichSuLop8.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -495,7 +495,7 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 3",
       desc: "Sách giáo khoa Vật lí lớp 11.",
-      img: "images/Vật_lí_lớp_11.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/vatLyLop11.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -508,7 +508,7 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Mỹ thuật lớp 5.",
-      img: "images/Mĩ_thuật_lớp_5.png", // ĐÃ SỬA: Bỏ "/"
+      img: "images/miThuatLop5.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -521,7 +521,7 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 3",
       desc: "Sách giáo khoa Hóa học lớp 11.",
-      img: "images/Hóa_học_lớp_11.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/hoaHocLop8.png", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -534,7 +534,7 @@ const SAMPLE = {
       category: "Giáo khoa",
       subcategory: "Cấp 1",
       desc: "Sách giáo khoa Đạo đức lớp 4.",
-      img: "images/Đạo_đức_lớp_4.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/daoDucLop4.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
   ],
