@@ -909,31 +909,50 @@ select {
   /* padding cho nút trang */
   padding: 6px 12px;
   /* viền màu primary */
-  border: 1px solid #007bff;
+  border: 1px solid #035c6e;
   /* nền trắng */
   background: #fff;
   /* màu chữ primary */
-  color: #007bff;
+  color: #035c6e;
   /* con trỏ pointer */
   cursor: pointer;
-  /* bo góc */
-  border-radius: 4px;
+  /* bo góc mềm mại hơn */
+  border-radius: 8px;
+  /* thêm hiệu ứng chuyển động mượt mà */
+  transition: all 0.3s ease;
+  /* thêm font weight */
+  font-weight: 500;
+  /* min-width để nút đồng đều */
+  min-width: 40px;
+  text-align: center;
 }
 
 .page-btn:hover {
   /* đổi nền khi hover */
-  background: #007bff;
+  background: #0bd5cb;
   /* đổi màu chữ khi hover */
   color: #fff;
+  /* nâng nút lên một chút */
+  transform: translateY(-2px);
+  /* thêm bóng mềm */
+  box-shadow: 0 4px 8px rgba(11, 213, 203, 0.3);
+}
+
+.page-btn:active {
+  /* hiệu ứng khi click */
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(11, 213, 203, 0.2);
 }
 
 .page-btn.active {
   /* trạng thái active của nút trang */
-  background: #007bff;
+  background: #0bd5cb;
   color: #fff;
   font-weight: bold;
   /* không cho click (vô hiệu) */
   pointer-events: none;
+  /* thêm bóng cho nút active */
+  box-shadow: 0 2px 6px rgba(11, 213, 203, 0.4);
 }
 
 /* Liên kết xem tất cả sách */

@@ -1384,18 +1384,18 @@
       }
 
       // Override renderProductList để hiển thị tác giả
-      // GIẢ ĐỊNH perPage, currentPage, và currentList ĐƯỢC KHỞI TẠO VÀ SỬ DỤNG TRONG main.js
-      function renderProductList(page = 1) {
-        const wrap = document.getElementById("product-list");
-        if (!wrap) return;
+// GIẢ ĐỊNH perPage, currentPage, và currentList ĐƯỢC KHỞI TẠO VÀ SỬ DỤNG TRONG main.js
+function renderProductList(page = 1) {
+    const wrap = document.getElementById("product-list");
+    if (!wrap) return;
 
-        currentPage = page;
-        const all = currentList;
-        const start = (page - 1) * perPage;
-        const list = all.slice(start, start + perPage);
+    currentPage = page;
+    const all = currentList;
+    const start = (page - 1) * perPage;
+    const list = all.slice(start, start + perPage);
 
-        wrap.innerHTML = list
-          .map(
+    wrap.innerHTML = list
+        .map(
             (it) => `
     <div class="product-card">
       <img src="${it.img}" alt="${it.name}">
@@ -1414,12 +1414,18 @@
       </div>
     </div>
     `
-          )
-          .join("");
+        )
+        .join("");
 
-        // HÀM NÀY CŨNG CẦN ĐƯỢC ĐỊNH NGHĨA TRONG main.js HOẶC KHÁC
-        renderPagination(Math.ceil(all.length / perPage));
-      }
+    // HÀM NÀY CŨNG CẦN ĐƯỢC ĐỊNH NGHĨA TRONG main.js HOẶC KHÁC
+    renderPagination(Math.ceil(all.length / perPage));
+    
+    // ⭐ THÊM ĐOẠN NÀY ĐỂ CUỘN TRANG SAU KHI PHÂN TRANG
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Cuộn mượt mà
+    });
+}
 
       // Khởi tạo khi DOM ready
       if (document.readyState === "loading") {
