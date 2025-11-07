@@ -1,145 +1,163 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý Đơn hàng</title>
-     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/admin_style.css">
-</head>
-<body>
-    
+    <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
+    <link
+      rel="stylesheet"
+      href="../bootstrap-5.3.2-dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/admin_style.css" />
+  </head>
+  <body>
     <aside class="sidebar d-flex flex-column vh-100">
-        <div class="sidebar-header">
-            Literary Haven
-        </div>
+      <div class="sidebar-header">Literary Haven</div>
 
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="dashboard.html" class="nav-link">
-                    <span class="nav-icon">◈</span>
-                    <span>Bảng điều khiển</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="users.html" class="nav-link">
-                    <span class="nav-icon">◉</span>
-                    <span>Khách hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="categories.html" class="nav-link">
-                    <span class="nav-icon">◫</span>
-                    <span>Loại sản phẩm</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="products.html" class="nav-link">
-                    <span class="nav-icon">◪</span>
-                    <span>Sản phẩm</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="purchase-orders.html" class="nav-link">
-                    <span class="nav-icon">◩</span>
-                    <span>Nhập hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="pricing.html" class="nav-link">
-                    <span class="nav-icon">◎</span>
-                    <span>Quản lý giá</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="orders.html" class="nav-link">
-                    <span class="nav-icon">◧</span>
-                    <span>Đơn hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="inventory.html" class="nav-link">
-                    <span class="nav-icon">◨</span>
-                    <span>Tồn kho</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="reports.html" class="nav-link">
-                    <span class="nav-icon">◔</span>
-                    <span>Báo cáo</span>
-                </a>
-            </li>
-        </ul>
-        
-        <div class="mt-auto p-3">
-            <a href="index.html" class="logout-link">
-                <span>◀</span>
-                <span>Đăng xuất</span>
-            </a>
-        </div>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">◈</span>
+            <span>Bảng điều khiển</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="users.html" class="nav-link">
+            <span class="nav-icon">◉</span>
+            <span>Khách hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="categories.html" class="nav-link">
+            <span class="nav-icon">◫</span>
+            <span>Loại sản phẩm</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="products.html" class="nav-link">
+            <span class="nav-icon">◪</span>
+            <span>Sản phẩm</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="purchase-orders.html" class="nav-link">
+            <span class="nav-icon">◩</span>
+            <span>Nhập hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="pricing.html" class="nav-link">
+            <span class="nav-icon">◎</span>
+            <span>Quản lý giá</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="orders.html" class="nav-link">
+            <span class="nav-icon">◧</span>
+            <span>Đơn hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="inventory.html" class="nav-link">
+            <span class="nav-icon">◨</span>
+            <span>Tồn kho</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="reports.html" class="nav-link">
+            <span class="nav-icon">◔</span>
+            <span>Báo cáo</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="mt-auto p-3">
+        <a href="index.html" class="logout-link">
+          <span>◀</span>
+          <span>Đăng xuất</span>
+        </a>
+      </div>
     </aside>
 
     <main class="main-content">
+      <div class="page-content p-4">
+        <h1 class="mb-4">Quản lý Đơn hàng</h1>
 
-        <div class="page-content p-4">
-            <h1 class="mb-4">Quản lý Đơn hàng</h1>
-
-            <div class="card mb-4">
-                <div class="card-body">
-                    <form class="row g-3 align-items-end">
-                        <div class="col-md-3">
-                            <label for="filter-start-date" class="form-label">Từ ngày</label>
-                            <input type="date" class="form-control" id="filter-start-date">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="filter-end-date" class="form-label">Đến ngày</label>
-                            <input type="date" class="form-control" id="filter-end-date">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="filter-address" class="form-label">Địa chỉ</label>
-                            <input type="text" class="form-control" id="filter-address" placeholder="Nhập quận, thành phố...">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="filter-status" class="form-label">Tình trạng</label>
-                            <select id="filter-status" class="form-select"> 
-                                <option value="" selected>Tất cả</option>
-                                <option value="Chờ xử lý">Mới đặt (Chờ xử lý)</option>
-                                <option value="Đã xử lý">Đã xử lý</option>
-                                <option value="Đã giao">Đã giao</option>
-                                <option value="Đã hủy">Đã hủy</option>
-                            </select>
-                        </div>
-                        <div class="col-md-1">
-                            <button type="button" class="btn btn-primary w-100" id="filter-btn">Lọc</button>
-                        </div>
-                    </form>
-                    </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header"><h3 class="h5 mb-0">Danh sách đơn hàng</h3></div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Mã ĐH</th>
-                                    <th>Khách hàng (User)</th>
-                                    <th>Ngày đặt</th>
-                                    <th>Tổng tiền</th>
-                                    <th>Tình trạng</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody id="order-table-body">
-                                </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+        <div class="card mb-4">
+          <div class="card-body">
+            <form class="row g-3 align-items-end">
+              <div class="col-md-3">
+                <label for="filter-start-date" class="form-label"
+                  >Từ ngày</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="filter-start-date"
+                />
+              </div>
+              <div class="col-md-3">
+                <label for="filter-end-date" class="form-label">Đến ngày</label>
+                <input type="date" class="form-control" id="filter-end-date" />
+              </div>
+              <div class="col-md-3">
+                <label for="filter-address" class="form-label">Địa chỉ</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="filter-address"
+                  placeholder="Nhập quận, thành phố..."
+                />
+              </div>
+              <div class="col-md-2">
+                <label for="filter-status" class="form-label">Tình trạng</label>
+                <select id="filter-status" class="form-select">
+                  <option value="" selected>Tất cả</option>
+                  <option value="Chờ xử lý">Mới đặt (Chờ xử lý)</option>
+                  <option value="Đã xử lý">Đã xử lý</option>
+                  <option value="Đã giao">Đã giao</option>
+                  <option value="Đã hủy">Đã hủy</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <button
+                  type="button"
+                  class="btn btn-primary w-100"
+                  id="filter-btn"
+                >
+                  Lọc
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="h5 mb-0">Danh sách đơn hàng</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Mã ĐH</th>
+                    <th>Khách hàng (User)</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Tình trạng</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="order-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
     <script src="../assets/js/admin_main.js"></script>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-</body>
+  </body>
 </html>
