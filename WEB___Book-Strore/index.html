@@ -508,7 +508,21 @@
         .container {
           height: 350rem;
           max-width: 700px;
+          margin-left: auto;  
+        margin-right: auto;
         }
+
+        /* Thêm các quy tắc này để căn giữa nội dung footer trên di động */
+      .footer-section {
+        text-align: center;
+      }
+      .footer-section .social-links {
+        justify-content: center;
+      }
+      .footer-section.contact-info p {
+        justify-content: center; /* Căn giữa cho các dòng liên hệ */
+      }
+      
         /* About us */
         .col-md-6 {
           position: relative;
@@ -853,7 +867,7 @@
       <section class="about-section py-5">
         <div class="about-us-index">
           <div class="row align-items-center">
-            <!-- CỘT TRÁI: ẢNH -->
+            
             <div class="col-md-6 mb-4 mb-md-0">
               <div class="image-stack position-relative">
                 <a href="./about.html">
@@ -876,8 +890,7 @@
               </div>
             </div>
 
-            <!-- CỘT PHẢI: NỘI DUNG -->
-            <div class="col-md-6-nd">
+            <div class="col-md-6 col-md-6-nd">
               <h2 class="intro-title">
                 Giới thiệu <span>Literary Haven!</span>
               </h2>
@@ -901,6 +914,7 @@
                 XEM THÊM →
               </a>
             </div>
+
           </div>
         </div>
       </section>
