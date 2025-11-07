@@ -1202,7 +1202,6 @@
 
         if (maxPriceInput) {
           maxPriceInput.addEventListener("input", (e) => {
-            formatPriceInputWithDots(e.target);
           });
           maxPriceInput.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
@@ -1213,28 +1212,7 @@
         }
       }
 
-      // Format input với dấu chấm ngăn cách hàng nghìn
-      function formatPriceInputWithDots(input) {
-        let cursorPosition = input.selectionStart;
-        let oldValue = input.value;
-
-        let numericValue = input.value.replace(/[^\d]/g, "");
-
-        let formattedValue = "";
-        if (numericValue) {
-          formattedValue = parseInt(numericValue).toLocaleString("vi-VN");
-        }
-
-        input.value = formattedValue;
-
-        if (formattedValue.length > oldValue.length) {
-          cursorPosition++;
-        } else if (formattedValue.length < oldValue.length) {
-          cursorPosition--;
-        }
-
-        input.setSelectionRange(cursorPosition, cursorPosition);
-      }
+     
 
       // Áp dụng lọc theo giá
       function applyPriceFilter() {
