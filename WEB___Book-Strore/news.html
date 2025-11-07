@@ -12,6 +12,38 @@
         position: relative;
         margin: 5rem auto;
       }
+
+      /* News responsive */
+      @media (max-width: 767px) {
+        .featured-card {
+          grid-template-columns: 1fr;
+        }
+
+        .news-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .news-card {
+          height: auto;
+          max-width: 100%;
+        }
+
+        .featured-content h2 {
+          font-size: 1.5rem;
+        }
+
+        /* Footer */
+        .footer-section {
+          text-align: center;
+        }
+        .footer-section .social-links {
+          justify-content: center;
+        }
+        .footer-section.contact-info p {
+          justify-content: center;
+        }
+      }
     </style>
   </head>
 

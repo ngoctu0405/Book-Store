@@ -8,30 +8,18 @@
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css" />
     <style>
-      main {
+main {
         position: relative;
         top: 5rem;
         height: 96rem;
       }
-@media (max-width: 767px) {
-        .container {
-          height: 350rem;
-          max-width: 700px;
-          margin-left: auto;  
-        margin-right: auto;
+
+      /* About us responsive */
+      @media (max-width: 767px) {
+        main {
+          height: auto;
         }
-
-        /* Thêm các quy tắc này để căn giữa nội dung footer trên di động */
-      .footer-section {
-        text-align: center;
-      }
-      .footer-section .social-links {
-        justify-content: center;
-      }
-      .footer-section.contact-info p {
-        justify-content: center; /* Căn giữa cho các dòng liên hệ */
-      }
-
+        
         /* About us */
         .col-md-6 {
           position: relative;
@@ -49,32 +37,16 @@
           justify-content: center;
           align-items: center;
         }
-        .hot_sale_selection {
-          height: 120rem;
-        }
-        .col-12 {
-          margin: 1rem 9rem;
-        }
-      }
 
-      /* Responsive cho thiết bị di động (trên 769px) */
-      @media (min-width: 768px) {
-        .logo .Word {
-          position: relative;
-          left: -3rem;
+        /* Footer */
+        .footer-section {
+          text-align: center;
         }
-        .logo .Logo {
-          position: relative;
-          left: -3rem;
+        .footer-section .social-links {
+          justify-content: center;
         }
-        .search-center {
-          margin: 0 150px;
-        }
-        .navbar .menu li a {
-          width: 8rem;
-        }
-        .category-btn {
-          width: 9rem;
+        .footer-section.contact-info p {
+          justify-content: center;
         }
       }
     </style>
