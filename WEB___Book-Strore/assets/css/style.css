@@ -128,7 +128,6 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-
 .btn-signup {
   background: linear-gradient(135deg, #7fb3d3 0%, #4f9da6 100%);
 }
@@ -205,7 +204,6 @@ body {
   /* animation quay nhẹ */
   animation: rotate 20s linear infinite;
 }
-
 
 @keyframes rotate {
   from {
@@ -370,8 +368,6 @@ body {
   /* khoảng cách trên so với phần trước */
   margin-top: 2rem;
 }
-
-
 
 /* Card sản phẩm: kiểu dáng và bóng */
 .product-card {
@@ -714,8 +710,6 @@ form select:focus {
   /* độ đậm vừa */
   font-weight: 500;
 }
-
-
 
 /* Hiệu ứng fade-in cho product-card */
 @keyframes fadeInUp {
@@ -1404,8 +1398,6 @@ section {
   animation: slideInLeft 1.2s ease-out;
 }
 
-
-
 /* Footer extended layout */
 footer {
   /* nền footer override */
@@ -1667,8 +1659,6 @@ footer {
   position: fixed;
   top: 8.5rem;
 }
-
-
 
 /* 🌟 PHẦN HOT SALE 🌟 */
 .hot-sale {
@@ -2033,7 +2023,6 @@ footer {
   }
 }
 
-
 /* Cập nhật CSS cho thanh tìm kiếm */
 
 .search-center {
@@ -2120,9 +2109,6 @@ footer {
   color: #4caf50;
 }
 
-
-
-
 /* PHẦN GIỚI THIỆU */
 .about-section {
   position: relative;
@@ -2195,8 +2181,6 @@ footer {
   transform: scale(1.08);
   z-index: 10; /* nổi lên trên cùng */
 }
-
-
 
 /* Hover phóng to nhẹ */
 .image-stack img:hover {
@@ -2444,8 +2428,6 @@ footer {
   margin-left: 0 !important;
   text-indent: 0 !important;
 }
-
-
 
 .logout-link {
   color: red !important;
@@ -2768,4 +2750,51 @@ footer {
 .search-input {
   position: relative;
   top: 1rem;
+}
+
+/* Responsive cho thiết bị di động (dưới 768px) */
+@media (max-width: 660px) {
+  .navbar .menu li a {
+    width: 8rem;
+  }
+  .category-btn {
+    width: 9rem;
+  }
+  .logo .Word {
+    left: 1.5rem;
+    top: -4rem;
+  }
+  .logo .Logo {
+    position: relative;
+    top: 4.5rem;
+    left: -3rem;
+  }
+  .btn-auth {
+    width: 8rem;
+    position: relative;
+    left: 3rem;
+  }
+  .search-center {
+    margin: 0 150px;
+  }
+}
+/* Responsive cho thiết bị di động (trên 769px) */
+@media (min-width: 661px) {
+  .logo .Word {
+    position: relative;
+    left: -3rem;
+  }
+  .logo .Logo {
+    position: relative;
+    left: -3rem;
+  }
+  .search-center {
+    margin: 0 150px;
+  }
+  .navbar .menu li a {
+    width: 8rem;
+  }
+  .category-btn {
+    width: 9rem;
+  }
 }

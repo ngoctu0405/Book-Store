@@ -13,6 +13,52 @@
         top: 12rem;
         height: 50rem;
       }
+      /* Responsive cho thiết bị di động (dưới 768px) */
+      @media (max-width: 660px) {
+        .navbar .menu li a {
+          width: 8rem;
+        }
+        .category-btn {
+          width: 9rem;
+        }
+        .logo .Word {
+          left: 1.5rem;
+          top: -4rem;
+        }
+        .logo .Logo {
+          position: relative;
+          top: 4.5rem;
+          left: -3rem;
+        }
+        .btn-auth {
+          width: 8rem;
+          position: relative;
+          left: 3rem;
+        }
+        .search-center {
+          margin: 0 150px;
+        }
+      }
+      /* Responsive cho thiết bị di động (trên 769px) */
+      @media (min-width: 661px) {
+        .logo .Word {
+          position: relative;
+          left: -3rem;
+        }
+        .logo .Logo {
+          position: relative;
+          left: -3rem;
+        }
+        .search-center {
+          margin: 0 150px;
+        }
+        .navbar .menu li a {
+          width: 8rem;
+        }
+        .category-btn {
+          width: 9rem;
+        }
+      }
     </style>
   </head>
 
@@ -46,11 +92,7 @@
         <li><a href="index.html">Trang chủ</a></li>
         <li><a href="about.html">Giới thiệu</a></li>
         <div class="category-menu">
-          <button
-            class="category-btn"
-          >
-            Danh mục ▾
-          </button>
+          <button class="category-btn">Danh mục ▾</button>
 
           <ul class="book-filter">
             <li class="dropdown">
