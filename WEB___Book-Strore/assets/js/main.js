@@ -752,14 +752,16 @@ function getActiveCategoryNames() {
  * Lấy danh sách sản phẩm (đã lọc) MÀ USER ĐƯỢC PHÉP XEM
  */
 function getVisibleProducts() {
-  let allProducts = getData().products; // getData() gốc trả về TẤT CẢ
+    let allProducts = getData().products; // getData() gốc trả về TẤT CẢ
 
-  // 1. Lọc các sản phẩm bị DỪNG BÁN (status = 'inactive')
-  // (Logic này đã có trong file category.html, nay chuyển về đây)
-  allProducts = allProducts.filter((p) => p.status !== "inactive");
+    // 1. Lọc các sản phẩm bị DỪNG BÁN (status = 'inactive')
+    allProducts = allProducts.filter((p) => p.status !== "inactive");
 
-  // 2. Lọc theo category 'active' (Yêu cầu mới của bạn)
-  const activeCategoryNames = getActiveCategoryNames();
+    // BỔ SUNG LOGIC: ẨN SẢN PHẨM KHI HẾT HÀNG (qty <= 0)
+    allProducts = allProducts.filter((p) => p.qty > 0); //
+
+    // 2. Lọc theo category 'active' (Yêu cầu mới của bạn)
+    const activeCategoryNames = getActiveCategoryNames();
 
   if (activeCategoryNames === null) {
     // Nếu có lỗi đọc category hoặc chưa có, không lọc, trả về ds đã lọc status
@@ -930,46 +932,73 @@ function renderSearchResults() {
 
 // SỬA: Cập nhật hàm renderProductDetail() trong main.js
 function renderProductDetail() {
-  const productId = getProductIdFromURL();
-  const product = findProductById(productId);
-  const mainContent = document.getElementById("mainContent");
+    const productId = getProductIdFromURL();
+    const product = findProductById(productId);
+    const mainContent = document.getElementById("mainContent");
 
-  if (!product || !mainContent) {
-    showError();
-    return;
-  }
+    if (!product || !mainContent) {
+        showError();
+        return;
+    }
 
-  // THÊM: Lấy số lượng tồn kho thực tế từ dữ liệu
-  const productData = getVisibleProducts().find((p) => p.id === productId);
-  const stockQty = productData ? productData.qty : "Không rõ"; // Lấy số lượng tồn kho
-  const maxQty = productData ? productData.qty : 10; // Thiết lập max qty cho input
+    // 1. Lấy số lượng tồn kho thực tế và đảm bảo là giá trị số
+    const realStockQty = product ? parseInt(product.qty) || 0 : 0; 
+    const maxQtyValue = realStockQty; 
+    
+    // 2. Thiết lập biến kiểm tra hết hàng (qty <= 0)
+    const isOutOfStock = realStockQty <= 0;
 
-  // ... (Phần HTML khác)
+    // 3. Tạo HTML có điều kiện
+    let productActionsHtml;
+    
+    if (isOutOfStock) {
+        // TRƯỜNG HỢP: HẾT HÀNG (ẨN input, Vô hiệu hóa nút)
+        productActionsHtml = `
+            <p id="stock-qty" class="stock-info" style="margin-top: 1rem; color: #e74c3c; font-size: 1.2rem; font-weight: 700;">
+                💔 HẾT HÀNG - Sản phẩm tạm thời không có sẵn.
+            </p>
+            <div class="action-buttons">
+                <button class="btn-add-to-cart disabled" disabled>
+                    <i class="bi bi-cart-plus-fill"></i> Thêm vào giỏ hàng
+                </button>
+                <button class="btn-buy-now disabled" disabled>
+                    <i class="bi bi-wallet-fill"></i> Mua ngay
+                </button>
+            </div> 
+        `;
+    } else {
+        // TRƯỜNG HỢP: CÒN HÀNG (Hiển thị input và nút)
+        productActionsHtml = `
+            <div class="quantity-controls">
+                <button class="qty-btn minus-btn" onclick="decreaseQty()">-</button>
+                <input type="number" id="qty" value="1" min="1" max="${maxQtyValue}">
+                <button class="qty-btn plus-btn" onclick="increaseQty()">+</button>
+            </div>
 
-  const mainHtml = `
-    <div class="product-actions">
-        <div class="quantity-controls">
-            <button class="qty-btn minus-btn" onclick="decreaseQty()">-</button>
-            <input type="number" id="qty" value="1" min="1" max="${maxQty}" readonly>
-            <button class="qty-btn plus-btn" onclick="increaseQty()">+</button>
+            <p id="stock-qty" class="stock-info" style="margin-top: 1rem; color: #7f8c8d; font-size: 0.95rem;">
+                Kho: <b>${realStockQty}</b> sản phẩm có sẵn
+            </p>
+
+            <div class="action-buttons">
+                <button class="btn-add-to-cart" onclick="addToCart(${product.id}, document.getElementById('qty').value)">
+                    <i class="bi bi-cart-plus-fill"></i> Thêm vào giỏ hàng
+                </button>
+                <button class="btn-buy-now">
+                    <i class="bi bi-wallet-fill"></i> Mua ngay
+                </button>
+            </div> 
+        `;
+    }
+
+    const mainHtml = `
+        <div class="product-actions">
+            ${productActionsHtml}
         </div>
-
-        <p id="stock-qty" class="stock-info" style="margin-top: 1rem; color: #7f8c8d; font-size: 0.95rem;">
-            Kho: <b>${stockQty}</b> sản phẩm có sẵn
-        </p>
-
-        <div class="action-buttons">
-            <button class="btn-add-to-cart" onclick="addToCart(${product.id}, document.getElementById('qty').value)">
-                <i class="bi bi-cart-plus-fill"></i> Thêm vào giỏ hàng
-            </button>
-            <button class="btn-buy-now">
-                <i class="bi bi-wallet-fill"></i> Mua ngay
-            </button>
-        </div>
-    </div>
-    `;
-  mainContent.innerHTML = mainHtml;
-  // ... (Phần cuối) ...
+        
+        `;
+    
+    mainContent.innerHTML = mainHtml;
+    // ... (Phần cuối) ...
 }
 
 // SỬA: Cập nhật hàm increaseQty để tôn trọng giá trị max
@@ -987,38 +1016,57 @@ function increaseQty() {
 // BẮT ĐẦU PHẦN CHỈNH SỬA LOGIC GIỎ HÀNG
 // Sửa lại hàm addToCart để yêu cầu đăng nhập trước khi thêm vào giỏ
 function addToCart(id, qty = 1) {
-  // LOGIC BẮT BUỘC ĐĂNG NHẬP
-  const user = localStorage.getItem("bs_user");
-  if (!user) {
-    // Nếu chưa đăng nhập, HIỆN MODAL ĐĂNG NHẬP
-    openLoginModal();
-    return;
-  }
-  // KẾT THÚC LOGIC BẮT BUỘC ĐĂNG NHẬP
+    // Lấy thông tin sản phẩm (CẦN CÓ HÀM findProductById() TỒN TẠI)
+    const product = findProductById(id);
+    if (!product) return alert("Sản phẩm không tồn tại.");
 
-  const cart = getCart();
+    // 1. Lấy số lượng tồn kho thực tế
+    const realStockQty = parseInt(product.qty) || 0;
+    
+    // Ép kiểu số lượng muốn mua và kiểm tra
+    const requestedQty = Number(qty);
 
-  // Kiểm tra xem sản phẩm đã có trong giỏ chưa
-  const ex = cart.find((i) => i.id === id);
+    if (requestedQty <= 0) {
+        return alert("Vui lòng chọn số lượng lớn hơn 0.");
+    }
 
-  if (ex) {
-    // Nếu có, tăng số lượng
-    ex.qty += Number(qty);
-  } else {
-    // Nếu chưa, thêm mới sản phẩm
-    cart.push({ id: id, qty: Number(qty) });
-  }
+    // 2. KIỂM TRA GIỚI HẠN TỒN KHO
+    if (requestedQty > realStockQty) {
+        return alert(`🚫 Số lượng tối đa có thể mua là ${realStockQty} sản phẩm.`);
+    }
 
-  // Lưu giỏ hàng đã cập nhật vào LocalStorage
-  saveCart(cart);
+    // LOGIC BẮT BUỘC ĐĂNG NHẬP (Giữ nguyên)
+    const user = localStorage.getItem("bs_user");
+    if (!user) {
+        openLoginModal();
+        return;
+    }
+    // KẾT THÚC LOGIC BẮT BUỘC ĐĂNG NHẬP
 
-  // Cập nhật số lượng hiển thị trên icon giỏ hàng
-  if (typeof updateCartCount === "function") updateCartCount();
+    const cart = getCart();
+    const ex = cart.find((i) => i.id === id);
+    
+    // Tính toán số lượng sau khi thêm vào giỏ hàng
+    const totalQtyInCart = ex ? ex.qty + requestedQty : requestedQty;
+    
+    // 3. KIỂM TRA LẠI GIỚI HẠN KHI GỘP ĐƠN HÀNG (đã có trong giỏ + số lượng muốn mua)
+    if (totalQtyInCart > realStockQty) {
+        return alert(`🚫 Bạn đã có ${ex.qty} sản phẩm trong giỏ. Số lượng tối đa còn lại có thể mua là ${realStockQty - ex.qty} sản phẩm.`);
+    }
 
-  alert("✅ Đã thêm sản phẩm vào giỏ hàng thành công!");
+    if (ex) {
+        // Nếu có, tăng số lượng
+        ex.qty = totalQtyInCart; // Dùng giá trị đã tính toán
+    } else {
+        // Nếu chưa, thêm mới sản phẩm
+        cart.push({ id: id, qty: requestedQty });
+    }
 
-  // Nếu bạn đang ở trang giỏ hàng (cart.html), renderCart sẽ cập nhật lại danh sách
-  if (typeof renderCart === "function") renderCart();
+    // Lưu và Cập nhật
+    saveCart(cart);
+    if (typeof updateCartCount === "function") updateCartCount();
+    alert("✅ Đã thêm sản phẩm vào giỏ hàng thành công!");
+    if (typeof renderCart === "function") renderCart();
 }
 // KẾT THÚC PHẦN CHỈNH SỬA LOGIC GIỎ HÀNG
 
@@ -1187,7 +1235,7 @@ function renderProductDetailPage(product) {
           <span class="shipping-label">Số lượng:</span>
           <div class="quantity-controls">
             <button class="qty-btn" onclick="decreaseQty()">−</button>
-            <input type="number" class="qty-input" value="1" id="qty" min="1" max="10" readonly>
+            <input type="number" class="qty-input" value="1" id="qty" min="1" max="100000" >
             <button class="qty-btn" onclick="increaseQty()">+</button>
           </div>
           <span class="stock-status">Còn hàng</span>
@@ -1252,21 +1300,31 @@ function renderProductDetailPage(product) {
   `;
 }
 
+// Cập nhật hàm tăng số lượng (increaseQty) để giới hạn theo số lượng tồn kho (max attribute)
 function increaseQty() {
-  const input = document.getElementById("qty");
-  if (!input) return;
-  const max = parseInt(input.max);
-  if (parseInt(input.value) < max) {
-    input.value = parseInt(input.value) + 1;
-  }
+    const input = document.getElementById("qty");
+    if (!input) return;
+    
+    // 1. Lấy giới hạn tối đa (chính là số lượng tồn kho được set bởi renderProductDetail)
+    const max = parseInt(input.getAttribute('max')); 
+    const currentValue = parseInt(input.value);
+
+    // 2. Chỉ tăng nếu số lượng hiện tại nhỏ hơn max
+    if (currentValue < max) {
+        input.value = currentValue + 1;
+    } else {
+        // Thông báo cho người dùng biết đã đạt giới hạn tồn kho
+        alert(`🚫 Số lượng tối đa có thể mua là ${max} sản phẩm.`);
+    }
 }
 
+// Giữ nguyên hàm decreaseQty()
 function decreaseQty() {
-  const input = document.getElementById("qty");
-  if (!input) return;
-  if (parseInt(input.value) > 1) {
-    input.value = parseInt(input.value) - 1;
-  }
+    const input = document.getElementById("qty");
+    if (!input) return;
+    if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+    }
 }
 
 // BẮT ĐẦU PHẦN CHỈNH SỬA LOGIC CHI TIẾT SẢN PHẨM

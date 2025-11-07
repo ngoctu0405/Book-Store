@@ -128,6 +128,11 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+@media (max-width: 575px) {
+  .btn-auth {
+    width: 8rem;
+  }
+}
 .btn-signup {
   background: linear-gradient(135deg, #7fb3d3 0%, #4f9da6 100%);
 }
@@ -1030,6 +1035,7 @@ select {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   animation: dropdownFade 0.25s ease;
+  width: 170px;
 }
 
 @keyframes dropdownFade {
@@ -2322,6 +2328,7 @@ footer {
   .search-input {
     padding: 8px 90px 8px 35px;
     font-size: 13px;
+    max-width: 120px;
   }
 
   .search-btn {
