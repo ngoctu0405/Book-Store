@@ -90,7 +90,7 @@
 
             <div class="card mb-4">
                 <div class="card-body">
-                    <form class="row g-3 align-items-end">
+                    <form class="row g-3 align-items-end" id="filter-po-form">
                         <div class="col-md-3">
                             <label for="filter-po-id" class="form-label">Mã phiếu nhập</label>
                             <input type="text" class="form-control" id="filter-po-id" placeholder="Nhập mã phiếu...">
@@ -112,7 +112,7 @@
                             </select>
                         </div>
                         <div class="col-md-1">
-                            <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                             <button type="button" id="filter-po-btn" class="btn btn-primary w-100">Lọc</button>
                         </div>
                     </form>
                 </div>
@@ -135,28 +135,8 @@
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>PN001</td>
-                                    <td>01/11/2025</td>
-                                    <td>3</td>
-                                    <td>15.000.000đ</td>
-                                    <td><span class="status delivered">Đã hoàn thành</span></td>
-                                    <td>
-                                        <a href="purchase-edit.html" class="btn btn-sm btn-outline-primary">Xem</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>PN002</td>
-                                    <td>02/11/2025</td>
-                                    <td>5</td>
-                                    <td>22.000.000đ</td>
-                                    <td><span class="status pending">Chưa hoàn thành</span></td>
-                                    <td>
-                                        <a href="purchase-edit.html" class="btn btn-sm btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="po-table-body">
+                                </tbody>
                         </table>
                     </div>
                 </div>
