@@ -7,6 +7,97 @@
 
      <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <style>
+        /* Responsive cho thiết bị di động (max-width: 768px) */
+@media (max-width: 768px) {
+    /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
+    body {
+        display: flex !important;
+        flex-direction: column !important; /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
+        overflow-x: hidden; /* Tắt cuộn ngang vì đã xếp chồng */
+    }
+
+    /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
+    .sidebar {
+        width: 100% !important; 
+        /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
+        height: auto !important; 
+        flex-shrink: 0;
+        display: flex !important;
+        
+        /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
+        overflow-x: auto; /* Cho phép menu cuộn ngang nếu có nhiều mục */
+        white-space: nowrap; /* Ngăn các mục menu xuống dòng */
+    }
+    
+    /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
+    .main-content {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
+    .page-content {
+        padding: 15px !important;
+    }
+
+    .page-content h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
+    .table-responsive {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        min-width: 600px; /* Vẫn cần min-width cho bảng */
+    }
+
+    .table thead th, 
+    .table tbody td {
+        padding: 8px 6px; 
+        font-size: 12px; 
+    }
+    
+    .profit-input {
+        width: 50px;
+        padding: 4px 2px;
+        font-size: 12px;
+    }
+
+    .btn-sm {
+        padding: 3px 6px; 
+        font-size: 10px;
+    }
+    
+    .table tbody td span.small {
+        display: none;
+    }
+}
+
+/* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
+@media (min-width: 769px) {
+    body {
+        display: flex !important; 
+        flex-direction: row !important; /* Khôi phục thành row trên desktop */
+        overflow-x: hidden; 
+    }
+    .sidebar {
+        /* Giả sử chiều rộng desktop là 250px */
+        width: 250px !important; 
+        height: 100vh !important; /* Khôi phục vh-100 trên desktop */
+        display: flex !important;
+    }
+    .main-content {
+        width: 100%;
+    }
+}
+    </style>
 </head>
 <body>
     
@@ -78,48 +169,37 @@
                 <span>Đăng xuất</span>
             </a>
         </div>
-    </aside>>
+    </aside>
 
     <main class="main-content">
-        <header class="top-bar p-3 d-flex justify-content-between align-items-center">
-            <form class="search-bar d-flex align-items-center">
-                <input class="form-control" type="search" placeholder="Tìm kiếm...">
-            </form>
-            <div class="profile-area d-flex align-items-center">
-                <div class="profile-pic ms-3"></div>
-            </div>
-        </header>
-
         <div class="page-content p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="mb-0">Thêm Phiếu nhập hàng mới</h1>
+                <h1 class="mb-0" id="po-page-title">Thêm Phiếu nhập hàng mới</h1>
                 <a href="purchase-orders.html" class="btn btn-secondary">Quay lại danh sách</a>
             </div>
 
             <div class="row g-4">
                 <div class="col-lg-8">
-                    <div class="card mb-4">
+                    <div class="card mb-4" id="po-add-item-card">
                         <div class="card-header"><h3 class="h5 mb-0">Thêm sản phẩm vào phiếu</h3></div>
                         <div class="card-body">
                             <form class="row g-3 align-items-end">
                                 <div class="col-md-5">
-                                    <label class="form-label">Chọn sản phẩm</label>
-                                    <select class="form-select">
-                                        <option selected>-- Tìm & chọn sản phẩm --</option>
-                                        <option value="1">Sáp vuốt tóc Apestomen Nitro</option>
-                                        <option value="2">Sáp vuốt tóc Blumaan Gold</option>
+                                    <label class="form-label">Chọn sản phẩm (Sách)</label>
+                                    <select class="form-select" id="po-product-select">
+                                        <option selected value="">-- Đang tải sản phẩm --</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="form-label">Giá nhập</label>
-                                    <input type="number" class="form-control" placeholder="0">
+                                    <label class="form-label">Giá nhập (Cost)</label>
+                                    <input type="number" class="form-control" id="po-cost-price" placeholder="0">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Số lượng</label>
-                                    <input type="number" class="form-control" value="1">
+                                    <input type="number" class="form-control" id="po-quantity" value="1" min="1">
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="btn btn-primary w-100">Thêm</button>
+                                    <button type="button" class="btn btn-primary w-100" id="po-add-item-btn">Thêm</button>
                                 </div>
                             </form>
                         </div>
@@ -139,30 +219,12 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Sáp vuốt tóc Apestomen Nitro</td>
-                                            <td>200.000đ</td>
-                                            <td>50</td>
-                                            <td class="text-end">10.000.000đ</td>
-                                            <td class="text-end">
-                                                <button class="btn btn-sm btn-outline-danger">Xóa</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sáp vuốt tóc Blumaan Gold</td>
-                                            <td>300.000đ</td>
-                                            <td>20</td>
-                                            <td class="text-end">6.000.000đ</td>
-                                            <td class="text-end">
-                                                <button class="btn btn-sm btn-outline-danger">Xóa</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                    <tbody id="po-items-tbody">
+                                        </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="3" class="text-end fw-bold h5">Tổng cộng</td>
-                                            <td classd="text-end fw-bold h5">16.000.000đ</td>
+                                            <td class="text-end fw-bold h5" id="po-total-cost">0đ</td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
@@ -173,29 +235,31 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="form-container p-4">
-                        <h3 class="h5 mb-3">Thông tin Phiếu nhập</h3>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Ngày nhập</label>
-                            <input type="date" class="form-control" value="2025-11-02">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Trạng thái</label>
-                            <span class="status pending d-block w-100">Chưa hoàn thành</span>
-                        </div>
-                        
-                        <hr>
-                        
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-secondary">Lưu tạm (Chưa nhập kho)</button>
-                            <button class="btn btn-success">Hoàn thành (Nhập hàng vào kho)</button>
+                    <div class="card">
+                        <div class="card-header"><h3 class="h5 mb-0">Thông tin Phiếu nhập</h3></div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Ngày nhập</label>
+                                <input type="date" class="form-control" id="po-date">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Trạng thái</label>
+                                <div id="po-status-display">
+                                    <span class="status pending d-block w-100">Chưa hoàn thành</span>
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="d-grid gap-2" id="po-action-buttons">
+                                <button class="btn btn-secondary" id="po-save-draft-btn">Lưu tạm (Chưa nhập kho)</button>
+                                <button class="btn btn-success" id="po-complete-btn">Hoàn thành (Nhập hàng vào kho)</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
     <script src="../assets/js/admin_main.js"></script>
