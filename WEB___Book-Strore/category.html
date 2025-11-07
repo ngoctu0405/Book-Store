@@ -327,11 +327,7 @@
         <li><a href="index.html">Trang chủ</a></li>
         <li><a href="about.html">Giới thiệu</a></li>
         <div class="category-menu">
-          <button
-            class="category-btn"
-          >
-            Danh mục ▾
-          </button>
+          <button class="category-btn">Danh mục ▾</button>
 
           <ul class="book-filter">
             <li class="dropdown">
@@ -667,26 +663,6 @@
           <p>📞 Hotline: 1900 xxxx</p>
           <p>✉️ Email: support@bookstore.vn</p>
           <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
-          <div class="social-links">
-            <a
-              href="https://www.facebook.com/profile.php?id=100052833923582"
-              target="_blank"
-              >f</a
-            >
-            <a href="https://www.instagram.com/tungoc0405/" target="_blank"
-              >📷</a
-            >
-            <a
-              href="https://www.tiktok.com/@traitehaykhoc?_r=1&_t=ZS-91B13gORPSj&fbclid=IwY2xjawN5oDdleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEeiMoX6IjEFBeNLnfX-py5cmpb7Jgn6OXNenvCTQMTmY3ovQAOjYmzsv--T9c_aem_FPRe5Jbt4h2M9pfrpkpJ_g"
-              target="_blank"
-              >♪</a
-            >
-            <a
-              href="https://www.messenger.com/t/6985295158239286/"
-              target="_blank"
-              >📱</a
-            >
-          </div>
         </div>
       </div>
       <div class="footer-bottom">
@@ -932,7 +908,6 @@
         subcategory: null,
         filterSubcategory: null, // THÊM MỚI: Lọc theo subcategory từ dropdown
       };
-      
 
       // Khởi tạo trang category
       function initCategoryPage() {
@@ -1075,96 +1050,99 @@
         const filterButtons = document.querySelectorAll(".filter-btn");
         const allFilterItems = document.querySelectorAll(".filter-item");
 
-        filterButtons.forEach(button => {
-            button.addEventListener("click", function(event) {
-                event.stopPropagation(); // Ngăn sự kiện lan ra document
-                
-                const parentItem = button.closest(".filter-item");
-                // Kiểm tra xem nó đã mở hay chưa
-                const wasOpen = parentItem.classList.contains("open");
+        filterButtons.forEach((button) => {
+          button.addEventListener("click", function (event) {
+            event.stopPropagation(); // Ngăn sự kiện lan ra document
 
-                // 1. Đóng tất cả các dropdown khác
-                allFilterItems.forEach(item => {
-                    item.classList.remove("open");
-                });
+            const parentItem = button.closest(".filter-item");
+            // Kiểm tra xem nó đã mở hay chưa
+            const wasOpen = parentItem.classList.contains("open");
 
-                // 2. Nếu nó chưa mở, thì mở nó ra
-                if (!wasOpen) {
-                    parentItem.classList.add("open");
-                }
-                // (Nếu nó đã mở, bước 1 đã đóng nó rồi, tạo hiệu ứng toggle)
+            // 1. Đóng tất cả các dropdown khác
+            allFilterItems.forEach((item) => {
+              item.classList.remove("open");
             });
+
+            // 2. Nếu nó chưa mở, thì mở nó ra
+            if (!wasOpen) {
+              parentItem.classList.add("open");
+            }
+            // (Nếu nó đã mở, bước 1 đã đóng nó rồi, tạo hiệu ứng toggle)
+          });
         });
 
         // Thêm sự kiện click bên ngoài để đóng
-        document.addEventListener("click", function(event) {
-            const clickedInsideItem = event.target.closest(".filter-item");
-            // Tìm các nút "Áp dụng"
-            const applyButton = event.target.closest("#apply-name-search, #apply-author-search, #apply-price-filter");
+        document.addEventListener("click", function (event) {
+          const clickedInsideItem = event.target.closest(".filter-item");
+          // Tìm các nút "Áp dụng"
+          const applyButton = event.target.closest(
+            "#apply-name-search, #apply-author-search, #apply-price-filter"
+          );
 
-            // Nếu click BÊN NGOÀI filter-item, đóng tất cả
-            if (!clickedInsideItem) {
-                allFilterItems.forEach(item => {
-                    item.classList.remove("open");
-                });
-            }
-            
-            // Nếu click vào nút "Áp dụng" BÊN TRONG, cũng đóng tất cả
-            if (applyButton) {
-                 allFilterItems.forEach(item => {
-                    item.classList.remove("open");
-                });
-            }
+          // Nếu click BÊN NGOÀI filter-item, đóng tất cả
+          if (!clickedInsideItem) {
+            allFilterItems.forEach((item) => {
+              item.classList.remove("open");
+            });
+          }
+
+          // Nếu click vào nút "Áp dụng" BÊN TRONG, cũng đóng tất cả
+          if (applyButton) {
+            allFilterItems.forEach((item) => {
+              item.classList.remove("open");
+            });
+          }
         });
         // === KẾT THÚC THÊM MỚI ===
-
 
         // LỌC THEO TÊN SÁCH (TÌM KIẾM TỪ KHÓA)
         const applyNameSearchBtn = document.getElementById("apply-name-search");
         const searchNameInput = document.getElementById("search-name");
-        
+
         const applyNameSearch = () => {
-            if (!searchNameInput) return;
-            categoryFilters.searchName = searchNameInput.value.trim();
-            applyCategoryFilters();
-            updateSelectedFilters();
-            updateClearButton();
+          if (!searchNameInput) return;
+          categoryFilters.searchName = searchNameInput.value.trim();
+          applyCategoryFilters();
+          updateSelectedFilters();
+          updateClearButton();
         };
 
         if (applyNameSearchBtn) {
-            applyNameSearchBtn.addEventListener("click", applyNameSearch);
+          applyNameSearchBtn.addEventListener("click", applyNameSearch);
         }
         if (searchNameInput) {
-            searchNameInput.addEventListener("keypress", (e) => {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    applyNameSearch();
-                }
-            });
-        } 
+          searchNameInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              applyNameSearch();
+            }
+          });
+        }
 
         // LỌC THEO TÁC GIẢ (TÌM KIẾM TỪ KHÓA)
-        const applyAuthorSearchBtn = document.getElementById("apply-author-search");
+        const applyAuthorSearchBtn = document.getElementById(
+          "apply-author-search"
+        );
         const searchAuthorInput = document.getElementById("search-author");
 
         const applyAuthorSearch = () => {
-            if (!searchAuthorInput) return;
-            categoryFilters.searchAuthor = searchAuthorInput.value.trim();
-            applyCategoryFilters();
-            updateSelectedFilters();
-            updateClearButton();
+          if (!searchAuthorInput) return;
+          categoryFilters.searchAuthor = searchAuthorInput.value.trim();
+          applyCategoryFilters();
+          updateSelectedFilters();
+          updateClearButton();
         };
 
         if (applyAuthorSearchBtn) {
-            applyAuthorSearchBtn.addEventListener("click", applyAuthorSearch);
+          applyAuthorSearchBtn.addEventListener("click", applyAuthorSearch);
         }
         if (searchAuthorInput) {
-            searchAuthorInput.addEventListener("keypress", (e) => {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    applyAuthorSearch();
-                }
-            });
+          searchAuthorInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              applyAuthorSearch();
+            }
+          });
         }
 
         // Lọc theo khoảng giá
@@ -1197,7 +1175,6 @@
 
         if (maxPriceInput) {
           maxPriceInput.addEventListener("input", (e) => {
-            formatPriceInputWithDots(e.target);
           });
           maxPriceInput.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
@@ -1208,28 +1185,7 @@
         }
       }
 
-      // Format input với dấu chấm ngăn cách hàng nghìn
-      function formatPriceInputWithDots(input) {
-        let cursorPosition = input.selectionStart;
-        let oldValue = input.value;
-
-        let numericValue = input.value.replace(/[^\d]/g, "");
-
-        let formattedValue = "";
-        if (numericValue) {
-          formattedValue = parseInt(numericValue).toLocaleString("vi-VN");
-        }
-
-        input.value = formattedValue;
-
-        if (formattedValue.length > oldValue.length) {
-          cursorPosition++;
-        } else if (formattedValue.length < oldValue.length) {
-          cursorPosition--;
-        }
-
-        input.setSelectionRange(cursorPosition, cursorPosition);
-      }
+     
 
       // Áp dụng lọc theo giá
       function applyPriceFilter() {
@@ -1312,8 +1268,8 @@
         // LỌC THEO TÊN SÁCH (TÌM KIẾM TỪ KHÓA)
         const searchNameKeyword = categoryFilters.searchName.toLowerCase();
         if (searchNameKeyword) {
-          products = products.filter(
-            (p) => p.name.toLowerCase().includes(searchNameKeyword)
+          products = products.filter((p) =>
+            p.name.toLowerCase().includes(searchNameKeyword)
           );
           console.log("After name search filter:", products.length);
         }
@@ -1321,8 +1277,8 @@
         // LỌC THEO TÁC GIẢ (TÌM KIẾM TỪ KHÓA)
         const searchAuthorKeyword = categoryFilters.searchAuthor.toLowerCase();
         if (searchAuthorKeyword) {
-          products = products.filter(
-            (p) => (p.author || "").toLowerCase().includes(searchAuthorKeyword)
+          products = products.filter((p) =>
+            (p.author || "").toLowerCase().includes(searchAuthorKeyword)
           );
           console.log("After author search filter:", products.length);
         }
@@ -1331,7 +1287,7 @@
         // Cần thêm một logic sắp xếp mặc định (ví dụ: theo tên A-Z) nếu không có bộ lọc nào được áp dụng.
         // Sắp xếp mặc định theo Tên (A-Z) để đảm bảo thứ tự hiển thị ổn định
         products.sort((a, b) => {
-            return a.name.localeCompare(b.name, "vi");
+          return a.name.localeCompare(b.name, "vi");
         });
         console.log("Sorted by name (default A-Z) after search.");
 
@@ -1463,18 +1419,18 @@
       }
 
       // Override renderProductList để hiển thị tác giả
-// GIẢ ĐỊNH perPage, currentPage, và currentList ĐƯỢC KHỞI TẠO VÀ SỬ DỤNG TRONG main.js
-function renderProductList(page = 1) {
-    const wrap = document.getElementById("product-list");
-    if (!wrap) return;
+      // GIẢ ĐỊNH perPage, currentPage, và currentList ĐƯỢC KHỞI TẠO VÀ SỬ DỤNG TRONG main.js
+      function renderProductList(page = 1) {
+        const wrap = document.getElementById("product-list");
+        if (!wrap) return;
 
-    currentPage = page;
-    const all = currentList;
-    const start = (page - 1) * perPage;
-    const list = all.slice(start, start + perPage);
+        currentPage = page;
+        const all = currentList;
+        const start = (page - 1) * perPage;
+        const list = all.slice(start, start + perPage);
 
-    wrap.innerHTML = list
-        .map(
+        wrap.innerHTML = list
+          .map(
             (it) => `
     <div class="product-card">
       <img src="${it.img}" alt="${it.name}">
@@ -1493,18 +1449,18 @@ function renderProductList(page = 1) {
       </div>
     </div>
     `
-        )
-        .join("");
+          )
+          .join("");
 
-    // HÀM NÀY CŨNG CẦN ĐƯỢC ĐỊNH NGHĨA TRONG main.js HOẶC KHÁC
-    renderPagination(Math.ceil(all.length / perPage));
-    
-    // ⭐ THÊM ĐOẠN NÀY ĐỂ CUỘN TRANG SAU KHI PHÂN TRANG
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // Cuộn mượt mà
-    });
-}
+        // HÀM NÀY CŨNG CẦN ĐƯỢC ĐỊNH NGHĨA TRONG main.js HOẶC KHÁC
+        renderPagination(Math.ceil(all.length / perPage));
+
+        // ⭐ THÊM ĐOẠN NÀY ĐỂ CUỘN TRANG SAU KHI PHÂN TRANG
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth", // Cuộn mượt mà
+        });
+      }
 
       // Khởi tạo khi DOM ready
       if (document.readyState === "loading") {
