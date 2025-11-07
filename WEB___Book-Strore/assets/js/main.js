@@ -47,7 +47,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Tiểu thuyết",
       desc: "Truyện cảm hứng cho bạn trẻ tìm kiếm chính mình.",
-      img: "images/tuoiTreDangGiaBaonNhieu.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/tuoiTreDangGiaBaoNhieu.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
@@ -151,7 +151,7 @@ const SAMPLE = {
       category: "Văn học",
       subcategory: "Truyện ngắn",
       desc: "Tác phẩm tiêu biểu cho phong cách tùy bút độc đáo.",
-      img: "images/nguoiLaiDoSongĐa.jpg", // ĐÃ SỬA: Bỏ "/"
+      img: "images/nguoiLaiDoSongDa.jpg", // ĐÃ SỬA: Bỏ "/"
       qty: 100, // THÊM MỚI
     },
     {
