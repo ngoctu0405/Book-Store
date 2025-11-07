@@ -5,7 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Giá bán</title>
     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <link rel="stylesheet" href="../assets/css/admin_style.css">\
+    <style>
+        /* Responsive cho thiết bị di động (max-width: 768px) */
+@media (max-width: 768px) {
+    /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
+    body {
+        display: flex !important;
+        flex-direction: column !important; /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
+        overflow-x: hidden; /* Tắt cuộn ngang vì đã xếp chồng */
+    }
+
+    /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
+    .sidebar {
+        width: 100% !important; 
+        /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
+        height: auto !important; 
+        flex-shrink: 0;
+        display: flex !important;
+        
+        /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
+        overflow-x: auto; /* Cho phép menu cuộn ngang nếu có nhiều mục */
+        white-space: nowrap; /* Ngăn các mục menu xuống dòng */
+    }
+    
+    /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
+    .main-content {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
+    .page-content {
+        padding: 15px !important;
+    }
+
+    .page-content h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
+    .table-responsive {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        min-width: 600px; /* Vẫn cần min-width cho bảng */
+    }
+
+    .table thead th, 
+    .table tbody td {
+        padding: 8px 6px; 
+        font-size: 12px; 
+    }
+    
+    .profit-input {
+        width: 50px;
+        padding: 4px 2px;
+        font-size: 12px;
+    }
+
+    .btn-sm {
+        padding: 3px 6px; 
+        font-size: 10px;
+    }
+    
+    .table tbody td span.small {
+        display: none;
+    }
+}
+
+/* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
+@media (min-width: 769px) {
+    body {
+        display: flex !important; 
+        flex-direction: row !important; /* Khôi phục thành row trên desktop */
+        overflow-x: hidden; 
+    }
+    .sidebar {
+        /* Giả sử chiều rộng desktop là 250px */
+        width: 250px !important; 
+        height: 100vh !important; /* Khôi phục vh-100 trên desktop */
+        display: flex !important;
+    }
+    .main-content {
+        width: 100%;
+    }
+}
+    </style>
 </head>
 <body>
     
