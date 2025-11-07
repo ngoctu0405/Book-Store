@@ -1980,13 +1980,67 @@ function handleLogoutDropdown(e) {
 }
 // ==========================================================
 
-//  CHỖ SỬA: Thêm event listener để đóng dropdown khi click bên ngoài
+// === BẮT ĐẦU: XỬ LÝ CLICK CHO DROPDOWN HỒ SƠ ===
+// (Khối này thay thế cho listener trống "click bên ngoài" trước đó)
 document.addEventListener("click", function (e) {
-  const dropdown = document.querySelector(".user-profile-dropdown");
-  if (dropdown && !dropdown.contains(e.target)) {
-    // Dropdown sẽ tự đóng khi hover ra ngoài, không cần xử lý thêm
+  const clickedElement = e.target;
+  const mainDropdown = document.querySelector(".user-profile-dropdown");
+
+  // Nếu chưa đăng nhập (không có dropdown), thì không làm gì cả
+  if (!mainDropdown) return;
+
+  // 1. Xử lý click vào NÚT CHÍNH (user-profile-btn)
+  // .closest() sẽ tìm chính nó hoặc cha gần nhất
+  const mainBtn = clickedElement.closest(".user-profile-btn");
+  if (mainBtn) {
+    // Bật/tắt menu chính
+    mainDropdown.classList.toggle("active");
+
+    // Nếu vừa đóng menu chính, đóng luôn menu con
+    if (!mainDropdown.classList.contains("active")) {
+      document
+        .querySelectorAll(".user-submenu.active")
+        .forEach((sub) => sub.classList.remove("active"));
+    }
+    return; // Đã xử lý xong, không làm gì thêm
+  }
+
+  // 2. Xử lý click vào NÚT MENU CON (Tùy chọn)
+  const submenuTrigger = clickedElement.closest(".user-submenu .dropdown-item");
+  if (submenuTrigger) {
+    const submenuLi = submenuTrigger.closest(".user-submenu");
+    if (submenuLi) {
+      // Bật/tắt menu con này
+      submenuLi.classList.toggle("active");
+    }
+    return; // Đã xử lý xong
+  }
+
+  // 3. Xử lý click BÊN NGOÀI TOÀN BỘ dropdown
+  // Nếu click ra ngoài (không chứa trong mainDropdown), đóng tất cả
+  if (!mainDropdown.contains(clickedElement)) {
+    mainDropdown.classList.remove("active");
+    document
+      .querySelectorAll(".user-submenu.active")
+      .forEach((sub) => sub.classList.remove("active"));
+    return;
+  }
+
+  // 4. (Tùy chọn) Xử lý click vào link (ví dụ "Lịch sử mua hàng") để đóng menu
+  // Nếu click vào một link (<a>) bên trong menu
+  // và nó KHÔNG PHẢI là link của submenu (đã xử lý ở bước 2)
+  const clickedLink = clickedElement.closest(
+    ".user-dropdown-menu > li > a, .user-submenu-content a"
+  );
+  if (clickedLink) {
+    mainDropdown.classList.remove("active");
+    document
+      .querySelectorAll(".user-submenu.active")
+      .forEach((sub) => sub.classList.remove("active"));
+    // (onclick của link sẽ tự chạy)
   }
 });
+// === KẾT THÚC: XỬ LÝ CLICK CHO DROPDOWN HỒ SƠ ===
 
 // Khởi tạo
 document.addEventListener("DOMContentLoaded", function () {

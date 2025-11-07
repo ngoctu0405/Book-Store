@@ -1018,10 +1018,6 @@ select {
   transform: translateX(3px);
 }
 
-.category-menu:hover .book-filter {
-  display: block;
-}
-
 /* ==== đảm bảo: dropdown items = chữ đen trên nền trắng ==== */
 
 /* hộp dropdown chính */
@@ -1100,13 +1096,6 @@ select {
   color: inherit !important;
   box-shadow: none !important;
   border: none !important;
-}
-
-/* show dropdown on hover (nếu bạn muốn hover) */
-.category-menu:hover .book-filter {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* show submenu when parent hovered (prevent flicker) */
@@ -2259,7 +2248,7 @@ footer {
   transition: transform 0.3s ease;
 }
 
-.user-profile-dropdown:hover .user-dropdown-icon {
+.user-profile-dropdown.active .user-dropdown-icon {
   transform: rotate(180deg);
 }
 
@@ -2291,7 +2280,7 @@ footer {
   }
 }
 
-.user-profile-dropdown:hover .user-dropdown-menu {
+.user-profile-dropdown.active .user-dropdown-menu {
   display: block;
 }
 
@@ -2371,7 +2360,7 @@ footer {
   }
 }
 
-.user-submenu:hover > .user-submenu-content {
+.user-submenu.active > .user-submenu-content {
   display: block;
 }
 
