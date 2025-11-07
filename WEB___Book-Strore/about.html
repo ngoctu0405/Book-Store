@@ -13,6 +13,70 @@
         top: 5rem;
         height: 96rem;
       }
+@media (max-width: 767px) {
+        .container {
+          height: 350rem;
+          max-width: 700px;
+          margin-left: auto;  
+        margin-right: auto;
+        }
+
+        /* Thêm các quy tắc này để căn giữa nội dung footer trên di động */
+      .footer-section {
+        text-align: center;
+      }
+      .footer-section .social-links {
+        justify-content: center;
+      }
+      .footer-section.contact-info p {
+        justify-content: center; /* Căn giữa cho các dòng liên hệ */
+      }
+
+        /* About us */
+        .col-md-6 {
+          position: relative;
+          top: 2rem;
+        }
+        .py-5 {
+          padding: 15rem 0;
+          height: 60rem;
+        }
+        .col-md-6-nd {
+          position: relative;
+          top: 10rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        .hot_sale_selection {
+          height: 120rem;
+        }
+        .col-12 {
+          margin: 1rem 9rem;
+        }
+      }
+
+      /* Responsive cho thiết bị di động (trên 769px) */
+      @media (min-width: 768px) {
+        .logo .Word {
+          position: relative;
+          left: -3rem;
+        }
+        .logo .Logo {
+          position: relative;
+          left: -3rem;
+        }
+        .search-center {
+          margin: 0 150px;
+        }
+        .navbar .menu li a {
+          width: 8rem;
+        }
+        .category-btn {
+          width: 9rem;
+        }
+      }
     </style>
   </head>
 

@@ -796,33 +796,47 @@ let currentPage = 1;
 const perPage = 8;
 let currentList = getVisibleProducts(); // Đã lọc sản phẩm và category ẩn
 
+// SỬA: Cập nhật hàm renderProductList TOÀN CỤC để bao gồm Tác giả
 function renderProductList(page = 1) {
-  const wrap = document.getElementById("product-list");
-  if (!wrap) return;
-  currentPage = page;
+    const wrap = document.getElementById("product-list");
+    if (!wrap) return;
 
-  const all = currentList;
-  const start = (page - 1) * perPage;
-  const list = all.slice(start, start + perPage);
+    currentPage = page;
+    const all = currentList;
+    const start = (page - 1) * perPage;
+    const list = all.slice(start, start + perPage);
 
-  wrap.innerHTML = list
-    .map(
-      (it) => `
-  <div class="product-card">
-    <img src="${it.img}" alt="">
-    <h3>${it.name}</h3>
-    <div class="price">${it.price.toLocaleString("vi-VN")}đ</div>
-  <div class="button-row">
-  <a class="btn btn-small" href="product-detail.html?id=${it.id}">Xem</a>
-<button class="btn btn-cart" onclick="addToCart(${
-        it.id
-      },1)">Thêm vào giỏ</button>
-</div>
-  </div>`
-    )
-    .join("");
+    // Sử dụng HTML giống như trang category để hiển thị tác giả
+    wrap.innerHTML = list
+        .map(
+            (it) => `
+    <div class="product-card">
+      <img src="${it.img}" alt="${it.name}">
+      <div class="product-info">
+        <h3>${it.name}</h3>
+        <p class="product-author">Tác giả: ${it.author || "Đang cập nhật"}</p>
+        <div class="price">${(it.price || 0).toLocaleString("vi-VN")}₫</div>
+        <div class="button-row">
+          <a class="btn btn-small" href="product-detail.html?id=${
+            it.id
+          }">Xem</a>
+          <button class="btn btn-cart" onclick="addToCart(${
+            it.id
+          }, 1)">Thêm vào giỏ</button>
+        </div>
+      </div>
+    </div>
+    `
+        )
+        .join("");
 
-  renderPagination(Math.ceil(all.length / perPage));
+    renderPagination(Math.ceil(all.length / perPage));
+    
+    // Thêm hiệu ứng cuộn lên đầu trang sau khi nhấn đổi trang
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' 
+    });
 }
 
 function renderPagination(totalPages) {
@@ -889,7 +903,8 @@ function doSearch() {
 }
 
 function renderSearchResults() {
-  const wrap = document.getElementById("search-results");
+  // SỬA: Lấy wrap bằng ID mới "product-list"
+  const wrap = document.getElementById("product-list");
   if (!wrap) return;
 
   const q = (new URLSearchParams(location.search).get("q") || "").trim();
@@ -904,30 +919,26 @@ function renderSearchResults() {
     .split(/\s+/)
     .filter((k) => k);
 
+  // Lấy danh sách kết quả
   const res = getVisibleProducts().filter((p) =>
     keywords.every((k) => p.name.toLowerCase().includes(k))
   );
 
-  wrap.innerHTML = res.length
-    ? res
-        .map(
-          (it) => `
-      <div class="product-card"> 
-        <img src="${it.img}" alt="${it.name}"> 
-        <h3>${it.name}</h3>
-        <div class="price">${it.price.toLocaleString("vi-VN")}đ</div>
-        <div class="button-row">
-          <a class="btn btn-small" href="product-detail.html?id=${
-            it.id
-          }">Xem</a>
-          <button class="btn btn-cart" onclick="addToCart(${
-            it.id
-          },1)">Thêm vào giỏ</button>
-        </div>
-      </div>`
-        )
-        .join("")
-    : `<p class="no-results">Không tìm thấy sản phẩm nào với từ khóa "<strong>${q}</strong>"</p>`;
+  // SỬA: Thay vì render HTML, gán kết quả vào currentList và gọi phân trang
+  if (res.length > 0) {
+    // Gán kết quả tìm kiếm vào danh sách chờ phân trang
+    currentList = res; 
+    
+    // Gọi hàm render trang đầu tiên (nó sẽ tự gọi renderPagination)
+    renderProductList(1); 
+  } else {
+    // Nếu không có kết quả, hiển thị thông báo
+    wrap.innerHTML = `<p class="no-results">Không tìm thấy sản phẩm nào với từ khóa "<strong>${q}</strong>"</p>`;
+    
+    // Cũng xóa luôn pagination nếu không có kết quả
+    const pag = document.getElementById("pagination");
+    if (pag) pag.innerHTML = "";
+  }
 }
 
 // SỬA: Cập nhật hàm renderProductDetail() trong main.js
