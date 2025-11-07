@@ -1132,10 +1132,6 @@ select {
   transform: translateX(3px);
 }
 
-.category-menu:hover .book-filter {
-  display: block;
-}
-
 /* ==== đảm bảo: dropdown items = chữ đen trên nền trắng ==== */
 
 /* hộp dropdown chính */
@@ -1214,13 +1210,6 @@ select {
   color: inherit !important;
   box-shadow: none !important;
   border: none !important;
-}
-
-/* show dropdown on hover (nếu bạn muốn hover) */
-.category-menu:hover .book-filter {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* show submenu when parent hovered (prevent flicker) */
