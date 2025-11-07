@@ -2476,7 +2476,7 @@ footer {
   transition: transform 0.3s ease;
 }
 
-.user-profile-dropdown:hover .user-dropdown-icon {
+.user-profile-dropdown.active .user-dropdown-icon {
   transform: rotate(180deg);
 }
 
@@ -2508,7 +2508,7 @@ footer {
   }
 }
 
-.user-profile-dropdown:hover .user-dropdown-menu {
+.user-profile-dropdown.active .user-dropdown-menu {
   display: block;
 }
 
@@ -2588,7 +2588,7 @@ footer {
   }
 }
 
-.user-submenu:hover > .user-submenu-content {
+.user-submenu.active > .user-submenu-content {
   display: block;
 }
 
