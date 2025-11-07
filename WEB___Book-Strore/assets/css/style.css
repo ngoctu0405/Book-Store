@@ -128,6 +128,11 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+@media (max-width: 575px) {
+  .btn-auth {
+    width: 8rem;
+  }
+}
 .btn-signup {
   background: linear-gradient(135deg, #7fb3d3 0%, #4f9da6 100%);
 }
