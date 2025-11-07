@@ -515,19 +515,93 @@
         </div>
 
         <div class="filter-item">
-          <button class="filter-btn">Theo tên sách ▾</button>
-          <ul class="filter-dropdown">
-            <li><a href="#">A → Z</a></li>
-            <li><a href="#">Z → A</a></li>
-          </ul>
+          <button class="filter-btn" id="name-search-btn">
+            Theo tên sách ▾
+          </button>
+          <div
+            class="filter-dropdown price-range-dropdown"
+            style="padding: 15px; min-width: 250px"
+          >
+            <div style="margin-bottom: 10px">
+              <label
+                for="search-name"
+                style="display: block; font-size: 14px; margin-bottom: 5px"
+                >Nhập tên sách</label
+              >
+              <input
+                type="text"
+                id="search-name"
+                placeholder="Ví dụ: Hoàng tử bé"
+                style="
+                  width: 100%;
+                  padding: 8px;
+                  border: 1px solid #ccc;
+                  border-radius: 4px;
+                "
+              />
+            </div>
+            <button
+              id="apply-name-search"
+              style="
+                width: 100%;
+                padding: 10px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 10px;
+                font-weight: 600;
+              "
+            >
+              Áp dụng
+            </button>
+          </div>
         </div>
 
         <div class="filter-item">
-          <button class="filter-btn">Theo tác giả ▾</button>
-          <ul class="filter-dropdown">
-            <li><a href="#">A → Z</a></li>
-            <li><a href="#">Z → A</a></li>
-          </ul>
+          <button class="filter-btn" id="author-search-btn">
+            Theo tác giả ▾
+          </button>
+          <div
+            class="filter-dropdown price-range-dropdown"
+            style="padding: 15px; min-width: 250px"
+          >
+            <div style="margin-bottom: 10px">
+              <label
+                for="search-author"
+                style="display: block; font-size: 14px; margin-bottom: 5px"
+                >Nhập tên tác giả</label
+              >
+              <input
+                type="text"
+                id="search-author"
+                placeholder="Ví dụ: Nguyễn Nhật Ánh"
+                style="
+                  width: 100%;
+                  padding: 8px;
+                  border: 1px solid #ccc;
+                  border-radius: 4px;
+                "
+              />
+            </div>
+            <button
+              id="apply-author-search"
+              style="
+                width: 100%;
+                padding: 10px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 10px;
+                font-weight: 600;
+              "
+            >
+              Áp dụng
+            </button>
+          </div>
         </div>
 
         <div class="filter-item">
@@ -903,14 +977,15 @@
     <script>
       // Biến toàn cục để lưu trạng thái filter
       let categoryFilters = {
-        sortByName: null,
-        sortByAuthor: null,
+        searchName: "", // ĐÃ THAY ĐỔI: Tìm kiếm theo tên (từ khóa)
+        searchAuthor: "", // ĐÃ THAY ĐỔI: Tìm kiếm theo tác giả (từ khóa)
         minPrice: null,
         maxPrice: null,
         category: null,
         subcategory: null,
         filterSubcategory: null, // THÊM MỚI: Lọc theo subcategory từ dropdown
       };
+      
 
       // Khởi tạo trang category
       function initCategoryPage() {
@@ -1048,39 +1123,53 @@
       function setupCategoryFilterListeners() {
         console.log("Setting up filter listeners...");
 
-        // Lọc theo tên truyện (bây giờ là child thứ 2)
-        const nameFilterLinks = document.querySelectorAll(
-          ".filter-item:nth-child(2) .filter-dropdown a"
-        );
-        console.log("Name filter links:", nameFilterLinks.length);
-
-        nameFilterLinks.forEach((link, index) => {
-          link.addEventListener("click", (e) => {
-            e.preventDefault();
-            console.log("Name filter clicked:", index);
-            categoryFilters.sortByName = index === 0 ? "asc" : "desc";
+        // LỌC THEO TÊN SÁCH (TÌM KIẾM TỪ KHÓA)
+        const applyNameSearchBtn = document.getElementById("apply-name-search");
+        const searchNameInput = document.getElementById("search-name");
+        
+        const applyNameSearch = () => {
+            if (!searchNameInput) return;
+            categoryFilters.searchName = searchNameInput.value.trim();
             applyCategoryFilters();
             updateSelectedFilters();
             updateClearButton();
-          });
-        });
+        };
 
-        // Lọc theo tác giả (bây giờ là child thứ 3)
-        const authorFilterLinks = document.querySelectorAll(
-          ".filter-item:nth-child(3) .filter-dropdown a"
-        );
-        console.log("Author filter links:", authorFilterLinks.length);
+        if (applyNameSearchBtn) {
+            applyNameSearchBtn.addEventListener("click", applyNameSearch);
+        }
+        if (searchNameInput) {
+            searchNameInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    applyNameSearch();
+                }
+            });
+        }
 
-        authorFilterLinks.forEach((link, index) => {
-          link.addEventListener("click", (e) => {
-            e.preventDefault();
-            console.log("Author filter clicked:", index);
-            categoryFilters.sortByAuthor = index === 0 ? "asc" : "desc";
+        // LỌC THEO TÁC GIẢ (TÌM KIẾM TỪ KHÓA)
+        const applyAuthorSearchBtn = document.getElementById("apply-author-search");
+        const searchAuthorInput = document.getElementById("search-author");
+
+        const applyAuthorSearch = () => {
+            if (!searchAuthorInput) return;
+            categoryFilters.searchAuthor = searchAuthorInput.value.trim();
             applyCategoryFilters();
             updateSelectedFilters();
             updateClearButton();
-          });
-        });
+        };
+
+        if (applyAuthorSearchBtn) {
+            applyAuthorSearchBtn.addEventListener("click", applyAuthorSearch);
+        }
+        if (searchAuthorInput) {
+            searchAuthorInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    applyAuthorSearch();
+                }
+            });
+        }
 
         // Lọc theo khoảng giá
         const applyPriceBtn = document.getElementById("apply-price-filter");
@@ -1224,37 +1313,31 @@
         }
 
         // Sắp xếp
-        if (categoryFilters.sortByName && categoryFilters.sortByAuthor) {
-          products.sort((a, b) => {
-            const nameCompare =
-              categoryFilters.sortByName === "asc"
-                ? a.name.localeCompare(b.name, "vi")
-                : b.name.localeCompare(a.name, "vi");
-
-            if (nameCompare === 0) {
-              return categoryFilters.sortByAuthor === "asc"
-                ? (a.author || "").localeCompare(b.author || "", "vi")
-                : (b.author || "").localeCompare(a.author || "", "vi");
-            }
-
-            return nameCompare;
-          });
-          console.log("Sorted by name + author");
-        } else if (categoryFilters.sortByName) {
-          products.sort((a, b) => {
-            return categoryFilters.sortByName === "asc"
-              ? a.name.localeCompare(b.name, "vi")
-              : b.name.localeCompare(a.name, "vi");
-          });
-          console.log("Sorted by name only");
-        } else if (categoryFilters.sortByAuthor) {
-          products.sort((a, b) => {
-            return categoryFilters.sortByAuthor === "asc"
-              ? (a.author || "").localeCompare(b.author || "", "vi")
-              : (b.author || "").localeCompare(a.author || "", "vi");
-          });
-          console.log("Sorted by author only");
+        // LỌC THEO TÊN SÁCH (TÌM KIẾM TỪ KHÓA)
+        const searchNameKeyword = categoryFilters.searchName.toLowerCase();
+        if (searchNameKeyword) {
+          products = products.filter(
+            (p) => p.name.toLowerCase().includes(searchNameKeyword)
+          );
+          console.log("After name search filter:", products.length);
         }
+
+        // LỌC THEO TÁC GIẢ (TÌM KIẾM TỪ KHÓA)
+        const searchAuthorKeyword = categoryFilters.searchAuthor.toLowerCase();
+        if (searchAuthorKeyword) {
+          products = products.filter(
+            (p) => (p.author || "").toLowerCase().includes(searchAuthorKeyword)
+          );
+          console.log("After author search filter:", products.length);
+        }
+
+        // LƯU Ý: Loại bỏ logic SẮP XẾP vì yêu cầu chuyển thành TÌM KIẾM.
+        // Cần thêm một logic sắp xếp mặc định (ví dụ: theo tên A-Z) nếu không có bộ lọc nào được áp dụng.
+        // Sắp xếp mặc định theo Tên (A-Z) để đảm bảo thứ tự hiển thị ổn định
+        products.sort((a, b) => {
+            return a.name.localeCompare(b.name, "vi");
+        });
+        console.log("Sorted by name (default A-Z) after search.");
 
         console.log("Final products count:", products.length);
 
@@ -1271,25 +1354,21 @@
         let html = "<h1>Tìm kiếm nâng cao: </h1>";
         let hasFilter = false;
 
-        // Tên
-        if (categoryFilters.sortByName) {
+        // Tên (Tìm kiếm)
+        if (categoryFilters.searchName) {
           hasFilter = true;
-          const direction =
-            categoryFilters.sortByName === "asc" ? "A → Z" : "Z → A";
           html += `<span class="filter-tag">
-      Tên: ${direction}
-      <span class="remove-filter" onclick="removeCategoryFilter('sortByName')">✕</span>
+      Tên sách: ${categoryFilters.searchName}
+      <span class="remove-filter" onclick="removeCategoryFilter('searchName')">✕</span>
     </span>`;
         }
 
-        // Tác giả
-        if (categoryFilters.sortByAuthor) {
+        // Tác giả (Tìm kiếm)
+        if (categoryFilters.searchAuthor) {
           hasFilter = true;
-          const direction =
-            categoryFilters.sortByAuthor === "asc" ? "A → Z" : "Z → A";
           html += `<span class="filter-tag">
-      Tác giả: ${direction}
-      <span class="remove-filter" onclick="removeCategoryFilter('sortByAuthor')">✕</span>
+      Tác giả: ${categoryFilters.searchAuthor}
+      <span class="remove-filter" onclick="removeCategoryFilter('searchAuthor')">✕</span>
     </span>`;
         }
 
@@ -1340,13 +1419,17 @@
         console.log("Removing filter:", filterType);
 
         switch (filterType) {
-          case "sortByName":
-            categoryFilters.sortByName = null;
+          case "searchName": // ĐÃ THAY ĐỔI
+            categoryFilters.searchName = "";
+            const nameInput = document.getElementById("search-name");
+            if (nameInput) nameInput.value = "";
             break;
-          case "sortByAuthor":
-            categoryFilters.sortByAuthor = null;
+          case "searchAuthor": // ĐÃ THAY ĐỔI
+            categoryFilters.searchAuthor = "";
+            const authorInput = document.getElementById("search-author");
+            if (authorInput) authorInput.value = "";
             break;
-          case "filterSubcategory": // THÊM MỚI
+          case "filterSubcategory":
             categoryFilters.filterSubcategory = null;
             break;
           case "price":
@@ -1370,9 +1453,9 @@
         if (!clearBtn) return;
 
         const hasActiveFilter =
-          categoryFilters.sortByName ||
-          categoryFilters.sortByAuthor ||
-          categoryFilters.filterSubcategory || // ✅ THÊM MỚI
+          categoryFilters.searchName || // ĐÃ THAY ĐỔI
+          categoryFilters.searchAuthor || // ĐÃ THAY ĐỔI
+          categoryFilters.filterSubcategory ||
           categoryFilters.minPrice !== null ||
           categoryFilters.maxPrice !== null;
 
