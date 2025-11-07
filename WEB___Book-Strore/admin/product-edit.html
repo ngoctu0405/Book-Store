@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chỉnh sửa Sản phẩm</title>
+
      <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">
     <style>
@@ -100,83 +101,142 @@
 </head>
 <body>
     
+
+    <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
+    <link
+      rel="stylesheet"
+      href="../bootstrap-5.3.2-dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/admin_style.css" />
+  </head>
+  <body>
+
     <aside class="sidebar d-flex flex-column vh-100">
-        <div class="sidebar-header">Literary Haven</div>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item"><a href="dashboard.html" class="nav-link">Bảng điều khiển</a></li>
-            <li class="nav-item"><a href="users.html" class="nav-link">Khách hàng</a></li>
-            <li class="nav-item"><a href="categories.html" class="nav-link">Loại sản phẩm</a></li>
-            <li class="nav-item"><a href="products.html" class="nav-link">Sản phẩm</a></li>
-            <li class="nav-item"><a href="purchase-orders.html" class="nav-link">Nhập hàng</a></li>
-            <li class="nav-item"><a href="pricing.html" class="nav-link">Quản lý giá</a></li>
-            <li class="nav-item"><a href="orders.html" class="nav-link">Đơn hàng</a></li>
-            <li class="nav-item"><a href="inventory.html" class="nav-link">Tồn kho</a></li>
-            <li class="nav-item"><a href="reports.html" class="nav-link">Báo cáo</a></li>
+      <div class="sidebar-header">Literary Haven</div>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">Bảng điều khiển</a>
+        </li>
+        <li class="nav-item">
+          <a href="users.html" class="nav-link">Khách hàng</a>
+        </li>
+        <li class="nav-item">
+          <a href="categories.html" class="nav-link">Loại sản phẩm</a>
+        </li>
+        <li class="nav-item">
+          <a href="products.html" class="nav-link">Sản phẩm</a>
+        </li>
+        <li class="nav-item">
+          <a href="purchase-orders.html" class="nav-link">Nhập hàng</a>
+        </li>
+        <li class="nav-item">
+          <a href="pricing.html" class="nav-link">Quản lý giá</a>
+        </li>
+        <li class="nav-item">
+          <a href="orders.html" class="nav-link">Đơn hàng</a>
+        </li>
+        <li class="nav-item">
+          <a href="inventory.html" class="nav-link">Tồn kho</a>
+        </li>
+        <li class="nav-item">
+          <a href="reports.html" class="nav-link">Báo cáo</a>
+        </li>
+      </ul>
+      <div class="mt-auto p-3">
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Đăng xuất</a>
+          </li>
         </ul>
-        <div class="mt-auto p-3">
-             <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a href="#" class="nav-link">Trợ giúp</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Cài đặt</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Mật khẩu</a></li>
-                <li class="nav-item"><a href="index.html" class="nav-link">Đăng xuất</a></li>
-             </ul>
-        </div>
+      </div>
     </aside>
 
     <main class="main-content">
-        <header class="top-bar p-3 d-flex justify-content-between align-items-center">
-            <form class="search-bar d-flex align-items-center">
-                <input class="form-control" type="search" placeholder="Tìm kiếm...">
-            </form>
-            <div class="profile-area d-flex align-items-center">
-                <div class="profile-pic ms-3"></div>
-            </div>
-        </header>
-
-        <div class="page-content p-4">
-            <h1 class="mb-4">Thêm/Sửa Sản phẩm (Yêu cầu 4)</h1>
-
-            <div class="form-container p-4">
-                <form id="productForm">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="mb-3">
-                                <label for="product-name" class="form-label">Tên sản phẩm</label>
-                                <input type="text" class="form-control" id="product-name" value="Sáp vuốt tóc Apestomen Nitro" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="product-description" class="form-label">Mô tả</label>
-                                <textarea class="form-control" id="product-description" rows="5">Mô tả chi tiết...</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="product-image" class="form-label">Hình ảnh</label>
-                                <input class="form-control" type="file" id="product-image">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="product-category" class="form-label">Loại sản phẩm (Yêu cầu 3)</label>
-                                <select class="form-select" id="product-category">
-                                    <option value="sap" selected>Sáp vuốt tóc</option>
-                                    <option value="dau-goi">Dầu gội</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="product-code" class="form-label">Mã sản phẩm (SKU)</label>
-                                <input type="text" class="form-control" id="product-code" value="SP001">
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-actions">
-                        <a href="products.html" class="btn btn-secondary">Hủy</a>
-                        <button type="submit" class="btn btn-primary ms-2">Lưu thay đổi</button>
-                    </div>
-                </form>
-            </div>
+      <header
+        class="top-bar p-3 d-flex justify-content-between align-items-center"
+      >
+        <form class="search-bar d-flex align-items-center">
+          <input class="form-control" type="search" placeholder="Tìm kiếm..." />
+        </form>
+        <div class="profile-area d-flex align-items-center">
+          <div class="profile-pic ms-3"></div>
         </div>
+      </header>
+
+      <div class="page-content p-4">
+        <h1 class="mb-4">Thêm/Sửa Sản phẩm (Yêu cầu 4)</h1>
+
+        <div class="form-container p-4">
+          <form id="productForm">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="mb-3">
+                  <label for="product-name" class="form-label"
+                    >Tên sản phẩm</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="product-name"
+                    value="Sáp vuốt tóc Apestomen Nitro"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="product-description" class="form-label"
+                    >Mô tả</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="product-description"
+                    rows="5"
+                  >
+Mô tả chi tiết...</textarea
+                  >
+                </div>
+                <div class="mb-3">
+                  <label for="product-image" class="form-label">Hình ảnh</label>
+                  <input class="form-control" type="file" id="product-image" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="product-category" class="form-label"
+                    >Loại sản phẩm (Yêu cầu 3)</label
+                  >
+                  <select class="form-select" id="product-category">
+                    <option value="sap" selected>Sáp vuốt tóc</option>
+                    <option value="dau-goi">Dầu gội</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="product-code" class="form-label"
+                    >Mã sản phẩm (SKU)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="product-code"
+                    value="SP001"
+                  />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="form-actions">
+              <a href="products.html" class="btn btn-secondary">Hủy</a>
+              <button type="submit" class="btn btn-primary ms-2">
+                Lưu thay đổi
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </main>
     <script src="../assets/js/admin_main.js"></script>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-</body>
+  </body>
 </html>

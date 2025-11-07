@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý Giá bán</title>
+
     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/admin_style.css">\
     <style>
@@ -100,160 +101,185 @@
 </head>
 <body>
     
-    <aside class="sidebar d-flex flex-column vh-100">
-        <div class="sidebar-header">
-            Literary Haven
-        </div>
 
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="dashboard.html" class="nav-link">
-                    <span class="nav-icon">◈</span>
-                    <span>Bảng điều khiển</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="users.html" class="nav-link">
-                    <span class="nav-icon">◉</span>
-                    <span>Khách hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="categories.html" class="nav-link">
-                    <span class="nav-icon">◫</span>
-                    <span>Loại sản phẩm</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="products.html" class="nav-link">
-                    <span class="nav-icon">◪</span>
-                    <span>Sản phẩm</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="purchase-orders.html" class="nav-link">
-                    <span class="nav-icon">◩</span>
-                    <span>Nhập hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="pricing.html" class="nav-link active">
-                    <span class="nav-icon">◎</span>
-                    <span>Quản lý giá</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="orders.html" class="nav-link">
-                    <span class="nav-icon">◧</span>
-                    <span>Đơn hàng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="inventory.html" class="nav-link">
-                    <span class="nav-icon">◨</span>
-                    <span>Tồn kho</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="reports.html" class="nav-link">
-                    <span class="nav-icon">◔</span>
-                    <span>Báo cáo</span>
-                </a>
-            </li>
-        </ul>
-        
-        <div class="mt-auto p-3">
-            <a href="index.html" class="logout-link">
-                <span>◀</span>
-                <span>Đăng xuất</span>
-            </a>
-        </div>
+    <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
+    <link
+      rel="stylesheet"
+      href="../bootstrap-5.3.2-dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/admin_style.css" />
+  </head>
+  <body>
+
+    <aside class="sidebar d-flex flex-column vh-100">
+      <div class="sidebar-header">Literary Haven</div>
+
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">◈</span>
+            <span>Bảng điều khiển</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="users.html" class="nav-link">
+            <span class="nav-icon">◉</span>
+            <span>Khách hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="categories.html" class="nav-link">
+            <span class="nav-icon">◫</span>
+            <span>Loại sản phẩm</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="products.html" class="nav-link">
+            <span class="nav-icon">◪</span>
+            <span>Sản phẩm</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="purchase-orders.html" class="nav-link">
+            <span class="nav-icon">◩</span>
+            <span>Nhập hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="pricing.html" class="nav-link active">
+            <span class="nav-icon">◎</span>
+            <span>Quản lý giá</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="orders.html" class="nav-link">
+            <span class="nav-icon">◧</span>
+            <span>Đơn hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="inventory.html" class="nav-link">
+            <span class="nav-icon">◨</span>
+            <span>Tồn kho</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="reports.html" class="nav-link">
+            <span class="nav-icon">◔</span>
+            <span>Báo cáo</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="mt-auto p-3">
+        <a href="index.html" class="logout-link">
+          <span>◀</span>
+          <span>Đăng xuất</span>
+        </a>
+      </div>
     </aside>
 
     <main class="main-content">
+      <div class="page-content p-4">
+        <h1 class="mb-4">Quản lý Giá bán</h1>
 
-        <div class="page-content p-4">
-            <h1 class="mb-4">Quản lý Giá bán</h1>
+        <div class="card">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <h3 class="h5 mb-0">Tra cứu và Tinh chỉnh Giá bán</h3>
+          </div>
+          <div class="card-body">
+            <form id="search-pricing-form" class="row g-3 mb-3">
+              <div class="col-md-5">
+                <input
+                  type="text"
+                  id="search-query"
+                  class="form-control"
+                  placeholder="Tìm theo tên hoặc mã sản phẩm..."
+                />
+              </div>
+              <div class="col-md-5">
+                <select id="category-filter" class="form-select">
+                  <option value="" selected>Lọc theo loại sản phẩm</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                  Tra cứu
+                </button>
+              </div>
+            </form>
 
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="h5 mb-0">Tra cứu và Tinh chỉnh Giá bán</h3>
-                </div>
-                <div class="card-body">
-                    <form id="search-pricing-form" class="row g-3 mb-3">
-                        <div class="col-md-5">
-                            <input type="text" id="search-query" class="form-control" placeholder="Tìm theo tên hoặc mã sản phẩm...">
-                        </div>
-                        <div class="col-md-5">
-                            <select id="category-filter" class="form-select">
-                                <option value="" selected>Lọc theo loại sản phẩm</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                             <button type="submit" class="btn btn-primary w-100">Tra cứu</button>
-                        </div>
-                    </form>
-                
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Loại SP</th>
-                                    <th class="text-end">Giá vốn</th>
-                                    <th class="text-center">% Lợi nhuận</th>
-                                    <th class="text-end">Giá bán</th>
-                                    <th class="text-center">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pricing-table-body">
-                                <tr><td colspan="6" class="text-center">Đang tải dữ liệu...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Loại SP</th>
+                    <th class="text-end">Giá vốn</th>
+                    <th class="text-center">% Lợi nhuận</th>
+                    <th class="text-end">Giá bán</th>
+                    <th class="text-center">Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="pricing-table-body">
+                  <tr>
+                    <td colspan="6" class="text-center">Đang tải dữ liệu...</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
+      </div>
     </main>
-    
+
     <script>
-        function getData() {
-            const storedData = localStorage.getItem("bs_data");
-            return storedData ? JSON.parse(storedData) : { products: [] };
+      function getData() {
+        const storedData = localStorage.getItem("bs_data");
+        return storedData ? JSON.parse(storedData) : { products: [] };
+      }
+
+      function saveData(data) {
+        localStorage.setItem("bs_data", JSON.stringify(data));
+      }
+
+      function calculateSalePrice(costPrice, profitMargin) {
+        const salePrice = costPrice * (1 + profitMargin / 100);
+        return Math.round(salePrice / 1000) * 1000;
+      }
+
+      function formatPrice(price) {
+        return price.toLocaleString("vi-VN") + "đ";
+      }
+
+      function renderPricingTable(products) {
+        const tbody = document.getElementById("pricing-table-body");
+        if (!tbody) return;
+
+        if (products.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="6" class="text-center">Không tìm thấy sản phẩm nào.</td></tr>';
+          return;
         }
 
-        function saveData(data) {
-            localStorage.setItem("bs_data", JSON.stringify(data));
-        }
+        tbody.innerHTML = products
+          .map((p) => {
+            const costPrice = p.costPrice || p.price;
+            const currentMargin =
+              p.profitMargin !== undefined ? p.profitMargin : 0;
+            const salePrice = calculateSalePrice(costPrice, currentMargin);
 
-        function calculateSalePrice(costPrice, profitMargin) {
-            const salePrice = costPrice * (1 + profitMargin / 100);
-            return Math.round(salePrice / 1000) * 1000;
-        }
-
-        function formatPrice(price) {
-            return price.toLocaleString("vi-VN") + "đ";
-        }
-
-        function renderPricingTable(products) {
-            const tbody = document.getElementById("pricing-table-body");
-            if (!tbody) return;
-
-            if (products.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy sản phẩm nào.</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = products.map(p => {
-                const costPrice = p.costPrice || p.price;
-                const currentMargin = p.profitMargin !== undefined ? p.profitMargin : 0;
-                const salePrice = calculateSalePrice(costPrice, currentMargin);
-
-                return `
+            return `
                     <tr data-id="${p.id}">
-                        <td>${p.name} <span class="text-muted small">(${p.sku})</span></td>
+                        <td>${p.name} <span class="text-muted small">(${
+              p.sku
+            })</span></td>
                         <td>${p.category}</td>
-                        <td class="text-end text-danger">${formatPrice(costPrice)}</td>
+                        <td class="text-end text-danger">${formatPrice(
+                          costPrice
+                        )}</td>
                         <td class="text-center">
                             <input 
                                 type="number" 
@@ -266,159 +292,176 @@
                                 oninput="updateSalePrice(${p.id})">
                         </td>
                         <td class="text-end">
-                            <span id="price-${p.id}" class="fw-bold">${formatPrice(salePrice)}</span>
+                            <span id="price-${
+                              p.id
+                            }" class="fw-bold">${formatPrice(salePrice)}</span>
                         </td>
                         <td class="text-center">
-                            <button class="btn btn-sm btn-success" onclick="saveProductProfit(${p.id})">Lưu</button>
-                            <button class="btn btn-sm btn-reset" onclick="resetProductProfit(${p.id})">Reset</button>
+                            <button class="btn btn-sm btn-success" onclick="saveProductProfit(${
+                              p.id
+                            })">Lưu</button>
+                            <button class="btn btn-sm btn-reset" onclick="resetProductProfit(${
+                              p.id
+                            })">Reset</button>
                         </td>
                     </tr>
                 `;
-            }).join("");
+          })
+          .join("");
+      }
+
+      function updateSalePrice(productId) {
+        const profitInput = document.getElementById(`profit-${productId}`);
+        const priceSpan = document.getElementById(`price-${productId}`);
+        const product = getData().products.find((p) => p.id === productId);
+
+        if (!product || !profitInput || !priceSpan) return;
+
+        const costPrice = product.costPrice || product.price;
+        const profitMargin = Number(profitInput.value);
+
+        if (profitMargin < 0 || isNaN(profitMargin)) {
+          priceSpan.textContent = "Lỗi %";
+          priceSpan.classList.remove("price-changed");
+          return;
         }
 
-        function updateSalePrice(productId) {
-            const profitInput = document.getElementById(`profit-${productId}`);
-            const priceSpan = document.getElementById(`price-${productId}`);
-            const product = getData().products.find(p => p.id === productId);
+        const newSalePrice = calculateSalePrice(costPrice, profitMargin);
+        priceSpan.textContent = formatPrice(newSalePrice);
+        priceSpan.classList.add("price-changed");
+      }
 
-            if (!product || !profitInput || !priceSpan) return;
+      function saveProductProfit(productId) {
+        const profitInput = document.getElementById(`profit-${productId}`);
+        if (!profitInput) return;
 
-            const costPrice = product.costPrice || product.price;
-            const profitMargin = Number(profitInput.value);
+        const profitMargin = Number(profitInput.value);
 
-            if (profitMargin < 0 || isNaN(profitMargin)) {
-                priceSpan.textContent = "Lỗi %";
-                priceSpan.classList.remove("price-changed");
-                return;
-            }
-
-            const newSalePrice = calculateSalePrice(costPrice, profitMargin);
-            priceSpan.textContent = formatPrice(newSalePrice);
-            priceSpan.classList.add("price-changed");
+        if (profitMargin < 0 || isNaN(profitMargin)) {
+          alert("Vui lòng nhập tỉ lệ lợi nhuận hợp lệ (>= 0).");
+          return;
         }
 
-        function saveProductProfit(productId) {
-            const profitInput = document.getElementById(`profit-${productId}`);
-            if (!profitInput) return;
+        const data = getData();
+        const product = data.products.find((p) => p.id === productId);
 
-            const profitMargin = Number(profitInput.value);
-
-            if (profitMargin < 0 || isNaN(profitMargin)) {
-                alert("Vui lòng nhập tỉ lệ lợi nhuận hợp lệ (>= 0).");
-                return;
-            }
-
-            const data = getData();
-            const product = data.products.find(p => p.id === productId);
-
-            if (!product) {
-                alert("Không tìm thấy sản phẩm!");
-                return;
-            }
-
-            product.profitMargin = profitMargin;
-            const costPrice = product.costPrice || product.price;
-            product.price = calculateSalePrice(costPrice, profitMargin);
-
-            saveData(data);
-
-            alert(`✅ Đã lưu thành công ${profitMargin}% lợi nhuận cho sản phẩm "${product.name}"`);
-
-            const priceSpan = document.getElementById(`price-${productId}`);
-            if (priceSpan) {
-                priceSpan.classList.remove("price-changed");
-            }
+        if (!product) {
+          alert("Không tìm thấy sản phẩm!");
+          return;
         }
 
-        function resetProductProfit(productId) {
-            if (!confirm("Bạn có chắc muốn reset % lợi nhuận về 0?")) return;
+        product.profitMargin = profitMargin;
+        const costPrice = product.costPrice || product.price;
+        product.price = calculateSalePrice(costPrice, profitMargin);
 
-            const data = getData();
-            const product = data.products.find(p => p.id === productId);
+        saveData(data);
 
-            if (!product) return;
+        alert(
+          `✅ Đã lưu thành công ${profitMargin}% lợi nhuận cho sản phẩm "${product.name}"`
+        );
 
-            product.profitMargin = 0;
-            const costPrice = product.costPrice || product.price;
-            product.price = costPrice;
+        const priceSpan = document.getElementById(`price-${productId}`);
+        if (priceSpan) {
+          priceSpan.classList.remove("price-changed");
+        }
+      }
 
-            saveData(data);
+      function resetProductProfit(productId) {
+        if (!confirm("Bạn có chắc muốn reset % lợi nhuận về 0?")) return;
 
-            const profitInput = document.getElementById(`profit-${productId}`);
-            const priceSpan = document.getElementById(`price-${productId}`);
+        const data = getData();
+        const product = data.products.find((p) => p.id === productId);
 
-            if (profitInput) profitInput.value = 0;
-            if (priceSpan) {
-                priceSpan.textContent = formatPrice(costPrice);
-                priceSpan.classList.remove("price-changed");
-            }
+        if (!product) return;
 
-            alert("✅ Đã reset % lợi nhuận về 0%");
+        product.profitMargin = 0;
+        const costPrice = product.costPrice || product.price;
+        product.price = costPrice;
+
+        saveData(data);
+
+        const profitInput = document.getElementById(`profit-${productId}`);
+        const priceSpan = document.getElementById(`price-${productId}`);
+
+        if (profitInput) profitInput.value = 0;
+        if (priceSpan) {
+          priceSpan.textContent = formatPrice(costPrice);
+          priceSpan.classList.remove("price-changed");
         }
 
-        function filterAndSearchProducts() {
-            const query = document.getElementById("search-query").value.trim().toLowerCase();
-            const category = document.getElementById("category-filter").value;
-            
-            const allProducts = getData().products;
-            
-            const filtered = allProducts.filter(p => {
-                const matchesQuery = !query || p.name.toLowerCase().includes(query) || p.sku.toLowerCase().includes(query);
-                const matchesCategory = !category || p.category === category;
-                return matchesQuery && matchesCategory;
-            });
+        alert("✅ Đã reset % lợi nhuận về 0%");
+      }
 
-            renderPricingTable(filtered);
-        }
+      function filterAndSearchProducts() {
+        const query = document
+          .getElementById("search-query")
+          .value.trim()
+          .toLowerCase();
+        const category = document.getElementById("category-filter").value;
 
-        function renderCategoryFilter() {
-            const select = document.getElementById("category-filter");
-            if (!select) return;
+        const allProducts = getData().products;
 
-            const allProducts = getData().products;
-            const categories = [...new Set(allProducts.map(p => p.category))].sort();
-            
-            categories.forEach(cat => {
-                const option = document.createElement("option");
-                option.value = cat;
-                option.textContent = cat;
-                select.appendChild(option);
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const data = getData();
-            let needsSave = false;
-
-            data.products.forEach(p => {
-                if (!p.costPrice) {
-                    p.costPrice = p.price;
-                    needsSave = true;
-                }
-                if (p.profitMargin === undefined) {
-                    p.profitMargin = 0;
-                    needsSave = true;
-                }
-            });
-
-            if (needsSave) {
-                saveData(data);
-            }
-
-            renderPricingTable(data.products);
-            renderCategoryFilter();
-
-            const searchForm = document.getElementById("search-pricing-form");
-            if (searchForm) {
-                searchForm.addEventListener("submit", function(e) {
-                    e.preventDefault();
-                    filterAndSearchProducts();
-                });
-            }
+        const filtered = allProducts.filter((p) => {
+          const matchesQuery =
+            !query ||
+            p.name.toLowerCase().includes(query) ||
+            p.sku.toLowerCase().includes(query);
+          const matchesCategory = !category || p.category === category;
+          return matchesQuery && matchesCategory;
         });
+
+        renderPricingTable(filtered);
+      }
+
+      function renderCategoryFilter() {
+        const select = document.getElementById("category-filter");
+        if (!select) return;
+
+        const allProducts = getData().products;
+        const categories = [
+          ...new Set(allProducts.map((p) => p.category)),
+        ].sort();
+
+        categories.forEach((cat) => {
+          const option = document.createElement("option");
+          option.value = cat;
+          option.textContent = cat;
+          select.appendChild(option);
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const data = getData();
+        let needsSave = false;
+
+        data.products.forEach((p) => {
+          if (!p.costPrice) {
+            p.costPrice = p.price;
+            needsSave = true;
+          }
+          if (p.profitMargin === undefined) {
+            p.profitMargin = 0;
+            needsSave = true;
+          }
+        });
+
+        if (needsSave) {
+          saveData(data);
+        }
+
+        renderPricingTable(data.products);
+        renderCategoryFilter();
+
+        const searchForm = document.getElementById("search-pricing-form");
+        if (searchForm) {
+          searchForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            filterAndSearchProducts();
+          });
+        }
+      });
     </script>
     <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/admin_main.js"></script>
-</body>
+  </body>
 </html>
