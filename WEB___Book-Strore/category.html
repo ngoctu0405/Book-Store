@@ -30,17 +30,6 @@
       .filter-item {
         position: relative;
         display: inline-block;
-        padding-bottom: 8px;
-      }
-
-      .filter-item::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        height: 8px;
-        background: transparent;
       }
 
       /* Nút bộ lọc */
@@ -77,10 +66,10 @@
       /* Dropdown menu */
       .filter-dropdown {
         list-style-type: none;
-        padding: 8px 0;
+        padding: 16px 0 8px 0;
         margin: 0;
         position: absolute;
-        top: calc(100% + 8px);
+        top: 100%;
         left: 0;
         z-index: 1000;
         background-color: #ffffff;
@@ -104,23 +93,8 @@
         }
       }
 
-      .filter-item:hover .filter-dropdown,
       .filter-item.open .filter-dropdown {
         display: block;
-      }
-
-      .filter-item .filter-dropdown {
-        transition: opacity 0.6s ease 3s, visibility 0.6s ease 3s;
-        opacity: 0;
-        visibility: hidden;
-      }
-
-      .filter-item:hover .filter-dropdown,
-      .filter-item.open .filter-dropdown {
-        opacity: 1;
-        visibility: visible;
-        display: block;
-        transition-delay: 0s;
       }
 
       /* Item trong dropdown */
@@ -1120,8 +1094,57 @@
       }
 
       // Setup event listeners
+      // Setup event listeners
       function setupCategoryFilterListeners() {
         console.log("Setting up filter listeners...");
+
+        // === BẮT ĐẦU THÊM MỚI: LOGIC CLICK ĐỂ MỞ FILTER DROPDOWN ===
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const allFilterItems = document.querySelectorAll(".filter-item");
+
+        filterButtons.forEach(button => {
+            button.addEventListener("click", function(event) {
+                event.stopPropagation(); // Ngăn sự kiện lan ra document
+                
+                const parentItem = button.closest(".filter-item");
+                // Kiểm tra xem nó đã mở hay chưa
+                const wasOpen = parentItem.classList.contains("open");
+
+                // 1. Đóng tất cả các dropdown khác
+                allFilterItems.forEach(item => {
+                    item.classList.remove("open");
+                });
+
+                // 2. Nếu nó chưa mở, thì mở nó ra
+                if (!wasOpen) {
+                    parentItem.classList.add("open");
+                }
+                // (Nếu nó đã mở, bước 1 đã đóng nó rồi, tạo hiệu ứng toggle)
+            });
+        });
+
+        // Thêm sự kiện click bên ngoài để đóng
+        document.addEventListener("click", function(event) {
+            const clickedInsideItem = event.target.closest(".filter-item");
+            // Tìm các nút "Áp dụng"
+            const applyButton = event.target.closest("#apply-name-search, #apply-author-search, #apply-price-filter");
+
+            // Nếu click BÊN NGOÀI filter-item, đóng tất cả
+            if (!clickedInsideItem) {
+                allFilterItems.forEach(item => {
+                    item.classList.remove("open");
+                });
+            }
+            
+            // Nếu click vào nút "Áp dụng" BÊN TRONG, cũng đóng tất cả
+            if (applyButton) {
+                 allFilterItems.forEach(item => {
+                    item.classList.remove("open");
+                });
+            }
+        });
+        // === KẾT THÚC THÊM MỚI ===
+
 
         // LỌC THEO TÊN SÁCH (TÌM KIẾM TỪ KHÓA)
         const applyNameSearchBtn = document.getElementById("apply-name-search");
@@ -1145,7 +1168,7 @@
                     applyNameSearch();
                 }
             });
-        }
+        } 
 
         // LỌC THEO TÁC GIẢ (TÌM KIẾM TỪ KHÓA)
         const applyAuthorSearchBtn = document.getElementById("apply-author-search");
