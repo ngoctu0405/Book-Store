@@ -163,10 +163,11 @@ body {
 
 /* Banner chính: phần hero */
 .banner {
-  position: relative;
-  top: 3.5rem;
+  /* position: relative;
+  top: 3.5rem; */
+  display: block;
   /* nền gradient cho banner */
-  background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+  background: linear-gradient(135deg, #9de4b8 0%, #96dce4 100%);
   /* chiếm toàn chiều ngang viewport */
   width: 100vw;
   /* đảm bảo không vượt max-width */
@@ -181,6 +182,7 @@ body {
   border-radius: 2rem;
   /* ẩn tràn ở một số thành phần con */
   overflow: hidden;
+  margin-block: 2rem;
 }
 
 /* Hiệu ứng nền xoay nhẹ trong banner */
@@ -251,11 +253,10 @@ body {
 /* Container trung tâm */
 .container {
   /* giới hạn chiều rộng nội dung */
-  max-width: 1200px;
+  padding: 2rem 0;
   /* căn giữa container */
   margin: 0 auto;
   /* padding quanh container */
-  padding: 2rem;
 }
 
 /* Nút chuẩn dùng lại (gộp các bổ sung) */
@@ -693,7 +694,7 @@ form select:focus {
 /* Footer */
 .footer {
   /* nền gradient cho footer */
-  background: linear-gradient(90deg, #4f9da6 0%, #7fb3d3 100%);
+  background: #7cafdf;
   /* căn giữa văn bản */
   text-align: center;
   /* padding trong footer */
@@ -1664,7 +1665,7 @@ footer {
 
 /* 🌟 PHẦN HOT SALE 🌟 */
 .hot-sale {
-  background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+  background: red;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1679,10 +1680,12 @@ footer {
 
 /* 🛍️ Container hot sale */
 .hot_sale_selection {
-  position: relative;
-  top: 10rem;
+  /* position: relative;
+  top: 10rem; */
+  display: block;
+  margin-block: 2rem;
   max-width: 100rem;
-  background-color: rgba(79, 157, 166, 0.3);
+  background-color: #6f9fd3e8;
   padding: 2rem;
   border-radius: 3rem;
 }
@@ -2113,10 +2116,12 @@ footer {
 
 /* PHẦN GIỚI THIỆU */
 .about-section {
-  position: relative;
-  top: 8rem;
+  display: block;
+  /* position: relative;
+  top: 8rem; */
+  margin-block: 2rem;
   border-radius: 4rem;
-  background-color: #fffaf4; /* nền nhẹ nhàng */
+  background: linear-gradient(135deg, #9de4b8, #7cafdf);
   min-height: 30rem;
 }
 
