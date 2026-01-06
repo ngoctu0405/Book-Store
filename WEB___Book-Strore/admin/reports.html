@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Báo Cáo Tồn Kho - Literary Haven Admin</title>
+    <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../assets/css/admin_style.css" />
+
+    <style>
+        .report-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        .report-header {
+            background-color: #4f9da6;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            font-size: 0.95rem;
+        }
+        .table th {
+             font-weight: 600;
+             color: #343a40;
+        }
+        .total-row {
+            font-weight: bold;
+            background-color: #e9ecef !important;
+        }
+        .warning-card {
+            border-left: 4px solid #ffc107;
+            background-color: #fff3cd;
+        }
+        .danger-card {
+            border-left: 4px solid #dc3545;
+            background-color: #f8d7da;
+        }
+        .alert-item {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .alert-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+        }
+        .badge-large {
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        /* Responsive cho thiết bị di động (max-width: 768px) */
+        @media (max-width: 768px) {
+            body {
+                display: flex !important;
+                flex-direction: column !important;
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+                width: 100% !important; 
+                height: auto !important; 
+                flex-shrink: 0;
+                display: flex !important;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .main-content {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .page-content {
+                padding: 15px !important;
+            }
+
+            .page-content h1 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+
+            .table-responsive {
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                overflow-x: auto; 
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table {
+                min-width: 600px;
+            }
+
+            .table thead th, 
+            .table tbody td {
+                padding: 8px 6px; 
+                font-size: 12px; 
+            }
+
+            .btn-sm {
+                padding: 3px 6px; 
+                font-size: 10px;
+            }
+            
+            .alert-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
+        @media (min-width: 769px) {
+            body {
+                display: flex !important; 
+                flex-direction: row !important;
+                overflow-x: hidden; 
+            }
+            .sidebar {
+                width: 250px !important; 
+                height: 100vh !important;
+                display: flex !important;
+            }
+            .main-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar d-flex flex-column vh-100">
+        <div class="sidebar-header">Literary Haven</div>
+
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <span class="nav-icon">◈</span>
+                    <span>Bảng điều khiển</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="users.html" class="nav-link">
+                    <span class="nav-icon">◉</span>
+                    <span>Khách hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="categories.html" class="nav-link">
+                    <span class="nav-icon">◫</span>
+                    <span>Loại sản phẩm</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="products.html" class="nav-link">
+                    <span class="nav-icon">◪</span>
+                    <span>Sản phẩm</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="purchase-orders.html" class="nav-link">
+                    <span class="nav-icon">◩</span>
+                    <span>Nhập hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="pricing.html" class="nav-link">
+                    <span class="nav-icon">◎</span>
+                    <span>Quản lý giá</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="orders.html" class="nav-link">
+                    <span class="nav-icon">◧</span>
+                    <span>Đơn hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html" class="nav-link">
+                    <span class="nav-icon">◨</span>
+                    <span>Tồn kho</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="reports.html" class="nav-link active">
+                    <span class="nav-icon">◔</span>
+                    <span>Báo cáo</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="mt-auto p-3">
+            <a href="index.html" class="logout-link">
+                <span>◀</span>
+                <span>Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="container-fluid py-4">
+            <h1 class="mb-4">Báo Cáo Nhập - Xuất - Tồn</h1>
+
+            <!-- Phần Lọc Báo Cáo -->
+            <div class="filter-section">
+                <h3 class="h5 mb-3">Lọc theo khoảng thời gian</h3>
+                <div class="row align-items-end">
+                    <div class="col-md-4 mb-3">
+                        <label for="startDate" class="form-label">Từ ngày:</label>
+                        <input type="date" id="startDate" class="form-control" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="endDate" class="form-label">Đến ngày:</label>
+                        <input type="date" id="endDate" class="form-control" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button class="btn btn-primary w-100" onclick="initReport()">
+                            <i class="bi bi-search"></i> Xem Báo Cáo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần Cảnh Báo Tồn Kho -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card danger-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-danger">
+                                <i class="bi bi-exclamation-triangle-fill"></i> 
+                                Cảnh Báo: Sản Phẩm Hết Hàng
+                            </h5>
+                            <div id="outOfStockList">
+                                <p class="text-muted">Đang tải dữ liệu...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card warning-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-warning">
+                                <i class="bi bi-exclamation-circle-fill"></i> 
+                                Cảnh Báo: Sản Phẩm Sắp Hết
+                            </h5>
+                            <div id="lowStockList">
+                                <p class="text-muted">Đang tải dữ liệu...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần Báo Cáo Nhập - Xuất - Tồn -->
+            <div class="card report-card">
+                <div class="report-header">
+                    Kết Quả Báo Cáo Tồn Kho
+                    <small class="float-end pt-1" id="reportTimeRange"></small>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Mã SP</th>
+                                    <th scope="col">Tên Sách</th>
+                                    <th scope="col" class="text-center">Tồn Đầu Kỳ</th>
+                                    <th scope="col" class="text-center text-success">Nhập Trong Kỳ</th>
+                                    <th scope="col" class="text-center text-danger">Xuất Trong Kỳ</th>
+                                    <th scope="col" class="text-center">Tồn Cuối Kỳ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center">
+                                        Vui lòng chọn khoảng thời gian và nhấn 'Xem Báo Cáo'.
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot id="reportTableFooter"></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <script>
+        // ==================== CẤU HÌNH ====================
+        const LOW_STOCK_THRESHOLD = 20;
+        const OUT_OF_STOCK_THRESHOLD = 0;
+
+        // ==================== LẤY DỮ LIỆU ====================
+        
+        /**
+         * Lấy dữ liệu sản phẩm từ localStorage
+         * Cấu trúc: { products: [...] }
+         */
+        function getProductsData() {
+            try {
+                const data = typeof getData === "function" ? getData() : null;
+                if (data && data.products) {
+                    return data.products;
+                }
+                
+                // Fallback: đọc trực tiếp từ localStorage
+                const storedData = localStorage.getItem("bookstoreData");
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    return parsed.products || [];
+                }
+                
+                return [];
+            } catch (e) {
+                console.error("Lỗi khi lấy dữ liệu sản phẩm:", e);
+                return [];
+            }
+        }
+
+        /**
+         * Lấy dữ liệu đơn hàng từ localStorage
+         * Để tính xuất hàng (SALE)
+         */
+        function getOrdersData() {
+            try {
+                const data = typeof getData === "function" ? getData() : null;
+                if (data && data.orders) {
+                    return data.orders;
+                }
+                
+                // Fallback: đọc trực tiếp từ localStorage
+                const storedData = localStorage.getItem("bookstoreData");
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    return parsed.orders || [];
+                }
+                
+                return [];
+            } catch (e) {
+                console.error("Lỗi khi lấy dữ liệu đơn hàng:", e);
+                return [];
+            }
+        }
+
+        /**
+         * Lấy dữ liệu phiếu nhập hàng từ localStorage
+         * Để tính nhập hàng (IMPORT)
+         */
+        function getPurchaseOrdersData() {
+            try {
+                const data = typeof getData === "function" ? getData() : null;
+                if (data && data.purchaseOrders) {
+                    return data.purchaseOrders;
+                }
+                
+                // Fallback: đọc trực tiếp từ localStorage
+                const storedData = localStorage.getItem("bookstoreData");
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    return parsed.purchaseOrders || [];
+                }
+                
+                return [];
+            } catch (e) {
+                console.error("Lỗi khi lấy dữ liệu phiếu nhập:", e);
+                return [];
+            }
+        }
+
+        /**
+         * Tạo transaction log từ orders và purchaseOrders
+         * Format: { type: "IMPORT"|"SALE", productId, qty, date }
+         */
+        function buildTransactionLog() {
+            const transactions = [];
+            const orders = getOrdersData();
+            const purchaseOrders = getPurchaseOrdersData();
+            
+            // Xử lý đơn hàng (SALE/XUẤT)
+            orders.forEach(order => {
+                // Chỉ tính đơn hàng đã hoàn thành (Đã xử lý, Đã giao)
+                if (order.status === "Đã xử lý" || order.status === "Đã giao") {
+                    if (order.items && Array.isArray(order.items)) {
+                        order.items.forEach(item => {
+                            transactions.push({
+                                type: "SALE",
+                                productId: item.productId,
+                                qty: item.quantity || 0,
+                                date: order.orderDate || order.date || new Date().toISOString()
+                            });
+                        });
+                    }
+                }
+            });
+            
+            // Xử lý phiếu nhập (IMPORT/NHẬP)
+            purchaseOrders.forEach(po => {
+                // Chỉ tính phiếu đã hoàn thành
+                if (po.status === "completed") {
+                    if (po.items && Array.isArray(po.items)) {
+                        po.items.forEach(item => {
+                            transactions.push({
+                                type: "IMPORT",
+                                productId: item.productId,
+                                qty: item.quantity || 0,
+                                date: po.date || new Date().toISOString()
+                            });
+                        });
+                    }
+                }
+            });
+            
+            return transactions;
+        }
+
+        // ==================== HIỂN THỊ CẢNH BÁO TỒN KHO ====================
+        
+        /**
+         * Hiển thị cảnh báo sản phẩm hết hàng và sắp hết
+         */
+        function displayStockAlerts() {
+            const products = getProductsData();
+            const outOfStockList = document.getElementById('outOfStockList');
+            const lowStockList = document.getElementById('lowStockList');
+
+            if (!outOfStockList || !lowStockList) {
+                console.error("Không tìm thấy phần tử hiển thị cảnh báo");
+                return;
+            }
+
+            let outOfStock = [];
+            let lowStock = [];
+
+            // Phân loại sản phẩm theo tồn kho
+            products.forEach(p => {
+                const qty = p.qty || 0;
+                const status = p.status || 'active';
+
+                // Chỉ cảnh báo sản phẩm đang active (không bị khóa)
+                if (status === 'active') {
+                    if (qty <= OUT_OF_STOCK_THRESHOLD) {
+                        outOfStock.push(p);
+                    } else if (qty < LOW_STOCK_THRESHOLD) {
+                        lowStock.push(p);
+                    }
+                }
+            });
+
+            // Hiển thị danh sách sản phẩm hết hàng
+            if (outOfStock.length === 0) {
+                outOfStockList.innerHTML = '<p class="text-muted mb-0">✓ Không có sản phẩm hết hàng</p>';
+            } else {
+                let html = `<p class="mb-2"><strong>Có ${outOfStock.length} sản phẩm hết hàng:</strong></p>`;
+                outOfStock.forEach(p => {
+                    html += `
+                        <div class="alert-item alert-danger">
+                            <div>
+                                <strong>${p.name}</strong><br>
+                                <small>Mã: ${p.sku || 'N/A'}</small>
+                            </div>
+                            <span class="badge bg-danger badge-large">Hết hàng</span>
+                        </div>
+                    `;
+                });
+                outOfStockList.innerHTML = html;
+            }
+
+            // Hiển thị danh sách sản phẩm sắp hết
+            if (lowStock.length === 0) {
+                lowStockList.innerHTML = '<p class="text-muted mb-0">✓ Không có sản phẩm sắp hết</p>';
+            } else {
+                let html = `<p class="mb-2"><strong>Có ${lowStock.length} sản phẩm sắp hết (dưới ${LOW_STOCK_THRESHOLD} quyển):</strong></p>`;
+                lowStock.forEach(p => {
+                    html += `
+                        <div class="alert-item alert-warning">
+                            <div>
+                                <strong>${p.name}</strong><br>
+                                <small>Mã: ${p.sku || 'N/A'} | Còn lại: <strong>${p.qty}</strong> quyển</small>
+                            </div>
+                            <span class="badge bg-warning text-dark badge-large">Sắp hết</span>
+                        </div>
+                    `;
+                });
+                lowStockList.innerHTML = html;
+            }
+        }
+
+        // ==================== TẠO BÁO CÁO NHẬP - XUẤT - TỒN ====================
+        
+        /**
+         * Tạo báo cáo nhập xuất tồn theo khoảng thời gian
+         * @param {Date} start - Ngày bắt đầu
+         * @param {Date} end - Ngày kết thúc
+         */
+        function generateInventoryReport(start, end) {
+            const products = getProductsData();
+            const transactions = buildTransactionLog();
+
+            // Sắp xếp transactions theo thời gian
+            transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            const report = {};
+
+            // Bước 1: Khởi tạo report cho tất cả sản phẩm
+            products.forEach(p => {
+                report[p.id] = {
+                    id: p.id,
+                    sku: p.sku || "N/A",
+                    name: p.name || "Sản phẩm không rõ",
+                    initialStock: 0,      // Tồn đầu kỳ
+                    importQty: 0,         // Nhập trong kỳ
+                    exportQty: 0,         // Xuất trong kỳ
+                    finalStock: p.qty || 0, // Tồn cuối kỳ (hiện tại)
+                };
+            });
+
+            // Bước 2: Phân tích transactions
+            // Logic: Tồn đầu kỳ = Tồn hiện tại - (Nhập sau start) + (Xuất sau start)
+            transactions.forEach(item => {
+                const itemDate = new Date(item.date);
+                const productId = item.productId;
+                const qty = item.qty || 0;
+
+                // Bỏ qua nếu không tìm thấy sản phẩm trong report
+                if (!report[productId]) return;
+
+                // Kiểm tra xem transaction có trong khoảng thời gian báo cáo không
+                const isWithinPeriod = itemDate >= start && itemDate <= end;
+
+                if (item.type === "IMPORT") {
+                    if (isWithinPeriod) {
+                        // Nhập trong kỳ
+                        report[productId].importQty += qty;
+                    } else if (itemDate > end) {
+                        // Nhập sau kỳ báo cáo -> trừ khỏi tồn cuối để tính tồn đầu
+                        report[productId].finalStock -= qty;
+                    }
+                } else if (item.type === "SALE") {
+                    if (isWithinPeriod) {
+                        // Xuất trong kỳ
+                        report[productId].exportQty += qty;
+                    } else if (itemDate > end) {
+                        // Xuất sau kỳ báo cáo -> cộng lại vào tồn cuối để tính tồn đầu
+                        report[productId].finalStock += qty;
+                    }
+                }
+            });
+
+            // Bước 3: Tính toán tồn đầu kỳ và tồn cuối kỳ chính xác
+            Object.values(report).forEach(item => {
+                // Tồn đầu kỳ = Tồn cuối kỳ - Nhập trong kỳ + Xuất trong kỳ
+                item.initialStock = item.finalStock - item.importQty + item.exportQty;
+                
+                // Tồn cuối kỳ (đã được tính đúng từ bước 2)
+                // item.finalStock đã được điều chỉnh với các giao dịch sau kỳ báo cáo
+                
+                // Đảm bảo không có số âm
+                item.initialStock = Math.max(0, item.initialStock);
+                item.finalStock = Math.max(0, item.finalStock);
+            });
+
+            return Object.values(report);
+        }
+
+        // ==================== HIỂN THỊ BÁO CÁO ====================
+        
+        /**
+         * Hiển thị báo cáo lên bảng
+         * @param {Array} reportData - Dữ liệu báo cáo
+         * @param {Date} start - Ngày bắt đầu
+         * @param {Date} end - Ngày kết thúc
+         */
+        function renderReport(reportData, start, end) {
+            const tableBody = document.getElementById("reportTableBody");
+            const tableFooter = document.getElementById("reportTableFooter");
+            const timeRangeElement = document.getElementById("reportTimeRange");
+
+            if (!tableBody || !tableFooter) {
+                console.error("Không tìm thấy phần tử bảng báo cáo");
+                return;
+            }
+
+            let html = "";
+            let totalInitial = 0;
+            let totalImport = 0;
+            let totalExport = 0;
+            let totalFinal = 0;
+
+            if (reportData.length === 0) {
+                html = '<tr><td colspan="6" class="text-center text-muted">Không có dữ liệu sản phẩm để hiển thị.</td></tr>';
+            } else {
+                // Sắp xếp theo tên sản phẩm
+                reportData.sort((a, b) => a.name.localeCompare(b.name));
+                
+                reportData.forEach(item => {
+                    html += `
+                        <tr>
+                            <td>${item.sku}</td>
+                            <td>${item.name}</td>
+                            <td class="text-center">${item.initialStock}</td>
+                            <td class="text-center text-success fw-bold">${item.importQty}</td>
+                            <td class="text-center text-danger fw-bold">${item.exportQty}</td>
+                            <td class="text-center fw-bold">${item.finalStock}</td>
+                        </tr>
+                    `;
+                    totalInitial += item.initialStock;
+                    totalImport += item.importQty;
+                    totalExport += item.exportQty;
+                    totalFinal += item.finalStock;
+                });
+            }
+            
+            tableBody.innerHTML = html;
+
+            // Hiển thị tổng cộng
+            tableFooter.innerHTML = `
+                <tr class="total-row">
+                    <td colspan="2" class="text-end"><strong>TỔNG CỘNG:</strong></td>
+                    <td class="text-center"><strong>${totalInitial}</strong></td>
+                    <td class="text-center text-success"><strong>${totalImport}</strong></td>
+                    <td class="text-center text-danger"><strong>${totalExport}</strong></td>
+                    <td class="text-center"><strong>${totalFinal}</strong></td>
+                </tr>
+            `;
+
+            // Hiển thị khoảng thời gian
+            if (timeRangeElement) {
+                const startDisplay = start.toLocaleDateString("vi-VN");
+                const endDisplay = end.toLocaleDateString("vi-VN");
+                timeRangeElement.textContent = `(${startDisplay} - ${endDisplay})`;
+            }
+        }
+
+        // ==================== XỬ LÝ SỰ KIỆN ====================
+        
+        /**
+         * Xử lý khi người dùng nhấn nút "Xem Báo Cáo"
+         */
+        function initReport() {
+            const startDateInput = document.getElementById("startDate");
+            const endDateInput = document.getElementById("endDate");
+
+            // Lấy giá trị ngày từ input
+            let startDate = startDateInput.value ? new Date(startDateInput.value) : null;
+            let endDate = endDateInput.value ? new Date(endDateInput.value) : null;
+
+            // Validate input
+            if (!startDate || !endDate) {
+                alert('Vui lòng chọn cả "Từ ngày" và "Đến ngày".');
+                return;
+            }
+
+            // Đặt thời gian End Date đến cuối ngày
+            endDate.setHours(23, 59, 59, 999);
+
+            if (startDate > endDate) {
+                alert("Ngày bắt đầu không được lớn hơn Ngày kết thúc.");
+                return;
+            }
+
+            // Kiểm tra hàm getData có tồn tại không
+            if (typeof getData !== "function") {
+                const products = getProductsData();
+                if (products.length === 0) {
+                    document.getElementById("reportTableBody").innerHTML =
+                        '<tr><td colspan="6" class="text-center text-danger fw-bold">Lỗi: Không tìm thấy dữ liệu. Vui lòng đảm bảo đã có sản phẩm trong hệ thống.</td></tr>';
+                    return;
+                }
+            }
+
+            // Tạo và hiển thị báo cáo
+            try {
+                const reportData = generateInventoryReport(startDate, endDate);
+                renderReport(reportData, startDate, endDate);
+            } catch (error) {
+                console.error("Lỗi khi tạo báo cáo:", error);
+                document.getElementById("reportTableBody").innerHTML =
+                    '<tr><td colspan="6" class="text-center text-danger fw-bold">Đã xảy ra lỗi khi tạo báo cáo. Vui lòng thử lại.</td></tr>';
+            }
+        }
+
+        // ==================== KHỞI TẠO ====================
+        
+        /**
+         * Khởi tạo trang khi DOM đã load
+         */
+        document.addEventListener("DOMContentLoaded", () => {
+            // Thiết lập ngày mặc định (30 ngày gần nhất)
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today);
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+
+            const formatDate = (date) => date.toISOString().split("T")[0];
+
+            const startDateInput = document.getElementById("startDate");
+            const endDateInput = document.getElementById("endDate");
+            
+            if (startDateInput && endDateInput) {
+                startDateInput.value = formatDate(thirtyDaysAgo);
+                endDateInput.value = formatDate(today);
+            }
+
+            // Hiển thị cảnh báo tồn kho
+            try {
+                displayStockAlerts();
+            } catch (error) {
+                console.error("Lỗi khi hiển thị cảnh báo:", error);
+            }
+
+            // Tự động load báo cáo 30 ngày (tùy chọn - bỏ comment nếu muốn)
+            // initReport();
+        });
+    </script>
+</body>
+</html>
