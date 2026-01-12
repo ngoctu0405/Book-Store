@@ -1129,26 +1129,26 @@
     </div>
   </div>
   <!-- JS -->
-   <script>/**
+   <script>
+   
+/*
  * Hàm tạo và render nội dung Top Sách Bán Chạy (Carousel)
  * Lấy 9 sản phẩm đầu tiên từ SAMPLE.products trong main.js
  */
 function renderHotSaleCarousel() {
-    // 1. Lấy dữ liệu sản phẩm (Giả định SAMPLE.products đã được tải từ main.js)
-    // Nếu bạn muốn lấy toàn bộ sản phẩm đã được lưu trữ (sau khi đã gọi getData()), bạn có thể dùng:
-    // const allProducts = getData().products; 
+    // 1. Lấy dữ liệu sản phẩm (Ưu tiên lấy từ localStorage qua hàm getAllProducts)
+    const allProducts = typeof getAllProducts === 'function' ? getAllProducts() : SAMPLE.products; 
     
-    // Ở đây ta dùng dữ liệu mẫu gốc SAMPLE.products
-    const allProducts = SAMPLE.products; 
+    // 2. Lấy 10 sản phẩm đầu tiên (theo yêu cầu mới)
+    const hotProducts = allProducts.slice(0, 10); 
     
-    // Lấy 9 sản phẩm đầu tiên (3 sản phẩm/trang x 3 trang)
-    const hotProducts = allProducts.slice(0, 9); 
-    const productsPerPage = 3;
+    // 3. Cấu hình hiển thị 2 sản phẩm mỗi trang
+    const productsPerPage = 2;
     const totalPages = Math.ceil(hotProducts.length / productsPerPage);
 
     const wrap = document.querySelector(".carousel-inner-hot");
     if (!wrap) {
-        console.error("Không tìm thấy phần tử .carousel-inner-hot để render.");
+        console.error("Không tìm thấy phần tử .carousel-inner-hot");
         return;
     }
 
@@ -1158,20 +1158,16 @@ function renderHotSaleCarousel() {
         const start = page * productsPerPage;
         const pageProducts = hotProducts.slice(start, start + productsPerPage);
         
-        // Xác định lớp 'active' cho trang đầu tiên
+        // Xác định trang đầu tiên để thêm class 'active' của Bootstrap
         const isActive = page === 0 ? 'active' : '';
 
-        // Bắt đầu một trang carousel-item
-        carouselHTML += `<div class="carousel-item ${isActive}">
-                            <div class="row">`;
+        carouselHTML += `
+            <div class="carousel-item ${isActive}">
+                <div class="row d-flex justify-content-center">`; // Thêm justify-content-center để căn giữa nếu lẻ sản phẩm
 
-        // Lặp qua các sản phẩm trong trang
         pageProducts.forEach(it => {
-            // Template product-card tương tự như HTML tĩnh
-            // Chú ý: Sử dụng it.img, it.name, it.id, và it.price
             carouselHTML += `
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="product-card">
+                <div class="col-6"> <div class="product-card">
                         <div class="card-img">
                             <img
                                 src="${it.img}"
@@ -1192,82 +1188,22 @@ function renderHotSaleCarousel() {
             `;
         });
 
-        // Kết thúc một trang carousel-item
-        carouselHTML += `   </div>
-                        </div>`;
+        carouselHTML += ` 
+                </div>
+            </div>`;
     }
 
     wrap.innerHTML = carouselHTML;
 }
+
+// Gọi hàm khi DOM đã sẵn sàng
+document.addEventListener("DOMContentLoaded", renderHotSaleCarousel);
 
 // Gọi hàm này khi DOM đã tải xong
 document.addEventListener("DOMContentLoaded", () => {
     // Đảm bảo hàm này được gọi sau khi main.js đã được load và định nghĩa SAMPLE
     renderHotSaleCarousel();
 });
-// index.html
-/**
- * Hàm tạo và render nội dung Top Sách Bán Chạy (Carousel)
- * Lấy dữ liệu sản phẩm MỚI NHẤT từ localStorage.
- */
-function renderHotSaleCarousel() {
-    // 1. Lấy toàn bộ danh sách sản phẩm
-    const allProducts = getAllProducts(); 
-    
-    // 2. CHỈ LẤY 9 SẢN PHẨM ĐẦU TIÊN TỪ DANH SÁCH (Fix lỗi)
-    // Nếu bạn muốn hiển thị các sản phẩm không bị ngừng bán, hãy dùng:
-    // const hotProducts = allProducts.filter(p => p.status !== 'inactive').slice(0, 9);
-    // Còn không, dùng đơn giản như dưới:
-    const hotProducts = allProducts.slice(0, 9); 
-    
-    const productsPerPage = 3;
-    const totalPages = Math.ceil(hotProducts.length / productsPerPage);
-
-    const wrap = document.querySelector(".carousel-inner-hot");
-    if (!wrap) return;
-
-    let carouselHTML = '';
-
-    for (let page = 0; page < totalPages; page++) {
-        const start = page * productsPerPage;
-        const pageProducts = hotProducts.slice(start, start + productsPerPage);
-        
-        // Xác định lớp 'active' cho trang đầu tiên
-        const isActive = page === 0 ? 'active' : '';
-
-        carouselHTML += `<div class="carousel-item ${isActive}">
-                            <div class="row">`;
-
-        pageProducts.forEach(it => {
-            carouselHTML += `
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="product-card">
-                        <div class="card-img">
-                            <img
-                                src="${it.img}"
-                                alt="${it.name}"
-                                class="img-fluid"
-                            />
-                        </div>
-                        <h4 class="card-title">${it.name}</h4>
-                        <p class="product-price">${(it.price || 0).toLocaleString('vi-VN')}₫</p>
-                        <div class="card-actions">
-                            <a href="product-detail.html?id=${it.id}" class="btn btn-small">Xem</a>
-                            <button class="btn btn-cart" onclick="addToCart(${it.id}, 1)">
-                                Thêm vào giỏ
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-
-        carouselHTML += `   </div>
-                        </div>`;
-    }
-
-    wrap.innerHTML = carouselHTML;
-}
 
 document.addEventListener("DOMContentLoaded", renderHotSaleCarousel);
 </script>
