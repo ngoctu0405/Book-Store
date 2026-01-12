@@ -127,241 +127,7 @@
 }
 
 
-      /* ========================================================= */
-      /* 5. HOT SALE SECTION */
-      /* ========================================================= */
-      .title-hot-sale {
-        background-color: #fff;
-        border-radius: 1rem;
-        width: 30rem;
-      }
-      .Top-sale {
-        display: flex;
-        justify-content: center;
-      }
-
-      .hot_sale_selection {
-        position: relative;
-        min-height: 45rem;
-        padding: 4rem;
-        border-radius: 3rem;
-        margin: 2rem 0;
-      }
-      .card-actions .btn-small,
-      .card-actions .btn-cart {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .product-card {
-        background: #fff;
-        border-radius: 24px;
-        padding: 1.5rem;
-        margin: 0 0.75rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s ease;
-        width: 20rem;
-        height: 33rem;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .product-card:hover {
-        transform: translateY(-5px);
-      }
-
-      .card-img img {
-        width: 100%;
-        height: 300px;
-        object-fit: cover;
-        border-radius: 16px;
-      }
-
-      .price {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #e74c3c;
-        margin-bottom: 1rem;
-      }
-
-      .card-actions {
-        display: flex;
-        gap: 0.5rem;
-      }
-      .card-actions .btn-small,
-      .card-actions .btn-cart {
-        flex: 1;
-        height: 40px;
-        padding: 0;
-        font-size: 0.9rem;
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        color: white;
-      }
-
-      .btn-small {
-        background: #5dade2;
-      }
-      .btn-cart {
-        background: #ff6b4a;
-      }
-      .btn-small:hover {
-        background: #3498db;
-      }
-      .btn-cart:hover {
-        background: #e74c3c;
-      }
-      .title-hot-sale {
-        background-color: #ffffff;
-        border-radius: 1rem;
-        width: 30rem;
-      }
-      .Top-sale {
-        display: flex;
-        justify-content: center;
-      }
-      .hot_sale_selection {
-        height: 45rem;
-        padding: 4rem;
-        border-radius: 3rem;
-        margin: 2rem 0;
-      }
-      .carousel-inner-hot {
-        position: relative;
-        top: 2rem;
-      }
-      /* Product Card */
-      .product-card {
-        background: white;
-        border-radius: 24px;
-        padding: 1.5rem;
-        margin: 0 0.75rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s ease;
-        width: 20rem;
-        height: 33rem;
-        display: flex;
-        flex-direction: column;
-        /* justify-content: space-between; */
-      }
-      .product-card .card-img img {
-        width: 100%; /* Chiều rộng luôn đầy khung chứa */
-        height: 300px; /* Chiều cao cố định để tất cả ảnh bằng nhau */
-        object-fit: cover; /* Giữ tỷ lệ ảnh, cắt phần thừa nếu cần */
-      }
-
-      .product-card:hover {
-        transform: translateY(-5px);
-      }
-
-      .card-img {
-        border-radius: 16px;
-        overflow: hidden;
-        margin-bottom: 1rem;
-      }
-
-      .card-img img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-
-      .card-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 0.75rem;
-        min-height: 50px;
-      }
-
-      .price {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #e74c3c;
-        margin-bottom: 1rem;
-      }
-
-      .card-actions {
-        display: flex;
-        gap: 0.5rem;
-      }
-
-      .card-actions .btn-small,
-      .card-actions .btn-cart {
-        flex: 1; /* chia đều chiều rộng */
-        height: 40px; /* chiều cao cố định */
-        padding: 0; /* padding ngang đã có flex */
-        font-size: 0.9rem;
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        color: white;
-      }
-
-      .btn-small {
-        background: #5dade2; /* màu xanh */
-      }
-
-      .btn-cart {
-        background: #ff6b4a; /* màu cam */
-      }
-
-      .btn-small:hover {
-        background: #3498db;
-      }
-
-      .btn-cart:hover {
-        background: #e74c3c;
-      }
-
-      /* ========================================================= */
-      /* 6. NÚT ĐIỀU KHIỂN CAROUSEL */
-      /* ========================================================= */
-      .carousel-control-prev,
-      .carousel-control-next {
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        opacity: 0.8;
-        transition: all 0.2s ease-in-out;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      .carousel-control-prev {
-        left: -1rem !important;
-      }
-      .carousel-control-next {
-        right: -1rem !important;
-      }
-
-      .carousel-control-prev-icon,
-      .carousel-control-next-icon {
-        filter: invert(100%);
-        width: 1.25em;
-        height: 1.25em;
-      }
-
-      .carousel-control-prev:hover,
-      .carousel-control-next:hover {
-        width: 4rem;
-        height: 4rem;
-        background-color: #535353;
-        opacity: 1;
-      }
-
-      .carousel-control-prev:active,
-      .carousel-control-next:active {
-        width: 4rem;
-        height: 4rem;
-        background-color: #0f6e86;
-        opacity: 1;
-      }
-
+   
       /* ========================================================= */
       /* 7. GIỎ HÀNG & THANH LỌC */
       /* ========================================================= */
@@ -387,7 +153,7 @@
       /* Responsive cho thiết bị di động (dưới 768px) */
       @media (max-width: 767px) {
         .container {
-          height: 370rem;
+          height: 100%;
           max-width: 700px;
           margin-left: auto;  
         margin-right: auto;
@@ -448,6 +214,12 @@
         .category-btn {
           width: 9rem;
         }
+      }
+      .col-6 {
+        text-align:center;
+      }
+      .text-secondary {
+        font-size: 20px;
       }
     </style>
 
@@ -817,45 +589,6 @@
 </section>
 
 
-      <!-- Phần Bán chạy -->
-      <div class="Center-hot-sale">
-        <div class="hot_sale_selection">
-          <div class="Top-sale">
-            <div class="title-hot-sale">
-              <h1 class="hot-sale">Top sách bán chạy</h1>
-            </div>
-          </div>
-
-          <div
-  id="carouselExampleIndicators"
-  class="carousel slide carousel-fade"
-  data-bs-ride="carousel"
-  data-bs-interval="3000"
->
-  <div class="carousel-inner-hot"></div>
-  </div>
-          <!-- Nút điều hướng Carousel -->
-          <button
-            class="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="prev"
-          >
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-
-          <button
-            class="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="next"
-          >
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
 
 
     </main>
@@ -1128,85 +861,7 @@
       </button>
     </div>
   </div>
-  <!-- JS -->
-   <script>
-   
-/*
- * Hàm tạo và render nội dung Top Sách Bán Chạy (Carousel)
- * Lấy 9 sản phẩm đầu tiên từ SAMPLE.products trong main.js
- */
-function renderHotSaleCarousel() {
-    // 1. Lấy dữ liệu sản phẩm (Ưu tiên lấy từ localStorage qua hàm getAllProducts)
-    const allProducts = typeof getAllProducts === 'function' ? getAllProducts() : SAMPLE.products; 
-    
-    // 2. Lấy 10 sản phẩm đầu tiên (theo yêu cầu mới)
-    const hotProducts = allProducts.slice(0, 10); 
-    
-    // 3. Cấu hình hiển thị 2 sản phẩm mỗi trang
-    const productsPerPage = 2;
-    const totalPages = Math.ceil(hotProducts.length / productsPerPage);
 
-    const wrap = document.querySelector(".carousel-inner-hot");
-    if (!wrap) {
-        console.error("Không tìm thấy phần tử .carousel-inner-hot");
-        return;
-    }
-
-    let carouselHTML = '';
-
-    for (let page = 0; page < totalPages; page++) {
-        const start = page * productsPerPage;
-        const pageProducts = hotProducts.slice(start, start + productsPerPage);
-        
-        // Xác định trang đầu tiên để thêm class 'active' của Bootstrap
-        const isActive = page === 0 ? 'active' : '';
-
-        carouselHTML += `
-            <div class="carousel-item ${isActive}">
-                <div class="row d-flex justify-content-center">`; // Thêm justify-content-center để căn giữa nếu lẻ sản phẩm
-
-        pageProducts.forEach(it => {
-            carouselHTML += `
-                <div class="col-6"> <div class="product-card">
-                        <div class="card-img">
-                            <img
-                                src="${it.img}"
-                                alt="${it.name}"
-                                class="img-fluid"
-                            />
-                        </div>
-                        <h4 class="card-title">${it.name}</h4>
-                        <p class="product-price">${(it.price || 0).toLocaleString('vi-VN')}₫</p>
-                        <div class="card-actions">
-                            <a href="product-detail.html?id=${it.id}" class="btn btn-small">Xem</a>
-                            <button class="btn btn-cart" onclick="addToCart(${it.id}, 1)">
-                                Thêm vào giỏ
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-
-        carouselHTML += ` 
-                </div>
-            </div>`;
-    }
-
-    wrap.innerHTML = carouselHTML;
-}
-
-// Gọi hàm khi DOM đã sẵn sàng
-document.addEventListener("DOMContentLoaded", renderHotSaleCarousel);
-
-// Gọi hàm này khi DOM đã tải xong
-document.addEventListener("DOMContentLoaded", () => {
-    // Đảm bảo hàm này được gọi sau khi main.js đã được load và định nghĩa SAMPLE
-    renderHotSaleCarousel();
-});
-
-document.addEventListener("DOMContentLoaded", renderHotSaleCarousel);
-</script>
   <script src="../assets/js/main.js"></script>
   <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </html>

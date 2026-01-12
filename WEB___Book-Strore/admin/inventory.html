@@ -6,117 +6,121 @@
     <title>Quản lý Tồn kho - Literary Haven Admin</title>
 
     <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <link
+      rel="stylesheet"
+      href="../bootstrap-5.3.2-dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/admin_style.css" />
     <style>
-        /* Responsive cho thiết bị di động (max-width: 768px) */
-@media (max-width: 768px) {
-    /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
-    body {
-        display: flex !important;
-        flex-direction: column !important; /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
-        overflow-x: hidden; /* Tắt cuộn ngang vì đã xếp chồng */
-    }
+      /* Responsive cho thiết bị di động (max-width: 768px) */
+      @media (max-width: 768px) {
+        /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
+        body {
+          display: flex !important;
+          flex-direction: column !important; /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
+          overflow-x: hidden; /* Tắt cuộn ngang vì đã xếp chồng */
+        }
 
-    /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
-    .sidebar {
-        width: 100% !important; 
-        /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
-        height: auto !important; 
-        flex-shrink: 0;
-        display: flex !important;
-        
-        /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
-        overflow-x: auto; /* Cho phép menu cuộn ngang nếu có nhiều mục */
-        white-space: nowrap; /* Ngăn các mục menu xuống dòng */
-    }
-    
-    /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
-    .main-content {
-        width: 100%;
-        min-width: auto;
-    }
-    
-    /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
-    .page-content {
-        padding: 15px !important;
-    }
+        /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
+        .sidebar {
+          width: 100% !important;
+          /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
+          height: auto !important;
+          flex-shrink: 0;
+          display: flex !important;
 
-    .page-content h1 {
-        font-size: 20px;
-        margin-bottom: 15px;
-    }
+          /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
+          overflow-x: auto; /* Cho phép menu cuộn ngang nếu có nhiều mục */
+          white-space: nowrap; /* Ngăn các mục menu xuống dòng */
+        }
 
-    /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
-    .table-responsive {
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        overflow-x: auto; 
-        -webkit-overflow-scrolling: touch;
-    }
+        /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
+        .main-content {
+          width: 100%;
+          min-width: auto;
+        }
 
-    .table {
-        min-width: 700px; /* Tăng min-width do có thêm cột */
-    }
+        /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
+        .page-content {
+          padding: 15px !important;
+        }
 
-    .table thead th, 
-    .table tbody td {
-        padding: 8px 6px; 
-        font-size: 12px; 
-    }
-    
-    .input-qty {
-        width: 50px;
-        padding: 4px 2px;
+        .page-content h1 {
+          font-size: 20px;
+          margin-bottom: 15px;
+        }
+
+        /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
+        .table-responsive {
+          border: 1px solid var(--border-color);
+          border-radius: 12px;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .table {
+          min-width: 700px; /* Tăng min-width do có thêm cột */
+        }
+
+        .table thead th,
+        .table tbody td {
+          padding: 8px 6px;
+          font-size: 12px;
+        }
+
+        .input-qty {
+          width: 50px;
+          padding: 4px 2px;
+          font-size: 12px;
+        }
+
+        .btn-sm,
+        .btn-action-small {
+          padding: 3px 6px;
+          font-size: 10px;
+        }
+
+        .table tbody td span.small {
+          display: none;
+        }
+      }
+
+      /* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
+      @media (min-width: 769px) {
+        body {
+          display: flex !important;
+          flex-direction: row !important; /* Khôi phục thành row trên desktop */
+          overflow-x: hidden;
+        }
+        .sidebar {
+          /* Giả sử chiều rộng desktop là 250px */
+          width: 250px !important;
+          height: 100vh !important; /* Khôi phục vh-100 trên desktop */
+          display: flex !important;
+        }
+        .main-content {
+          width: 100%;
+        }
+      }
+
+      /* Style cho input số lượng và nút hành động */
+      .input-qty {
+        width: 70px;
+        padding: 5px;
+        margin-right: 5px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        text-align: center;
+      }
+
+      .btn-action-small {
+        padding: 5px 10px;
+        margin: 2px;
         font-size: 12px;
-    }
-
-    .btn-sm, .btn-action-small {
-        padding: 3px 6px; 
-        font-size: 10px;
-    }
-    
-    .table tbody td span.small {
-        display: none;
-    }
-}
-
-/* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
-@media (min-width: 769px) {
-    body {
-        display: flex !important; 
-        flex-direction: row !important; /* Khôi phục thành row trên desktop */
-        overflow-x: hidden; 
-    }
-    .sidebar {
-        /* Giả sử chiều rộng desktop là 250px */
-        width: 250px !important; 
-        height: 100vh !important; /* Khôi phục vh-100 trên desktop */
-        display: flex !important;
-    }
-    .main-content {
-        width: 100%;
-    }
-}
-
-/* Style cho input số lượng và nút hành động */
-.input-qty {
-    width: 70px;
-    padding: 5px;
-    margin-right: 5px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    text-align: center;
-}
-
-.btn-action-small {
-    padding: 5px 10px;
-    margin: 2px;
-    font-size: 12px;
-}
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <aside class="sidebar d-flex flex-column vh-100">
       <div class="sidebar-header">Literary Haven</div>
 
@@ -195,21 +199,25 @@
             <div class="row g-3">
               <div class="col-md-3">
                 <label for="searchInput" class="form-label">Tìm kiếm</label>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="searchInput" 
+                <input
+                  type="text"
+                  class="form-control"
+                  id="searchInput"
                   placeholder="Tìm theo mã, tên sách, tác giả..."
-                >
+                />
               </div>
               <div class="col-md-2">
-                <label for="categoryFilter" class="form-label">Lọc theo loại</label>
+                <label for="categoryFilter" class="form-label"
+                  >Lọc theo loại</label
+                >
                 <select class="form-select" id="categoryFilter">
                   <option value="">Tất cả loại</option>
                 </select>
               </div>
               <div class="col-md-2">
-                <label for="statusFilter" class="form-label">Lọc theo trạng thái</label>
+                <label for="statusFilter" class="form-label"
+                  >Lọc theo trạng thái</label
+                >
                 <select class="form-select" id="statusFilter">
                   <option value="">Tất cả trạng thái</option>
                   <option value="normal">Bình thường</option>
@@ -220,13 +228,19 @@
               </div>
               <div class="col-md-2">
                 <label class="form-label d-block">&nbsp;</label>
-                <button class="btn btn-primary w-100" onclick="filterInventory()">
+                <button
+                  class="btn btn-primary w-100"
+                  onclick="filterInventory()"
+                >
                   <span>🔍</span> Tra cứu
                 </button>
               </div>
               <div class="col-md-2">
                 <label class="form-label d-block">&nbsp;</label>
-                <button class="btn btn-secondary w-100" onclick="resetFilters()">
+                <button
+                  class="btn btn-secondary w-100"
+                  onclick="resetFilters()"
+                >
                   <span>↺</span> Đặt lại
                 </button>
               </div>
@@ -235,9 +249,7 @@
         </div>
 
         <div class="card card-inventory">
-          <div class="card-header card-header-inventory">
-            Tồn Kho Hiện Tại
-          </div>
+          <div class="card-header card-header-inventory">Tồn Kho Hiện Tại</div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-striped table-hover align-middle">
@@ -308,16 +320,18 @@
         if (product.category) {
           return product.category;
         }
-        
+
         // Trường hợp 2: Nếu có categoryId, tìm trong danh sách categories
         if (product.categoryId) {
           const data = typeof getData === "function" ? getData() : null;
           if (data && data.categories) {
-            const category = data.categories.find(cat => cat.id === product.categoryId);
+            const category = data.categories.find(
+              (cat) => cat.id === product.categoryId
+            );
             if (category) return category.name;
           }
         }
-        
+
         return "Chưa phân loại";
       }
 
@@ -426,7 +440,7 @@
 
         // Lấy danh sách category từ data.categories
         if (data.categories && data.categories.length > 0) {
-          data.categories.forEach(cat => {
+          data.categories.forEach((cat) => {
             const option = document.createElement("option");
             option.value = cat.name;
             option.textContent = cat.name;
@@ -436,14 +450,14 @@
           // Nếu không có data.categories, lấy từ products
           const uniqueCategories = new Set();
           if (data.products) {
-            data.products.forEach(p => {
+            data.products.forEach((p) => {
               const catName = getCategoryName(p);
               if (catName && catName !== "Chưa phân loại") {
                 uniqueCategories.add(catName);
               }
             });
 
-            uniqueCategories.forEach(catName => {
+            uniqueCategories.forEach((catName) => {
               const option = document.createElement("option");
               option.value = catName;
               option.textContent = catName;
@@ -457,13 +471,15 @@
        * Lọc và tìm kiếm tồn kho
        */
       function filterInventory() {
-        const searchText = document.getElementById("searchInput").value.toLowerCase();
+        const searchText = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
         const categoryFilter = document.getElementById("categoryFilter").value;
         const statusFilter = document.getElementById("statusFilter").value;
 
-        let filteredData = originalInventoryData.filter(item => {
+        let filteredData = originalInventoryData.filter((item) => {
           // Lọc theo text search
-          const matchSearch = 
+          const matchSearch =
             item.sku.toLowerCase().includes(searchText) ||
             item.name.toLowerCase().includes(searchText) ||
             (item.author && item.author.toLowerCase().includes(searchText)) ||
@@ -479,9 +495,20 @@
           // Lọc theo trạng thái
           if (statusFilter) {
             if (statusFilter === "out" && item.endQty > 0) return false;
-            if (statusFilter === "low" && (item.endQty === 0 || item.endQty >= LOW_STOCK_THRESHOLD)) return false;
-            if (statusFilter === "normal" && (item.endQty === 0 || item.endQty < LOW_STOCK_THRESHOLD || item.status === "inactive")) return false;
-            if (statusFilter === "inactive" && item.status !== "inactive") return false;
+            if (
+              statusFilter === "low" &&
+              (item.endQty === 0 || item.endQty >= LOW_STOCK_THRESHOLD)
+            )
+              return false;
+            if (
+              statusFilter === "normal" &&
+              (item.endQty === 0 ||
+                item.endQty < LOW_STOCK_THRESHOLD ||
+                item.status === "inactive")
+            )
+              return false;
+            if (statusFilter === "inactive" && item.status !== "inactive")
+              return false;
           }
 
           return true;
@@ -636,5 +663,10 @@
       // Chạy hàm khởi tạo khi DOM đã load
       document.addEventListener("DOMContentLoaded", initInventoryPage);
     </script>
+    <a href="#" class="back-to-top" title="Lên đầu trang">
+      <i class="bi bi-chevron-up">
+        <img class="go-up" src="../images/muiten.svg" alt="Về trang chủ" />
+      </i>
+    </a>
   </body>
 </html>
