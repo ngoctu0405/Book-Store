@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết Phiếu nhập hàng</title>
+
+    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <style>
+        /* Responsive cho thiết bị di động (max-width: 768px) */
+@media (max-width: 768px) {
+    /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
+    body {
+        display: flex !important;
+        flex-direction: column !important; /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
+        overflow-x: hidden; /* Tắt cuộn ngang vì đã xếp chồng */
+    }
+
+    /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
+    .sidebar {
+        width: 100% !important; 
+        /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
+        height: auto !important; 
+        flex-shrink: 0;
+        display: flex !important;
+        
+        /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
+        overflow-x: auto; /* Cho phép menu cuộn ngang nếu có nhiều mục */
+        white-space: nowrap; /* Ngăn các mục menu xuống dòng */
+    }
+    
+    /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
+    .main-content {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
+    .page-content {
+        padding: 15px !important;
+    }
+
+    .page-content h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
+    .table-responsive {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        min-width: 600px; /* Vẫn cần min-width cho bảng */
+    }
+
+    .table thead th, 
+    .table tbody td {
+        padding: 8px 6px; 
+        font-size: 12px; 
+    }
+    
+    .profit-input {
+        width: 50px;
+        padding: 4px 2px;
+        font-size: 12px;
+    }
+
+    .btn-sm {
+        padding: 3px 6px; 
+        font-size: 10px;
+    }
+    
+    .table tbody td span.small {
+        display: none;
+    }
+}
+
+/* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
+@media (min-width: 769px) {
+    body {
+        display: flex !important; 
+        flex-direction: row !important; /* Khôi phục thành row trên desktop */
+        overflow-x: hidden; 
+    }
+    .sidebar {
+        /* Giả sử chiều rộng desktop là 250px */
+        width: 250px !important; 
+        height: 100vh !important; /* Khôi phục vh-100 trên desktop */
+        display: flex !important;
+    }
+    .main-content {
+        width: 100%;
+    }
+}
+    </style>
+</head>
+<body>
+    
+    <aside class="sidebar d-flex flex-column vh-100">
+        <div class="sidebar-header">
+            Literary Haven
+        </div>
+
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link ">
+                    <span class="nav-icon">◈</span>
+                    <span>Bảng điều khiển</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="users.html" class="nav-link">
+                    <span class="nav-icon">◉</span>
+                    <span>Khách hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="categories.html" class="nav-link">
+                    <span class="nav-icon">◫</span>
+                    <span>Loại sản phẩm</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="products.html" class="nav-link">
+                    <span class="nav-icon">◪</span>
+                    <span>Sản phẩm</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="purchase-orders.html" class="nav-link">
+                    <span class="nav-icon">◩</span>
+                    <span>Nhập hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="pricing.html" class="nav-link">
+                    <span class="nav-icon">◎</span>
+                    <span>Quản lý giá</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="orders.html" class="nav-link">
+                    <span class="nav-icon">◧</span>
+                    <span>Đơn hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="inventory.html" class="nav-link">
+                    <span class="nav-icon">◨</span>
+                    <span>Tồn kho</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="reports.html" class="nav-link">
+                    <span class="nav-icon">◔</span>
+                    <span>Báo cáo</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="mt-auto p-3">
+            <a href="index.html" class="logout-link">
+                <span>◀</span>
+                <span>Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-content p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0" id="po-page-title">Thêm Phiếu nhập hàng mới</h1>
+                <a href="purchase-orders.html" class="btn btn-secondary">Quay lại danh sách</a>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card mb-4" id="po-add-item-card">
+                        <div class="card-header"><h3 class="h5 mb-0">Thêm sản phẩm vào phiếu</h3></div>
+                        <div class="card-body">
+                            <form class="row g-3 align-items-end">
+                                <div class="col-md-5">
+                                    <label class="form-label">Chọn sản phẩm (Sách)</label>
+                                    <select class="form-select" id="po-product-select">
+                                        <option selected value="">-- Đang tải sản phẩm --</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Giá nhập (Cost)</label>
+                                    <input type="number" class="form-control" id="po-cost-price" placeholder="0">
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Số lượng</label>
+                                    <input type="number" class="form-control" id="po-quantity" value="1" min="1">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary w-100" id="po-add-item-btn">Thêm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header"><h3 class="h5 mb-0">Chi tiết phiếu nhập</h3></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Sản phẩm</th>
+                                            <th>Giá nhập</th>
+                                            <th>Số lượng</th>
+                                            <th class="text-end">Thành tiền</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="po-items-tbody">
+                                        </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3" class="text-end fw-bold h5">Tổng cộng</td>
+                                            <td class="text-end fw-bold h5" id="po-total-cost">0đ</td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header"><h3 class="h5 mb-0">Thông tin Phiếu nhập</h3></div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Ngày nhập</label>
+                                <input type="date" class="form-control" id="po-date">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Trạng thái</label>
+                                <div id="po-status-display">
+                                    <span class="status pending d-block w-100">Chưa hoàn thành</span>
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="d-grid gap-2" id="po-action-buttons">
+                                <button class="btn btn-secondary" id="po-save-draft-btn">Lưu tạm (Chưa nhập kho)</button>
+                                <button class="btn btn-success" id="po-complete-btn">Hoàn thành (Nhập hàng vào kho)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="../assets/js/admin_main.js"></script>
+    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

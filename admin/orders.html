@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý Đơn hàng</title>
+
+     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <style>
+        /* Responsive cho thiết bị di động (max-width: 768px) */
+@media (max-width: 768px) {
+    /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
+    body {
+        display: flex !important;
+        flex-direction: column !important; /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
+        overflow-x: hidden; /* Tắt cuộn ngang vì đã xếp chồng */
+    }
+
+    /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
+    .sidebar {
+        width: 100% !important; 
+        /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
+        height: auto !important; 
+        flex-shrink: 0;
+        display: flex !important;
+        
+        /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
+        overflow-x: auto; /* Cho phép menu cuộn ngang nếu có nhiều mục */
+        white-space: nowrap; /* Ngăn các mục menu xuống dòng */
+    }
+    
+    /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
+    .main-content {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
+    .page-content {
+        padding: 15px !important;
+    }
+
+    .page-content h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
+    .table-responsive {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        min-width: 600px; /* Vẫn cần min-width cho bảng */
+    }
+
+    .table thead th, 
+    .table tbody td {
+        padding: 8px 6px; 
+        font-size: 12px; 
+    }
+    
+    .profit-input {
+        width: 50px;
+        padding: 4px 2px;
+        font-size: 12px;
+    }
+
+    .btn-sm {
+        padding: 3px 6px; 
+        font-size: 10px;
+    }
+    
+    .table tbody td span.small {
+        display: none;
+    }
+}
+
+/* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
+@media (min-width: 769px) {
+    body {
+        display: flex !important; 
+        flex-direction: row !important; /* Khôi phục thành row trên desktop */
+        overflow-x: hidden; 
+    }
+    .sidebar {
+        /* Giả sử chiều rộng desktop là 250px */
+        width: 250px !important; 
+        height: 100vh !important; /* Khôi phục vh-100 trên desktop */
+        display: flex !important;
+    }
+    .main-content {
+        width: 100%;
+    }
+}
+    </style>
+</head>
+<body>
+    
+
+    <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
+    <link
+      rel="stylesheet"
+      href="../bootstrap-5.3.2-dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../assets/css/admin_style.css" />
+  </head>
+  <body>
+
+    <aside class="sidebar d-flex flex-column vh-100">
+      <div class="sidebar-header">Literary Haven</div>
+
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">◈</span>
+            <span>Bảng điều khiển</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="users.html" class="nav-link">
+            <span class="nav-icon">◉</span>
+            <span>Khách hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="categories.html" class="nav-link">
+            <span class="nav-icon">◫</span>
+            <span>Loại sản phẩm</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="products.html" class="nav-link">
+            <span class="nav-icon">◪</span>
+            <span>Sản phẩm</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="purchase-orders.html" class="nav-link">
+            <span class="nav-icon">◩</span>
+            <span>Nhập hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="pricing.html" class="nav-link">
+            <span class="nav-icon">◎</span>
+            <span>Quản lý giá</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="orders.html" class="nav-link">
+            <span class="nav-icon">◧</span>
+            <span>Đơn hàng</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="inventory.html" class="nav-link">
+            <span class="nav-icon">◨</span>
+            <span>Tồn kho</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="reports.html" class="nav-link">
+            <span class="nav-icon">◔</span>
+            <span>Báo cáo</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="mt-auto p-3">
+        <a href="index.html" class="logout-link">
+          <span>◀</span>
+          <span>Đăng xuất</span>
+        </a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-content p-4">
+        <h1 class="mb-4">Quản lý Đơn hàng</h1>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <form class="row g-3 align-items-end">
+              <div class="col-md-3">
+                <label for="filter-start-date" class="form-label"
+                  >Từ ngày</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="filter-start-date"
+                />
+              </div>
+              <div class="col-md-3">
+                <label for="filter-end-date" class="form-label">Đến ngày</label>
+                <input type="date" class="form-control" id="filter-end-date" />
+              </div>
+              <div class="col-md-3">
+                <label for="filter-address" class="form-label">Địa chỉ</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="filter-address"
+                  placeholder="Nhập quận, thành phố..."
+                />
+              </div>
+              <div class="col-md-2">
+                <label for="filter-status" class="form-label">Tình trạng</label>
+                <select id="filter-status" class="form-select">
+                  <option value="" selected>Tất cả</option>
+                  <option value="Chờ xử lý">Mới đặt (Chờ xử lý)</option>
+                  <option value="Đã xử lý">Đã xử lý</option>
+                  <option value="Đã giao">Đã giao</option>
+                  <option value="Đã hủy">Đã hủy</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <button
+                  type="button"
+                  class="btn btn-primary w-100"
+                  id="filter-btn"
+                >
+                  Lọc
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="h5 mb-0">Danh sách đơn hàng</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Mã ĐH</th>
+                    <th>Khách hàng (User)</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Tình trạng</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="order-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="../assets/js/admin_main.js"></script>
+    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
