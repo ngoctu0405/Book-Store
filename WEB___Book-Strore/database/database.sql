@@ -4,6 +4,10 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS categories;
+CREATE TABLE categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100)
+);
 CREATE TABLE products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   sku VARCHAR(20),
@@ -16,12 +20,9 @@ CREATE TABLE products (
   description TEXT,
   image VARCHAR(255),
   qty INT,
+  LN FLOAT,
   FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
-CREATE TABLE categories (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100)
-)
 INSERT INTO categories (name)
 VALUES ('Văn học'),
   ('Kinh tế'),
@@ -37,7 +38,8 @@ INSERT INTO products (
     subcategory,
     description,
     image,
-    qty
+    qty,
+    LN
   )
 VALUES (
     'VH001',
@@ -49,7 +51,8 @@ VALUES (
     'Tiểu thuyết',
     'Tác phẩm kinh điển về nghệ thuật giao tiếp.',
     '../images/dacNhanTam.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH002',
@@ -61,7 +64,8 @@ VALUES (
     'Tiểu thuyết',
     'Truyện cảm hứng cho bạn trẻ tìm kiếm chính mình.',
     '../images/tuoiTreDangGiaBaoNhieu.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH003',
@@ -73,7 +77,8 @@ VALUES (
     'Thơ',
     'Kiệt tác văn học Việt Nam.',
     '../images/truyenKieu.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH004',
@@ -85,7 +90,8 @@ VALUES (
     'Truyện ngắn',
     'Tác phẩm hiện thực phê phán sâu sắc.',
     '../images/tatDen.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH005',
@@ -97,7 +103,8 @@ VALUES (
     'Truyện ngắn',
     'Câu chuyện đầy nhân văn về thân phận người nông dân.',
     '../images/laoHac.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH006',
@@ -109,7 +116,8 @@ VALUES (
     'Thơ',
     'Tập thơ giàu triết lý và tinh thần cách mạng.',
     '../images/nhatKyTrongTu.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH007',
@@ -121,7 +129,8 @@ VALUES (
     'Tiểu thuyết',
     'Tác phẩm trào phúng đặc sắc.',
     '../images/soDo.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH008',
@@ -133,7 +142,8 @@ VALUES (
     'Truyện ngắn',
     'Bi kịch của người nông dân trong xã hội cũ.',
     '../images/chiPheo.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH009',
@@ -145,7 +155,8 @@ VALUES (
     'Tiểu thuyết',
     'Câu chuyện tuổi thơ đầy xúc động.',
     '../images/toiThayHoaVangTrenCoXanh.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH010',
@@ -153,6 +164,12 @@ VALUES (
     'Nguyễn Tuân',
     72000,
     0,
+    1,
+    'Tiểu thuyết',
+    'Tác phẩm văn học nổi tiếng.',
+    '../images/nguoiLaiDoSongDa.jpg',
+    100,
+    0.1
   ),
   (
     'VH011',
@@ -164,7 +181,8 @@ VALUES (
     'Tiểu thuyết',
     'Tấm gương sáng của một nữ bác sĩ trong chiến tranh.',
     '../images/nhatKyĐangThuyTram.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'VH012',
@@ -176,7 +194,8 @@ VALUES (
     'Thơ',
     'Tập thơ nổi tiếng với nhiều bài thơ sâu sắc.',
     '../images/anhTrang.png',
-    100
+    100,
+    0.1
   ),
   (
     'VH013',
@@ -184,11 +203,12 @@ VALUES (
     'J. K. Rowling',
     120000,
     0,
-    'Văn học',
+    1,
     'Tiểu thuyết',
     'Tập đầu tiên của loạt Harry Potter.',
     '../images/harryPotter.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'KT001',
@@ -200,7 +220,8 @@ VALUES (
     'Tài chính',
     'Sách tài chính cá nhân nổi tiếng.',
     '../images/chaGiauChaNgheo.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'KT002',
@@ -212,7 +233,8 @@ VALUES (
     'Quản trị',
     'Bài học khởi nghiệp từ Israel.',
     '../images/quocGiaKhoiNghiep.png',
-    100
+    100,
+    0.1
   ),
   (
     'KT003',
@@ -224,7 +246,8 @@ VALUES (
     'Quản trị',
     'Hướng dẫn kỹ năng lãnh đạo cá nhân.',
     '../images/thoiQuenHieuQua.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'KT004',
@@ -236,7 +259,8 @@ VALUES (
     'Tài chính',
     'Loạt sách tài chính cá nhân nổi tiếng.',
     '../images/dayConLamGiauIII.png',
-    100
+    100,
+    0.1
   ),
   (
     'KT005',
@@ -248,7 +272,8 @@ VALUES (
     'Marketing',
     'Tác phẩm tâm lý học ứng dụng trong kinh tế.',
     '../images/loiTheCanhTranh.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'KT006',
@@ -260,7 +285,8 @@ VALUES (
     'Quản trị',
     'Sách chiến lược kinh doanh kinh điển.',
     '../images/tuDuyPhanBien.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'KT007',
@@ -272,7 +298,8 @@ VALUES (
     'Marketing',
     'Xu hướng marketing hiện đại.',
     '../images/marketing.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'KT008',
@@ -284,7 +311,8 @@ VALUES (
     'Tài chính',
     'Sách làm giàu kinh điển.',
     '../images/kinhDoanh.png',
-    100
+    100,
+    0.1
   ),
   (
     'KT009',
@@ -296,7 +324,8 @@ VALUES (
     'Quản trị',
     'Mô hình chiến lược kinh doanh đột phá.',
     '../images/chienLuocDaiDuongXanh.png',
-    100
+    100,
+    0.1
   ),
   (
     'KT010',
@@ -308,7 +337,8 @@ VALUES (
     'Tài chính',
     'Kinh tế học giản lược, dễ hiểu.',
     '../images/nhungDoanTamLyThuyetPhuc.png',
-    100
+    100,
+    0.1
   ),
   (
     'KT011',
@@ -320,7 +350,8 @@ VALUES (
     'Marketing',
     'Cuốn sách kinh điển về nghệ thuật thuyết phục.',
     '../images/cachNghiDeThanhCong.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'KT012',
@@ -332,7 +363,8 @@ VALUES (
     'Quản trị',
     'Nghệ thuật lãnh đạo bản thân và tổ chức.',
     '../images/nhaLanhDaoKhongChucDanh.png',
-    100
+    100,
+    0.1
   ),
   (
     'TN001',
@@ -344,7 +376,8 @@ VALUES (
     'Truyện tranh',
     'Truyện tranh nổi tiếng Nhật Bản.',
     '../images/doreamonTap29.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'TN002',
@@ -356,7 +389,8 @@ VALUES (
     'Truyện tranh',
     'Thám tử lừng danh Conan.',
     '../images/conanTap5.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'TN004',
@@ -368,7 +402,8 @@ VALUES (
     'Giáo dục',
     'Câu chuyện giáo dục đầy cảm hứng.',
     '../images/mikoTap33.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'TN005',
@@ -380,7 +415,8 @@ VALUES (
     'Truyện tranh',
     'Bộ manga nổi tiếng toàn cầu.',
     '../images/dragonBallTap19.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'TN006',
@@ -392,7 +428,8 @@ VALUES (
     'Truyện tranh',
     'Truyện tranh Việt Nam nổi bật.',
     '../images/thanDongDatVietTap1.png',
-    100
+    100,
+    0.1
   ),
   (
     'TN007',
@@ -404,7 +441,8 @@ VALUES (
     'Giáo dục',
     'Tác phẩm văn học thiếu nhi nổi bật.',
     '../images/cauBeButChi.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'GK001',
@@ -416,7 +454,8 @@ VALUES (
     'Cấp 1',
     'Sách giáo khoa Toán lớp 1.',
     '../images/toanLop1.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'GK002',
@@ -428,7 +467,8 @@ VALUES (
     'Cấp 1',
     'Sách giáo khoa Tiếng Việt lớp 2.',
     '../images/tiengVietLop2.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'GK003',
@@ -440,7 +480,8 @@ VALUES (
     'Cấp 2',
     'Sách giáo khoa Hóa học lớp 8.',
     '../images/hoaHocLop11.jpg',
-    100
+    100,
+    0.1
   ),
   (
     'GK004',
@@ -452,7 +493,8 @@ VALUES (
     'Cấp 2',
     'Sách giáo khoa Lịch sử lớp 7.',
     '../images/lichSuLop8.png',
-    100
+    100,
+    0.1
   ),
   (
     'GK005',
@@ -464,7 +506,8 @@ VALUES (
     'Cấp 3',
     'Sách giáo khoa Vật lí lớp 11.',
     '../images/vatLyLop11.png',
-    100
+    100,
+    0.1
   ),
   (
     'GK006',
@@ -476,7 +519,8 @@ VALUES (
     'Cấp 1',
     'Sách giáo khoa Mỹ thuật lớp 5.',
     '../images/miThuatLop5.png',
-    100
+    100,
+    0.1
   ),
   (
     'GK007',
@@ -488,7 +532,8 @@ VALUES (
     'Cấp 3',
     'Sách giáo khoa Hóa học lớp 11.',
     '../images/hoaHocLop8.png',
-    100
+    100,
+    0.1
   ),
   (
     'GK008',
@@ -500,7 +545,8 @@ VALUES (
     'Cấp 1',
     'Sách giáo khoa Đạo đức lớp 4.',
     '../images/daoDucLop4.jpg',
-    100
+    100,
+    0.1
   );
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
