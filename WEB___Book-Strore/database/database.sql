@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS goods_receipt;
+DROP TABLE IF EXISTS goodsReceipts_items;
 CREATE TABLE categories (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100)
@@ -594,5 +596,20 @@ CREATE TABLE order_items (
   qty INT,
   price INT,
   FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id)
+);
+CREATE TABLE goods_receipt (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  createdAt DATETIME,
+  totalAmount INT,
+  status VARCHAR(50) default 'chưa hoàn thành'
+);
+CREATE TABLE goodsReceipts_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  goods_receipt_id INT,
+  product_id INT,
+  qty INT,
+  price INT,
+  FOREIGN KEY (goods_receipt_id) REFERENCES goods_receipt(id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
