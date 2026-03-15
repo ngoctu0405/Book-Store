@@ -47,7 +47,7 @@ function parseCurrency(value) {
 
 document.addEventListener("DOMContentLoaded", function () {
   const currentPage =
-    window.location.pathname.split("/").pop() || "dashboard.html";
+    window.location.pathname.split("/").pop() || "dashboard.php";
 
   // --- 3. LOGIC TOÀN CỤC (HIGHLIGHT SIDEBAR) ---
 
@@ -66,11 +66,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- 4. LOGIC TỪNG TRANG ---
 
   /**
-   * Trang: users.html
+   * Trang: users.php
    */
   function initUsersPage() {
     const tableBody = document.getElementById("user-table-body");
-    if (!tableBody) return; // Chỉ chạy trên trang users.html
+    if (!tableBody) return; // Chỉ chạy trên trang users.php
 
     // Logic cho Modal Thêm User
     const addUserForm = document.getElementById("addUserForm");
@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Trang: purchase-orders.html (Danh sách phiếu nhập)
+   * Trang: purchase-orders.php (Danh sách phiếu nhập)
    */
   function initPurchaseOrdersPage() {
     const tableBody = document.getElementById("po-table-body");
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${formatCurrency(p.totalCost)}</td>
                     <td><span class="status ${statusClass}">${statusText}</span></td>
                     <td>
-                        <a href="purchase-edit.html?id=${
+                        <a href="purchase-edit.php?id=${
                           p.id
                         }" class="btn btn-sm btn-outline-primary">
                             ${p.status === "completed" ? "Xem" : "Sửa"}
@@ -303,7 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Trang: purchase-edit.html (Thêm/Sửa phiếu nhập)
+   * Trang: purchase-edit.php (Thêm/Sửa phiếu nhập)
    */
   function initPurchaseEditPage() {
     // Lấy các thành phần DOM
@@ -412,7 +412,7 @@ document.addEventListener("DOMContentLoaded", function () {
       alert(
         `Đã ${status === "completed" ? "Hoàn thành" : "Lưu tạm"} phiếu nhập!`
       );
-      window.location.href = "purchase-orders.html";
+      window.location.href = "purchase-orders.php";
     }
 
     // 4. Hàm cập nhật Tồn kho (Stock) và Giá nhập (CostPrice)
@@ -531,7 +531,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else {
         alert("Không tìm thấy phiếu nhập!");
-        window.location.href = "purchase-orders.html";
+        window.location.href = "purchase-orders.php";
       }
     } else {
       // Chế độ Tạo mới
@@ -542,7 +542,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Trang: orders.html
+   * Trang: orders.php
    */
   function initOrdersPage() {
     const tableBody = document.getElementById("order-table-body");
@@ -582,7 +582,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       statusClassMap[order.status] || "pending"
                     }">${order.status}</span></td>
                     <td>
-                        <a href="order-detail.html?id=${
+                        <a href="order-detail.php?id=${
                           order.id
                         }" class="btn btn-sm btn-outline-primary">Xem</a>
                     </td>
@@ -636,7 +636,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /*
-   * Trang: order-detail.html
+   * Trang: order-detail.php
    */
   function initOrderDetailPage() {
     const form = document.getElementById("orderDetailForm");
@@ -648,7 +648,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!orderId) {
       alert("Không tìm thấy ID đơn hàng.");
-      window.location.href = "orders.html";
+      window.location.href = "orders.php";
       return;
     }
 
@@ -657,7 +657,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!order) {
       alert("Không tìm thấy đơn hàng");
-      window.location.href = "orders.html";
+      window.location.href = "orders.php";
       return;
     }
 
@@ -799,28 +799,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // --- 5. BỘ ĐỊNH TUYẾN (ROUTER) ---
   // (Chạy logic trang cụ thể)
-  // Lưu ý: Các trang products.html, inventory.html, pricing.html
+  // Lưu ý: Các trang products.php, inventory.php, pricing.php
   // đã có script inline riêng nên không cần gọi ở đây.
 
   initGlobal(); // Luôn chạy
 
   switch (currentPage) {
-    case "users.html":
+    case "users.php":
       initUsersPage();
       break;
-    case "purchase-orders.html":
+    case "purchase-orders.php":
       initPurchaseOrdersPage();
       break;
-    case "purchase-edit.html":
+    case "purchase-edit.php":
       initPurchaseEditPage();
       break;
-    case "orders.html":
+    case "orders.php":
       initOrdersPage();
       break;
-    case "order-detail.html":
+    case "order-detail.php":
       initOrderDetailPage();
       break;
-    // Các trang dashboard.html, products.html, inventory.html, pricing.html, v.v...
+    // Các trang dashboard.php, products.php, inventory.php, pricing.php, v.v...
     // sẽ tự chạy script inline của chúng.
   }
 });

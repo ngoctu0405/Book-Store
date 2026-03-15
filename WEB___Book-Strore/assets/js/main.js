@@ -21,567 +21,71 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-const SAMPLE = {
-  products: [
-    // ================= Văn học =================
-    {
-      id: 1,
-      sku: "VH001",
-      name: "Đắc Nhân Tâm",
-      author: "Dale Carnegie",
-      price: 85000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Tiểu thuyết",
-      desc: "Tác phẩm kinh điển về nghệ thuật giao tiếp.",
-      img: "../images/dacNhanTam.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 2,
-      sku: "VH002",
-      name: "Tuổi Trẻ Đáng Giá Bao Nhiêu",
-      author: "Rosie Nguyễn",
-      price: 90000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Tiểu thuyết",
-      desc: "Truyện cảm hứng cho bạn trẻ tìm kiếm chính mình.",
-      img: "../images/tuoiTreDangGiaBaoNhieu.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 3,
-      sku: "VH003",
-      name: "Truyện Kiều",
-      author: "Nguyễn Du",
-      price: 70000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Thơ",
-      desc: "Kiệt tác văn học Việt Nam.",
-      img: "../images/truyenKieu.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 4,
-      sku: "VH004",
-      name: "Tắt Đèn",
-      author: "Ngô Tất Tố",
-      price: 65000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Truyện ngắn",
-      desc: "Tác phẩm hiện thực phê phán sâu sắc.",
-      img: "../images/tatDen.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 5,
-      sku: "VH005",
-      name: "Lão Hạc",
-      author: "Nam Cao",
-      price: 60000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Truyện ngắn",
-      desc: "Câu chuyện đầy nhân văn về thân phận người nông dân.",
-      img: "../images/laoHac.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 6,
-      sku: "VH006",
-      name: "Nhật Ký Trong Tù",
-      author: "Hồ Chí Minh",
-      price: 80000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Thơ",
-      desc: "Tập thơ giàu triết lý và tinh thần cách mạng.",
-      img: "../images/nhatKyTrongTu.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 7,
-      sku: "VH007",
-      name: "Số Đỏ",
-      author: "Vũ Trọng Phụng",
-      price: 95000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Tiểu thuyết",
-      desc: "Tác phẩm trào phúng đặc sắc.",
-      img: "../images/soDo.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 8,
-      sku: "VH008",
-      name: "Chí Phèo",
-      author: "Nam Cao",
-      price: 60000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Truyện ngắn",
-      desc: "Bi kịch của người nông dân trong xã hội cũ.",
-      img: "../images/chiPheo.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 9,
-      sku: "VH009",
-      name: "Tôi Thấy Hoa Vàng Trên Cỏ Xanh",
-      author: "Nguyễn Nhật Ánh",
-      price: 100000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Tiểu thuyết",
-      desc: "Câu chuyện tuổi thơ đầy xúc động.",
-      img: "../images/toiThayHoaVangTrenCoXanh.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 10,
-      sku: "VH010",
-      name: "Người Lái Đò Sông Đà",
-      author: "Nguyễn Tuân",
-      price: 72000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Truyện ngắn",
-      desc: "Tác phẩm tiêu biểu cho phong cách tùy bút độc đáo.",
-      img: "../images/nguoiLaiDoSongDa.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 11,
-      sku: "VH011",
-      name: "Nhật Ký Đặng Thùy Trâm",
-      author: "Đặng Thùy Trâm",
-      price: 85000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Tiểu thuyết",
-      desc: "Tấm gương sáng của một nữ bác sĩ trong chiến tranh.",
-      img: "../images/nhatKyĐangThuyTram.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 12,
-      sku: "VH012",
-      name: "Ánh Trăng",
-      author: "Nguyễn Duy",
-      price: 55000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Thơ",
-      desc: "Tập thơ nổi tiếng với nhiều bài thơ sâu sắc.",
-      img: "../images/anhTrang.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 13,
-      sku: "VH013",
-      name: "Harry Potter và Hòn Đá Phù Thủy",
-      author: "J. K. Rowling",
-      price: 120000,
-      profitMargin: 0,
-      category: "Văn học",
-      subcategory: "Tiểu thuyết",
-      desc: "Tập đầu tiên của loạt Harry Potter.",
-      img: "../images/harryPotter.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-
-    // ================= Kinh tế =================
-    {
-      id: 14,
-      sku: "KT001",
-      name: "Cha Giàu Cha Nghèo",
-      author: "Robert Kiyosaki",
-      price: 120000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Tài chính",
-      desc: "Sách tài chính cá nhân nổi tiếng.",
-      img: "../images/chaGiauChaNgheo.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 15,
-      sku: "KT002",
-      name: "Quốc Gia Khởi Nghiệp",
-      author: "Dan Senor",
-      price: 140000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Quản trị",
-      desc: "Bài học khởi nghiệp từ Israel.",
-      img: "../images/quocGiaKhoiNghiep.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 16,
-      sku: "KT003",
-      name: "7 Thói Quen Hiệu Quả",
-      author: "Stephen Covey",
-      price: 135000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Quản trị",
-      desc: "Hướng dẫn kỹ năng lãnh đạo cá nhân.",
-      img: "../images/thoiQuenHieuQua.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 17,
-      sku: "KT004",
-      name: "Dạy Con Làm Giàu",
-      author: "Robert Kiyosaki",
-      price: 150000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Tài chính",
-      desc: "Loạt sách tài chính cá nhân nổi tiếng.",
-      img: "../images/dayConLamGiauIII.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 18,
-      sku: "KT005",
-      name: "Lợi Thế Cạnh Tranh",
-      author: "Michael Porter",
-      price: 160000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Marketing",
-      desc: "Tác phẩm tâm lý học ứng dụng trong kinh tế.",
-      img: "../images/loiTheCanhTranh.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 19,
-      sku: "KT006",
-      name: "Tư Duy Phản Biện",
-      author: "Richard Paul",
-      price: 180000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Quản trị",
-      desc: "Sách chiến lược kinh doanh kinh điển.",
-      img: "../images/tuDuyPhanBien.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 20,
-      sku: "KT007",
-      name: "Marketing 4.0",
-      author: "Philip Kotler",
-      price: 140000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Marketing",
-      desc: "Xu hướng marketing hiện đại.",
-      img: "../images/marketing.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 21,
-      sku: "KT008",
-      name: "Kinh Tế Dành Cho Doanh Nhân",
-      author: "Nguyễn Đình Cungx`",
-      price: 125000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Tài chính",
-      desc: "Sách làm giàu kinh điển.",
-      img: "../images/kinhDoanh.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 22,
-      sku: "KT009",
-      name: "Chiến Lược Đại Dương Xanh",
-      author: "W. Chan Kim",
-      price: 170000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Quản trị",
-      desc: "Mô hình chiến lược kinh doanh đột phá.",
-      img: "../images/chienLuocDaiDươngXanh.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 23,
-      sku: "KT010",
-      name: "Những Đoạn Tâm Lý Thuyết Phục",
-      author: "Dan Ariely",
-      price: 110000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Tài chính",
-      desc: "Kinh tế học giản lược, dễ hiểu.",
-      img: "../images/nhungDoanTamLyThuyetPhuc.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 24,
-      sku: "KT011",
-      name: "Cách Nghĩ Để Thành Công",
-      author: "Dale Carnegie",
-      price: 160000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Marketing",
-      desc: "Cuốn sách kinh điển về nghệ thuật thuyết phục.",
-      img: "../images/cachNghiĐeThanhCong.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 25,
-      sku: "KT012",
-      name: "Lãnh Đạo Không Chức Danh",
-      author: "Robin Sharma",
-      price: 145000,
-      profitMargin: 0,
-      category: "Kinh tế",
-      subcategory: "Quản trị",
-      desc: "Nghệ thuật lãnh đạo bản thân và tổ chức.",
-      img: "../images/nhaLanhDaoKhongChucDanh.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-
-    // ================= Thiếu nhi =================
-    {
-      id: 26,
-      sku: "TN001",
-      name: "Doraemon Tập 29",
-      author: "Fujiko F. Fujio",
-      price: 25000,
-      profitMargin: 0,
-      category: "Thiếu nhi",
-      subcategory: "Truyện tranh",
-      desc: "Truyện tranh nổi tiếng Nhật Bản.",
-      img: "../images/doreamonTap29.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 27,
-      sku: "TN002",
-      name: "Conan Tập 5",
-      author: "Gosho Aoyama",
-      price: 30000,
-      profitMargin: 0,
-      category: "Thiếu nhi",
-      subcategory: "Truyện tranh",
-      desc: "Thám tử lừng danh Conan.",
-      img: "../images/conanTap5.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 28,
-      sku: "TN004",
-      name: "Miko Tập 33",
-      author: "Nhiều tác giả",
-      price: 85000,
-      profitMargin: 0,
-      category: "Thiếu nhi",
-      subcategory: "Giáo dục",
-      desc: "Câu chuyện giáo dục đầy cảm hứng.",
-      img: "../images/mikoTap33.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 29,
-      sku: "TN005",
-      name: "Dragon Ball Tập 19",
-      author: "Akira Toriyama",
-      price: 35000,
-      profitMargin: 0,
-      category: "Thiếu nhi",
-      subcategory: "Truyện tranh",
-      desc: "Bộ manga nổi tiếng toàn cầu.",
-      img: "../images/dragonBallTap19.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 30,
-      sku: "TN006",
-      name: "Thần Đồng Đất Việt Tập 1",
-      author: "Lê Linh",
-      price: 28000,
-      profitMargin: 0,
-      category: "Thiếu nhi",
-      subcategory: "Truyện tranh",
-      desc: "Truyện tranh Việt Nam nổi bật.",
-      img: "../images/thanDongDatVietTap1.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 31,
-      sku: "TN007",
-      name: "Shin - cậu bé bút chì ",
-      author: "Takahashi Yoshito",
-      price: 90000,
-      profitMargin: 0,
-      category: "Thiếu nhi",
-      subcategory: "Giáo dục",
-      desc: "Tác phẩm văn học thiếu nhi nổi bật.",
-      img: "../images/cauBeButChi.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-
-    // ================= Giáo khoa =================
-    {
-      id: 32,
-      sku: "GK001",
-      name: "Toán Lớp 1",
-      author: "Nhiều tác giả",
-      price: 18000,
-      profitMargin: 0,
-      category: "Giáo khoa",
-      subcategory: "Cấp 1",
-      desc: "Sách giáo khoa Toán lớp 1.",
-      img: "../images/toanLop1.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 33,
-      sku: "GK002",
-      name: "Tiếng Việt Lớp 2",
-      author: "Nhiều tác giả",
-      price: 20000,
-      profitMargin: 0,
-      category: "Giáo khoa",
-      subcategory: "Cấp 1",
-      desc: "Sách giáo khoa Tiếng Việt lớp 2.",
-      img: "../images/tiengVietLop2.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 34,
-      sku: "GK003",
-      name: "Hóa học Lớp 8",
-      author: "Nhiều tác giả",
-      price: 25000,
-      profitMargin: 0,
-      category: "Giáo khoa",
-      subcategory: "Cấp 2",
-      desc: "Sách giáo khoa Hóa học lớp 8.",
-      img: "../images/hoaHocLop11.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 35,
-      sku: "GK004",
-      name: "Lịch sử Lớp 8",
-      author: "Nhiều tác giả",
-      price: 28000,
-      profitMargin: 0,
-      category: "Giáo khoa",
-      subcategory: "Cấp 2",
-      desc: "Sách giáo khoa Lịch sử lớp 7.",
-      img: "../images/lichSuLop8.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 36,
-      sku: "GK005",
-      name: "Vật lí Lớp 11",
-      author: "Nhiều tác giả",
-      price: 27000,
-      profitMargin: 0,
-      category: "Giáo khoa",
-      subcategory: "Cấp 3",
-      desc: "Sách giáo khoa Vật lí lớp 11.",
-      img: "../images/vatLyLop11.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 37,
-      sku: "GK006",
-      name: "Mỹ thuật Lớp 5",
-      author: "Nhiều tác giả",
-      price: 32000,
-      profitMargin: 0,
-      category: "Giáo khoa",
-      subcategory: "Cấp 1",
-      desc: "Sách giáo khoa Mỹ thuật lớp 5.",
-      img: "../images/miThuatLop5.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 38,
-      sku: "GK007",
-      name: "Hóa Học Lớp 11",
-      author: "Nhiều tác giả",
-      price: 34000,
-      profitMargin: 0,
-      category: "Giáo khoa",
-      subcategory: "Cấp 3",
-      desc: "Sách giáo khoa Hóa học lớp 11.",
-      img: "../images/hoaHocLop8.png", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-    {
-      id: 39,
-      sku: "GK008",
-      name: "Đạo đức Lớp 4",
-      author: "Nhiều tác giả",
-      price: 36000,
-      profitMargin: 0,
-      category: "Giáo khoa",
-      subcategory: "Cấp 1",
-      desc: "Sách giáo khoa Đạo đức lớp 4.",
-      img: "../images/daoDucLop4.jpg", // ĐÃ SỬA: Bỏ "/"
-      qty: 100, // THÊM MỚI
-    },
-  ],
-};
-
-const SAMPLE_USERS = [
-  {
-    id: 10001, // ID mẫu
-    status: "active",
-    fullName: "Giáo Viên (Khách Hàng)",
-    username: "khachhang1",
-    password: "123456",
-    email: "teacher@gmail.com",
-    phone: "0987654321",
-    address: "123 Đường ABC, Q1, TPHCM",
-    createdAt: new Date().toISOString(),
-  },
-];
-
-if (!localStorage.getItem("bs_data"))
-  localStorage.setItem("bs_data", JSON.stringify(SAMPLE || bs_data));
+// Giữ DEMO cart local trên trình duyệt, nhưng không dùng localStorage làm database người dùng/sản phẩm nữa
 if (!localStorage.getItem("bs_cart"))
   localStorage.setItem("bs_cart", JSON.stringify([]));
-if (!localStorage.getItem("bs_orders"))
-  localStorage.setItem("bs_orders", JSON.stringify([]));
-if (!localStorage.getItem("bs_users"))
-  localStorage.setItem("bs_users", JSON.stringify(SAMPLE_USERS));
 
 
 
-let bs_data;
+// ==================== API HELPERS (BACKEND) ====================
 
-if (localStorage.getItem("bs_data")) {
-  // ✅ ĐỌC DỮ LIỆU THẬT TỪ LOCALSTORAGE
-  bs_data = JSON.parse(localStorage.getItem("bs_data"));
-} else {
-  // ❌ CHỈ DÙNG SAMPLE LẦN ĐẦU KHI CHƯA CÓ DỮ LIỆU
-  bs_data = SAMPLE;
-  localStorage.setItem("bs_data", JSON.stringify(bs_data));
+async function apiFetchJson(url, options = {}) {
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    ...options,
+  });
+
+  const data = await res.json().catch(() => null);
+
+  if (!res.ok) {
+    const msg = data && data.error ? data.error : "Lỗi gọi API";
+    throw new Error(msg);
+  }
+  return data;
 }
 
-// ✅ KHÔNG CẦN DÒNG NÀY NỮA VÌ getVisibleProducts() ĐÃ LỌC
-// const allProducts = bs_data.products.filter(p => p.status === "active");
+// Lấy dữ liệu sản phẩm từ server (MySQL)
+async function fetchDataFromServer() {
+  try {
+    const data = await apiFetchJson("api/products.php", { method: "GET" });
+    return data; // { products: [...] }
+  } catch (err) {
+    console.error("Lỗi gọi API products:", err);
+    // Không fallback demo nữa, để lỗi rõ ràng
+    return { products: [] };
+  }
+}
 
-// =================== SAU KHI CÓ DỮ LIỆU ===================
-// Lọc ra những sản phẩm đang bán (active)
-const allProducts = bs_data.products.filter(p => p.status === "active");
+// Đăng nhập qua API
+async function loginViaApi(username, password) {
+  return apiFetchJson("api/login.php", {
+    method: "POST",
+    body: JSON.stringify({ username, password }),
+  });
+}
+
+// Đăng ký qua API
+async function registerViaApi(userPayload) {
+  return apiFetchJson("api/register.php", {
+    method: "POST",
+    body: JSON.stringify(userPayload),
+  });
+}
+
+// Thanh toán / tạo đơn hàng
+async function checkoutViaApi(userId, items) {
+  return apiFetchJson("api/checkout.php", {
+    method: "POST",
+    body: JSON.stringify({ userId, items }),
+  });
+}
+
+
+// Dữ liệu sản phẩm lấy từ server (MySQL) thông qua API
+let bs_data = { products: [] };
 
 function getVisibleProducts() {
   // ✅ ĐỌC TRỰC TIẾP TỪ LOCALSTORAGE
@@ -680,7 +184,7 @@ function loadCategoriesAndPopulateMenu() {
     if (Array.isArray(cat.subcategories)) {
       cat.subcategories.forEach((sub) => {
         subMenuHTML += `
-                    <li><a href="category.html?category=${encodeURIComponent(
+                    <li><a href="category.php?category=${encodeURIComponent(
                       cat.name
                     )}&subcategory=${encodeURIComponent(sub)}" 
                         data-category="${
@@ -692,7 +196,7 @@ function loadCategoriesAndPopulateMenu() {
 
     menuHTML += `
             <li class="dropdown">
-                <a href="category.html?category=${encodeURIComponent(
+                <a href="category.php?category=${encodeURIComponent(
                   cat.name
                 )}" data-category="${cat.name}">${cat.name} ▸</a>
                 <ul class="dropdown-content">
@@ -709,8 +213,9 @@ function loadCategoriesAndPopulateMenu() {
 }
 // ==================== KẾT THÚC BỔ SUNG ====================
 
+// getData giờ chỉ là helper đọc từ biến bs_data đã sync từ server
 function getData() {
-  return JSON.parse(localStorage.getItem("bs_data"));
+  return bs_data || { products: [] };
 }
 function getCart() {
   return JSON.parse(localStorage.getItem("bs_cart"));
@@ -752,23 +257,21 @@ function getActiveCategoryNames() {
  * Lấy danh sách sản phẩm (đã lọc) MÀ USER ĐƯỢC PHÉP XEM
  */
 function getVisibleProducts() {
-    let allProducts = getData().products; // getData() gốc trả về TẤT CẢ
+  // Lấy dữ liệu mới nhất từ bs_data (đã sync với server)
+  let allProducts = (bs_data && bs_data.products) || [];
 
-    // 1. Lọc các sản phẩm bị DỪNG BÁN (status = 'inactive')
-    allProducts = allProducts.filter((p) => p.status !== "inactive");
+  // 1. Lọc các sản phẩm bị DỪNG BÁN (status = 'inactive')
+  allProducts = allProducts.filter((p) => p.status !== "inactive");
 
-    // BỔ SUNG LOGIC: ẨN SẢN PHẨM KHI HẾT HÀNG (qty <= 0)
-    allProducts = allProducts.filter((p) => p.qty > 0); //
+  // 2. Ẩn sản phẩm hết hàng
+  allProducts = allProducts.filter((p) => p.qty > 0);
 
-    // 2. Lọc theo category 'active' (Yêu cầu mới của bạn)
-    const activeCategoryNames = getActiveCategoryNames();
-
+  // 3. Lọc theo category 'active' (từ cấu hình admin/local)
+  const activeCategoryNames = getActiveCategoryNames();
   if (activeCategoryNames === null) {
-    // Nếu có lỗi đọc category hoặc chưa có, không lọc, trả về ds đã lọc status
     return allProducts;
   }
 
-  // Chỉ giữ lại sản phẩm nào có 'product.category' nằm trong ds active
   return allProducts.filter((product) =>
     activeCategoryNames.includes(product.category)
   );
@@ -789,7 +292,7 @@ function updateCartCount() {
   if (span) {
     span.textContent = count;
   }
-  // Không cần logic tạo mới vì element đã có sẵn trong HTML (từ file cart.html)
+  // Không cần logic tạo mới vì element đã có sẵn trong HTML (từ file cart.php)
 }
 //-----------------------------------------------------------------------------------------------------------------
 let currentPage = 1;
@@ -817,7 +320,7 @@ function renderProductList(page = 1) {
         <p class="product-author">Tác giả: ${it.author || "Đang cập nhật"}</p>
         <div class="price">${(it.price || 0).toLocaleString("vi-VN")}₫</div>
         <div class="button-row">
-          <a class="btn btn-small" href="product-detail.html?id=${
+          <a class="btn btn-small" href="user/product-detail.php?id=${
             it.id
           }">Xem</a>
           <button class="btn btn-cart" onclick="addToCart(${
@@ -899,46 +402,33 @@ function doSearch() {
     alert("Vui lòng nhập từ khóa tìm kiếm");
     return;
   }
-  window.location.href = "search-results.html?q=" + encodeURIComponent(q);
-}
-
-function renderSearchResults() {
-  // SỬA: Lấy wrap bằng ID mới "product-list"
+  // Không chuyển trang nữa, lọc trực tiếp trên danh sách hiện tại
   const wrap = document.getElementById("product-list");
   if (!wrap) return;
 
-  const q = (new URLSearchParams(location.search).get("q") || "").trim();
-  if (!q) {
-    wrap.innerHTML = '<p class="no-results">Không có từ khóa tìm kiếm</p>';
-    return;
-  }
-
-  // Tách từ khóa thành mảng và tìm kiếm (AND logic)
   const keywords = q
     .toLowerCase()
     .split(/\s+/)
     .filter((k) => k);
 
-  // Lấy danh sách kết quả
   const res = getVisibleProducts().filter((p) =>
     keywords.every((k) => p.name.toLowerCase().includes(k))
   );
 
-  // SỬA: Thay vì render HTML, gán kết quả vào currentList và gọi phân trang
   if (res.length > 0) {
-    // Gán kết quả tìm kiếm vào danh sách chờ phân trang
-    currentList = res; 
-    
-    // Gọi hàm render trang đầu tiên (nó sẽ tự gọi renderPagination)
-    renderProductList(1); 
+    currentList = res;
+    renderProductList(1);
   } else {
-    // Nếu không có kết quả, hiển thị thông báo
     wrap.innerHTML = `<p class="no-results">Không tìm thấy sản phẩm nào với từ khóa "<strong>${q}</strong>"</p>`;
-    
-    // Cũng xóa luôn pagination nếu không có kết quả
     const pag = document.getElementById("pagination");
     if (pag) pag.innerHTML = "";
   }
+}
+
+function renderSearchResults() {
+  // Hàm này giờ không còn cần thiết cho tìm kiếm trang riêng,
+  // vì doSearch() đã xử lý lọc trực tiếp mà không reload trang.
+  return;
 }
 
 // SỬA: Cập nhật hàm renderProductDetail() trong main.js
@@ -1078,7 +568,7 @@ function addToCart(id, qty = 1) {
 
   alert("✅ Đã thêm sản phẩm vào giỏ hàng thành công!");
 
-  // Nếu bạn đang ở trang giỏ hàng (cart.html), renderCart sẽ cập nhật lại danh sách
+  // Nếu bạn đang ở trang giỏ hàng (cart.php), renderCart sẽ cập nhật lại danh sách
   if (typeof renderCart === "function") renderCart();
 }
 // KẾT THÚC PHẦN CHỈNH SỬA LOGIC GIỎ HÀNG
@@ -1127,15 +617,15 @@ function renderMenu() {
   const user = JSON.parse(localStorage.getItem("bs_user"));
   menu.innerHTML = "";
 
-  menu.innerHTML += `<li><a href="index.html">Trang chủ</a></li>`;
-  menu.innerHTML += `<li><a href="cart.html">Giỏ hàng</a></li>`;
+  menu.innerHTML += `<li><a href="index.php">Trang chủ</a></li>`;
+  menu.innerHTML += `<li><a href="cart.php">Giỏ hàng</a></li>`;
 
   if (user) {
-    menu.innerHTML += `<li><a href="profile.html">Thông tin</a></li>`;
+    menu.innerHTML += `<li><a href="profile.php">Thông tin</a></li>`;
     menu.innerHTML += `<li><a href="#" onclick="logout()">Đăng xuất</a></li>`;
   } else {
-    menu.innerHTML += `<li><a href="register.html">Đăng ký</a></li>`;
-    menu.innerHTML += `<li><a href="login.html">Đăng nhập</a></li>`;
+    menu.innerHTML += `<li><a href="register.php">Đăng ký</a></li>`;
+    menu.innerHTML += `<li><a href="login.php">Đăng nhập</a></li>`;
   }
 }
 
@@ -1171,10 +661,10 @@ function findProductById(id) {
 } 
 
 function goBack() {
-  if (document.referrer && document.referrer.includes("category.html")) {
+  if (document.referrer && (document.referrer.includes("category") || document.referrer.includes("index"))) {
     window.history.back();
   } else {
-    window.location.href = "category.html";
+    window.location.href = "index.php";
   }
 }
 
@@ -1186,7 +676,7 @@ function showError() {
     <div class="error-container">
       <h2>❌ Không tìm thấy sản phẩm</h2>
       <p>Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
-      <a href="index.html">← Quay về trang chủ</a>
+      <a href="index.php">← Quay về trang chủ</a>
     </div>
   `;
 }
@@ -1202,9 +692,9 @@ function renderProductDetailPage(product) {
     </button>
     
     <div class="breadcrumb">
-      <a href="index.html">Literary Haven</a>
+      <a href="index.php">Literary Haven</a>
       <span>›</span>
-      <a href="category.html">${product.category}</a>
+      <a href="category.php">${product.category}</a>
       <span>›</span>
       <span style="color: #2c3e50;">${product.subcategory}</span>
     </div>
@@ -1440,13 +930,15 @@ function buyNow(productId) {
   saveCart(cart);
 
   // Redirect to cart page
-  window.location.href = "cart.html";
+  window.location.href = "cart.php";
 }
 // KẾT THÚC PHẦN CHỈNH SỬA LOGIC CHI TIẾT SẢN PHẨM
 
 function initProductDetail() {
   const mainContent = document.getElementById("mainContent");
   if (!mainContent) return;
+  // Trang chi tiết sản phẩm đã render bằng PHP (user/product-detail.php)
+  if (mainContent.getAttribute("data-rendered-by") === "php") return;
 
   const productId = getProductIdFromURL();
 
@@ -1473,14 +965,16 @@ function initProductDetail() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  let storedData = JSON.parse(localStorage.getItem("bs_data"));
- // Chỉ tạo dữ liệu SAMPLE nếu CHƯA CÓ
-  if (!storedData) {
-       localStorage.setItem("bs_data", JSON.stringify(SAMPLE));
-       console.log("Khởi tạo bs_data lần đầu.");
+document.addEventListener("DOMContentLoaded", async function () {
+  // 1. Lấy dữ liệu sản phẩm từ server (MySQL)
+  bs_data = await fetchDataFromServer();
+
+  // 2. Render danh sách sản phẩm chỉ khi chưa được PHP render (vd: user/index.php đã render sẵn)
+  const productListEl = document.getElementById("product-list");
+  if (productListEl && productListEl.getAttribute("data-rendered-by") !== "php") {
+    renderProductList(1);
   }
-  renderProductList(1);
+
   updateCartCount();
   renderSearchResults();
   renderProductDetail();
@@ -1513,16 +1007,16 @@ document.addEventListener("DOMContentLoaded", function () {
       const category = link.dataset.category;
       const subcategory = link.dataset.subcategory;
 
-      // Kiểm tra xem có đang ở trang category.html không
+      // Kiểm tra xem có đang ở trang category.php không
       const isOnCategoryPage =
-        window.location.pathname.includes("category.html");
+        window.location.pathname.includes("category.php");
 
       // Nếu KHÔNG ở trang category, cho phép link href hoạt động bình thường
       if (!isOnCategoryPage) {
         return; // Không chặn, để chuyển trang
       }
 
-      // Nếu đang ở trang category.html, xử lý filtering tại chỗ
+      // Nếu đang ở trang category.php, xử lý filtering tại chỗ
       e.preventDefault();
 
       const allBooks = getData().products;
@@ -1569,7 +1063,7 @@ function renderAuth() {
     btnGreet.className = "btn";
     btnGreet.textContent = "Xin chào, " + userObj.username;
     btnGreet.onclick = function () {
-      window.location.href = "profile.html";
+      window.location.href = "profile.php";
     };
     const btnLogout = document.createElement("button");
     btnLogout.className = "btn ghost";
@@ -1589,13 +1083,13 @@ function renderAuth() {
     btnLogin.className = "btn";
     btnLogin.textContent = "Đăng nhập";
     btnLogin.onclick = function () {
-      window.location.href = "login.html";
+      window.location.href = "login.php";
     };
     const btnReg = document.createElement("button");
     btnReg.className = "btn ghost";
     btnReg.textContent = "Đăng ký";
     btnReg.onclick = function () {
-      window.location.href = "register.html";
+      window.location.href = "register.php";
     };
     authArea.appendChild(btnLogin);
     authArea.appendChild(btnReg);
@@ -1618,7 +1112,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (cbtn)
     cbtn.addEventListener("click", function (e) {
       e.preventDefault();
-      window.location.href = "cart.html";
+      window.location.href = "cart.php";
     });
 });
 
@@ -1772,42 +1266,42 @@ function handleLogin(e) {
 
   if (hasError) return;
 
-  const users = JSON.parse(localStorage.getItem("bs_users") || "[]");
-  const user = users.find((u) => u.username === username);
+  // Đăng nhập qua API thay vì localStorage
+  loginViaApi(username, password)
+    .then((resp) => {
+      const user = resp.user;
+      if (!user) {
+        throw new Error("Không nhận được thông tin user từ server");
+      }
 
-  if (!user) {
-    document.getElementById("error-login-username").textContent =
-      "Tài khoản không tồn tại";
-    return;
-  }
+      localStorage.setItem(
+        "bs_user",
+        JSON.stringify({
+          id: user.id,
+          status: user.status,
+          username: user.username,
+          fullName: user.fullName,
+          email: user.email,
+          phone: user.phone,
+          address: user.address,
+        })
+      );
 
-  if (user.password !== password) {
-    document.getElementById("error-login-password").textContent =
-      "Mật khẩu không chính xác";
-    return;
-  }
-
-  if (user.status === "locked") {
-    alert(" Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.");
-    return;
-  }
-
-  localStorage.setItem(
-    "bs_user",
-    JSON.stringify({
-      username: user.username,
-      fullName: user.fullName,
-      email: user.email,
-      phone: user.phone,
-      address: user.address,
-      password: user.password,
+      closeLoginModal();
+      alert("Đăng nhập thành công!");
+      updateAuthUI();
+      location.reload();
     })
-  );
-
-  closeLoginModal();
-  alert("Đăng nhập thành công!");
-  updateAuthUI();
-  location.reload();
+    .catch((err) => {
+      const msg = err.message || "Đăng nhập thất bại";
+      if (msg.includes("không tồn tại")) {
+        document.getElementById("error-login-username").textContent = msg;
+      } else if (msg.includes("Mật khẩu")) {
+        document.getElementById("error-login-password").textContent = msg;
+      } else {
+        alert(msg);
+      }
+    });
 }
 
 // Xử lý đăng ký
@@ -1884,31 +1378,28 @@ function handleRegister(e) {
 
   if (hasError) return;
 
-  const existingUsers = JSON.parse(localStorage.getItem("bs_users") || "[]");
-  if (existingUsers.some((u) => u.username === username)) {
-    document.getElementById("error-username").textContent =
-      "Tài khoản đã tồn tại";
-    return;
-  }
-
-  const newUser = {
-    id: Date.now(),
-    status: "active",
+  // Gửi dữ liệu đăng ký lên server
+  registerViaApi({
     fullName,
     username,
     password,
     email,
     phone,
     address,
-    createdAt: new Date().toISOString(),
-  };
-
-  existingUsers.push(newUser);
-  localStorage.setItem("bs_users", JSON.stringify(existingUsers));
-
-  closeRegisterModal();
-  alert("Đăng ký thành công! Vui lòng đăng nhập.");
-  setTimeout(() => openLoginModal(), 300);
+  })
+    .then(() => {
+      closeRegisterModal();
+      alert("Đăng ký thành công! Vui lòng đăng nhập.");
+      setTimeout(() => openLoginModal(), 300);
+    })
+    .catch((err) => {
+      const msg = err.message || "Đăng ký thất bại";
+      if (msg.includes("Tài khoản đã tồn tại")) {
+        document.getElementById("error-username").textContent = msg;
+      } else {
+        alert(msg);
+      }
+    });
 }
 
 // ==========================================================
@@ -2008,21 +1499,21 @@ function viewProfile(e) {
 function viewOrderHistory(e) {
   if (e) e.preventDefault();
   // alert('Chức năng đang phát triển: Lịch sử mua hàng'); // Bỏ dòng này
-  window.location.href = "purchase-history.html"; // Bỏ // và sửa tên file
+  window.location.href = "purchase-history.php"; // Bỏ // và sửa tên file
 }
 //==================================================================================================================
 // Sửa thông tin cá nhân
 function editProfile(e) {
   if (e) e.preventDefault();
   // Chuyển hướng đến trang sửa thông tin cá nhân
-  window.location.href = "update-profile.html";
+  window.location.href = "update-profile.php";
 }
 //==================================================================================================================
 // Đổi mật khẩu
 function changePassword(e) {
   if (e) e.preventDefault();
   // Chuyển hướng đến trang đổi mật khẩu
-  window.location.href = "change-password.html";
+  window.location.href = "change-password.php";
 }
 //==================================================================================================================
 
@@ -2140,7 +1631,7 @@ function handleTopSearch() {
     return;
   }
 
-  window.location.href = "search-results.html?q=" + encodeURIComponent(query);
+  window.location.href = "search-results.php?q=" + encodeURIComponent(query);
 }
 
 // Giữ từ khóa tìm kiếm trong ô input
@@ -2173,238 +1664,4 @@ document.addEventListener("DOMContentLoaded", function () {
     loadSearchQuery();
   }
 });
-// THÊM MỚI: Hàm xử lý trừ số lượng tồn kho sau khi thanh toán thành công
-function updateProductStock(selectedItems) {
-  if (!selectedItems || selectedItems.length === 0) return;
-
-  // Lấy toàn bộ dữ liệu từ localStorage
-  let data = getData(); // Giả định getData() và saveData() có sẵn trong main.js
-  let products = data.products;
-  let hasUpdated = false;
-
-  // Lặp qua các sản phẩm đã mua
-  selectedItems.forEach((cartItem) => {
-    // Tìm sản phẩm trong danh sách toàn bộ sản phẩm
-    const productIndex = products.findIndex((p) => p.id === cartItem.id);
-
-    if (productIndex > -1) {
-      const purchasedQty = cartItem.qty;
-      const currentStock = products[productIndex].qty;
-
-      // Trừ số lượng tồn kho
-      products[productIndex].qty = currentStock - purchasedQty;
-
-      // Đảm bảo số lượng không âm
-      if (products[productIndex].qty < 0) {
-        products[productIndex].qty = 0;
-      }
-      hasUpdated = true;
-    }
-    selectedItems.forEach((cartItem) => {
-      const productIndex = products.findIndex((p) => p.id === cartItem.id);
-
-      if (productIndex > -1) {
-        const purchasedQty = cartItem.qty;
-        const currentStock = products[productIndex].qty || 0;
-
-        // Trừ số lượng tồn kho
-        products[productIndex].qty = currentStock - purchasedQty;
-
-        // --- BỔ SUNG QUAN TRỌNG: GHI NHẬN THỜI GIAN CẬP NHẬT CUỐI CÙNG ---
-        products[productIndex].lastStockUpdate = new Date().toISOString();
-        // -----------------------------------------------------------------
-
-        // Đảm bảo số lượng không âm
-        if (products[productIndex].qty < 0) {
-          products[productIndex].qty = 0;
-        }
-        // ...
-      }
-    });
-  });
-
-  if (hasUpdated) {
-    // Lưu dữ liệu đã cập nhật trở lại localStorage
-    saveData(data); // Giả định saveData(data) có sẵn trong main.js
-    console.log("Stock updated successfully.");
-  }
-}
-// Vị trí: Đặt hàm này ở cuối file main.js hoặc gần các hàm quản lý data khác.
-// THÊM MỚI: Các hàm tiện ích để quản lý dữ liệu gốc
-function getData() {
-  // Lấy dữ liệu từ localStorage (giả định products được lưu trong bs_data)
-  const dataString = localStorage.getItem("bs_data");
-  return JSON.parse(dataString || JSON.stringify(SAMPLE)); // SAMPLE là dữ liệu mẫu ban đầu
-}
-
-function saveData(data) {
-  // Lưu dữ liệu đã thay đổi vào localStorage
-  localStorage.setItem("bs_data", JSON.stringify(data));
-}
-
-// THÊM MỚI: Hàm chính để cập nhật tồn kho
-function updateProductStock(selectedItems) {
-  if (!selectedItems || selectedItems.length === 0) return;
-
-  let data = getData();
-  let products = data.products;
-  let hasUpdated = false;
-
-  selectedItems.forEach((cartItem) => {
-    const productIndex = products.findIndex((p) => p.id === cartItem.id);
-
-    if (productIndex > -1) {
-      const purchasedQty = cartItem.qty;
-      const currentStock = products[productIndex].qty || 0; // Đảm bảo có giá trị mặc định
-
-      // Trừ số lượng tồn kho
-      products[productIndex].qty = currentStock - purchasedQty;
-
-      // Đảm bảo số lượng không âm
-      if (products[productIndex].qty < 0) {
-        products[productIndex].qty = 0;
-      }
-      hasUpdated = true;
-    }
-  });
-
-  if (hasUpdated) {
-    saveData(data);
-    console.log("Stock updated successfully.");
-  }
-}
-// =============================================================
-// PHẦN ĐẦU: Xử lý Đăng nhập/Đăng xuất, UI, SAMPLE DATA...
-// (Giữ nguyên các đoạn code hiện có của bạn)
-// =============================================================
-
-// ... (Các hàm và biến hiện có của main.js, ví dụ: updateProductStock, getData, saveData, SAMPLE) ...
-
-// Vị trí: Đặt hàm này ở cuối file main.js hoặc gần các hàm quản lý data khác.
-// THÊM MỚI: Các hàm tiện ích để quản lý dữ liệu gốc
-function getData() {
-  // Lấy dữ liệu từ localStorage (giả định products được lưu trong bs_data)
-  const dataString = localStorage.getItem("bs_data");
-  // SAMPLE là dữ liệu mẫu ban đầu, đảm bảo nó được định nghĩa ở đâu đó trong main.js
-  return JSON.parse(dataString || JSON.stringify(SAMPLE)); 
-}
-
-function saveData(data) {
-  // Lưu dữ liệu đã thay đổi vào localStorage
-  localStorage.setItem("bs_data", JSON.stringify(data));
-}
-
-// THÊM MỚI: Hàm chính để cập nhật tồn kho
-function updateProductStock(selectedItems) {
-  if (!selectedItems || selectedItems.length === 0) return;
-
-  let data = getData();
-  let products = data.products;
-  let hasUpdated = false;
-
-  selectedItems.forEach((cartItem) => {
-    const productIndex = products.findIndex((p) => p.id === cartItem.id);
-
-    if (productIndex > -1) {
-      const purchasedQty = cartItem.qty;
-      const currentStock = products[productIndex].qty || 0; // Đảm bảo có giá trị mặc định
-
-      // Trừ số lượng tồn kho
-      products[productIndex].qty = currentStock - purchasedQty;
-      hasUpdated = true;
-    }
-  });
-
-  if (hasUpdated) {
-    saveData(data); // Lưu lại toàn bộ data sau khi cập nhật stock
-    // Lưu ý: Cần đảm bảo hàm saveData(data) có sẵn trong main.js
-    console.log("Stock updated successfully.");
-  }
-}
-
-// =============================================================
-// PHẦN BỔ SUNG: QUẢN LÝ SẢN PHẨM (CRUD) cho products.html
-// =============================================================
-
-/**
- * Lấy toàn bộ danh sách sản phẩm.
- */
-function getAllProducts() {
-    return getData().products;
-}
-
-/**
- * Tạo ID mới và thêm một sản phẩm mới vào danh sách.
- * @param {object} newProduct - Đối tượng sản phẩm mới.
- */
-function addProduct(newProduct) {
-    let data = getData();
-    let products = data.products;
-    
-    // 1. Tự động gán ID mới (lớn hơn ID hiện tại lớn nhất)
-    const maxId = products.reduce((max, p) => (p.id > max ? p.id : max), 0);
-    newProduct.id = maxId + 1;
-    
-    // 2. Thiết lập trạng thái mặc định và giá trị mặc định cho qty nếu thiếu
-    if (!newProduct.status) {
-        newProduct.status = 'active'; 
-    }
-    if (typeof newProduct.qty === 'undefined' || newProduct.qty === null) {
-        newProduct.qty = 100; // Mặc định số lượng 100
-    }
-    
-    // 3. Thêm sản phẩm vào mảng
-    products.push(newProduct);
-    
-    // 4. Lưu lại dữ liệu vào localStorage
-    saveData(data);
-    
-    console.log(`✅ Sản phẩm mới ID:${newProduct.id} đã được thêm.`);
-    return newProduct;
-}
-
-/**
- * Cập nhật thông tin của một sản phẩm hiện có.
- * @param {object} updatedProduct - Đối tượng sản phẩm đã chỉnh sửa (PHẢI có thuộc tính 'id').
- */
-function updateProduct(updatedProduct) {
-    let data = getData();
-    let products = data.products;
-    
-    const index = products.findIndex(p => p.id === updatedProduct.id);
-    
-    if (index > -1) {
-        // Cập nhật thông tin sản phẩm
-        products[index] = { ...products[index], ...updatedProduct };
-        
-        // Lưu lại dữ liệu
-        saveData(data);
-        console.log(`✅ Sản phẩm ID:${updatedProduct.id} đã được cập nhật.`);
-        return true;
-    }
-    
-    console.error(`🚫 Không tìm thấy sản phẩm ID:${updatedProduct.id} để cập nhật.`);
-    return false;
-}
-
-/**
- * Thay đổi trạng thái sản phẩm (ví dụ: 'active' hoặc 'inactive').
- * @param {number} productId - ID của sản phẩm.
- * @param {string} status - Trạng thái mới.
- */
-function setProductStatus(productId, status) {
-    let data = getData();
-    let products = data.products;
-    
-    const product = products.find(p => p.id === productId);
-    
-    if (product) {
-        product.status = status;
-        saveData(data);
-        console.log(`✅ Trạng thái sản phẩm ID:${productId} đã đổi thành '${status}'.`);
-        return true;
-    }
-    
-    console.error(`🚫 Không tìm thấy sản phẩm ID:${productId} để thay đổi trạng thái.`);
-    return false;
-}
+// Các hàm updateProductStock / CRUD sản phẩm cũ dùng localStorage đã bị loại bỏ
