@@ -771,47 +771,7 @@
     </div>
   </div>
 
-  <div id="profileModal" class="auth-modal">
-    <div class="auth-modal-overlay" onclick="closeProfileModal()"></div>
-    <div class="auth-modal-content">
-      <button class="auth-modal-close" onclick="closeProfileModal()">
-        &times;
-      </button>
-
-      <div class="auth-modal-header">
-        <div class="profile-avatar-small">👤</div>
-        <h2 id="profile-fullname">Xin chào!</h2>
-        <p>Thông tin tài khoản của bạn</p>
-      </div>
-
-      <div class="profile-info-modal">
-        <div class="info-row">
-          <span class="info-label">👤 Họ và tên:</span>
-          <span class="info-value" id="profile-name-value"></span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">🔑 Tài khoản:</span>
-          <span class="info-value" id="profile-username-value"></span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">📧 Email:</span>
-          <span class="info-value" id="profile-email-value"></span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">📱 Số điện thoại:</span>
-          <span class="info-value" id="profile-phone-value"></span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">📍 Địa chỉ:</span>
-          <span class="info-value" id="profile-address-value"></span>
-        </div>
-      </div>
-
-      <button class="btn-logout-modal" onclick="handleLogoutModal()">
-        Đăng xuất
-      </button>
-    </div>
-  </div>
+  <?php include '../includes/auth_modals.php'; ?>
 
   <script src="../assets/js/main.js"></script>
   <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
