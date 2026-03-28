@@ -773,7 +773,7 @@
 
   <?php include '../includes/auth_modals.php'; ?>
 
-  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/main.js?v=2"></script>
   <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 
   <a href="#" class="back-to-top" title="Lên đầu trang">

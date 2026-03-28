@@ -1,23 +1,40 @@
-//  Kiểm tra tài khoản bị khóa
-document.addEventListener("DOMContentLoaded", function () {
+// Kiểm tra trạng thái tài khoản từ server mỗi khi trang load
+document.addEventListener("DOMContentLoaded", async function () {
   const currentUser = JSON.parse(localStorage.getItem("bs_user"));
-  const allUsers = JSON.parse(localStorage.getItem("bs_users")) || [];
+  if (!currentUser || !currentUser.id) return;
 
-  if (currentUser) {
-    const found = allUsers.find((u) => u.username === currentUser.username);
+  try {
+    const data = await apiFetchJson(resolveApiUrl("check-status.php"), {
+      method: "POST",
+      body: JSON.stringify({ id: currentUser.id }),
+    });
 
-    // Nếu tài khoản bị khóa -> đăng xuất
-    if (found && found.status === "locked") {
+    const user = data.user;
+    if (!user) return;
+
+    // Tài khoản bị khóa -> đăng xuất
+    if (user.status === "locked") {
       alert("🚫 Tài khoản của bạn đã bị khóa. Bạn sẽ được đăng xuất.");
       localStorage.removeItem("bs_user");
+      localStorage.setItem("bs_cart", JSON.stringify([]));
       updateAuthUI();
-      renderMenu();
-      closeLoginModal?.();
+      return;
     }
-    // Nếu tài khoản được mở khóa -> đồng bộ lại thông tin mới
-    else if (found) {
-      localStorage.setItem("bs_user", JSON.stringify(found));
-    }
+
+    // Đồng bộ lại thông tin mới nhất từ server vào localStorage
+    localStorage.setItem("bs_user", JSON.stringify({
+      id:       user.id,
+      status:   user.status,
+      username: user.username,
+      fullName: user.fullName,
+      email:    user.email,
+      phone:    user.phone,
+      address:  user.address,
+    }));
+
+  } catch (err) {
+    // Không làm gì nếu API lỗi, tránh đăng xuất nhầm
+    console.warn("Không thể kiểm tra trạng thái tài khoản:", err.message);
   }
 });
 
@@ -47,21 +64,50 @@ async function apiFetchJson(url, options = {}) {
   return data;
 }
 
+const MAIN_SCRIPT_URL = document.currentScript && document.currentScript.src ? document.currentScript.src : null;
+
+function resolveApiUrl(filename) {
+  let apiRoot = null;
+
+  if (MAIN_SCRIPT_URL) {
+    apiRoot = MAIN_SCRIPT_URL.replace(/\/assets\/js\/main\.js(?:\?.*)?$/, "");
+  }
+
+  if (!apiRoot) {
+    const pathname = window.location.pathname;
+    let root = pathname;
+
+    if (pathname.match(/\/(user|admin|api)\//)) {
+      root = pathname.replace(/\/(user|admin|api)\/.*$/, "");
+    } else {
+      root = pathname.replace(/\/[^/]*$/, "");
+    }
+
+    apiRoot = `${window.location.origin}${root}`;
+  }
+
+  let apiUrl = `${apiRoot}/api/${filename}`;
+  apiUrl = apiUrl.replace(/([^:]\/)\/+/g, "$1");
+  console.debug(`resolveApiUrl(${filename}) ->`, apiUrl);
+  return apiUrl;
+}
+
 // Lấy dữ liệu sản phẩm từ server (MySQL)
 async function fetchDataFromServer() {
+  const apiUrl = resolveApiUrl("products.php");
+
   try {
-    const data = await apiFetchJson("api/products.php", { method: "GET" });
+    const data = await apiFetchJson(apiUrl, { method: "GET" });
     return data; // { products: [...] }
   } catch (err) {
     console.error("Lỗi gọi API products:", err);
-    // Không fallback demo nữa, để lỗi rõ ràng
     return { products: [] };
   }
 }
 
 // Đăng nhập qua API
 async function loginViaApi(username, password) {
-  return apiFetchJson("api/login.php", {
+  return apiFetchJson(resolveApiUrl("login.php"), {
     method: "POST",
     body: JSON.stringify({ username, password }),
   });
@@ -69,7 +115,7 @@ async function loginViaApi(username, password) {
 
 // Đăng ký qua API
 async function registerViaApi(userPayload) {
-  return apiFetchJson("api/register.php", {
+  return apiFetchJson(resolveApiUrl("register.php"), {
     method: "POST",
     body: JSON.stringify(userPayload),
   });
@@ -77,7 +123,7 @@ async function registerViaApi(userPayload) {
 
 // Thanh toán / tạo đơn hàng
 async function checkoutViaApi(userId, items) {
-  return apiFetchJson("api/checkout.php", {
+  return apiFetchJson(resolveApiUrl("checkout.php"), {
     method: "POST",
     body: JSON.stringify({ userId, items }),
   });
@@ -1401,7 +1447,7 @@ function handleRegister(e) {
       }
     });
 }
-
+  
 // ==========================================================
 // ✅ ĐIỂM SỬA LỖI 2: Cập nhật hàm handleLogoutModal()
 function handleLogoutModal() {
