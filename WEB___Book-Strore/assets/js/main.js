@@ -66,14 +66,10 @@ async function apiFetchJson(url, options = {}) {
 
 function resolveApiUrl(filename) {
   const pathname = window.location.pathname;
-  const segments = pathname.split('/').filter(Boolean);
-  const markerIndex = segments.findIndex((seg) => seg === 'user' || seg === 'admin' || seg === 'api');
-  const rootSegments = markerIndex >= 0 ? segments.slice(0, markerIndex) : segments.slice(0, segments.length - 1);
-  const rootPath = '/' + rootSegments.join('/');
-  const apiRoot = `${window.location.origin}${rootPath}`.replace(/([^:]\/)\/+/g, '$1');
-  const apiUrl = `${apiRoot}/api/${filename}`.replace(/([^:]\/)\/+/g, '$1');
-  console.debug('resolveApiUrl', { pathname, rootPath, apiUrl });
-  return apiUrl;
+  if (pathname.includes('/user/') || pathname.includes('/admin/')) {
+    return `../api/${filename}`;
+  }
+  return `api/${filename}`;
 }
 
 // Lấy dữ liệu sản phẩm từ server (MySQL)
