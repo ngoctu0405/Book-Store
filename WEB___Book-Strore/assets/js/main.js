@@ -64,31 +64,15 @@ async function apiFetchJson(url, options = {}) {
   return data;
 }
 
-const MAIN_SCRIPT_URL = document.currentScript && document.currentScript.src ? document.currentScript.src : null;
-
 function resolveApiUrl(filename) {
-  let apiRoot = null;
-
-  if (MAIN_SCRIPT_URL) {
-    apiRoot = MAIN_SCRIPT_URL.replace(/\/assets\/js\/main\.js(?:\?.*)?$/, "");
-  }
-
-  if (!apiRoot) {
-    const pathname = window.location.pathname;
-    let root = pathname;
-
-    if (pathname.match(/\/(user|admin|api)\//)) {
-      root = pathname.replace(/\/(user|admin|api)\/.*$/, "");
-    } else {
-      root = pathname.replace(/\/[^/]*$/, "");
-    }
-
-    apiRoot = `${window.location.origin}${root}`;
-  }
-
-  let apiUrl = `${apiRoot}/api/${filename}`;
-  apiUrl = apiUrl.replace(/([^:]\/)\/+/g, "$1");
-  console.debug(`resolveApiUrl(${filename}) ->`, apiUrl);
+  const pathname = window.location.pathname;
+  const segments = pathname.split('/').filter(Boolean);
+  const markerIndex = segments.findIndex((seg) => seg === 'user' || seg === 'admin' || seg === 'api');
+  const rootSegments = markerIndex >= 0 ? segments.slice(0, markerIndex) : segments.slice(0, segments.length - 1);
+  const rootPath = '/' + rootSegments.join('/');
+  const apiRoot = `${window.location.origin}${rootPath}`.replace(/([^:]\/)\/+/g, '$1');
+  const apiUrl = `${apiRoot}/api/${filename}`.replace(/([^:]\/)\/+/g, '$1');
+  console.debug('resolveApiUrl', { pathname, rootPath, apiUrl });
   return apiUrl;
 }
 
@@ -479,11 +463,14 @@ function renderSearchResults() {
 
 // SỬA: Cập nhật hàm renderProductDetail() trong main.js
 function renderProductDetail() {
+    const mainContent = document.getElementById("mainContent");
+    if (!mainContent) return;
+    if (mainContent.getAttribute("data-rendered-by") === "php") return;
+
     const productId = getProductIdFromURL();
     const product = findProductById(productId);
-    const mainContent = document.getElementById("mainContent");
 
-    if (!product || !mainContent) {
+    if (!product) {
         showError();
         return;
     }
@@ -1050,41 +1037,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   categoryLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
-      const category = link.dataset.category;
-      const subcategory = link.dataset.subcategory;
-
-      // Kiểm tra xem có đang ở trang category.php không
-      const isOnCategoryPage =
-        window.location.pathname.includes("category.php");
-
-      // Nếu KHÔNG ở trang category, cho phép link href hoạt động bình thường
-      if (!isOnCategoryPage) {
-        return; // Không chặn, để chuyển trang
-      }
-
-      // Nếu đang ở trang category.php, xử lý filtering tại chỗ
-      e.preventDefault();
-
-      const allBooks = getData().products;
-
-      // Cập nhật breadcrumb
-      const breadcrumbBtn = document.getElementById("breadcrumb-category");
-      if (breadcrumbBtn) {
-        if (category === "all") {
-          breadcrumbBtn.innerHTML = " Tất cả sách";
-          currentList = allBooks;
-        } else if (subcategory) {
-          breadcrumbBtn.innerHTML = ` Danh mục sách > ${category} > ${subcategory}`;
-          currentList = allBooks.filter(
-            (b) => b.category === category && b.subcategory === subcategory
-          );
-        } else {
-          breadcrumbBtn.innerHTML = ` Danh mục sách > ${category}`;
-          currentList = allBooks.filter((b) => b.category === category);
-        }
-      }
-
-      renderProductList(1);
+      // Luôn cho phép navigate bình thường — PHP sẽ xử lý lọc
+      return;
     });
   });
 });

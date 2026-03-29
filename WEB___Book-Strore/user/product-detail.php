@@ -32,8 +32,8 @@ function formatPricePhp($price)
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo $product ? htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') . ' - Literary Haven' : 'Chi tiết sản phẩm'; ?></title>
   <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css?v=1">
+  <link rel="stylesheet" href="../assets/css/style.css?v=5">
   <style>
     * {
       margin: 0;
@@ -130,8 +130,6 @@ function formatPricePhp($price)
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
-      top: 3.5rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
@@ -208,12 +206,9 @@ function formatPricePhp($price)
     }
 
     .container {
-      position: relative;
-      top: 8rem;
       max-width: 1400px;
       margin: 2rem auto;
       padding: 0 2rem;
-      height: 130rem;
     }
 
     .back-button {
@@ -919,9 +914,11 @@ function formatPricePhp($price)
     <div class="footer-bottom">
       <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
     </div>
-    <?php include '../includes/auth_modals.php'; ?>
+  </footer>
+
+  <?php include '../includes/auth_modals.php'; ?>
+  <script src="../assets/js/main.js?v=2"></script>
+  <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<script src="../assets/js/main.js?v=2"></script>
-<script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 
 </html>
