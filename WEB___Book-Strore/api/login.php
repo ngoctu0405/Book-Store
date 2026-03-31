@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/db.php';
+header('Content-Type: application/json; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -36,10 +37,13 @@ if (!$user) {
     exit;
 }
 
-if ($user['password'] !== $password) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Mật khẩu không chính xác']);
-    exit;
+if (!password_verify($password, $user['password'])) {
+    // Fallback: kiểm tra plain text cho tài khoản cũ chưa hash
+    if ($user['password'] !== $password) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Mật khẩu không chính xác']);
+        exit;
+    }
 }
 
 if ($user['status'] === 'locked') {

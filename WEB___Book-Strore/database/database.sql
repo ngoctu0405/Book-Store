@@ -598,6 +598,23 @@ CREATE TABLE order_items (
   FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
+CREATE TABLE buyer_info (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  userId INT,
+  profileIndex INT,
+  fullName VARCHAR(255),
+  email VARCHAR(255),
+  phone VARCHAR(20),
+  address VARCHAR(255),
+  ward VARCHAR(100),
+  district VARCHAR(100),
+  city VARCHAR(100),
+  note TEXT,
+  createdAt DATETIME,
+  updatedAt DATETIME,
+  FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_profile (userId, profileIndex)
+);
 CREATE TABLE goods_receipt (
   id INT AUTO_INCREMENT PRIMARY KEY,
   createdAt DATETIME,

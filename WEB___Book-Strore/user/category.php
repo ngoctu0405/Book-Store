@@ -303,6 +303,57 @@ $hasFilter = !empty($categoryParam) || !empty($subcategoryParam) || !empty($sear
         min-height: auto;
       }
     }
+
+    /* ===== NÚT XEM CHI TIẾT & THÊM VÀO GIỎ ===== */
+    .product-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .btn-view,
+    .btn-add-cart {
+      flex: 1;
+      padding: 10px 0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    /* Nút Xem chi tiết — nền xanh dương, chữ trắng */
+    .btn-view {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .btn-view:hover {
+      background: #0056b3;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Nút Thêm vào giỏ — màu cam giống icon giỏ hàng, chữ trắng */
+    .btn-add-cart {
+      background: #ff6600;
+      color: #fff;
+    }
+
+    .btn-add-cart:hover {
+      background: #e65c00;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
+    }
   </style>
 </head>
 

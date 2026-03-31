@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/db.php';
+header('Content-Type: application/json; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -37,6 +38,7 @@ if ($res->fetch_assoc()) {
 // Chèn user mới
 $status = 'active';
 $now = date('Y-m-d H:i:s');
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 $stmt = $conn->prepare("
     INSERT INTO users (status, fullName, username, password, email, phone, address, createdAt)
@@ -47,7 +49,7 @@ $stmt->bind_param(
     $status,
     $fullName,
     $username,
-    $password,
+    $hashedPassword,
     $email,
     $phone,
     $address,

@@ -1,3 +1,123 @@
+<?php
+session_start();
+require_once __DIR__ . '/../api/db.php';
+
+function h($value)
+{
+  return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+}
+
+function fmtPrice($value)
+{
+  return number_format((int)$value, 0, ',', '.') . '₫';
+}
+
+function getCartFromSession()
+{
+  if (empty($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
+    return [];
+  }
+
+  $validated = [];
+  foreach ($_SESSION['cart'] as $item) {
+    if (!is_array($item)) {
+      continue;
+    }
+
+    $id = isset($item['id']) ? (int)$item['id'] : 0;
+    $qty = isset($item['qty']) ? (int)$item['qty'] : 0;
+
+    if ($id <= 0 || $qty <= 0) {
+      continue;
+    }
+
+    $validated[] = ['id' => $id, 'qty' => $qty];
+  }
+
+  return $validated;
+}
+
+$cartItems = getCartFromSession();
+$cartProducts = [];
+$cartTotalQty = 0;
+$cartSubtotal = 0;
+
+if (!empty($cartItems)) {
+  $productIds = array_unique(array_column($cartItems, 'id'));
+  $placeholders = implode(',', array_fill(0, count($productIds), '?'));
+  $types = str_repeat('i', count($productIds));
+
+  $stmt = $conn->prepare("SELECT id, name, author, price, image, qty FROM products WHERE id IN ($placeholders)");
+  if ($stmt) {
+    $stmt->bind_param($types, ...$productIds);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $products = [];
+    while ($row = $result->fetch_assoc()) {
+      $products[$row['id']] = $row;
+    }
+
+    foreach ($cartItems as $item) {
+      $productId = $item['id'];
+      if (!isset($products[$productId])) {
+        continue;
+      }
+      $product = $products[$productId];
+      $qty = $item['qty'];
+      $lineTotal = $product['price'] * $qty;
+
+      $cartProducts[] = array_merge($product, [
+        'qty' => $qty,
+        'lineTotal' => $lineTotal,
+      ]);
+      $cartTotalQty += $qty;
+      $cartSubtotal += $lineTotal;
+    }
+  }
+}
+
+$userInfo = [
+  'fullName' => '',
+  'email'    => '',
+  'phone'    => '',
+  'address'  => '',
+];
+$userId = 0;
+
+// Lấy thông tin user từ session nếu có, không thì để JS tự điền từ localStorage
+if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
+  $userId = (int)$_SESSION['user_id'];
+  $stmt = $conn->prepare('SELECT fullName, email, phone, address FROM users WHERE id = ?');
+  if ($stmt) {
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($res && $res->num_rows > 0) {
+      $userInfo = array_merge($userInfo, $res->fetch_assoc());
+    }
+  }
+}
+
+// Lấy 3 mẫu buyer_info từ DB nếu đã đăng nhập
+$buyerProfiles = [1 => null, 2 => null, 3 => null];
+if ($userId > 0) {
+  $stmt = $conn->prepare("
+    SELECT profileIndex, fullName, email, phone, address, ward, district, city, note
+    FROM buyer_info WHERE userId = ? ORDER BY profileIndex ASC
+  ");
+  $stmt->bind_param('i', $userId);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  while ($row = $res->fetch_assoc()) {
+    $buyerProfiles[$row['profileIndex']] = $row;
+  }
+}
+
+$shippingFee = $cartSubtotal === 0 || $cartSubtotal >= 500000 ? 0 : 30000;
+$totalAmount = $cartSubtotal + $shippingFee;
+$hasCartItems = !empty($cartProducts);
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -43,12 +163,17 @@
 
     .cart-layout {
       display: grid;
-      /* CHỈNH SỬA: Độ rộng cột tóm tắt là 500px */
       grid-template-columns: 1fr 500px;
-      /* CHỈNH SỬA: Thêm đơn vị 'rem' */
       gap: 2rem;
       margin-top: 2rem;
     }
+
+    .cart-right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
 
     /* Cart Items Section - Improved */
     .cart-items-section {
@@ -579,6 +704,27 @@
       box-shadow: 0 8px 24px rgba(255, 99, 71, 0.4);
     }
 
+    .btn-edit-info {
+      display: inline-block;
+      width: 100%;
+      padding: 0.95rem 1rem;
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, #4f9da6 0%, #82c09a 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .btn-edit-info:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(79, 157, 166, 0.2);
+    }
+
     @media (max-width: 1024px) {
       .cart-layout {
         grid-template-columns: 1fr;
@@ -695,12 +841,220 @@
         width: auto;
       }
 
+      .buyer-info-card,
       .cart-summary {
+        background: white;
         padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(79, 157, 166, 0.12);
+        border: 1px solid rgba(130, 192, 154, 0.15);
+      }
+
+      .buyer-info-card {
+        margin-bottom: 1.5rem;
+      }
+
+      .buyer-info-card h4,
+      .cart-summary .summary-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
       }
 
       .summary-title {
         font-size: 1.5rem;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+
+      .buyer-profile-tabs {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+
+      .buyer-profile-btn {
+        padding: 0.65rem 1rem;
+        border: 1px solid #d1d5db;
+        background: #f8fafc;
+        border-radius: 999px;
+        color: #334155;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+
+      .buyer-profile-btn.active,
+      .buyer-profile-btn:hover {
+        background: #4f9da6;
+        color: white;
+        border-color: #4f9da6;
+      }
+
+      .buyer-info-section .info-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+        align-items: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .buyer-info-section .info-row:last-child {
+        border-bottom: none;
+      }
+
+      .auth-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background: rgba(0, 0, 0, 0.55);
+        overflow-y: auto;
+      }
+
+      .auth-modal.show {
+        display: flex;
+      }
+
+      .auth-modal-content.buyer-modal-content {
+        display: block;
+        width: min(900px, 100%) !important;
+        max-width: 900px !important;
+        min-height: 520px;
+        max-height: calc(100vh - 3rem);
+        overflow-y: auto;
+        border-radius: 24px;
+        padding: 2rem;
+      }
+
+      .buyer-modal-grid-columns {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+
+      .buyer-modal-save-to {
+        width: 50%;
+        max-width: 360px;
+      }
+
+      .buyer-modal-save-to select {
+        width: 100%;
+      }
+
+      .buyer-modal-column {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .buyer-modal-grid-full {
+        width: 100%;
+      }
+
+      .buyer-modal-action {
+        margin-top: auto;
+      }
+
+      .buyer-modal-column .form-group {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 960px) {
+        .buyer-modal-grid-columns {
+          display: block;
+        }
+      }
+
+      .auth-modal-content.buyer-modal-content .auth-modal-header {
+        margin-bottom: 1.5rem;
+      }
+
+      .auth-modal-content.buyer-modal-content .auth-modal-header p {
+        margin-top: 0.5rem;
+      }
+
+      @media (max-width: 960px) {
+        .auth-modal-content.buyer-modal-content {
+          display: block;
+          width: min(100%, 100%) !important;
+          min-height: auto;
+          max-height: calc(100vh - 3rem);
+        }
+      }
+
+      .auth-modal-content.change-profile-modal {
+        width: min(720px, 100%);
+        max-width: 720px;
+      }
+
+      .profile-card {
+        border: 2px solid #e0e0e0;
+        border-radius: 16px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .profile-card:hover {
+        border-color: #4f9da6;
+        box-shadow: 0 10px 30px rgba(79, 157, 166, 0.12);
+      }
+
+      .profile-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .profile-card-body {
+        display: grid;
+        gap: 0.45rem;
+        color: #4a4a4a;
+        font-size: 0.95rem;
+        line-height: 1.45;
+      }
+
+      .profile-card-body div {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+      }
+
+      .profile-card-body div strong {
+        color: #2c3e50;
+      }
+
+      .buyer-modal-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+
+      .buyer-modal-grid-full {
+        grid-column: 1 / -1;
+      }
+
+      .buyer-modal-grid .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .buyer-modal-grid input,
+      .buyer-modal-grid textarea {
+        width: 100%;
       }
     }
   </style>
@@ -825,8 +1179,317 @@
 
   <main class="container">
     <h2 class="cart-heading">🛒 Giỏ Hàng Của Bạn</h2>
-    <div id="cartContainer"></div>
+
+    <?php if (!$hasCartItems): ?>
+      <div class="empty-cart">
+        <span class="empty-cart-icon">🛍️</span>
+        <h3>Giỏ hàng của bạn đang trống!</h3>
+        <p>Hãy thêm sách vào giỏ hàng để bắt đầu mua sắm.</p>
+        <a href="category.php" class="btn-continue">Tiếp tục mua sắm</a>
+      </div>
+    <?php else: ?>
+      <div class="cart-layout">
+        <div class="cart-items-section">
+          <div class="cart-section-header">
+            <h3 class="cart-section-title">Danh sách sản phẩm (<?= h($cartTotalQty) ?> sản phẩm)</h3>
+          </div>
+          <div class="cart-items-list">
+            <?php foreach ($cartProducts as $item): ?>
+              <div class="cart-item" data-product-id="<?= $item['id'] ?>">
+                <div class="cart-item-image">
+                  <img src="<?= h($item['image']) ?>" alt="<?= h($item['name']) ?>" />
+                </div>
+                <div class="cart-item-details">
+                  <h4 class="cart-item-title"><?= h($item['name']) ?></h4>
+                  <p class="cart-item-author"><i class="bi bi-person"></i> <?= h($item['author']) ?></p>
+                  <p class="cart-item-price"><?= fmtPrice($item['price']) ?> / cuốn</p>
+                </div>
+                <div class="cart-item-actions">
+                  <p class="cart-item-total"><?= fmtPrice($item['lineTotal']) ?></p>
+                  <div class="quantity-controls">
+                    <button class="qty-btn minus-btn" type="button" onclick="changeQuantity(<?= $item['id'] ?>, -1)">-</button>
+                    <span class="qty-display"><?= $item['qty'] ?></span>
+                    <button class="qty-btn plus-btn" type="button" onclick="changeQuantity(<?= $item['id'] ?>, 1)">+</button>
+                  </div>
+                  <button class="btn-remove" type="button" onclick="removeCartItem(<?= $item['id'] ?>)">
+                    <i class="bi bi-trash"></i> Xóa
+                  </button>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        </div>
+
+        <div class="cart-right-panel">
+          <div class="buyer-info-card cart-section">
+            <h4>👤 Thông tin người mua</h4>
+            <div id="buyerInfoDisplay" class="info-grid">
+              <div class="info-row"><strong>Họ tên:</strong> <span id="displayBuyerName"><?= h($buyerProfiles[1]['fullName'] ?? $userInfo['fullName'] ?: 'Chưa nhập') ?></span></div>
+              <div class="info-row"><strong>Email:</strong> <span id="displayBuyerEmail"><?= h($buyerProfiles[1]['email'] ?? $userInfo['email'] ?: 'Chưa nhập') ?></span></div>
+              <div class="info-row"><strong>Số điện thoại:</strong> <span id="displayBuyerPhone"><?= h($buyerProfiles[1]['phone'] ?? $userInfo['phone'] ?: 'Chưa nhập') ?></span></div>
+              <div class="info-row"><strong>Địa chỉ:</strong> <span id="displayBuyerAddress"><?= h($buyerProfiles[1]['address'] ?? $userInfo['address'] ?: 'Chưa nhập') ?></span></div>
+              <div class="info-row"><strong>Ghi chú:</strong> <span id="displayBuyerNote"><?= h($buyerProfiles[1]['note'] ?? 'Không có') ?></span></div>
+            </div>
+            <button class="btn-edit-info" type="button" onclick="openBuyerInfoModal()">➕ Thêm thông tin</button>
+            <button class="btn-edit-info" type="button" onclick="openChangeProfileModal()" style="margin-top:0.5rem;background:linear-gradient(135deg,#82c09a,#4f9da6);">🔄 Thay đổi thông tin</button>
+          </div>
+
+          <div class="cart-summary">
+            <div class="summary-title">💳 Tóm tắt đơn hàng</div>
+            <div class="summary-row temp-total">
+              <span>Tạm tính</span>
+              <span><?= fmtPrice($cartSubtotal) ?></span>
+            </div>
+            <div class="summary-row">
+              <span>Phí vận chuyển</span>
+              <span class="<?= $shippingFee === 0 ? 'text-success' : '' ?>"><?= $shippingFee === 0 ? 'Miễn phí' : fmtPrice($shippingFee) ?></span>
+            </div>
+            <div class="summary-row total">
+              <span>Tổng cộng</span>
+              <span><?= fmtPrice($totalAmount) ?></span>
+            </div>
+            <button class="btn-checkout" type="button" onclick="checkoutCart()"> Thanh Toán (<?= h($cartTotalQty) ?> sản phẩm)</button>
+
+            <form id="buyerForm" style="display: none;">
+              <input type="hidden" id="buyerProfileIndex" value="1">
+              <input type="text" id="buyerName" name="name" value="<?= h($userInfo['fullName'] ?? '') ?>" required>
+              <input type="email" id="buyerEmail" name="email" value="<?= h($userInfo['email'] ?? '') ?>" required>
+              <input type="tel" id="buyerPhone" name="phone" value="<?= h($userInfo['phone'] ?? '') ?>" required>
+              <input type="text" id="buyerAddress" name="address" value="<?= h($userInfo['address'] ?? '') ?>" required>
+              <textarea id="buyerNote" name="note"></textarea>
+            </form>
+          </div>
+        </div>
+      </div>
+    <?php endif; ?>
   </main>
+
+  <script>
+    // Dữ liệu từ PHP truyền xuống JS
+    window.currentUserFromSession = <?= json_encode([
+                                      'id'       => $userId ?: null,
+                                      'fullName' => $userInfo['fullName'] ?? '',
+                                      'email'    => $userInfo['email']    ?? '',
+                                      'phone'    => $userInfo['phone']    ?? '',
+                                      'address'  => $userInfo['address']  ?? '',
+                                    ]) ?>;
+
+    window.buyerProfiles = <?= json_encode($buyerProfiles) ?>;
+    window.currentProfileIndex = 1;
+
+    // Chuyển mẫu thông tin
+    function switchProfile(index) {
+      window.currentProfileIndex = index;
+
+      // Cập nhật tab active
+      document.querySelectorAll('.buyer-profile-btn').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.profile) === index);
+      });
+
+      const profile = window.buyerProfiles[index];
+      const user = window.currentUserFromSession;
+
+      // Mẫu 1 mặc định điền thông tin tài khoản nếu chưa có
+      const defaultName = (index === 1) ? (user.fullName || 'Chưa nhập') : 'Chưa nhập';
+      const defaultEmail = (index === 1) ? (user.email || 'Chưa nhập') : 'Chưa nhập';
+      const defaultPhone = (index === 1) ? (user.phone || 'Chưa nhập') : 'Chưa nhập';
+      const defaultAddress = (index === 1) ? (user.address || 'Chưa nhập') : 'Chưa nhập';
+
+      document.getElementById('displayBuyerName').textContent = profile ? (profile.fullName || defaultName) : defaultName;
+      document.getElementById('displayBuyerEmail').textContent = profile ? (profile.email || defaultEmail) : defaultEmail;
+      document.getElementById('displayBuyerPhone').textContent = profile ? (profile.phone || defaultPhone) : defaultPhone;
+      document.getElementById('displayBuyerAddress').textContent = profile ? (profile.address || defaultAddress) : defaultAddress;
+      document.getElementById('displayBuyerNote').textContent = profile ? (profile.note || 'Không có') : 'Không có';
+    }
+
+    // Mở modal thêm thông tin (lưu vào mẫu hiện tại)
+    function openBuyerInfoModal() {
+      const index = window.currentProfileIndex;
+      const profile = window.buyerProfiles[index];
+      const user = window.currentUserFromSession;
+
+      // Điền sẵn thông tin tài khoản cho mẫu 1, hoặc profile đã lưu
+      document.getElementById('modalBuyerSaveTo').value = index;
+      document.getElementById('modalBuyerName').value = profile ? profile.fullName : (index === 1 ? user.fullName : '');
+      document.getElementById('modalBuyerEmail').value = profile ? profile.email : (index === 1 ? user.email : '');
+      document.getElementById('modalBuyerPhone').value = profile ? profile.phone : (index === 1 ? user.phone : '');
+      document.getElementById('modalBuyerAddress').value = profile ? profile.address : (index === 1 ? user.address : '');
+      document.getElementById('modalBuyerNote').value = profile ? (profile.note || '') : '';
+
+      const modal = document.getElementById('buyerInfoModal');
+      modal.classList.add('show');
+    }
+
+    function closeBuyerInfoModal() {
+      const modal = document.getElementById('buyerInfoModal');
+      modal.classList.remove('show');
+    }
+
+    // Mở modal thay đổi thông tin (chọn mẫu khác)
+    function refreshChangeProfileCards() {
+      for (let i = 1; i <= 3; i++) {
+        const body = document.getElementById('profileCardBody-' + i);
+        const placeholder = document.getElementById('profileCardEmpty-' + i);
+        if (!body) continue;
+
+        const profile = window.buyerProfiles[i];
+        if (profile && Object.values(profile).some(value => value && value.toString().trim() !== '')) {
+          body.innerHTML = `
+            <div><strong>Họ tên:</strong> <span>${escapeHtml(profile.fullName)}</span></div>
+            <div><strong>Email:</strong> <span>${escapeHtml(profile.email)}</span></div>
+            <div><strong>Phone:</strong> <span>${escapeHtml(profile.phone)}</span></div>
+            <div><strong>Địa chỉ:</strong> <span>${escapeHtml(profile.address)}</span></div>
+            <div><strong>Ghi chú:</strong> <span>${escapeHtml(profile.note || 'Không có')}</span></div>
+          `;
+          if (placeholder) placeholder.style.display = 'none';
+        } else {
+          body.innerHTML = '';
+          if (placeholder) placeholder.style.display = 'block';
+        }
+      }
+    }
+
+    function openChangeProfileModal() {
+      refreshChangeProfileCards();
+      const modal = document.getElementById('changeProfileModal');
+      modal.classList.add('show');
+    }
+
+    function closeChangeProfileModal() {
+      const modal = document.getElementById('changeProfileModal');
+      modal.classList.remove('show');
+    }
+
+    function escapeHtml(text) {
+      if (typeof text !== 'string') return '';
+      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    // Lưu mẫu thông tin lên server
+    document.getElementById('buyerInfoForm')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const userId = window.currentUserFromSession?.id;
+      if (!userId) {
+        alert('Bạn cần đăng nhập để lưu thông tin!');
+        return;
+      }
+
+      const index = parseInt(document.getElementById('modalBuyerSaveTo').value, 10) || window.currentProfileIndex;
+      const data = {
+        userId,
+        profileIndex: index,
+        fullName: document.getElementById('modalBuyerName').value.trim(),
+        email: document.getElementById('modalBuyerEmail').value.trim(),
+        phone: document.getElementById('modalBuyerPhone').value.trim(),
+        address: document.getElementById('modalBuyerAddress').value.trim(),
+        note: document.getElementById('modalBuyerNote').value.trim(),
+      };
+
+      try {
+        const res = await fetch(resolveApiUrl('buyer-profiles.php'), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || 'Lỗi lưu thông tin');
+
+        // Cập nhật cache local
+        window.buyerProfiles[index] = data;
+        window.currentProfileIndex = index;
+        refreshChangeProfileCards();
+        switchProfile(index);
+        closeBuyerInfoModal();
+        alert(` Đã lưu mẫu ${index} thành công!`);
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  </script>
+
+  <!-- Modal thay đổi thông tin (chọn mẫu) -->
+  <div id="changeProfileModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="closeChangeProfileModal()"></div>
+    <div class="auth-modal-content change-profile-modal">
+      <button class="auth-modal-close" onclick="closeChangeProfileModal()">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Chọn mẫu thông tin</h2>
+        <p>Chọn mẫu bạn muốn dùng cho đơn hàng này</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem;padding:1rem 0;">
+        <?php for ($i = 1; $i <= 3; $i++): ?>
+          <div id="profileCard-<?= $i ?>" class="profile-card" onclick="switchProfile(<?= $i ?>); closeChangeProfileModal();">
+            <div class="profile-card-header">
+              <strong style="color:#4f9da6;">Thông tin <?= $i ?></strong>
+              <span style="font-size:0.9rem;color:#6b7280;">Chọn thông tin</span>
+            </div>
+            <div id="profileCardBody-<?= $i ?>" class="profile-card-body" style="<?= empty($buyerProfiles[$i]) ? 'display:none;' : '' ?>">
+              <div><strong>Họ tên:</strong> <span><?= h($buyerProfiles[$i]['fullName'] ?? '') ?></span></div>
+              <div><strong>Email:</strong> <span><?= h($buyerProfiles[$i]['email'] ?? '') ?></span></div>
+              <div><strong>Phone:</strong> <span><?= h($buyerProfiles[$i]['phone'] ?? '') ?></span></div>
+              <div><strong>Địa chỉ:</strong> <span><?= h($buyerProfiles[$i]['address'] ?? '') ?></span></div>
+              <div><strong>Ghi chú:</strong> <span><?= h($buyerProfiles[$i]['note'] ?? 'Không có') ?></span></div>
+            </div>
+            <p id="profileCardEmpty-<?= $i ?>" style="margin:0.3rem 0 0;color:#aaa;font-size:0.95rem;<?= empty($buyerProfiles[$i]) ? '' : 'display:none;' ?>">Chưa có thông tin</p>
+          </div>
+        <?php endfor; ?>
+      </div>
+    </div>
+  </div>
+
+  <div id="buyerInfoModal" class="auth-modal">
+    <div class="auth-modal-overlay" onclick="closeBuyerInfoModal()"></div>
+    <div class="auth-modal-content buyer-modal-content" style="width:900px;max-width:100%;min-height:520px;">
+      <button class="auth-modal-close" onclick="closeBuyerInfoModal()">&times;</button>
+      <div class="auth-modal-header">
+        <h2>Thay đổi thông tin người mua</h2>
+        <p>Thông tin đã được điền sẵn, bạn có thể chỉnh lại mọi lúc</p>
+      </div>
+      <form id="buyerInfoForm" class="auth-modal-form">
+        <div class="form-group buyer-modal-grid-full">
+          <label for="modalBuyerSaveTo">Lưu vào *</label>
+          <select id="modalBuyerSaveTo" required>
+            <option value="1">Thông tin 1</option>
+            <option value="2">Thông tin 2</option>
+            <option value="3">Thông tin 3</option>
+          </select>
+        </div>
+
+        <div class="buyer-modal-grid-columns" style="display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1.5rem !important; align-items: start !important; width: 100%;">
+          <div class="buyer-modal-column" style="display: flex; flex-direction: column; gap: 1rem;">
+            <div class="form-group">
+              <label for="modalBuyerName">Họ tên *</label>
+              <input type="text" id="modalBuyerName" required placeholder="Nhập họ tên đầy đủ" />
+            </div>
+            <div class="form-group">
+              <label for="modalBuyerPhone">Số điện thoại *</label>
+              <input type="tel" id="modalBuyerPhone" required placeholder="0123456789" />
+            </div>
+            <div class="form-group">
+              <label for="modalBuyerEmail">Email *</label>
+              <input type="email" id="modalBuyerEmail" required placeholder="example@email.com" />
+            </div>
+          </div>
+
+          <div class="buyer-modal-column" style="display: flex; flex-direction: column; gap: 1rem;">
+            <div class="form-group">
+              <label for="modalBuyerAddress">Địa chỉ *</label>
+              <input type="text" id="modalBuyerAddress" required placeholder="Số nhà, đường" />
+            </div>
+            <div class="form-group">
+              <label for="modalBuyerNote">Ghi chú (tùy chọn)</label>
+              <textarea id="modalBuyerNote" rows="3" placeholder="Ghi chú về đơn hàng..."></textarea>
+            </div>
+            <div class="form-group buyer-modal-action">
+              <button type="submit" class="btn-auth-submit">Lưu mẫu</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <footer>
     <div class="footer-content">
@@ -874,153 +1537,6 @@
     </div>
   </footer>
 
-  <div id="loginModal" class="auth-modal">
-    <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
-    <div class="auth-modal-content">
-      <button class="auth-modal-close" onclick="closeLoginModal()">
-        &times;
-      </button>
-      <div class="auth-modal-header">
-        <h2>Đăng Nhập</h2>
-        <p>Chào mừng bạn trở lại!</p>
-      </div>
-      <form id="login-form" class="auth-modal-form">
-        <div class="form-group">
-          <label for="login-username">Tên tài khoản</label>
-          <div class="input-with-icon">
-            <span class="input-icon">👤</span>
-            <input
-              type="text"
-              id="login-username"
-              placeholder="Nhập tên tài khoản" />
-          </div>
-          <span id="error-login-username" class="error-msg"></span>
-        </div>
-        <div class="form-group">
-          <label for="login-password">Mật khẩu</label>
-          <div class="input-with-icon">
-            <span class="input-icon">🔑</span>
-            <input
-              type="password"
-              id="login-password"
-              placeholder="Nhập mật khẩu" />
-            <span
-              class="password-toggle"
-              id="toggle-login-password"
-              onclick="togglePassword('login-password', 'toggle-login-password')">👁️‍🗨️</span>
-          </div>
-          <span id="error-login-password" class="error-msg"></span>
-        </div>
-        <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
-      </form>
-      <div class="auth-modal-footer">
-        Chưa có tài khoản?
-        <a href="#" onclick="switchToRegister()">Đăng ký ngay</a>
-      </div>
-    </div>
-  </div>
-
-  <div id="registerModal" class="auth-modal">
-    <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
-    <div class="auth-modal-content">
-      <button class="auth-modal-close" onclick="closeRegisterModal()">
-        &times;
-      </button>
-      <div class="auth-modal-header">
-        <h2>Đăng Ký</h2>
-        <p>Tạo tài khoản mới của bạn</p>
-      </div>
-      <form
-        id="register-form"
-        class="auth-modal-form"
-        style="max-height: 450px; overflow-y: auto">
-        <div class="form-group">
-          <label for="reg-fullname">Họ và tên</label>
-          <div class="input-with-icon">
-            <span class="input-icon">👤</span>
-            <input
-              type="text"
-              id="reg-fullname"
-              placeholder="Nhập họ và tên" />
-          </div>
-          <span id="error-fullname" class="error-msg"></span>
-        </div>
-        <div class="form-group">
-          <label for="reg-username">Tài khoản</label>
-          <div class="input-with-icon">
-            <span class="input-icon">🔐</span>
-            <input
-              type="text"
-              id="reg-username"
-              placeholder="Nhập tài khoản" />
-          </div>
-          <span id="error-username" class="error-msg"></span>
-        </div>
-        <div class="form-group">
-          <label for="reg-password">Mật khẩu</label>
-          <div class="input-with-icon">
-            <span class="input-icon">🔑</span>
-            <input
-              type="password"
-              id="reg-password"
-              placeholder="Nhập mật khẩu" />
-            <span
-              class="password-toggle"
-              id="toggle-reg-password"
-              onclick="togglePassword('reg-password', 'toggle-reg-password')">👁️‍🗨️</span>
-          </div>
-          <span id="error-password" class="error-msg"></span>
-        </div>
-        <div class="form-group">
-          <label for="reg-confirm-password">Nhập lại mật khẩu</label>
-          <div class="input-with-icon">
-            <span class="input-icon">🔑</span>
-            <input
-              type="password"
-              id="reg-confirm-password"
-              placeholder="Nhập lại mật khẩu" />
-            <span
-              class="password-toggle"
-              id="toggle-reg-confirm"
-              onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')">👁️‍🗨️</span>
-          </div>
-          <span id="error-confirm-password" class="error-msg"></span>
-        </div>
-        <div class="form-group">
-          <label for="reg-email">Email</label>
-          <div class="input-with-icon">
-            <span class="input-icon">📧</span>
-            <input type="email" id="reg-email" placeholder="Nhập email" />
-          </div>
-          <span id="error-email" class="error-msg"></span>
-        </div>
-        <div class="form-group">
-          <label for="reg-phone">Số điện thoại</label>
-          <div class="input-with-icon">
-            <span class="input-icon">📱</span>
-            <input
-              type="tel"
-              id="reg-phone"
-              placeholder="Nhập số điện thoại" />
-          </div>
-          <span id="error-phone" class="error-msg"></span>
-        </div>
-        <div class="form-group">
-          <label for="reg-address">Địa chỉ</label>
-          <div class="input-with-icon">
-            <span class="input-icon">📍</span>
-            <input type="text" id="reg-address" placeholder="Nhập địa chỉ" />
-          </div>
-          <span id="error-address" class="error-msg"></span>
-        </div>
-        <button type="submit" class="btn-auth-submit">Đăng Ký</button>
-      </form>
-      <div class="auth-modal-footer">
-        Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập</a>
-      </div>
-    </div>
-  </div>
-
   <?php include '../includes/auth_modals.php'; ?>
 
   <div id="addressModal" class="auth-modal">
@@ -1041,1134 +1557,6 @@
 
   <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/main.js?v=2"></script>
-
-  <script>
-    function openModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden";
-      }
-    }
-
-    function closeModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.classList.remove("show");
-        document.body.style.overflow = "";
-        modal
-          .querySelectorAll(".error-msg")
-          .forEach((el) => (el.textContent = ""));
-        const form = modal.querySelector("form");
-        if (form) form.reset();
-
-        // Xóa form sửa địa chỉ nếu đang hiển thị
-        const editForm = document.getElementById("editAddressForm");
-        if (editForm) editForm.remove();
-      }
-    }
-
-    function togglePassword(inputId, toggleId) {
-      const input = document.getElementById(inputId);
-      const toggle = document.getElementById(toggleId);
-      if (input.type === "password") {
-        input.type = "text";
-        if (toggle) toggle.textContent = "🙈";
-      } else {
-        input.type = "password";
-        if (toggle) toggle.textContent = "👁️‍🗨️";
-      }
-    }
-
-    const formatter = new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-      minimumFractionDigits: 0,
-    });
-
-    function getProductData() {
-      return (
-        JSON.parse(localStorage.getItem("bs_data"))?.products ||
-        (typeof SAMPLE !== "undefined" ? SAMPLE.products : []) || []
-      );
-    }
-
-    function getProductById(productId) {
-      return getProductData().find((p) => p.id === productId);
-    }
-
-    function getSelectedProductIds() {
-      const checkboxes = document.querySelectorAll(
-        ".item-select-checkbox:checked"
-      );
-      return Array.from(checkboxes).map((cb) => parseInt(cb.dataset.id));
-    }
-
-    function calculateTotals() {
-      const getCartFunc =
-        typeof getCart === "function" ?
-        getCart :
-        () => JSON.parse(localStorage.getItem("bs_cart")) || [];
-      const cart = getCartFunc();
-      const selectedIds = getSelectedProductIds();
-
-      let subtotal = 0;
-      let totalItems = 0;
-      let shipping = 30000; // Phí vận chuyển cố định
-      let discount = 0;
-      const selectedCartData = [];
-
-      cart.forEach((item) => {
-        if (selectedIds.includes(item.id)) {
-          const product = getProductById(item.id);
-          if (product) {
-            const itemTotal = product.price * item.qty;
-            subtotal += itemTotal;
-            totalItems += item.qty;
-            selectedCartData.push({
-              ...item,
-              product: product,
-              itemTotal: itemTotal,
-            });
-          }
-        }
-      });
-      // Nếu tổng tiền là 0 thì phí vận chuyển cũng bằng 0
-      if (subtotal === 0) {
-        shipping = 0;
-      } else if (subtotal >= 500000) {
-        // Miễn phí vận chuyển cho đơn hàng từ 500,000 VND trở lên
-        shipping = 0;
-      }
-
-      const total = subtotal - discount + shipping;
-
-      return {
-        subtotal: subtotal,
-        totalItems: totalItems,
-        shipping: shipping,
-        discount: discount,
-        total: total,
-        selectedCartData: selectedCartData,
-      };
-    }
-
-    // Khởi tạo phương thức thanh toán mặc định
-    let selectedPaymentMethod = "Thanh toán khi nhận hàng";
-
-    function selectPaymentMethod(method) {
-      selectedPaymentMethod = method;
-      console.log("Payment method selected:", selectedPaymentMethod);
-    }
-
-    function renderCartSummary() {
-      const summaryElement = document.querySelector(".cart-summary");
-      if (!summaryElement) return;
-
-      const {
-        subtotal,
-        totalItems,
-        shipping,
-        discount,
-        total,
-        selectedCartData,
-      } = calculateTotals();
-
-      if (totalItems === 0) {
-        summaryElement.innerHTML = `
-          <h3 class="summary-title">Tóm Tắt Đơn Hàng</h3>
-          ${renderShippingAddress()}
-          <p style="text-align: center; color: #7f8c8d; margin: 2rem 0;">Vui lòng chọn sản phẩm để thanh toán.</p>
-          <button class="btn-checkout" disabled>Thanh Toán (${totalItems} mục)</button>
-        `;
-        return;
-      }
-
-      // --- PHẦN HIỂN THỊ CHI TIẾT SẢN PHẨM TRONG TÓM TẮT ---
-      const selectedItemsDetailsHtml = selectedCartData
-        .map(
-          (item) => `
-        <div class="summary-item-detail">
-          <span title="${item.product.name}">${item.product.name}</span>
-          <span>${item.qty}</span>
-          <span>${formatter.format(item.itemTotal)}</span>
-        </div>
-      `
-        )
-        .join("");
-
-      const summaryItemsDetailsWrapper = selectedItemsDetailsHtml ?
-        `
-        <div style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; max-height: 200px; overflow-y: auto;">
-          <div class="summary-header-row">
-            <span>Sản phẩm</span>
-            <span>SL</span>
-            <span>Thành tiền</span>
-          </div>
-          ${selectedItemsDetailsHtml}
-        </div>
-      ` :
-        "";
-
-      // --- PHẦN CHỌN PHƯƠNG THỨC THANH TOÁN (ĐÃ CẬP NHẬT THÊM THANH TOÁN TRỰC TUYẾN) ---
-      const paymentMethodsHtml = localStorage.getItem("bs_user") ?
-        `
-        <div class="payment-method-section">
-          <h4><i class="bi bi-credit-card-2-front"></i> Phương thức thanh toán</h4>
-          <div class="payment-options">
-            <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="Thanh toán khi nhận hàng" onchange="selectPaymentMethod('Thanh toán khi nhận hàng')" ${
-                selectedPaymentMethod === "Thanh toán khi nhận hàng"
-                  ? "checked"
-                  : ""
-              }> Thanh toán khi nhận hàng (COD)
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="Thanh toán trực tuyến" onchange="selectPaymentMethod('Thanh toán trực tuyến')" ${
-                selectedPaymentMethod === "Thanh toán trực tuyến"
-                  ? "checked"
-                  : ""
-              }> Thanh toán trực tuyến (VNPAY/Momo/ZaloPay)
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="Chuyển khoản ngân hàng" onchange="selectPaymentMethod('Chuyển khoản ngân hàng')" ${
-                selectedPaymentMethod === "Chuyển khoản ngân hàng"
-                  ? "checked"
-                  : ""
-              }> Chuyển khoản ngân hàng
-            </label>
-          </div>
-        </div>
-      ` :
-        "";
-
-      // --- PHẦN TỔNG KẾT ĐƠN HÀNG ---
-      const summaryHtml = `
-        <h3 class="summary-title">Tóm Tắt Đơn Hàng</h3>
-        ${renderShippingAddress()}
-        ${paymentMethodsHtml}
-        ${summaryItemsDetailsWrapper}
-        <div class="summary-row temp-total">
-          <span>Tạm tính (${totalItems} mục)</span>
-          <span>${formatter.format(subtotal)}</span>
-        </div>
-        <div class="summary-row">
-          <span>Phí vận chuyển</span>
-          <span class="${shipping > 0 ? "" : "text-success"}">${
-          shipping > 0 ? formatter.format(shipping) : "Miễn phí"
-        }</span>
-        </div>
-        
-        <div class="summary-row total">
-          <span>Tổng cộng</span>
-          <span>${formatter.format(total)}</span>
-        </div>
-        <button class="btn-checkout" onclick="checkout()">Thanh Toán (${totalItems} mục)</button>
-      `;
-
-      summaryElement.innerHTML = summaryHtml;
-
-      // Cập nhật lại trạng thái nút "Chọn địa chỉ khác"
-      if (document.getElementById("addressList")) {
-        document.getElementById("addressList").style.display =
-          localStorage.getItem("bs_show_address_list") === "true" ?
-          "block" :
-          "none";
-      }
-    }
-
-    function renderCart() {
-      const cartContainer = document.getElementById("cartContainer");
-      const getCartFunc =
-        typeof getCart === "function" ?
-        getCart :
-        () => JSON.parse(localStorage.getItem("bs_cart")) || [];
-      const currentCart = getCartFunc();
-
-      if (currentCart.length === 0) {
-        cartContainer.innerHTML = `
-          <div class="empty-cart">
-            <span class="empty-cart-icon">🛍️</span>
-            <h3>Giỏ hàng của bạn đang trống!</h3>
-            <p>Hãy thêm sách vào giỏ hàng để bắt đầu mua sắm.</p>
-            <a href="category.php" class="btn-continue">Tiếp tục mua sắm</a>
-          </div>
-        `;
-        // Đảm bảo summary cũng trống nếu giỏ hàng trống
-        const summaryElement = document.querySelector(".cart-summary");
-        if (summaryElement) summaryElement.innerHTML = "";
-        return;
-      }
-
-      // Mặc định chọn tất cả khi render lần đầu
-      const initialChecked = true;
-      const itemsHtml = currentCart
-        .map((item) => {
-          const product = getProductById(item.id);
-          if (!product) return "";
-          const itemTotal = product.price * item.qty;
-
-          return `
-          <div class="cart-item" data-product-id="${item.id}">
-            <label class="item-select-wrapper">
-              <input type="checkbox" data-id="${
-                item.id
-              }" class="item-select-checkbox" onchange="handleItemSelection()" ${
-              initialChecked ? "checked" : ""
-            }>
-            </label>
-            <div class="cart-item-image">
-              <img src="${product.img}" alt="${product.name}">
-            </div>
-            <div class="cart-item-details">
-              <h4 class="cart-item-title">${product.name}</h4>
-              <p class="cart-item-author"><i class="bi bi-person"></i> ${
-                product.author
-              }</p>
-              <p class="cart-item-price">${formatter.format(
-                product.price
-              )} / cuốn</p>
-            </div>
-            <div class="cart-item-actions">
-              <p class="cart-item-total">${formatter.format(itemTotal)}</p>
-              <div class="quantity-controls">
-                <button class="qty-btn minus-btn" onclick="updateItemQuantity(${
-                  item.id
-                }, -1)">-</button>
-                <span class="qty-display">${item.qty}</span>
-                <button class="qty-btn plus-btn" onclick="updateItemQuantity(${
-                  item.id
-                }, 1)">+</button>
-              </div>
-              <button class="btn-remove" onclick="removeItem(${item.id})">
-                 <i class="bi bi-trash"></i> Xóa
-              </button>
-            </div>
-          </div>
-        `;
-        })
-        .join("");
-
-      const cartContentHtml = `
-        <div class="cart-layout">
-          <div class="cart-items-section">
-            <div class="cart-section-header">
-              <h3 class="cart-section-title">Danh sách sản phẩm (${
-                currentCart.length
-              } mục)</h3>
-              <div class="select-all-wrapper">
-                <label class="select-all-label">
-                  <input type="checkbox" id="selectAllItems" onchange="toggleSelectAll(this.checked)" ${
-                    initialChecked ? "checked" : ""
-                  }> Chọn tất cả
-                </label>
-                <button class="btn-clear-all" onclick="clearAllItems()">
-                   <i class="bi bi-trash"></i> Xóa tất cả
-                </button>
-              </div>
-            </div>
-            <div class="cart-items-list">
-              ${itemsHtml}
-            </div>
-          </div>
-          <div class="cart-summary-wrapper">
-            <div class="cart-summary">
-              </div>
-          </div>
-        </div>
-      `;
-
-      cartContainer.innerHTML = cartContentHtml;
-
-      // Sau khi render cấu trúc, gọi hàm render summary để điền dữ liệu
-      renderCartSummary();
-    }
-
-    function updateItemQuantity(productId, change) {
-      const getCartFunc =
-        typeof getCart === "function" ?
-        getCart :
-        () => JSON.parse(localStorage.getItem("bs_cart")) || [];
-      const saveCartFunc =
-        typeof saveCart === "function" ?
-        saveCart :
-        (c) => localStorage.setItem("bs_cart", JSON.stringify(c));
-      let cart = getCartFunc();
-
-      const itemIndex = cart.findIndex((item) => item.id === productId);
-
-      if (itemIndex > -1) {
-        let currentQty = cart[itemIndex].qty;
-        let newQty = currentQty + change;
-
-        if (newQty > 0) {
-          cart[itemIndex].qty = newQty;
-        } else {
-          if (
-            confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")
-          ) {
-            cart.splice(itemIndex, 1);
-          } else {
-            return;
-          }
-        }
-
-        saveCartFunc(cart);
-        if (typeof updateCartCount === "function") updateCartCount();
-        renderCart();
-      }
-    }
-
-    function removeItem(productId) {
-      if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
-        const getCartFunc =
-          typeof getCart === "function" ?
-          getCart :
-          () => JSON.parse(localStorage.getItem("bs_cart")) || [];
-        const saveCartFunc =
-          typeof saveCart === "function" ?
-          saveCart :
-          (c) => localStorage.setItem("bs_cart", JSON.stringify(c));
-        let cart = getCartFunc();
-
-        cart = cart.filter((item) => item.id !== productId);
-
-        saveCartFunc(cart);
-        if (typeof updateCartCount === "function") updateCartCount();
-        renderCart();
-      }
-    }
-
-    function clearAllItems() {
-      if (
-        confirm("Bạn có chắc chắn muốn xóa TẤT CẢ sản phẩm khỏi giỏ hàng?")
-      ) {
-        const saveCartFunc =
-          typeof saveCart === "function" ?
-          saveCart :
-          (c) => localStorage.setItem("bs_cart", JSON.stringify(c));
-        saveCartFunc([]);
-        if (typeof updateCartCount === "function") updateCartCount();
-        renderCart();
-      }
-    }
-
-    function toggleSelectAll(checked) {
-      document.querySelectorAll(".item-select-checkbox").forEach((cb) => {
-        cb.checked = checked;
-      });
-      renderCartSummary();
-    }
-
-    function handleItemSelection() {
-      const allCheckboxes = document.querySelectorAll(
-        ".item-select-checkbox"
-      );
-      const selectedCheckboxes = document.querySelectorAll(
-        ".item-select-checkbox:checked"
-      );
-      const selectAllCheckbox = document.getElementById("selectAllItems");
-
-      if (selectAllCheckbox) {
-        selectAllCheckbox.checked =
-          allCheckboxes.length > 0 &&
-          allCheckboxes.length === selectedCheckboxes.length;
-      }
-      renderCartSummary();
-    }
-
-    // ==================== CHỨC NĂNG QUẢN LÝ ĐỊA CHỈ GIAO HÀNG ====================
-    // Lấy danh sách địa chỉ của user
-    function getUserAddresses() {
-      const user = JSON.parse(localStorage.getItem("bs_user"));
-      if (!user) return [];
-      const addresses = JSON.parse(
-        localStorage.getItem("bs_user_addresses") || "{}"
-      );
-      return addresses[user.username] || [];
-    }
-
-    // Lưu danh sách địa chỉ
-    function saveUserAddresses(addresses) {
-      const user = JSON.parse(localStorage.getItem("bs_user"));
-      if (!user) return;
-      const allAddresses = JSON.parse(
-        localStorage.getItem("bs_user_addresses") || "{}"
-      );
-      allAddresses[user.username] = addresses;
-      localStorage.setItem("bs_user_addresses", JSON.stringify(allAddresses));
-    }
-
-    // Lấy địa chỉ đang được chọn
-    function getSelectedAddress() {
-      const user = JSON.parse(localStorage.getItem("bs_user"));
-      if (!user) return null;
-      const allSelected = JSON.parse(
-        localStorage.getItem("bs_selected_address") || "{}"
-      );
-      return allSelected[user.username] || null;
-    }
-
-    // Lưu địa chỉ đang được chọn
-    function saveSelectedAddress(address) {
-      const user = JSON.parse(localStorage.getItem("bs_user"));
-      if (!user) return;
-      const allSelected = JSON.parse(
-        localStorage.getItem("bs_selected_address") || "{}"
-      );
-      allSelected[user.username] = address;
-      localStorage.setItem(
-        "bs_selected_address",
-        JSON.stringify(allSelected)
-      );
-    }
-
-    // Khởi tạo địa chỉ mặc định từ thông tin user
-    function initDefaultAddress() {
-      const user = JSON.parse(localStorage.getItem("bs_user"));
-      if (!user) return null;
-      let addresses = getUserAddresses();
-
-      // Nếu chưa có địa chỉ nào, tạo địa chỉ mặc định từ thông tin đăng ký
-      if (addresses.length === 0) {
-        const defaultAddress = {
-          id: Date.now(),
-          name: user.fullName,
-          phone: user.phone,
-          address: user.address,
-          isDefault: true,
-        };
-        addresses.push(defaultAddress);
-        saveUserAddresses(addresses);
-      }
-
-      // Chọn địa chỉ mặc định/đầu tiên
-      let selected = getSelectedAddress();
-      if (!selected) {
-        selected = addresses.find((addr) => addr.isDefault) || addresses[0];
-        if (selected) saveSelectedAddress(selected);
-      }
-
-      return selected;
-    }
-
-    // Render phần địa chỉ giao hàng
-    function renderShippingAddress() {
-      const user = localStorage.getItem("bs_user");
-      if (!user) {
-        return `
-          <div class="shipping-address-section" style="background: #fff3cd; padding: 1.5rem; border-radius: 12px; border: 1px solid #ffc107; margin-bottom: 1.5rem;">
-            <p style="margin: 0; color: #856404; text-align: center;">
-              <i class="bi bi-exclamation-triangle"></i> Vui lòng đăng nhập để nhập địa chỉ giao hàng
-            </p>
-            <button onclick="openLoginModal()" style="width: 100%; margin-top: 1rem; padding: 0.7rem; background: #ffc107; color: #856404; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
-              Đăng nhập ngay
-            </button>
-          </div>
-        `;
-      }
-
-      const selectedAddress = initDefaultAddress();
-      const addresses = getUserAddresses();
-
-      if (!selectedAddress) {
-        return `
-          <div class="shipping-address-section" style="background: #f8d7da; padding: 1.5rem; border-radius: 12px; border: 1px solid #dc3545; margin-bottom: 1.5rem;">
-            <p style="margin: 0; color: #721c24; text-align: center;">
-              <i class="bi bi-exclamation-octagon"></i> Không tìm thấy địa chỉ giao hàng. Vui lòng thêm địa chỉ!
-            </p>
-            <button onclick="openAddressModal()" style="width: 100%; margin-top: 1rem; padding: 0.7rem; background: #dc3545; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
-              <i class="bi bi-plus-circle"></i> Thêm địa chỉ mới
-            </button>
-          </div>
-        `;
-      }
-
-      return `
-        <div class="shipping-address-section" style="background: white; padding: 2rem; border-radius: 16px; border: 2px solid #e3f2fd; margin-bottom: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px dashed #eee;">
-            <h4 style="margin: 0; font-size: 1.25rem; color: #4f9da6;"><i class="bi bi-geo-alt-fill"></i> Địa chỉ giao hàng</h4>
-            <button onclick="openAddressModal()" style="background: none; border: none; color: #ff7f50; font-weight: 600; cursor: pointer;">
-              Thay đổi
-            </button>
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <strong style="color: #2c3e50; font-size: 1.1rem;">${
-              selectedAddress.name
-            }</strong>
-            ${
-              selectedAddress.isDefault
-                ? '<span style="background: #e3f2fd; color: #4f9da6; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem; font-weight: 600;">Mặc định</span>'
-                : ""
-            }
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem; color: #555;">
-            <i class="bi bi-telephone-fill" style="color: #4f9da6;"></i>
-            <span>${selectedAddress.phone}</span>
-          </div>
-          <div style="display: flex; align-items: start; gap: 0.8rem; color: #555;">
-            <i class="bi bi-house-door-fill" style="color: #4f9da6; margin-top: 0.2rem;"></i>
-            <span style="line-height: 1.5;">${selectedAddress.address}</span>
-          </div>
-        </div>
-        ${
-          addresses.length > 1
-            ? `
-        <button onclick="toggleAddressList()" class="btn-change-address" style="width: 100%; margin-top: 1rem; padding: 0.7rem; background: white; border: 2px dashed #4f9da6; color: #4f9da6; border-radius: 8px; cursor: pointer; font-weight: 600;">
-            <i class="bi bi-arrow-repeat"></i> Chọn địa chỉ khác
-          </button>
-          <div id="addressList" style="display: none; margin-top: 1rem; max-height: 300px; overflow-y: auto;">
-            <h5 style="margin-bottom: 0.5rem; color: #555;">Địa chỉ khác đã lưu:</h5>
-            ${addresses
-              .filter((addr) => addr.id !== selectedAddress.id)
-              .map(
-                (addr) => `
-              <div class="address-item" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 0.8rem; cursor: pointer; border: 2px solid transparent; transition: all 0.3s;" onmouseover="this.style.borderColor='#82c09a'" onmouseout="this.style.borderColor='transparent'" onclick="selectAddress(${
-                addr.id
-              })">
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                  <div style="flex: 1;">
-                    <strong style="color: #2c3e50;">${addr.name}</strong>
-                    ${
-                      addr.isDefault
-                        ? '<span style="background: #4caf50; color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-left: 0.5rem;">Mặc định</span>'
-                        : ""
-                    }
-                    <div style="color: #666; font-size: 0.9rem; margin-top: 0.3rem;">
-                      <i class="bi bi-telephone"></i> ${addr.phone}
-                    </div>
-                    <div style="color: #666; font-size: 0.9rem; margin-top: 0.3rem;">
-                      <i class="bi bi-house-door"></i> ${addr.address}
-                    </div>
-                  </div>
-                  <button style="background: #ff6b6b; color: white; border: none; padding: 0.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; margin-left: 1rem;" onclick="event.stopPropagation(); deleteAddress(${
-                    addr.id
-                  });">Xóa</button>
-                </div>
-              </div>
-            `
-              )
-              .join("")}
-          </div>
-          `
-            : ""
-        }
-      `;
-    }
-
-    function toggleAddressList() {
-      const list = document.getElementById("addressList");
-      const isShown = list.style.display === "block";
-      list.style.display = isShown ? "none" : "block";
-      localStorage.setItem(
-        "bs_show_address_list",
-        isShown ? "false" : "true"
-      );
-    }
-
-    function selectAddress(addressId) {
-      const addresses = getUserAddresses();
-      const address = addresses.find((addr) => addr.id === addressId);
-      if (address) {
-        saveSelectedAddress(address);
-        localStorage.setItem("bs_show_address_list", "false"); // Ẩn danh sách sau khi chọn
-        renderCartSummary(); // Chỉ cần render summary để cập nhật địa chỉ
-      }
-    }
-
-    function renderAddressManagementModal() {
-      const addressManagementContent = document.getElementById(
-        "addressManagementContent"
-      );
-      if (!addressManagementContent) return;
-
-      const addresses = getUserAddresses();
-      const maxAddresses = 3;
-      const canAddMore = addresses.length < maxAddresses;
-
-      addressManagementContent.innerHTML = `
-        <button onclick="showAddAddressForm()" style="width: 100%; padding: 0.8rem; background: #4f9da6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin-bottom: 1.5rem;" ${
-          !canAddMore
-            ? 'disabled style="opacity: 0.6; cursor: not-allowed;"'
-            : ""
-        }>
-          <i class="bi bi-plus-circle"></i> Thêm địa chỉ mới
-        </button>
-        ${
-          !canAddMore
-            ? '<p style="color: #dc3545; text-align: center; margin-bottom: 1.5rem;">Bạn đã lưu tối đa 3 địa chỉ</p>'
-            : ""
-        }
-        
-        <div id="addAddressForm" style="display: none; background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem;">
-          <h4 style="margin-bottom: 1rem;">Thêm địa chỉ mới</h4>
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Họ và tên</label>
-            <input type="text" id="newAddressName" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;">
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Số điện thoại</label>
-            <input type="tel" id="newAddressPhone" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;">
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Địa chỉ</label>
-            <textarea id="newAddressAddress" rows="3" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;"></textarea>
-          </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <button onclick="saveNewAddress()" style="flex: 1; padding: 0.7rem; background: #4caf50; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-              <i class="bi bi-check-circle"></i> Lưu
-            </button>
-            <button onclick="hideAddAddressForm()" style="flex: 1; padding: 0.7rem; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-              Hủy
-            </button>
-          </div>
-        </div>
-
-        <div id="addressListManagement">
-          <h4 style="margin-bottom: 1rem;">Địa chỉ đã lưu (${
-            addresses.length
-          }/${maxAddresses})</h4>
-          ${addresses
-            .map(
-              (addr) => `
-            <div class="address-card" style="background: white; padding: 1.2rem; border-radius: 10px; margin-bottom: 1rem; border: 2px solid ${
-              addr.isDefault ? "#4caf50" : "#e0e0e0"
-            };">
-              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.8rem;">
-                <div style="flex: 1;">
-                  <strong style="font-size: 1.1rem; color: #2c3e50;">${
-                    addr.name
-                  }</strong>
-                  <div style="color: #666; font-size: 0.95rem; margin-top: 0.3rem;"><i class="bi bi-telephone"></i> ${
-                    addr.phone
-                  }</div>
-                  <div style="color: #666; font-size: 0.95rem; margin-top: 0.3rem;"><i class="bi bi-house-door"></i> ${
-                    addr.address
-                  }</div>
-                </div>
-                <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
-                  <button onclick="editAddress(${
-                    addr.id
-                  })" style="background: #2196f3; color: white; border: none; padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">Sửa</button>
-                  <button onclick="deleteAddress(${
-                    addr.id
-                  })" style="background: #ff6b6b; color: white; border: none; padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem;">Xóa</button>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 0.8rem;">
-                  ${
-                    !addr.isDefault
-                      ? `
-                      <button onclick="setDefaultAddress(${addr.id})" style="background: #f0f0f0; color: #555; border: 1px solid #ccc; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600;">
-                          Đặt làm mặc định
-                      </button>`
-                      : ""
-                  }
-                  ${
-                    addr.isDefault
-                      ? '<span style="color: #4caf50; font-weight: 600;">Đang là địa chỉ mặc định</span>'
-                      : ""
-                  }
-              </div>
-            </div>
-          `
-            )
-            .join("")}
-        </div>
-      `;
-    }
-
-    function showAddAddressForm() {
-      document.getElementById("editAddressForm")?.remove(); // Xóa form sửa nếu có
-      document.getElementById("addAddressForm").style.display = "block";
-    }
-
-    function hideAddAddressForm() {
-      document.getElementById("addAddressForm").style.display = "none";
-      document.getElementById("newAddressName").value = "";
-      document.getElementById("newAddressPhone").value = "";
-      document.getElementById("newAddressAddress").value = "";
-    }
-
-    function saveNewAddress() {
-      const name = document.getElementById("newAddressName").value.trim();
-      const phone = document.getElementById("newAddressPhone").value.trim();
-      const address = document
-        .getElementById("newAddressAddress")
-        .value.trim();
-
-      if (!name || !phone || !address) {
-        alert("Vui lòng điền đầy đủ thông tin!");
-        return;
-      }
-
-      // Validate số điện thoại (10 chữ số)
-      const phoneRegex = /^[0-9]{10}$/;
-      if (!phoneRegex.test(phone.replace(/\s/g, ""))) {
-        alert("Số điện thoại phải có 10 chữ số!");
-        return;
-      }
-
-      const addresses = getUserAddresses();
-      if (addresses.length >= 3) {
-        alert("Bạn chỉ có thể lưu tối đa 3 địa chỉ!");
-        return;
-      }
-
-      const newAddress = {
-        id: Date.now(),
-        name,
-        phone,
-        address,
-        isDefault: addresses.length === 0, // Địa chỉ đầu tiên sẽ là mặc định
-      };
-
-      addresses.push(newAddress);
-      saveUserAddresses(addresses);
-
-      if (addresses.length === 1) {
-        saveSelectedAddress(newAddress);
-      }
-
-      closeAddressModal();
-      // Dùng setTimeout để đảm bảo modal đóng trước khi mở lại và render cart
-      setTimeout(() => {
-        openAddressModal();
-        renderCart();
-      }, 100);
-    }
-
-    function setDefaultAddress(addressId) {
-      const addresses = getUserAddresses();
-      addresses.forEach((addr) => {
-        addr.isDefault = addr.id === addressId;
-      });
-      saveUserAddresses(addresses);
-
-      const selectedAddress = addresses.find((addr) => addr.id === addressId);
-      saveSelectedAddress(selectedAddress);
-
-      closeAddressModal();
-      openAddressModal();
-      renderCart();
-    }
-
-    function editAddress(addressId) {
-      const addresses = getUserAddresses();
-      const address = addresses.find((addr) => addr.id === addressId);
-      if (!address) return;
-
-      // Ẩn form thêm mới nếu đang mở
-      const addForm = document.getElementById("addAddressForm");
-      if (addForm) addForm.style.display = "none";
-
-      // Kiểm tra xem form sửa đã tồn tại chưa
-      let editForm = document.getElementById("editAddressForm");
-      if (!editForm) {
-        // Tạo form sửa mới
-        editForm = document.createElement("div");
-        editForm.id = "editAddressForm";
-        editForm.style.cssText =
-          "background: #e3f2fd; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border: 2px solid #2196f3;";
-        document.getElementById("addressListManagement").before(editForm);
-      }
-
-      editForm.innerHTML = `
-        <h4 style="margin-bottom: 1rem; color: #2196f3;"><i class="bi bi-pencil-square"></i> Chỉnh sửa Địa chỉ</h4>
-        <div style="margin-bottom: 1rem;">
-          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Họ và tên</label>
-          <input type="text" id="editAddressName" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;" value="${address.name}">
-        </div>
-        <div style="margin-bottom: 1rem;">
-          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Số điện thoại</label>
-          <input type="tel" id="editAddressPhone" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;" value="${address.phone}">
-        </div>
-        <div style="margin-bottom: 1rem;">
-          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Địa chỉ</label>
-          <textarea id="editAddressAddress" rows="3" style="width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 6px;">${address.address}</textarea>
-        </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button onclick="saveEditAddress(${address.id})" style="flex: 1; padding: 0.7rem; background: #2196f3; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-            <i class="bi bi-check-circle"></i> Lưu thay đổi
-          </button>
-          <button onclick="cancelEditAddress()" style="flex: 1; padding: 0.7rem; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-            Hủy
-          </button>
-        </div>
-      `;
-      // Scroll đến form edit
-      editForm.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    }
-
-    function saveEditAddress(addressId) {
-      const name = document.getElementById("editAddressName").value.trim();
-      const phone = document.getElementById("editAddressPhone").value.trim();
-      const addressText = document
-        .getElementById("editAddressAddress")
-        .value.trim();
-
-      if (!name || !phone || !addressText) {
-        alert("Vui lòng điền đầy đủ thông tin!");
-        return;
-      }
-
-      // Validate số điện thoại
-      const phoneRegex = /^[0-9]{10}$/;
-      if (!phoneRegex.test(phone.replace(/\s/g, ""))) {
-        alert("Số điện thoại phải có 10 chữ số!");
-        return;
-      }
-
-      const addresses = getUserAddresses();
-      const address = addresses.find((addr) => addr.id === addressId);
-
-      if (address) {
-        address.name = name;
-        address.phone = phone;
-        address.address = addressText;
-        saveUserAddresses(addresses);
-
-        // Cập nhật địa chỉ được chọn nếu đang chọn địa chỉ này
-        const selected = getSelectedAddress();
-        if (selected && selected.id === addressId) {
-          saveSelectedAddress(address);
-        }
-
-        // Đóng và mở lại modal để refresh
-        closeAddressModal();
-        setTimeout(() => {
-          openAddressModal();
-          renderCart(); // Cập nhật lại giỏ hàng
-        }, 100);
-      }
-    }
-
-    function cancelEditAddress() {
-      const editForm = document.getElementById("editAddressForm");
-      if (editForm) {
-        editForm.remove();
-      }
-    }
-
-    function deleteAddress(addressId) {
-      if (!confirm("Bạn có chắc muốn xóa địa chỉ này?")) return;
-
-      let addresses = getUserAddresses();
-      const addressToDelete = addresses.find((addr) => addr.id === addressId);
-
-      addresses = addresses.filter((addr) => addr.id !== addressId);
-      saveUserAddresses(addresses);
-
-      // Cập nhật địa chỉ được chọn nếu địa chỉ bị xóa đang được chọn
-      const selected = getSelectedAddress();
-      if (selected && selected.id === addressId) {
-        // Nếu địa chỉ bị xóa là địa chỉ đang được chọn, chọn địa chỉ mặc định mới
-        const newSelected =
-          addresses.find((addr) => addr.isDefault) || addresses[0];
-        saveSelectedAddress(newSelected || null);
-      }
-
-      // Đảm bảo phải có ít nhất 1 địa chỉ để checkout
-      if (addresses.length === 0) {
-        initDefaultAddress();
-      }
-
-      closeAddressModal();
-      if (addresses.length > 0) {
-        openAddressModal();
-      }
-      renderCart();
-    }
-
-    // ==================== CHỨC NĂNG THANH TOÁN ====================
-
-    function checkout() {
-      const {
-        subtotal,
-        totalItems,
-        selectedCartData
-      } = calculateTotals();
-
-      if (totalItems === 0) {
-        alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
-        return;
-      }
-
-      const user = localStorage.getItem("bs_user");
-      if (!user) {
-        alert("Vui lòng Đăng nhập để tiếp tục thanh toán.");
-        openLoginModal();
-        return;
-      }
-
-      const shippingAddress = getSelectedAddress();
-      if (!shippingAddress) {
-        alert("Vui lòng chọn địa chỉ giao hàng!");
-        openAddressModal();
-        return;
-      }
-
-      // Lấy phương thức thanh toán đã chọn
-      const paymentMethod = selectedPaymentMethod;
-      if (!paymentMethod) {
-        alert("Vui lòng chọn phương thức thanh toán!");
-        return;
-      }
-
-      const orders = JSON.parse(localStorage.getItem("bs_orders") || "[]");
-      const {
-        total
-      } = calculateTotals();
-
-      const newOrder = {
-        id: Date.now(),
-        userId: JSON.parse(user).username,
-        items: selectedCartData,
-        total: total,
-        shippingAddress: shippingAddress,
-        paymentMethod: paymentMethod,
-        date: new Date().toISOString(),
-        status: "Chờ xử lý",
-      };
-
-      orders.push(newOrder);
-      localStorage.setItem("bs_orders", JSON.stringify(orders));
-
-      // ====================================================================
-      // THÊM INLINE JS: Trừ số lượng sách còn lại (gọi hàm từ main.js)
-      if (typeof updateProductStock === "function") {
-        updateProductStock(selectedCartData);
-      }
-      // ====================================================================
-
-      const selectedIds = selectedCartData.map((item) => item.id);
-      const getCartFunc =
-        typeof getCart === "function" ?
-        getCart :
-        () => JSON.parse(localStorage.getItem("bs_cart")) || [];
-      const saveCartFunc =
-        typeof saveCart === "function" ?
-        saveCart :
-        (c) => localStorage.setItem("bs_cart", JSON.stringify(c));
-      let currentCart = getCartFunc();
-      let newCart = currentCart.filter(
-        (item) => !selectedIds.includes(item.id)
-      );
-      saveCartFunc(newCart); // Xóa sản phẩm đã mua khỏi localStorage
-
-      // Cập nhật thông báo alert
-      alert(
-        `Đơn hàng #${
-            newOrder.id
-          } (${totalItems} mục) đã được tạo thành công! Tổng tiền: ${formatter.format(
-            total
-          )}. Phương thức thanh toán: ${paymentMethod}. Địa chỉ giao hàng: ${
-            shippingAddress.address
-          }. Cảm ơn bạn đã mua sắm!`
-      );
-
-      renderCart(); // Làm mới giao diện giỏ hàng
-      if (typeof updateCartCount === "function") updateCartCount(); // Cập nhật lại số lượng giỏ hàng trên header
-    }
-    // ==================== HÀM MỞ/ĐÓNG MODAL ====================
-
-    function openLoginModal() {
-      closeRegisterModal();
-      closeProfileModal();
-      openModal("loginModal");
-    }
-
-    function closeLoginModal() {
-      closeModal("loginModal");
-    }
-
-    function openRegisterModal() {
-      closeLoginModal();
-      closeProfileModal();
-      openModal("registerModal");
-    }
-
-    function closeRegisterModal() {
-      closeModal("registerModal");
-    }
-
-    function switchToRegister() {
-      closeLoginModal();
-      openRegisterModal();
-    }
-
-    function switchToLogin() {
-      closeRegisterModal();
-      openLoginModal();
-    }
-
-    function openProfileModal() {
-      closeLoginModal();
-      closeRegisterModal();
-
-      const user = JSON.parse(localStorage.getItem("bs_user"));
-      if (!user) return; // Should not happen if this function is called correctly
-
-      document.getElementById(
-        "profile-fullname"
-      ).textContent = `Xin chào, ${user.fullName}!`;
-      document.getElementById("profile-name-value").textContent =
-        user.fullName;
-      document.getElementById("profile-username-value").textContent =
-        user.username;
-      document.getElementById("profile-email-value").textContent = user.email;
-      document.getElementById("profile-phone-value").textContent = user.phone;
-      document.getElementById("profile-address-value").textContent =
-        user.address;
-
-      openModal("profileModal");
-    }
-
-    function closeProfileModal() {
-      closeModal("profileModal");
-    }
-
-    function handleLogoutModal() {
-      localStorage.removeItem("bs_user");
-      localStorage.removeItem("bs_login_status");
-
-      // Đóng modal profile
-      closeProfileModal();
-
-      // Cập nhật giao diện header
-      if (typeof checkLoginStatus === "function") checkLoginStatus();
-
-      // Cập nhật giỏ hàng nếu cần
-      renderCart();
-    }
-
-    function openAddressModal() {
-      if (!localStorage.getItem("bs_user")) {
-        alert("Vui lòng đăng nhập để quản lý địa chỉ.");
-        openLoginModal();
-        return;
-      }
-      renderAddressManagementModal();
-      openModal("addressModal");
-    }
-
-    function closeAddressModal() {
-      closeModal("addressModal");
-    }
-
-    // Khởi tạo
-    document.addEventListener("DOMContentLoaded", () => {
-      renderCart();
-      if (typeof updateCartCount === "function") updateCartCount();
-      // Khởi tạo địa chỉ mặc định khi tải trang (nếu đã đăng nhập)
-      if (localStorage.getItem("bs_user")) {
-        initDefaultAddress();
-      }
-    });
-  </script>
 </body>
 
 </html>

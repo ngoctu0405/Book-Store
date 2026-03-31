@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 require_once __DIR__ . '/db.php';
 header('Content-Type: application/json; charset=UTF-8');
 
@@ -89,6 +90,7 @@ try {
     }
 
     $conn->commit();
+    $_SESSION['cart'] = [];
 
     echo json_encode([
         'orderId'     => $orderId,
