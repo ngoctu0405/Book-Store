@@ -23,13 +23,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Đồng bộ lại thông tin mới nhất từ server vào localStorage
     localStorage.setItem("bs_user", JSON.stringify({
-      id:       user.id,
-      status:   user.status,
+      id: user.id,
+      status: user.status,
       username: user.username,
       fullName: user.fullName,
-      email:    user.email,
-      phone:    user.phone,
-      address:  user.address,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
     }));
 
   } catch (err) {
@@ -116,7 +116,7 @@ function getVisibleProducts() {
   // ✅ ĐỌC TRỰC TIẾP TỪ LOCALSTORAGE
   const dataString = localStorage.getItem("bs_data");
   let allProducts = [];
-  
+
   if (dataString) {
     try {
       const data = JSON.parse(dataString);
@@ -210,11 +210,10 @@ function loadCategoriesAndPopulateMenu() {
       cat.subcategories.forEach((sub) => {
         subMenuHTML += `
                     <li><a href="category.php?category=${encodeURIComponent(
-                      cat.name
-                    )}&subcategory=${encodeURIComponent(sub)}" 
-                        data-category="${
-                          cat.name
-                        }" data-subcategory="${sub}">${sub}</a></li>
+          cat.name
+        )}&subcategory=${encodeURIComponent(sub)}" 
+                        data-category="${cat.name
+          }" data-subcategory="${sub}">${sub}</a></li>
                 `;
       });
     }
@@ -222,8 +221,8 @@ function loadCategoriesAndPopulateMenu() {
     menuHTML += `
             <li class="dropdown">
                 <a href="category.php?category=${encodeURIComponent(
-                  cat.name
-                )}" data-category="${cat.name}">${cat.name} ▸</a>
+      cat.name
+    )}" data-category="${cat.name}">${cat.name} ▸</a>
                 <ul class="dropdown-content">
                     ${subMenuHTML}
                 </ul>
@@ -426,7 +425,7 @@ async function saveBuyerProfile(index, profile) {
         profile: profile,
       }),
     });
-    
+
     // Cập nhật cache
     if (!cachedBuyerProfiles) cachedBuyerProfiles = {};
     cachedBuyerProfiles[index] = profile;
@@ -699,18 +698,18 @@ let currentList = getVisibleProducts(); // Đã lọc sản phẩm và category 
 
 // SỬA: Cập nhật hàm renderProductList TOÀN CỤC để bao gồm Tác giả
 function renderProductList(page = 1) {
-    const wrap = document.getElementById("product-list");
-    if (!wrap) return;
+  const wrap = document.getElementById("product-list");
+  if (!wrap) return;
 
-    currentPage = page;
-    const all = currentList;
-    const start = (page - 1) * perPage;
-    const list = all.slice(start, start + perPage);
+  currentPage = page;
+  const all = currentList;
+  const start = (page - 1) * perPage;
+  const list = all.slice(start, start + perPage);
 
-    // Sử dụng HTML giống như trang category để hiển thị tác giả
-    wrap.innerHTML = list
-        .map(
-            (it) => `
+  // Sử dụng HTML giống như trang category để hiển thị tác giả
+  wrap.innerHTML = list
+    .map(
+      (it) => `
     <div class="product-card">
       <img src="${it.img}" alt="${it.name}">
       <div class="product-info">
@@ -718,26 +717,24 @@ function renderProductList(page = 1) {
         <p class="product-author">Tác giả: ${it.author || "Đang cập nhật"}</p>
         <div class="price">${(it.price || 0).toLocaleString("vi-VN")}₫</div>
         <div class="button-row">
-          <a class="btn btn-small" href="user/product-detail.php?id=${
-            it.id
-          }">Xem</a>
-          <button class="btn btn-cart" onclick="addToCart(${
-            it.id
-          }, 1)">Thêm vào giỏ</button>
+          <a class="btn btn-small" href="user/product-detail.php?id=${it.id
+        }">Xem</a>
+          <button class="btn btn-cart" onclick="addToCart(${it.id
+        }, 1)">Thêm vào giỏ</button>
         </div>
       </div>
     </div>
     `
-        )
-        .join("");
+    )
+    .join("");
 
-    renderPagination(Math.ceil(all.length / perPage));
-    
-    // Thêm hiệu ứng cuộn lên đầu trang sau khi nhấn đổi trang
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth' 
-    });
+  renderPagination(Math.ceil(all.length / perPage));
+
+  // Thêm hiệu ứng cuộn lên đầu trang sau khi nhấn đổi trang
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 }
 
 function renderPagination(totalPages) {
@@ -750,19 +747,16 @@ function renderPagination(totalPages) {
 
   let html = '<div class="pagination-wrap">';
   if (currentPage > 1) {
-    html += `<button class="page-btn" onclick="changePage(${
-      currentPage - 1
-    })">« Trước</button>`;
+    html += `<button class="page-btn" onclick="changePage(${currentPage - 1
+      })">« Trước</button>`;
   }
   for (let i = 1; i <= totalPages; i++) {
-    html += `<button class="page-btn ${
-      i === currentPage ? "active" : ""
-    }" onclick="changePage(${i})">${i}</button>`;
+    html += `<button class="page-btn ${i === currentPage ? "active" : ""
+      }" onclick="changePage(${i})">${i}</button>`;
   }
   if (currentPage < totalPages) {
-    html += `<button class="page-btn" onclick="changePage(${
-      currentPage + 1
-    })">Sau »</button>`;
+    html += `<button class="page-btn" onclick="changePage(${currentPage + 1
+      })">Sau »</button>`;
   }
   html += "</div>";
   pag.innerHTML = html;
@@ -831,31 +825,31 @@ function renderSearchResults() {
 
 // SỬA: Cập nhật hàm renderProductDetail() trong main.js
 function renderProductDetail() {
-    const mainContent = document.getElementById("mainContent");
-    if (!mainContent) return;
-    if (mainContent.getAttribute("data-rendered-by") === "php") return;
+  const mainContent = document.getElementById("mainContent");
+  if (!mainContent) return;
+  if (mainContent.getAttribute("data-rendered-by") === "php") return;
 
-    const productId = getProductIdFromURL();
-    const product = findProductById(productId);
+  const productId = getProductIdFromURL();
+  const product = findProductById(productId);
 
-    if (!product) {
-        showError();
-        return;
-    }
+  if (!product) {
+    showError();
+    return;
+  }
 
-    // 1. Lấy số lượng tồn kho thực tế và đảm bảo là giá trị số
-    const realStockQty = product ? parseInt(product.qty) || 0 : 0; 
-    const maxQtyValue = realStockQty; 
-    
-    // 2. Thiết lập biến kiểm tra hết hàng (qty <= 0)
-    const isOutOfStock = realStockQty <= 0;
+  // 1. Lấy số lượng tồn kho thực tế và đảm bảo là giá trị số
+  const realStockQty = product ? parseInt(product.qty) || 0 : 0;
+  const maxQtyValue = realStockQty;
 
-    // 3. Tạo HTML có điều kiện
-    let productActionsHtml;
-    
-    if (isOutOfStock) {
-        // TRƯỜNG HỢP: HẾT HÀNG (ẨN input, Vô hiệu hóa nút)
-        productActionsHtml = `
+  // 2. Thiết lập biến kiểm tra hết hàng (qty <= 0)
+  const isOutOfStock = realStockQty <= 0;
+
+  // 3. Tạo HTML có điều kiện
+  let productActionsHtml;
+
+  if (isOutOfStock) {
+    // TRƯỜNG HỢP: HẾT HÀNG (ẨN input, Vô hiệu hóa nút)
+    productActionsHtml = `
             <p id="stock-qty" class="stock-info" style="margin-top: 1rem; color: #e74c3c; font-size: 1.2rem; font-weight: 700;">
                 💔 HẾT HÀNG - Sản phẩm tạm thời không có sẵn.
             </p>
@@ -868,9 +862,9 @@ function renderProductDetail() {
                 </button>
             </div> 
         `;
-    } else {
-        // TRƯỜNG HỢP: CÒN HÀNG (Hiển thị input và nút)
-        productActionsHtml = `
+  } else {
+    // TRƯỜNG HỢP: CÒN HÀNG (Hiển thị input và nút)
+    productActionsHtml = `
             <div class="quantity-controls">
                 <button class="qty-btn minus-btn" onclick="decreaseQty()">-</button>
                 <input type="number" id="qty" value="1" min="1" max="${maxQtyValue}">
@@ -890,17 +884,17 @@ function renderProductDetail() {
                 </button>
             </div> 
         `;
-    }
+  }
 
-    const mainHtml = `
+  const mainHtml = `
         <div class="product-actions">
             ${productActionsHtml}
         </div>
         
         `;
-    
-    mainContent.innerHTML = mainHtml;
-    // ... (Phần cuối) ...
+
+  mainContent.innerHTML = mainHtml;
+  // ... (Phần cuối) ...
 }
 
 // SỬA: Cập nhật hàm increaseQty để tôn trọng giá trị max
@@ -1006,7 +1000,7 @@ function formatPrice(price) {
 
 function findProductById(id) {
   return getData().products.find((p) => p.id === id);
-} 
+}
 
 function goBack() {
   if (document.referrer && (document.referrer.includes("category") || document.referrer.includes("index"))) {
@@ -1072,9 +1066,8 @@ function renderProductDetailPage(product) {
           </div>
           <div class="shipping-row">
             <span class="shipping-label">Danh mục:</span>
-            <span class="shipping-value">${product.category} › ${
-    product.subcategory
-  }</span>
+            <span class="shipping-value">${product.category} › ${product.subcategory
+    }</span>
           </div>
           <div class="shipping-row">
             <span class="shipping-label">Số lượng sách  :</span>
@@ -1093,12 +1086,10 @@ function renderProductDetailPage(product) {
         </div>
 
         <div class="action-buttons">
-          <button class="btn btn-add-cart" onclick="addToCartDetail(${
-            product.id
-          })">🛒 Thêm vào giỏ hàng</button>
-          <button class="btn btn-buy-now" onclick="buyNow(${
-            product.id
-          })">⚡ Mua ngay</button>
+          <button class="btn btn-add-cart" onclick="addToCartDetail(${product.id
+    })">🛒 Thêm vào giỏ hàng</button>
+          <button class="btn btn-buy-now" onclick="buyNow(${product.id
+    })">⚡ Mua ngay</button>
         </div>
 
         <div class="guarantee-section">
@@ -1131,9 +1122,8 @@ function renderProductDetailPage(product) {
         </div>
         <div class="info-row">
           <span class="info-label">Danh mục</span>
-          <span class="info-value">${product.category} › ${
-    product.subcategory
-  }</span>
+          <span class="info-value">${product.category} › ${product.subcategory
+    }</span>
         </div>
         <div class="info-row">
           <span class="info-label">Giá bán</span>
@@ -1152,55 +1142,55 @@ function renderProductDetailPage(product) {
 }
 
 function validateQtyInput() {
-    const input = document.getElementById("qty");
-    if (!input) return;
+  const input = document.getElementById("qty");
+  if (!input) return;
 
-    const min = parseInt(input.min);
-    const max = parseInt(input.max);
-    let value = parseInt(input.value);
+  const min = parseInt(input.min);
+  const max = parseInt(input.max);
+  let value = parseInt(input.value);
 
-    // Kiểm tra nếu giá trị không phải là số hoặc nhỏ hơn 1
-    if (isNaN(value) || value < min) {
-        input.value = min;
-        return;
-    }
+  // Kiểm tra nếu giá trị không phải là số hoặc nhỏ hơn 1
+  if (isNaN(value) || value < min) {
+    input.value = min;
+    return;
+  }
 
-    // Kiểm tra nếu giá trị lớn hơn tồn kho
-    if (value > max) {
-        input.value = max;
-        alert(`Số lượng tồn kho chỉ còn ${max} sản phẩm.`);
-        return;
-    }
+  // Kiểm tra nếu giá trị lớn hơn tồn kho
+  if (value > max) {
+    input.value = max;
+    alert(`Số lượng tồn kho chỉ còn ${max} sản phẩm.`);
+    return;
+  }
 
-    // Ghi lại giá trị đã làm tròn (nếu người dùng nhập số thập phân)
-    input.value = value;
+  // Ghi lại giá trị đã làm tròn (nếu người dùng nhập số thập phân)
+  input.value = value;
 }
 
 // Cập nhật hàm tăng số lượng (increaseQty) để giới hạn theo số lượng tồn kho (max attribute)
 function increaseQty() {
-    const input = document.getElementById("qty");
-    if (!input) return;
-    
-    // 1. Lấy giới hạn tối đa (chính là số lượng tồn kho được set bởi renderProductDetail)
-    const max = parseInt(input.getAttribute('max')); 
-    const currentValue = parseInt(input.value);
+  const input = document.getElementById("qty");
+  if (!input) return;
 
-    // 2. Chỉ tăng nếu số lượng hiện tại nhỏ hơn max
-    if (currentValue < max) {
-        input.value = currentValue + 1;
-    } else {
-        // Thông báo cho người dùng biết đã đạt giới hạn tồn kho
-        alert(`🚫 Số lượng tối đa có thể mua là ${max} sản phẩm.`);
-    }
+  // 1. Lấy giới hạn tối đa (chính là số lượng tồn kho được set bởi renderProductDetail)
+  const max = parseInt(input.getAttribute('max'));
+  const currentValue = parseInt(input.value);
+
+  // 2. Chỉ tăng nếu số lượng hiện tại nhỏ hơn max
+  if (currentValue < max) {
+    input.value = currentValue + 1;
+  } else {
+    // Thông báo cho người dùng biết đã đạt giới hạn tồn kho
+    alert(`🚫 Số lượng tối đa có thể mua là ${max} sản phẩm.`);
+  }
 }
 
 // Giữ nguyên hàm decreaseQty()
 function decreaseQty() {
-    const input = document.getElementById("qty");
-    if (!input) return;
-    if (parseInt(input.value) > 1) {
-        input.value = parseInt(input.value) - 1;
-    }
+  const input = document.getElementById("qty");
+  if (!input) return;
+  if (parseInt(input.value) > 1) {
+    input.value = parseInt(input.value) - 1;
+  }
 }
 
 // BẮT ĐẦU PHẦN CHỈNH SỬA LOGIC CHI TIẾT SẢN PHẨM
@@ -1439,7 +1429,7 @@ function renderAuth() {
 document.addEventListener("DOMContentLoaded", function () {
   try {
     renderAuth();
-  } catch (e) {}
+  } catch (e) { }
 });
 
 /* Assistant added cart float click handler */

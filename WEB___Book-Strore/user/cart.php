@@ -4,12 +4,12 @@ require_once __DIR__ . '/../api/db.php';
 
 function h($value)
 {
-  return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+  return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
 function fmtPrice($value)
 {
-  return number_format((int)$value, 0, ',', '.') . '₫';
+  return number_format((int) $value, 0, ',', '.') . '₫';
 }
 
 function getCartFromSession()
@@ -24,8 +24,8 @@ function getCartFromSession()
       continue;
     }
 
-    $id = isset($item['id']) ? (int)$item['id'] : 0;
-    $qty = isset($item['qty']) ? (int)$item['qty'] : 0;
+    $id = isset($item['id']) ? (int) $item['id'] : 0;
+    $qty = isset($item['qty']) ? (int) $item['qty'] : 0;
 
     if ($id <= 0 || $qty <= 0) {
       continue;
@@ -79,15 +79,15 @@ if (!empty($cartItems)) {
 
 $userInfo = [
   'fullName' => '',
-  'email'    => '',
-  'phone'    => '',
-  'address'  => '',
+  'email' => '',
+  'phone' => '',
+  'address' => '',
 ];
 $userId = 0;
 
 // Lấy thông tin user từ session nếu có, không thì để JS tự điền từ localStorage
 if (isset($_SESSION['user_id']) && $_SESSION['user_id']) {
-  $userId = (int)$_SESSION['user_id'];
+  $userId = (int) $_SESSION['user_id'];
   $stmt = $conn->prepare('SELECT fullName, email, phone, address FROM users WHERE id = ?');
   if ($stmt) {
     $stmt->bind_param('i', $userId);
@@ -128,9 +128,7 @@ $hasCartItems = !empty($cartProducts);
   <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <style>
     /* CHỈNH SỬA: Sửa lỗi cú pháp, thêm padding: 0 và box-sizing: border-box */
     * {
@@ -297,16 +295,16 @@ $hasCartItems = !empty($cartProducts);
 
     /* Cart Item - Improved */
     .cart-item {
-      display: grid;
-      grid-template-columns: 40px 110px 1fr auto;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 1.5rem;
-      background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
-      border-radius: 16px;
-      margin-bottom: 1.5rem;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
+      display: grid !important;
+      grid-template-columns: 110px 1fr auto !important;
+      align-items: center !important;
+      gap: 1.5rem !important;
+      padding: 1.5rem !important;
+      background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%) !important;
+      border-radius: 16px !important;
+      margin-bottom: 1.5rem !important;
+      transition: all 0.3s ease !important;
+      border: 2px solid transparent !important;
     }
 
     .cart-item:hover {
@@ -763,17 +761,12 @@ $hasCartItems = !empty($cartProducts);
       }
 
       .cart-item {
-        grid-template-columns: 30px 90px 1fr;
-        grid-template-areas:
-          "checkbox image details"
-          "actions actions actions";
-        gap: 0.75rem 1rem;
-        padding: 1.5rem;
+        grid-template-columns: 90px 1fr !important;
+        grid-template-areas: "image details" "actions actions" !important;
+        gap: 0.75rem 1rem !important;
+        padding: 1.5rem !important;
       }
 
-      .item-select-wrapper {
-        grid-area: checkbox;
-      }
 
       .cart-item-image {
         grid-area: image;
@@ -1066,10 +1059,7 @@ $hasCartItems = !empty($cartProducts);
     <div class="logo">
       <a href="index.php">
         <img class="Logo" src="../images/Logo_removebg.png" alt="Logo" />
-        <img
-          class="Word"
-          src="../images/Logo_word_removebg.png"
-          alt="Literary Haven" />
+        <img class="Word" src="../images/Logo_word_removebg.png" alt="Literary Haven" />
       </a>
     </div>
 
@@ -1096,12 +1086,10 @@ $hasCartItems = !empty($cartProducts);
             <a href="category.php?category=Văn học" data-category="Văn học">Văn học ▸</a>
             <ul class="dropdown-content">
               <li>
-                <a
-                  href="category.php?category=Văn học&subcategory=Tiểu thuyết">Tiểu thuyết</a>
+                <a href="category.php?category=Văn học&subcategory=Tiểu thuyết">Tiểu thuyết</a>
               </li>
               <li>
-                <a
-                  href="category.php?category=Văn học&subcategory=Truyện ngắn">Truyện ngắn</a>
+                <a href="category.php?category=Văn học&subcategory=Truyện ngắn">Truyện ngắn</a>
               </li>
               <li>
                 <a href="category.php?category=Văn học&subcategory=Thơ">Thơ</a>
@@ -1128,12 +1116,10 @@ $hasCartItems = !empty($cartProducts);
             <a href="category.php?category=Thiếu nhi">Thiếu nhi ▸</a>
             <ul class="dropdown-content">
               <li>
-                <a
-                  href="category.php?category=Thiếu nhi&subcategory=Truyện tranh">Truyện tranh</a>
+                <a href="category.php?category=Thiếu nhi&subcategory=Truyện tranh">Truyện tranh</a>
               </li>
               <li>
-                <a
-                  href="category.php?category=Thiếu nhi&subcategory=Giáo dục">Giáo dục</a>
+                <a href="category.php?category=Thiếu nhi&subcategory=Giáo dục">Giáo dục</a>
               </li>
             </ul>
           </li>
@@ -1161,11 +1147,7 @@ $hasCartItems = !empty($cartProducts);
   <!-- Tìm kiếm và giỏ hàng -->
   <div class="nav_2">
     <div class="search-center">
-      <input
-        id="topSearch"
-        class="search-input"
-        type="text"
-        placeholder="Nhập tên cuốn sách bạn đang tìm ..."
+      <input id="topSearch" class="search-input" type="text" placeholder="Nhập tên cuốn sách bạn đang tìm ..."
         autocomplete="off" />
       <button class="search-btn" type="button">Tìm kiếm</button>
     </div>
@@ -1207,9 +1189,11 @@ $hasCartItems = !empty($cartProducts);
                 <div class="cart-item-actions">
                   <p class="cart-item-total"><?= fmtPrice($item['lineTotal']) ?></p>
                   <div class="quantity-controls">
-                    <button class="qty-btn minus-btn" type="button" onclick="changeQuantity(<?= $item['id'] ?>, -1)">-</button>
+                    <button class="qty-btn minus-btn" type="button"
+                      onclick="changeQuantity(<?= $item['id'] ?>, -1)">-</button>
                     <span class="qty-display"><?= $item['qty'] ?></span>
-                    <button class="qty-btn plus-btn" type="button" onclick="changeQuantity(<?= $item['id'] ?>, 1)">+</button>
+                    <button class="qty-btn plus-btn" type="button"
+                      onclick="changeQuantity(<?= $item['id'] ?>, 1)">+</button>
                   </div>
                   <button class="btn-remove" type="button" onclick="removeCartItem(<?= $item['id'] ?>)">
                     <i class="bi bi-trash"></i> Xóa
@@ -1224,14 +1208,24 @@ $hasCartItems = !empty($cartProducts);
           <div class="buyer-info-card cart-section">
             <h4>👤 Thông tin người mua</h4>
             <div id="buyerInfoDisplay" class="info-grid">
-              <div class="info-row"><strong>Họ tên:</strong> <span id="displayBuyerName"><?= h($buyerProfiles[1]['fullName'] ?? $userInfo['fullName'] ?: 'Chưa nhập') ?></span></div>
-              <div class="info-row"><strong>Email:</strong> <span id="displayBuyerEmail"><?= h($buyerProfiles[1]['email'] ?? $userInfo['email'] ?: 'Chưa nhập') ?></span></div>
-              <div class="info-row"><strong>Số điện thoại:</strong> <span id="displayBuyerPhone"><?= h($buyerProfiles[1]['phone'] ?? $userInfo['phone'] ?: 'Chưa nhập') ?></span></div>
-              <div class="info-row"><strong>Địa chỉ:</strong> <span id="displayBuyerAddress"><?= h($buyerProfiles[1]['address'] ?? $userInfo['address'] ?: 'Chưa nhập') ?></span></div>
-              <div class="info-row"><strong>Ghi chú:</strong> <span id="displayBuyerNote"><?= h($buyerProfiles[1]['note'] ?? 'Không có') ?></span></div>
+              <div class="info-row"><strong>Họ tên:</strong> <span
+                  id="displayBuyerName"><?= h($buyerProfiles[1]['fullName'] ?? $userInfo['fullName'] ?: 'Chưa nhập') ?></span>
+              </div>
+              <div class="info-row"><strong>Email:</strong> <span
+                  id="displayBuyerEmail"><?= h($buyerProfiles[1]['email'] ?? $userInfo['email'] ?: 'Chưa nhập') ?></span>
+              </div>
+              <div class="info-row"><strong>Số điện thoại:</strong> <span
+                  id="displayBuyerPhone"><?= h($buyerProfiles[1]['phone'] ?? $userInfo['phone'] ?: 'Chưa nhập') ?></span>
+              </div>
+              <div class="info-row"><strong>Địa chỉ:</strong> <span
+                  id="displayBuyerAddress"><?= h($buyerProfiles[1]['address'] ?? $userInfo['address'] ?: 'Chưa nhập') ?></span>
+              </div>
+              <div class="info-row"><strong>Ghi chú:</strong> <span
+                  id="displayBuyerNote"><?= h($buyerProfiles[1]['note'] ?? 'Không có') ?></span></div>
             </div>
             <button class="btn-edit-info" type="button" onclick="openBuyerInfoModal()">➕ Thêm thông tin</button>
-            <button class="btn-edit-info" type="button" onclick="openChangeProfileModal()" style="margin-top:0.5rem;background:linear-gradient(135deg,#82c09a,#4f9da6);">🔄 Thay đổi thông tin</button>
+            <button class="btn-edit-info" type="button" onclick="openChangeProfileModal()"
+              style="margin-top:0.5rem;background:linear-gradient(135deg,#82c09a,#4f9da6);">🔄 Thay đổi thông tin</button>
           </div>
 
           <div class="cart-summary">
@@ -1242,13 +1236,15 @@ $hasCartItems = !empty($cartProducts);
             </div>
             <div class="summary-row">
               <span>Phí vận chuyển</span>
-              <span class="<?= $shippingFee === 0 ? 'text-success' : '' ?>"><?= $shippingFee === 0 ? 'Miễn phí' : fmtPrice($shippingFee) ?></span>
+              <span
+                class="<?= $shippingFee === 0 ? 'text-success' : '' ?>"><?= $shippingFee === 0 ? 'Miễn phí' : fmtPrice($shippingFee) ?></span>
             </div>
             <div class="summary-row total">
               <span>Tổng cộng</span>
               <span><?= fmtPrice($totalAmount) ?></span>
             </div>
-            <button class="btn-checkout" type="button" onclick="checkoutCart()"> Thanh Toán (<?= h($cartTotalQty) ?> sản phẩm)</button>
+            <button class="btn-checkout" type="button" onclick="checkoutCart()"> Thanh Toán (<?= h($cartTotalQty) ?> sản
+              phẩm)</button>
 
             <form id="buyerForm" style="display: none;">
               <input type="hidden" id="buyerProfileIndex" value="1">
@@ -1265,14 +1261,31 @@ $hasCartItems = !empty($cartProducts);
   </main>
 
   <script>
+    // ===== Fix: Category Dropdown luôn hoạt động dù đăng nhập hay chưa =====
+    document.addEventListener('DOMContentLoaded', function () {
+      var catBtn = document.querySelector('.category-btn');
+      var bookFilter = document.querySelector('.book-filter');
+      if (catBtn && bookFilter) {
+        catBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          bookFilter.classList.toggle('show');
+        });
+        document.addEventListener('click', function (e) {
+          if (!e.target.closest('.category-menu')) {
+            bookFilter.classList.remove('show');
+          }
+        });
+      }
+    });
+    // ===================================================================
     // Dữ liệu từ PHP truyền xuống JS
     window.currentUserFromSession = <?= json_encode([
-                                      'id'       => $userId ?: null,
-                                      'fullName' => $userInfo['fullName'] ?? '',
-                                      'email'    => $userInfo['email']    ?? '',
-                                      'phone'    => $userInfo['phone']    ?? '',
-                                      'address'  => $userInfo['address']  ?? '',
-                                    ]) ?>;
+      'id' => $userId ?: null,
+      'fullName' => $userInfo['fullName'] ?? '',
+      'email' => $userInfo['email'] ?? '',
+      'phone' => $userInfo['phone'] ?? '',
+      'address' => $userInfo['address'] ?? '',
+    ]) ?>;
 
     window.buyerProfiles = <?= json_encode($buyerProfiles) ?>;
     window.currentProfileIndex = 1;
@@ -1366,7 +1379,7 @@ $hasCartItems = !empty($cartProducts);
     }
 
     // Lưu mẫu thông tin lên server
-    document.getElementById('buyerInfoForm')?.addEventListener('submit', async function(e) {
+    document.getElementById('buyerInfoForm')?.addEventListener('submit', async function (e) {
       e.preventDefault();
       const userId = window.currentUserFromSession?.id;
       if (!userId) {
@@ -1420,19 +1433,23 @@ $hasCartItems = !empty($cartProducts);
       </div>
       <div style="display:flex;flex-direction:column;gap:1rem;padding:1rem 0;">
         <?php for ($i = 1; $i <= 3; $i++): ?>
-          <div id="profileCard-<?= $i ?>" class="profile-card" onclick="switchProfile(<?= $i ?>); closeChangeProfileModal();">
+          <div id="profileCard-<?= $i ?>" class="profile-card"
+            onclick="switchProfile(<?= $i ?>); closeChangeProfileModal();">
             <div class="profile-card-header">
               <strong style="color:#4f9da6;">Thông tin <?= $i ?></strong>
               <span style="font-size:0.9rem;color:#6b7280;">Chọn thông tin</span>
             </div>
-            <div id="profileCardBody-<?= $i ?>" class="profile-card-body" style="<?= empty($buyerProfiles[$i]) ? 'display:none;' : '' ?>">
+            <div id="profileCardBody-<?= $i ?>" class="profile-card-body"
+              style="<?= empty($buyerProfiles[$i]) ? 'display:none;' : '' ?>">
               <div><strong>Họ tên:</strong> <span><?= h($buyerProfiles[$i]['fullName'] ?? '') ?></span></div>
               <div><strong>Email:</strong> <span><?= h($buyerProfiles[$i]['email'] ?? '') ?></span></div>
               <div><strong>Phone:</strong> <span><?= h($buyerProfiles[$i]['phone'] ?? '') ?></span></div>
               <div><strong>Địa chỉ:</strong> <span><?= h($buyerProfiles[$i]['address'] ?? '') ?></span></div>
               <div><strong>Ghi chú:</strong> <span><?= h($buyerProfiles[$i]['note'] ?? 'Không có') ?></span></div>
             </div>
-            <p id="profileCardEmpty-<?= $i ?>" style="margin:0.3rem 0 0;color:#aaa;font-size:0.95rem;<?= empty($buyerProfiles[$i]) ? '' : 'display:none;' ?>">Chưa có thông tin</p>
+            <p id="profileCardEmpty-<?= $i ?>"
+              style="margin:0.3rem 0 0;color:#aaa;font-size:0.95rem;<?= empty($buyerProfiles[$i]) ? '' : 'display:none;' ?>">
+              Chưa có thông tin</p>
           </div>
         <?php endfor; ?>
       </div>
@@ -1457,7 +1474,8 @@ $hasCartItems = !empty($cartProducts);
           </select>
         </div>
 
-        <div class="buyer-modal-grid-columns" style="display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1.5rem !important; align-items: start !important; width: 100%;">
+        <div class="buyer-modal-grid-columns"
+          style="display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 1.5rem !important; align-items: start !important; width: 100%;">
           <div class="buyer-modal-column" style="display: flex; flex-direction: column; gap: 1rem;">
             <div class="form-group">
               <label for="modalBuyerName">Họ tên *</label>
