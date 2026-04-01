@@ -401,8 +401,7 @@ async function initBuyerProfiles() {
 }
 
 async function getBuyerProfile(index) {
-  const profiles = cachedBuyerProfiles || (await initBuyerProfiles());
-  const profile = profiles[index];
+  const profiles = cachedBuyerProfiles || (await initBuyerProfiles());  const profile = profiles[index];
   const defaults = createProfileFromFormFields();
 
   if (!profile || Object.values(profile).every((value) => !value)) {
@@ -1330,26 +1329,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       });
     });
 
-    document.getElementById("buyerInfoForm").addEventListener("submit", async function (event) {
-      event.preventDefault();
-
-      const profileIndex = Number(document.getElementById("modalBuyerSaveTo").value || 1);
-      const profile = {
-        name: document.getElementById("modalBuyerName").value.trim(),
-        email: document.getElementById("modalBuyerEmail").value.trim(),
-        phone: document.getElementById("modalBuyerPhone").value.trim(),
-        address: document.getElementById("modalBuyerAddress").value.trim(),
-        note: document.getElementById("modalBuyerNote").value.trim(),
-      };
-
-      await saveBuyerProfile(profileIndex, profile);
-      window.buyerProfiles = window.buyerProfiles || {};
-      window.buyerProfiles[profileIndex] = profile;
-      refreshChangeProfileCards();
-      applyBuyerProfile(profile);
-      updateBuyerInfoDisplay();
-      closeBuyerInfoModal();
-    });
     updateBuyerInfoDisplay();
   }
   renderSearchResults();
