@@ -1,27 +1,25 @@
-// Kiểm tra trạng thái tài khoản từ server mỗi khi trang load
+// Kiểm tra trạng thái tài khoản từ server mỗi khi trang load (dùng session)
 document.addEventListener("DOMContentLoaded", async function () {
-  const currentUser = JSON.parse(localStorage.getItem("bs_user"));
-  if (!currentUser || !currentUser.id) return;
-
   try {
     const data = await apiFetchJson(resolveApiUrl("check-status.php"), {
       method: "POST",
-      body: JSON.stringify({ id: currentUser.id }),
+      body: JSON.stringify({}), // session PHP tự xác định user
     });
 
     const user = data.user;
     if (!user) return;
 
-    // Tài khoản bị khóa -> đăng xuất
+    // Tài khoản bị khóa → đăng xuất
     if (user.status === "locked") {
       alert("🚫 Tài khoản của bạn đã bị khóa. Bạn sẽ được đăng xuất.");
+      await logoutViaApi();
       localStorage.removeItem("bs_user");
       await clearCart();
       updateAuthUI();
       return;
     }
 
-    // Đồng bộ lại thông tin mới nhất từ server vào localStorage
+    // Lưu thông tin tối thiểu vào localStorage chỉ để hiển thị UI
     localStorage.setItem("bs_user", JSON.stringify({
       id: user.id,
       status: user.status,
@@ -32,9 +30,16 @@ document.addEventListener("DOMContentLoaded", async function () {
       address: user.address,
     }));
 
+    updateAuthUI();
+
   } catch (err) {
-    // Không làm gì nếu API lỗi, tránh đăng xuất nhầm
-    console.warn("Không thể kiểm tra trạng thái tài khoản:", err.message);
+    // Session không tồn tại hoặc hết hạn → xóa localStorage để đồng bộ
+    if (err.message && err.message.includes('Chưa đăng nhập')) {
+      localStorage.removeItem("bs_user");
+      updateAuthUI();
+    } else {
+      console.warn("Không thể kiểm tra trạng thái tài khoản:", err.message);
+    }
   }
 });
 
@@ -100,7 +105,14 @@ async function registerViaApi(userPayload) {
   });
 }
 
-// Thanh toán / tạo đơn hàng
+// Đăng xuất — xóa session PHP
+async function logoutViaApi() {
+  try {
+    await apiFetchJson(resolveApiUrl("logout.php"), { method: "POST" });
+  } catch (e) {
+    // Bỏ qua lỗi, vẫn xóa localStorage
+  }
+}
 async function checkoutViaApi(userId, items) {
   return apiFetchJson(resolveApiUrl("checkout.php"), {
     method: "POST",
@@ -1596,29 +1608,25 @@ function handleLogin(e) {
 
   if (hasError) return;
 
-  // Đăng nhập qua API thay vì localStorage
+  // Đăng nhập qua API — session được set tự động bởi server
   loginViaApi(username, password)
     .then((resp) => {
       const user = resp.user;
-      if (!user) {
-        throw new Error("Không nhận được thông tin user từ server");
-      }
+      if (!user) throw new Error("Không nhận được thông tin user từ server");
 
-      localStorage.setItem(
-        "bs_user",
-        JSON.stringify({
-          id: user.id,
-          status: user.status,
-          username: user.username,
-          fullName: user.fullName,
-          email: user.email,
-          phone: user.phone,
-          address: user.address,
-        })
-      );
+      // Lưu vào localStorage chỉ để hiển thị UI (tên, avatar...)
+      // Xác thực thật sự dùng PHP session
+      localStorage.setItem("bs_user", JSON.stringify({
+        id: user.id,
+        status: user.status,
+        username: user.username,
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
+      }));
 
       closeLoginModal();
-      alert("Đăng nhập thành công!");
       updateAuthUI();
       location.reload();
     })
@@ -1709,14 +1717,7 @@ function handleRegister(e) {
   if (hasError) return;
 
   // Gửi dữ liệu đăng ký lên server
-  registerViaApi({
-    fullName,
-    username,
-    password,
-    email,
-    phone,
-    address,
-  })
+  registerViaApi({ fullName, username, password, email, phone, address })
     .then(() => {
       closeRegisterModal();
       alert("Đăng ký thành công! Vui lòng đăng nhập.");
@@ -1733,15 +1734,14 @@ function handleRegister(e) {
 }
 
 // ==========================================================
-// ✅ ĐIỂM SỬA LỖI 2: Cập nhật hàm handleLogoutModal()
 async function handleLogoutModal() {
   if (confirm("Bạn có chắc muốn đăng xuất?")) {
+    await logoutViaApi();
     localStorage.removeItem("bs_user");
-    // THÊM: Xóa giỏ hàng khi đăng xuất để reset về 0
+    localStorage.setItem("bs_cart", JSON.stringify([]));
     await clearCart();
     closeProfileModal();
     updateAuthUI();
-    if (typeof updateCartCount === "function") updateCartCount();
     location.reload();
   }
 }
@@ -1847,7 +1847,9 @@ function changePassword(e) {
 async function handleLogoutDropdown(e) {
   if (e) e.preventDefault();
   if (confirm("Bạn có chắc muốn đăng xuất?")) {
+    await logoutViaApi();
     localStorage.removeItem("bs_user");
+    localStorage.setItem("bs_cart", JSON.stringify([]));
     await clearCart();
     updateAuthUI();
     if (typeof updateCartCount === "function") updateCartCount();
@@ -1988,4 +1990,3 @@ document.addEventListener("DOMContentLoaded", function () {
     loadSearchQuery();
   }
 });
-// Các hàm updateProductStock / CRUD sản phẩm cũ dùng localStorage đã bị loại bỏ

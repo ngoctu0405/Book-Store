@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once __DIR__ . '/db.php';
 header('Content-Type: application/json; charset=UTF-8');
 
@@ -52,9 +52,12 @@ if ($user['status'] === 'locked') {
     exit;
 }
 
+// ✅ Set session PHP
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['user_username'] = $user['username'];
+$_SESSION['user_fullName'] = $user['fullName'];
+
 // Ẩn password khi trả về client
 unset($user['password']);
 
-echo json_encode([
-    'user' => $user
-]);
+echo json_encode(['user' => $user]);

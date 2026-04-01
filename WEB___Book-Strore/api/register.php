@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/db.php';
 header('Content-Type: application/json; charset=UTF-8');
 
@@ -14,9 +13,9 @@ $input = json_decode(file_get_contents('php://input'), true);
 $fullName = isset($input['fullName']) ? trim($input['fullName']) : '';
 $username = isset($input['username']) ? trim($input['username']) : '';
 $password = isset($input['password']) ? trim($input['password']) : '';
-$email    = isset($input['email']) ? trim($input['email']) : '';
-$phone    = isset($input['phone']) ? trim($input['phone']) : '';
-$address  = isset($input['address']) ? trim($input['address']) : '';
+$email = isset($input['email']) ? trim($input['email']) : '';
+$phone = isset($input['phone']) ? trim($input['phone']) : '';
+$address = isset($input['address']) ? trim($input['address']) : '';
 
 if ($fullName === '' || $username === '' || $password === '' || $email === '' || $phone === '' || $address === '') {
     http_response_code(400);
@@ -64,15 +63,16 @@ if (!$stmt->execute()) {
 
 $newId = $stmt->insert_id;
 
+// Không set session ở đây — người dùng cần đăng nhập thủ công
 echo json_encode([
     'user' => [
-        'id'       => $newId,
-        'status'   => $status,
+        'id' => $newId,
+        'status' => $status,
         'fullName' => $fullName,
         'username' => $username,
-        'email'    => $email,
-        'phone'    => $phone,
-        'address'  => $address,
+        'email' => $email,
+        'phone' => $phone,
+        'address' => $address,
         'createdAt' => $now,
     ]
 ]);

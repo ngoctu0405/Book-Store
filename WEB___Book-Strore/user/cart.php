@@ -1226,6 +1226,9 @@ $hasCartItems = !empty($cartProducts);
             <button class="btn-edit-info" type="button" onclick="openBuyerInfoModal()">➕ Thêm thông tin</button>
             <button class="btn-edit-info" type="button" onclick="openChangeProfileModal()"
               style="margin-top:0.5rem;background:linear-gradient(135deg,#82c09a,#4f9da6);">🔄 Thay đổi thông tin</button>
+            <button class="btn-edit-info" type="button" onclick="resetBuyerInfoToDefault()"
+              style="margin-top:0.5rem;background:#f8f9fa;color:#2c3e50;border:1px solid #d1d5db;">⚙️ Đặt mặc
+              định</button>
           </div>
 
           <div class="cart-summary">
@@ -1261,164 +1264,136 @@ $hasCartItems = !empty($cartProducts);
   </main>
 
   <script>
-    // ===== Fix: Category Dropdown luôn hoạt động dù đăng nhập hay chưa =====
-    document.addEventListener('DOMContentLoaded', function () {
-      var catBtn = document.querySelector('.category-btn');
-      var bookFilter = document.querySelector('.book-filter');
-      if (catBtn && bookFilter) {
-        catBtn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          bookFilter.classList.toggle('show');
-        });
-        document.addEventListener('click', function (e) {
-          if (!e.target.closest('.category-menu')) {
-            bookFilter.classList.remove('show');
-          }
-        });
-      }
-    });
-    // ===================================================================
-    // Dữ liệu từ PHP truyền xuống JS
+    // ========== Data từ PHP (single source of truth) ==========
     window.currentUserFromSession = <?= json_encode([
-      'id' => $userId ?: null,
+      'id'       => $userId ?: null,
       'fullName' => $userInfo['fullName'] ?? '',
-      'email' => $userInfo['email'] ?? '',
-      'phone' => $userInfo['phone'] ?? '',
-      'address' => $userInfo['address'] ?? '',
+      'email'    => $userInfo['email']    ?? '',
+      'phone'    => $userInfo['phone']    ?? '',
+      'address'  => $userInfo['address']  ?? '',
     ]) ?>;
 
+    // buyerProfiles từ DB (đăng nhập) hoặc PHP Session (guest) — không dùng localStorage
     window.buyerProfiles = <?= json_encode($buyerProfiles) ?>;
     window.currentProfileIndex = 1;
 
-    // Chuyển mẫu thông tin
+    // ========== Utility ==========
+    function escapeHtml(text) {
+      if (!text || typeof text !== 'string') return '';
+      return text.replace(/&amp;/g,'&').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                 .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+
+    // ========== Hiển thị thông tin mẫu đang chọn (ĐỒNG BỘ, không fetch) ==========
     function switchProfile(index) {
       window.currentProfileIndex = index;
 
-      // Cập nhật tab active
+      // Tab active
       document.querySelectorAll('.buyer-profile-btn').forEach(btn => {
         btn.classList.toggle('active', parseInt(btn.dataset.profile) === index);
       });
 
-      const profile = window.buyerProfiles[index];
-      const user = window.currentUserFromSession;
+      const profile = window.buyerProfiles ? window.buyerProfiles[index] : null;
+      const user    = window.currentUserFromSession || {};
 
-      // Mẫu 1 mặc định điền thông tin tài khoản nếu chưa có
-      const defaultName = (index === 1) ? (user.fullName || 'Chưa nhập') : 'Chưa nhập';
-      const defaultEmail = (index === 1) ? (user.email || 'Chưa nhập') : 'Chưa nhập';
-      const defaultPhone = (index === 1) ? (user.phone || 'Chưa nhập') : 'Chưa nhập';
-      const defaultAddress = (index === 1) ? (user.address || 'Chưa nhập') : 'Chưa nhập';
+      // Mẫu 1: fallback về thông tin tài khoản nếu chưa có profile
+      const defaultName    = index === 1 ? (user.fullName || '') : '';
+      const defaultEmail   = index === 1 ? (user.email   || '') : '';
+      const defaultPhone   = index === 1 ? (user.phone   || '') : '';
+      const defaultAddress = index === 1 ? (user.address || '') : '';
 
-      document.getElementById('displayBuyerName').textContent = profile ? (profile.fullName || defaultName) : defaultName;
-      document.getElementById('displayBuyerEmail').textContent = profile ? (profile.email || defaultEmail) : defaultEmail;
-      document.getElementById('displayBuyerPhone').textContent = profile ? (profile.phone || defaultPhone) : defaultPhone;
-      document.getElementById('displayBuyerAddress').textContent = profile ? (profile.address || defaultAddress) : defaultAddress;
-      document.getElementById('displayBuyerNote').textContent = profile ? (profile.note || 'Không có') : 'Không có';
+      const name    = (profile && profile.fullName) ? profile.fullName : defaultName;
+      const email   = (profile && profile.email)    ? profile.email    : defaultEmail;
+      const phone   = (profile && profile.phone)    ? profile.phone    : defaultPhone;
+      const address = (profile && profile.address)  ? profile.address  : defaultAddress;
+      const note    = (profile && profile.note)     ? profile.note     : '';
+
+      // Cập nhật hidden inputs cho checkout
+      const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+      set('buyerProfileIndex', index);
+      set('buyerName',    name);
+      set('buyerEmail',   email);
+      set('buyerPhone',   phone);
+      set('buyerAddress', address);
+      set('buyerNote',    note);
+
+      // Cập nhật màn hình hiển thị
+      const setText = (id, val, fallback) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val || fallback;
+      };
+      setText('displayBuyerName',    name,    'Chưa nhập');
+      setText('displayBuyerEmail',   email,   'Chưa nhập');
+      setText('displayBuyerPhone',   phone,   'Chưa nhập');
+      setText('displayBuyerAddress', address, 'Chưa nhập');
+      setText('displayBuyerNote',    note,    'Không có');
     }
 
-    // Mở modal thêm thông tin (lưu vào mẫu hiện tại)
+    // ========== Modal Thêm / Sửa thông tin ==========
     function openBuyerInfoModal() {
-      const index = window.currentProfileIndex;
-      const profile = window.buyerProfiles[index];
-      const user = window.currentUserFromSession;
+      const index   = window.currentProfileIndex;
+      const profile = window.buyerProfiles ? window.buyerProfiles[index] : null;
+      const user    = window.currentUserFromSession || {};
 
-      // Điền sẵn thông tin tài khoản cho mẫu 1, hoặc profile đã lưu
-      document.getElementById('modalBuyerSaveTo').value = index;
-      document.getElementById('modalBuyerName').value = profile ? profile.fullName : (index === 1 ? user.fullName : '');
-      document.getElementById('modalBuyerEmail').value = profile ? profile.email : (index === 1 ? user.email : '');
-      document.getElementById('modalBuyerPhone').value = profile ? profile.phone : (index === 1 ? user.phone : '');
-      document.getElementById('modalBuyerAddress').value = profile ? profile.address : (index === 1 ? user.address : '');
-      document.getElementById('modalBuyerNote').value = profile ? (profile.note || '') : '';
+      document.getElementById('modalBuyerSaveTo').value  = index;
+      document.getElementById('modalBuyerName').value    = (profile && profile.fullName) ? profile.fullName : (index === 1 ? user.fullName : '');
+      document.getElementById('modalBuyerEmail').value   = (profile && profile.email)    ? profile.email    : (index === 1 ? user.email   : '');
+      document.getElementById('modalBuyerPhone').value   = (profile && profile.phone)    ? profile.phone    : (index === 1 ? user.phone   : '');
+      document.getElementById('modalBuyerAddress').value = (profile && profile.address)  ? profile.address  : (index === 1 ? user.address : '');
+      document.getElementById('modalBuyerNote').value    = (profile && profile.note)     ? profile.note     : '';
 
-      const modal = document.getElementById('buyerInfoModal');
-      modal.classList.add('show');
+      document.getElementById('buyerInfoModal').classList.add('show');
     }
 
     function closeBuyerInfoModal() {
-      const modal = document.getElementById('buyerInfoModal');
-      modal.classList.remove('show');
+      document.getElementById('buyerInfoModal').classList.remove('show');
     }
 
-    // Mở modal thay đổi thông tin (chọn mẫu khác)
+    // Đặt mặc định = chuyển về profile đang chọn (không hard-code là 1)
+    function resetBuyerInfoToDefault() {
+      switchProfile(window.currentProfileIndex || 1);
+    }
+
+    // ========== Modal chọn mẫu ==========
     function refreshChangeProfileCards() {
       for (let i = 1; i <= 3; i++) {
-        const body = document.getElementById('profileCardBody-' + i);
+        const body        = document.getElementById('profileCardBody-'  + i);
         const placeholder = document.getElementById('profileCardEmpty-' + i);
         if (!body) continue;
 
-        const profile = window.buyerProfiles[i];
-        if (profile && Object.values(profile).some(value => value && value.toString().trim() !== '')) {
+        const p = window.buyerProfiles ? window.buyerProfiles[i] : null;
+        const hasData = p && (p.fullName || p.phone || p.address);
+
+        if (hasData) {
+          body.style.display = '';
           body.innerHTML = `
-            <div><strong>Họ tên:</strong> <span>${escapeHtml(profile.fullName)}</span></div>
-            <div><strong>Email:</strong> <span>${escapeHtml(profile.email)}</span></div>
-            <div><strong>Phone:</strong> <span>${escapeHtml(profile.phone)}</span></div>
-            <div><strong>Địa chỉ:</strong> <span>${escapeHtml(profile.address)}</span></div>
-            <div><strong>Ghi chú:</strong> <span>${escapeHtml(profile.note || 'Không có')}</span></div>
+            <div><strong>Họ tên:</strong> <span>${escapeHtml(p.fullName)}</span></div>
+            <div><strong>Email:</strong> <span>${escapeHtml(p.email)}</span></div>
+            <div><strong>ĐT:</strong> <span>${escapeHtml(p.phone)}</span></div>
+            <div><strong>Địa chỉ:</strong> <span>${escapeHtml(p.address)}</span></div>
+            <div><strong>Ghi chú:</strong> <span>${escapeHtml(p.note || 'Không có')}</span></div>
           `;
           if (placeholder) placeholder.style.display = 'none';
         } else {
-          body.innerHTML = '';
-          if (placeholder) placeholder.style.display = 'block';
+          body.style.display = 'none';
+          if (placeholder) placeholder.style.display = '';
         }
       }
     }
 
     function openChangeProfileModal() {
       refreshChangeProfileCards();
-      const modal = document.getElementById('changeProfileModal');
-      modal.classList.add('show');
+      document.getElementById('changeProfileModal').classList.add('show');
     }
 
-    function closeChangeProfileModal() {
-      const modal = document.getElementById('changeProfileModal');
-      modal.classList.remove('show');
-    }
+    window.closeChangeProfileModal = function() {
+      document.getElementById('changeProfileModal').classList.remove('show');
+    };
 
-    function escapeHtml(text) {
-      if (typeof text !== 'string') return '';
-      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-    }
-
-    // Lưu mẫu thông tin lên server
-    document.getElementById('buyerInfoForm')?.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const userId = window.currentUserFromSession?.id;
-      if (!userId) {
-        alert('Bạn cần đăng nhập để lưu thông tin!');
-        return;
-      }
-
-      const index = parseInt(document.getElementById('modalBuyerSaveTo').value, 10) || window.currentProfileIndex;
-      const data = {
-        userId,
-        profileIndex: index,
-        fullName: document.getElementById('modalBuyerName').value.trim(),
-        email: document.getElementById('modalBuyerEmail').value.trim(),
-        phone: document.getElementById('modalBuyerPhone').value.trim(),
-        address: document.getElementById('modalBuyerAddress').value.trim(),
-        note: document.getElementById('modalBuyerNote').value.trim(),
-      };
-
-      try {
-        const res = await fetch(resolveApiUrl('buyer-profiles.php'), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data),
-        });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.error || 'Lỗi lưu thông tin');
-
-        // Cập nhật cache local
-        window.buyerProfiles[index] = data;
-        window.currentProfileIndex = index;
-        refreshChangeProfileCards();
-        switchProfile(index);
-        closeBuyerInfoModal();
-        alert(` Đã lưu mẫu ${index} thành công!`);
-      } catch (err) {
-        alert(err.message);
-      }
+    // ========== Khởi tạo ==========
+    document.addEventListener('DOMContentLoaded', function () {
+      switchProfile(1);
+      refreshChangeProfileCards();
     });
   </script>
 
@@ -1447,6 +1422,10 @@ $hasCartItems = !empty($cartProducts);
               <div><strong>Địa chỉ:</strong> <span><?= h($buyerProfiles[$i]['address'] ?? '') ?></span></div>
               <div><strong>Ghi chú:</strong> <span><?= h($buyerProfiles[$i]['note'] ?? 'Không có') ?></span></div>
             </div>
+            <button type="button" class="btn-select-profile"
+              onclick="event.stopPropagation(); switchProfile(<?= $i ?>); closeChangeProfileModal();"
+              style="margin-top:1rem;padding:0.75rem 1rem;border:none;border-radius:12px;background:#4f9da6;color:white;cursor:pointer;width:100%;font-weight:600;">Chọn
+              thông tin</button>
             <p id="profileCardEmpty-<?= $i ?>"
               style="margin:0.3rem 0 0;color:#aaa;font-size:0.95rem;<?= empty($buyerProfiles[$i]) ? '' : 'display:none;' ?>">
               Chưa có thông tin</p>
@@ -1572,6 +1551,57 @@ $hasCartItems = !empty($cartProducts);
       <div id="addressManagementContent"></div>
     </div>
   </div>
+
+  <script>
+    // Luưu mẫu thông tin (chạy SAU khi form HTML được load)
+    document.getElementById('buyerInfoForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      var userId  = (window.currentUserFromSession && window.currentUserFromSession.id) ? window.currentUserFromSession.id : null;
+      var index   = parseInt(document.getElementById('modalBuyerSaveTo').value, 10) || window.currentProfileIndex || 1;
+      var name    = document.getElementById('modalBuyerName').value.trim();
+      var email   = document.getElementById('modalBuyerEmail').value.trim();
+      var phone   = document.getElementById('modalBuyerPhone').value.trim();
+      var address = document.getElementById('modalBuyerAddress').value.trim();
+      var note    = document.getElementById('modalBuyerNote').value.trim();
+
+      // Validate
+      var errs = [];
+      if (!name)    errs.push('Họ tên');
+      if (!phone)   errs.push('Số điện thoại');
+      if (!address) errs.push('Địa chỉ');
+      if (errs.length) { alert('⚠️ Vui lòng nhập đầy đủ: ' + errs.join(', ')); return; }
+      if (!/^[0-9]{9,11}$/.test(phone)) { alert('⚠️ Số điện thoại không hợp lệ (9-11 chữ số).'); return; }
+
+      var profile = { name: name, email: email, phone: phone, address: address, note: note };
+      var apiUrl  = userId ? resolveApiUrl('buyer-profiles.php') : resolveApiUrl('session-buyer.php');
+      var payload = userId
+        ? { userId: userId, profileIndex: index, profile: profile }
+        : { profileIndex: index, profile: profile };
+
+      try {
+        var res  = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        var json = await res.json();
+        if (!res.ok) throw new Error(json.error || 'Lỗi lưu thông tin');
+
+        // Cập nhật local cache
+        if (!window.buyerProfiles) window.buyerProfiles = {};
+        window.buyerProfiles[index] = { fullName: name, email: email, phone: phone, address: address, note: note };
+        window.currentProfileIndex  = index;
+
+        refreshChangeProfileCards();
+        switchProfile(index);
+        closeBuyerInfoModal();
+        alert('✅ Đã lưu thông tin mẫu ' + index + ' thành công!');
+      } catch(err) {
+        alert('❌ Lỗi: ' + err.message);
+      }
+    });
+  </script>
 
   <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/main.js?v=2"></script>
