@@ -8,7 +8,8 @@ DROP TABLE IF EXISTS goods_receipt;
 DROP TABLE IF EXISTS goodsReceipts_items;
 CREATE TABLE categories (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100)
+  name VARCHAR(100),
+  status VARCHAR(20) DEFAULT 'active'
 );
 CREATE TABLE products (
   id INT AUTO_INCREMENT PRIMARY KEY,
