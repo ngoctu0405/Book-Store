@@ -1,6 +1,10 @@
 <?php
 session_start();
 require_once __DIR__ . '/../api/db.php';
+if (empty($_SESSION['user_id'])) {
+  header('Location: index.php?login=1');
+  exit;
+}
 
 function h($value)
 {
@@ -114,8 +118,8 @@ if ($userId > 0) {
   }
 }
 
-$shippingFee = $cartSubtotal === 0 || $cartSubtotal >= 500000 ? 0 : 30000;
-$totalAmount = $cartSubtotal + $shippingFee;
+$totalAmount = $cartSubtotal;
+$shippingFee = 0;
 $hasCartItems = !empty($cartProducts);
 ?>
 <!DOCTYPE html>
@@ -128,7 +132,6 @@ $hasCartItems = !empty($cartProducts);
   <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <style>
     /* CHỈNH SỬA: Sửa lỗi cú pháp, thêm padding: 0 và box-sizing: border-box */
     * {
@@ -1233,21 +1236,48 @@ $hasCartItems = !empty($cartProducts);
 
           <div class="cart-summary">
             <div class="summary-title">💳 Tóm tắt đơn hàng</div>
-            <div class="summary-row temp-total">
-              <span>Tạm tính</span>
-              <span><?= fmtPrice($cartSubtotal) ?></span>
-            </div>
-            <div class="summary-row">
-              <span>Phí vận chuyển</span>
-              <span
-                class="<?= $shippingFee === 0 ? 'text-success' : '' ?>"><?= $shippingFee === 0 ? 'Miễn phí' : fmtPrice($shippingFee) ?></span>
-            </div>
-            <div class="summary-row total">
-              <span>Tổng cộng</span>
+
+            <div class="summary-row total" style="margin-top: 0; border-top: none; padding-top: 0;">
+              <span>Tổng thanh toán</span>
               <span><?= fmtPrice($totalAmount) ?></span>
             </div>
-            <button class="btn-checkout" type="button" onclick="checkoutCart()"> Thanh Toán (<?= h($cartTotalQty) ?> sản
-              phẩm)</button>
+
+            <div class="payment-method-section" style="margin-top: 1.5rem; border-top: 2px dashed #e2e8f0; padding-top: 1.5rem; margin-bottom: 1rem;">
+              <h4 style="font-size: 1.1rem; color: #2c3e50; margin-bottom: 1rem; font-weight: 700;">💳 Phương thức thanh toán</h4>
+
+              <div class="payment-options" style="display: flex; flex-direction: column; gap: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 1.05rem;">
+                  <input type="radio" name="payment_method" value="Tiền mặt" checked onchange="toggleBankInfo()" style="width: 18px; height: 18px; accent-color: #4f9da6;">
+                  <span>💵 Thanh toán tiền mặt (COD)</span>
+                </label>
+
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 1.05rem;">
+                  <input type="radio" name="payment_method" value="Chuyển khoản" onchange="toggleBankInfo()" style="width: 18px; height: 18px; accent-color: #4f9da6;">
+                  <span>🏦 Chuyển khoản ngân hàng</span>
+                </label>
+
+                <div id="bankInfoBox" style="display: none; background: #f8f9fa; padding: 1rem; border-radius: 8px; font-size: 0.95rem; margin-left: 1.8rem; border: 1px solid #b3e0ff;">
+                  <strong style="color: #4f9da6;">Ngân hàng:</strong> Viettinbank<br>
+                  <strong style="color: #4f9da6;">Số tài khoản:</strong> 0368988328<br>
+                  <strong style="color: #4f9da6;">Chủ tài khoản:</strong> Lê Phú Hiếu<br>
+                  <strong style="color: #e74c3c;">Nội dung CK:</strong> Thanh toan [Số Điện Thoại]
+                </div>
+
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 1.05rem;">
+                  <input type="radio" name="payment_method" value="Trực tuyến" onchange="toggleBankInfo()" style="width: 18px; height: 18px; accent-color: #4f9da6;">
+                  <span>🌐 Thanh toán trực tuyến (VNPAY/Momo)</span>
+                </label>
+              </div>
+            </div>
+
+            <script>
+              // Javascript ẩn hiện thẻ ngân hàng
+              function toggleBankInfo() {
+                const method = document.querySelector('input[name="payment_method"]:checked').value;
+                document.getElementById('bankInfoBox').style.display = (method === 'Chuyển khoản') ? 'block' : 'none';
+              }
+            </script>
+            <button class="btn-checkout" type="button" onclick="checkoutCart()"> Thanh Toán (<?= h($cartTotalQty) ?> sản phẩm)</button>
 
             <form id="buyerForm" style="display: none;">
               <input type="hidden" id="buyerProfileIndex" value="1">

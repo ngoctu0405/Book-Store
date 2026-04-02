@@ -1,3 +1,58 @@
+<?php
+session_start();
+require_once __DIR__ . '/../api/db.php';
+
+// Kiểm tra đăng nhập
+if (empty($_SESSION['user_id'])) {
+  header("Location: index.php?require_login=true");
+  exit;
+}
+
+$userId = (int)$_SESSION['user_id'];
+
+function fmtPrice($value)
+{
+  return number_format((int)$value, 0, ',', '.') . '₫';
+}
+
+// Lấy danh sách đơn hàng của người dùng
+$stmt = $conn->prepare("SELECT * FROM orders WHERE userId = ? ORDER BY orderDate DESC");
+$stmt->bind_param('i', $userId);
+$stmt->execute();
+$ordersResult = $stmt->get_result();
+
+$orders = [];
+$orderIds = [];
+while ($row = $ordersResult->fetch_assoc()) {
+  $orders[$row['id']] = $row;
+  $orders[$row['id']]['items'] = [];
+  $orderIds[] = $row['id'];
+}
+
+// Lấy chi tiết đơn hàng (Kết hợp bảng order_items và products để lấy ảnh/tác giả)
+if (!empty($orderIds)) {
+  $placeholders = implode(',', array_fill(0, count($orderIds), '?'));
+  $types = str_repeat('i', count($orderIds));
+
+  $sqlItems = "SELECT oi.*, p.image as img, p.author 
+                 FROM order_items oi 
+                 LEFT JOIN products p ON oi.product_id = p.id 
+                 WHERE oi.order_id IN ($placeholders)";
+
+  $stmtItems = $conn->prepare($sqlItems);
+  $stmtItems->bind_param($types, ...$orderIds);
+  $stmtItems->execute();
+  $itemsResult = $stmtItems->get_result();
+
+  while ($item = $itemsResult->fetch_assoc()) {
+    // Fallback nếu sản phẩm đã bị xóa khỏi kho
+    $item['img'] = !empty($item['img']) ? $item['img'] : '../images/default_book.png';
+    $item['author'] = !empty($item['author']) ? $item['author'] : 'Đang cập nhật';
+
+    $orders[$item['order_id']]['items'][] = $item;
+  }
+}
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -7,18 +62,11 @@
   <title>Lịch sử mua hàng - Literary Haven</title>
   <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
   <link rel="stylesheet" href="../assets/css/style.css" />
-  <link
-    rel="stylesheet"
-    href="../bootstrap-5.3.2-dist/css/bootstrap.min.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <style>
     body {
-      background: linear-gradient(135deg,
-          #f5f2e8 0%,
-          #e8d5b7 50%,
-          #7fb3d3 100%);
+      background: linear-gradient(135deg, #f5f2e8 0%, #e8d5b7 50%, #7fb3d3 100%);
       color: #2c3e50;
       min-height: 100vh;
     }
@@ -51,7 +99,6 @@
       min-height: 400px;
     }
 
-    /* Filter Section */
     .filter-section {
       display: flex;
       justify-content: space-between;
@@ -82,7 +129,6 @@
       font-size: 1.3rem;
     }
 
-    /* Order Card */
     .order-card {
       background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
       border-radius: 16px;
@@ -137,7 +183,6 @@
       font-size: 0.95rem;
     }
 
-    /* Order Items Preview */
     .order-items-preview {
       background: rgba(79, 157, 166, 0.05);
       border-radius: 12px;
@@ -219,7 +264,6 @@
       font-size: 0.95rem;
     }
 
-    /* Order Footer */
     .order-footer {
       display: flex;
       justify-content: space-between;
@@ -281,7 +325,6 @@
       box-shadow: 0 5px 15px rgba(255, 99, 71, 0.4);
     }
 
-    /* Empty State */
     .empty-state {
       text-align: center;
       padding: 5rem 2rem;
@@ -325,7 +368,6 @@
       color: white;
     }
 
-    /* Modal Styles */
     .order-modal {
       display: none;
       position: fixed;
@@ -578,116 +620,42 @@
 </head>
 
 <body>
-  <!-- HEADER -->
   <header class="topbar">
     <div class="logo">
       <a href="index.php">
         <img class="Logo" src="../images/Logo_removebg.png" alt="Logo" />
-        <img
-          class="Word"
-          src="../images/Logo_word_removebg.png"
-          alt="Literary Haven" />
+        <img class="Word" src="../images/Logo_word_removebg.png" alt="Literary Haven" />
       </a>
     </div>
 
     <div class="auth-cart">
       <div id="authArea">
         <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
-        <button class="btn-auth btn-signup" onclick="openRegisterModal()">
-          Đăng ký
-        </button>
+        <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
       </div>
     </div>
   </header>
 
-  <!-- NAV -->
   <nav class="navbar" id="mainNav">
     <ul class="menu" id="mainMenu">
       <li><a href="index.php">Trang chủ</a></li>
       <li><a href="about.php">Giới thiệu</a></li>
       <div class="category-menu">
         <button class="category-btn">Danh mục ▾</button>
-
         <ul class="book-filter">
-          <li class="dropdown">
-            <a href="category.php?category=Văn học" data-category="Văn học">Văn học ▸</a>
-            <ul class="dropdown-content">
-              <li>
-                <a
-                  href="category.php?category=Văn học&subcategory=Tiểu thuyết">Tiểu thuyết</a>
-              </li>
-              <li>
-                <a
-                  href="category.php?category=Văn học&subcategory=Truyện ngắn">Truyện ngắn</a>
-              </li>
-              <li>
-                <a href="category.php?category=Văn học&subcategory=Thơ">Thơ</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="category.php?category=Kinh tế">Kinh tế ▸</a>
-            <ul class="dropdown-content">
-              <li>
-                <a href="category.php?category=Kinh tế&subcategory=Quản trị">Quản trị</a>
-              </li>
-              <li>
-                <a href="category.php?category=Kinh tế&subcategory=Tài chính">Tài chính</a>
-              </li>
-              <li>
-                <a href="category.php?category=Kinh tế&subcategory=Marketing">Marketing</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="category.php?category=Thiếu nhi">Thiếu nhi ▸</a>
-            <ul class="dropdown-content">
-              <li>
-                <a
-                  href="category.php?category=Thiếu nhi&subcategory=Truyện tranh">Truyện tranh</a>
-              </li>
-              <li>
-                <a
-                  href="category.php?category=Thiếu nhi&subcategory=Giáo dục">Giáo dục</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="category.php?category=Giáo khoa">Giáo khoa ▸</a>
-            <ul class="dropdown-content">
-              <li>
-                <a href="category.php?category=Giáo khoa&subcategory=Cấp 1">Cấp 1</a>
-              </li>
-              <li>
-                <a href="category.php?category=Giáo khoa&subcategory=Cấp 2">Cấp 2</a>
-              </li>
-              <li>
-                <a href="category.php?category=Giáo khoa&subcategory=Cấp 3">Cấp 3</a>
-              </li>
-            </ul>
-          </li>
         </ul>
       </div>
       <li><a href="news.php">Tin tức</a></li>
     </ul>
   </nav>
 
-  <!-- Tìm kiếm và giỏ hàng -->
   <div class="nav_2">
     <div class="search-center">
-      <input
-        id="topSearch"
-        class="search-input"
-        type="text"
-        placeholder="Nhập tên cuốn sách bạn đang tìm ..."
-        autocomplete="off" />
+      <input id="topSearch" class="search-input" type="text" placeholder="Nhập tên cuốn sách bạn đang tìm ..." autocomplete="off" />
       <button class="search-btn" type="button">Tìm kiếm</button>
     </div>
     <div class="cart-float" id="cartFloat">
-      <button id="cartBtnFloat" class="btn">
+      <button id="cartBtnFloat" class="btn" onclick="goToCart(event)">
         <span class="cart-icon">🛒</span>
         <span id="cart-count" class="cart-count">0</span>
       </button>
@@ -696,19 +664,87 @@
 
   <main class="container">
     <h2 class="page-heading">
-      <span>📦</span>
-      Lịch sử mua hàng
+      <span>📦</span> Lịch sử mua hàng
     </h2>
 
     <div class="history-container">
       <div class="filter-section">
         <div class="section-title">Thông tin chi tiết</div>
         <div class="order-stats">
-          <span>Tổng đơn hàng: <strong id="totalOrders">0</strong></span>
+          <span>Tổng đơn hàng: <strong><?= count($orders) ?></strong></span>
         </div>
       </div>
 
-      <div id="orderList"></div>
+      <div id="orderList">
+        <?php if (empty($orders)): ?>
+          <div class="empty-state">
+            <div class="empty-state-icon">🔭</div>
+            <h3>Chưa có đơn hàng nào</h3>
+            <p>Hãy bắt đầu mua sắm ngay!</p>
+            <a href="index.php" class="btn-continue">Tiếp tục mua sắm</a>
+          </div>
+        <?php else: ?>
+          <?php foreach ($orders as $order): ?>
+            <?php
+            // Xử lý 3 món xem trước
+            $itemsPreview = array_slice($order['items'], 0, 3);
+            $moreItems = count($order['items']) > 3 ? count($order['items']) - 3 : 0;
+            ?>
+            <div class="order-card">
+              <div class="order-header">
+                <div class="order-id-wrapper">
+                  <div class="order-id">Đơn hàng: <span>#<?= $order['id'] ?></span></div>
+                  <div class="order-date">
+                    <i class="bi bi-calendar"></i>
+                    <?= date('d/m/Y H:i', strtotime($order['orderDate'])) ?>
+                  </div>
+                </div>
+              </div>
+
+              <div class="order-items-preview">
+                <?php foreach ($itemsPreview as $item): ?>
+                  <div class="preview-item">
+                    <div class="preview-image">
+                      <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                    </div>
+                    <div class="preview-info">
+                      <div class="preview-name"><?= htmlspecialchars($item['product_name']) ?></div>
+                      <div class="preview-author"><i class="bi bi-person"></i> <?= htmlspecialchars($item['author']) ?></div>
+                    </div>
+                    <div class="preview-price-info">
+                      <div class="preview-quantity">x<?= $item['qty'] ?></div>
+                      <div class="preview-total"><?= fmtPrice($item['price'] * $item['qty']) ?></div>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+
+                <?php if ($moreItems > 0): ?>
+                  <div class="more-items-notice">
+                    và <?= $moreItems ?> sản phẩm khác...
+                  </div>
+                <?php endif; ?>
+              </div>
+
+              <div class="order-footer">
+                <div class="order-total">
+                  <i class="bi bi-cash-coin"></i>
+                  Tổng cộng: <?= fmtPrice($order['totalAmount']) ?>
+                </div>
+                <div class="order-actions">
+                  <button class="btn-action btn-detail" onclick='showOrderDetail(<?= htmlspecialchars(json_encode($order), ENT_QUOTES, "UTF-8") ?>)'>
+                    <i class="bi bi-eye"></i> Xem chi tiết
+                  </button>
+                  <input type="hidden" id="order-data-<?= $order['id'] ?>" value='<?= htmlspecialchars(json_encode($order), ENT_QUOTES, "UTF-8") ?>'>
+
+                  <button class="btn-action btn-reorder" onclick="reorder(<?= $order['id'] ?>)">
+                    <i class="bi bi-arrow-repeat"></i> Mua lại
+                  </button>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </div>
     </div>
   </main>
 
@@ -763,168 +799,6 @@
     </div>
   </div>
 
-  <div id="loginModal" class="auth-modal">
-    <div class="auth-modal-overlay" onclick="closeLoginModal()"></div>
-    <div class="auth-modal-content">
-      <button class="auth-modal-close" onclick="closeLoginModal()">
-        &times;
-      </button>
-
-      <div class="auth-modal-header">
-        <h2>Đăng Nhập</h2>
-        <p>Chào mừng bạn trở lại!</p>
-      </div>
-
-      <form id="login-form" class="auth-modal-form">
-        <div class="form-group">
-          <label for="login-username">Tài khoản</label>
-          <div class="input-with-icon">
-            <span class="input-icon">👤</span>
-            <input
-              type="text"
-              id="login-username"
-              placeholder="Nhập tài khoản" />
-          </div>
-          <span id="error-login-username" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-          <label for="login-password">Mật khẩu</label>
-          <div class="input-with-icon">
-            <span class="input-icon">🔐</span>
-            <input
-              type="password"
-              id="login-password"
-              placeholder="Nhập mật khẩu" />
-            <span
-              class="password-toggle"
-              id="toggle-login-password"
-              onclick="togglePassword('login-password', 'toggle-login-password')">👁️‍🗨️</span>
-          </div>
-          <span id="error-login-password" class="error-msg"></span>
-        </div>
-
-        <button type="submit" class="btn-auth-submit">Đăng Nhập</button>
-      </form>
-
-      <div class="auth-modal-footer">
-        Chưa có tài khoản?
-        <a href="#" onclick="switchToRegister()">Đăng ký ngay</a>
-      </div>
-    </div>
-  </div>
-
-  <div id="registerModal" class="auth-modal">
-    <div class="auth-modal-overlay" onclick="closeRegisterModal()"></div>
-    <div class="auth-modal-content">
-      <button class="auth-modal-close" onclick="closeRegisterModal()">
-        &times;
-      </button>
-
-      <div class="auth-modal-header">
-        <h2>Đăng Ký</h2>
-        <p>Tạo tài khoản mới của bạn</p>
-      </div>
-
-      <form
-        id="register-form"
-        class="auth-modal-form"
-        style="max-height: 450px; overflow-y: auto">
-        <div class="form-group">
-          <label for="reg-fullname">Họ và tên</label>
-          <div class="input-with-icon">
-            <span class="input-icon">👤</span>
-            <input
-              type="text"
-              id="reg-fullname"
-              placeholder="Nhập họ và tên" />
-          </div>
-          <span id="error-fullname" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-          <label for="reg-username">Tên tài khoản</label>
-          <div class="input-with-icon">
-            <span class="input-icon">🔑</span>
-            <input
-              type="text"
-              id="reg-username"
-              placeholder="Nhập tên tài khoản" />
-          </div>
-          <span id="error-username" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-          <label for="reg-password">Mật khẩu</label>
-          <div class="input-with-icon">
-            <span class="input-icon">🔐</span>
-            <input
-              type="password"
-              id="reg-password"
-              placeholder="Nhập mật khẩu" />
-            <span
-              class="password-toggle"
-              id="toggle-reg-password"
-              onclick="togglePassword('reg-password', 'toggle-reg-password')">👁️‍🗨️</span>
-          </div>
-          <span id="error-password" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-          <label for="reg-confirm-password">Nhập lại mật khẩu</label>
-          <div class="input-with-icon">
-            <span class="input-icon">🔐</span>
-            <input
-              type="password"
-              id="reg-confirm-password"
-              placeholder="Nhập lại mật khẩu" />
-            <span
-              class="password-toggle"
-              id="toggle-reg-confirm"
-              onclick="togglePassword('reg-confirm-password', 'toggle-reg-confirm')">👁️‍🗨️</span>
-          </div>
-          <span id="error-confirm-password" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-          <label for="reg-email">Email</label>
-          <div class="input-with-icon">
-            <span class="input-icon">📧</span>
-            <input type="email" id="reg-email" placeholder="Nhập email" />
-          </div>
-          <span id="error-email" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-          <label for="reg-phone">Số điện thoại</label>
-          <div class="input-with-icon">
-            <span class="input-icon">📱</span>
-            <input
-              type="tel"
-              id="reg-phone"
-              placeholder="Nhập số điện thoại" />
-          </div>
-          <span id="error-phone" class="error-msg"></span>
-        </div>
-
-        <div class="form-group">
-          <label for="reg-address">Địa chỉ</label>
-          <div class="input-with-icon">
-            <span class="input-icon">📍</span>
-            <input type="text" id="reg-address" placeholder="Nhập địa chỉ" />
-          </div>
-          <span id="error-address" class="error-msg"></span>
-        </div>
-
-        <button type="submit" class="btn-auth-submit">Đăng Ký</button>
-      </form>
-
-      <div class="auth-modal-footer">
-        Đã có tài khoản? <a href="#" onclick="switchToLogin()">Đăng nhập</a>
-      </div>
-    </div>
-  </div>
-
   <?php include '../includes/auth_modals.php'; ?>
 
   <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
@@ -937,14 +811,6 @@
       minimumFractionDigits: 0,
     });
 
-    let allOrders = [];
-
-    function getProductById(productId) {
-      const data = JSON.parse(localStorage.getItem("bs_data"));
-      if (!data || !data.products) return null;
-      return data.products.find((p) => p.id === productId);
-    }
-
     function formatDate(dateString) {
       const date = new Date(dateString);
       return date.toLocaleDateString("vi-VN", {
@@ -956,110 +822,7 @@
       });
     }
 
-    function renderOrders() {
-      const orderList = document.getElementById("orderList");
-      if (!orderList) return;
-
-      const orders = JSON.parse(localStorage.getItem("bs_orders") || "[]");
-
-      orders.sort((a, b) => new Date(b.date) - new Date(a.date));
-      allOrders = orders;
-
-      document.getElementById("totalOrders").textContent = orders.length;
-
-      if (orders.length === 0) {
-        orderList.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">🔭</div>
-            <h3>Chưa có đơn hàng nào</h3>
-            <p>Hãy bắt đầu mua sắm ngay!</p>
-            <a href="index.php" class="btn-continue">Tiếp tục mua sắm</a>
-          </div>
-        `;
-        return;
-      }
-
-      const ordersHtml = orders
-        .map((order) => {
-          const itemsPreview = order.items.slice(0, 3);
-          const moreItems =
-            order.items.length > 3 ? order.items.length - 3 : 0;
-
-          return `
-          <div class="order-card">
-            <div class="order-header">
-              <div class="order-id-wrapper">
-                <div class="order-id">Đơn hàng: <span>#${order.id}</span></div>
-                <div class="order-date">
-                  <i class="bi bi-calendar"></i>
-                  ${formatDate(order.date)}
-                </div>
-              </div>
-            </div>
-
-            <div class="order-items-preview">
-              ${itemsPreview
-                .map((item) => {
-                  const product = getProductById(item.id);
-                  if (!product) return "";
-                  return `
-                  <div class="preview-item">
-                    <div class="preview-image">
-                      <img src="${product.img}" alt="${product.name}">
-                    </div>
-                    <div class="preview-info">
-                      <div class="preview-name">${product.name}</div>
-                      <div class="preview-author"><i class="bi bi-person"></i> ${
-                        product.author
-                      }</div>
-                    </div>
-                    <div class="preview-price-info">
-                      <div class="preview-quantity">x${item.qty}</div>
-                      <div class="preview-total">${formatter.format(
-                        product.price * item.qty
-                      )}</div>
-                    </div>
-                  </div>
-                `;
-                })
-                .join("")}
-              ${
-                moreItems > 0
-                  ? `
-                <div class="more-items-notice">
-                  và ${moreItems} sản phẩm khác...
-                </div>
-              `
-                  : ""
-              }
-            </div>
-
-            <div class="order-footer">
-              <div class="order-total">
-                <i class="bi bi-cash-coin"></i>
-                Tổng cộng: ${formatter.format(order.total)}
-              </div>
-              <div class="order-actions">
-                <button class="btn-action btn-detail" onclick='showOrderDetail(${JSON.stringify(
-                  order
-                ).replace(/'/g, "&#39;")})'>
-                  <i class="bi bi-eye"></i> Xem chi tiết
-                </button>
-                <button class="btn-action btn-reorder" onclick="reorder(${
-                  order.id
-                })">
-                  <i class="bi bi-arrow-repeat"></i> Mua lại
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-        })
-        .join("");
-
-      orderList.innerHTML = ordersHtml;
-    }
-
+    // Modal chi tiết đơn hàng (Dữ liệu đã có sẵn từ PHP đổ vào đây)
     function showOrderDetail(order) {
       const modal = document.getElementById("orderModal");
       const modalBody = document.getElementById("modalBody");
@@ -1068,45 +831,26 @@
       const STANDARD_SHIPPING_FEE = 30000;
 
       let calculatedSubtotal = 0;
-
-      order.items.forEach((item) => {
-        const product = getProductById(item.id);
-        if (product) {
-          calculatedSubtotal += product.price * item.qty;
-        }
+      order.items.forEach(item => {
+        calculatedSubtotal += item.price * item.qty;
       });
 
-      const shippingFee =
-        calculatedSubtotal >= SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE;
+      const shippingFee = (calculatedSubtotal >= SHIPPING_THRESHOLD || calculatedSubtotal == order.totalAmount) ? 0 : STANDARD_SHIPPING_FEE;
 
-      const itemsHtml = order.items
-        .map((item) => {
-          const product = getProductById(item.id);
-          if (!product) return "";
-          return `
+      const itemsHtml = order.items.map(item => `
           <div class="modal-item">
             <div class="modal-item-image">
-              <img src="${product.img}" alt="${product.name}">
+              <img src="${item.img}" alt="${item.product_name}">
             </div>
             <div class="modal-item-info">
-              <div class="modal-item-name">${product.name}</div>
-              <div class="modal-item-author"><i class="bi bi-person"></i> ${
-                product.author
-              }</div>
-              <div class="modal-item-price">Đơn giá: ${formatter.format(
-                product.price
-              )}</div>
+              <div class="modal-item-name">${item.product_name}</div>
+              <div class="modal-item-author"><i class="bi bi-person"></i> ${item.author}</div>
+              <div class="modal-item-price">Đơn giá: ${formatter.format(item.price)}</div>
             </div>
             <div class="modal-item-quantity">x${item.qty}</div>
-            <div class="modal-item-total">${formatter.format(
-              product.price * item.qty
-            )}</div>
+            <div class="modal-item-total">${formatter.format(item.price * item.qty)}</div>
           </div>
-        `;
-        })
-        .join("");
-
-      const shippingAddress = order.shippingAddress || null;
+        `).join("");
 
       modalBody.innerHTML = `
         <div class="modal-header">
@@ -1120,23 +864,19 @@
           </div>
           <div class="info-item">
             <div class="info-label">Ngày đặt</div>
-            <div class="info-value">${formatDate(order.date)}</div>
+            <div class="info-value">${formatDate(order.orderDate)}</div>
           </div>
           <div class="info-item">
             <div class="info-label">Phương thức TT</div>
-            <div class="info-value">${order.paymentMethod || "Không rõ"}</div>
+            <div class="info-value">${order.payment_method || "Tiền mặt"}</div>
           </div>
           <div class="info-item">
             <div class="info-label">Tổng tiền</div>
-            <div class="info-value" style="color: #4f9da6;">${formatter.format(
-              order.total
-            )}</div>
+            <div class="info-value" style="color: #4f9da6;">${formatter.format(order.totalAmount)}</div>
           </div>
         </div>
 
-        ${
-          shippingAddress
-            ? `
+        ${order.buyer_name ? `
           <div class="shipping-address-info" style="background: linear-gradient(135deg, #fff8e1 0%, #ffe6cc 100%); padding: 1.5rem; border-radius: 12px; margin: 2rem 0; border-left: 4px solid #ff9800;">
             <h3 style="margin: 0 0 1rem 0; color: #2c3e50; font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem;">
               <i class="bi bi-geo-alt-fill" style="color: #ff9800;"></i> Thông tin giao hàng
@@ -1146,35 +886,34 @@
                 <i class="bi bi-person-fill" style="color: #ff9800; font-size: 1.1rem;"></i>
                 <div>
                   <span style="font-weight: 600; color: #666; font-size: 0.9rem; display: block;">Người nhận:</span>
-                  <strong style="font-size: 1.1rem; color: #2c3e50;">${shippingAddress.name}</strong>
+                  <strong style="font-size: 1.1rem; color: #2c3e50;">${order.buyer_name}</strong>
                 </div>
               </div>
               <div style="display: flex; align-items: center; gap: 0.8rem;">
                 <i class="bi bi-telephone-fill" style="color: #ff9800; font-size: 1.1rem;"></i>
                 <div>
                   <span style="font-weight: 600; color: #666; font-size: 0.9rem; display: block;">Số điện thoại:</span>
-                  <strong style="font-size: 1.1rem; color: #2c3e50;">${shippingAddress.phone}</strong>
+                  <strong style="font-size: 1.1rem; color: #2c3e50;">${order.buyer_phone}</strong>
                 </div>
               </div>
               <div style="display: flex; align-items: start; gap: 0.8rem;">
                 <i class="bi bi-house-door-fill" style="color: #ff9800; font-size: 1.1rem; margin-top: 0.2rem;"></i>
                 <div>
                   <span style="font-weight: 600; color: #666; font-size: 0.9rem; display: block;">Địa chỉ giao hàng:</span>
-                  <strong style="font-size: 1.05rem; color: #2c3e50; line-height: 1.5;">${shippingAddress.address}</strong>
+                  <strong style="font-size: 1.05rem; color: #2c3e50; line-height: 1.5;">${order.buyer_address}</strong>
                 </div>
               </div>
+              ${order.buyer_note ? `
+              <div style="display: flex; align-items: start; gap: 0.8rem;">
+                <i class="bi bi-chat-text-fill" style="color: #ff9800; font-size: 1.1rem; margin-top: 0.2rem;"></i>
+                <div>
+                  <span style="font-weight: 600; color: #666; font-size: 0.9rem; display: block;">Ghi chú:</span>
+                  <span style="font-size: 1.05rem; color: #2c3e50;">${order.buyer_note}</span>
+                </div>
+              </div>` : ''}
             </div>
           </div>
-        `
-            : `
-          <div class="shipping-address-info" style="background: #fff3cd; padding: 1.5rem; border-radius: 12px; margin: 2rem 0; border-left: 4px solid #ffc107;">
-            <p style="margin: 0; color: #856404; display: flex; align-items: center; gap: 0.5rem;">
-              <i class="bi bi-exclamation-triangle"></i> 
-              <span>Đơn hàng này chưa có thông tin địa chỉ giao hàng</span>
-            </p>
-          </div>
-        `
-        }
+        ` : ''}
 
         <div class="modal-items-section">
           <h3 class="modal-items-title"><i class="bi bi-box-seam"></i> Danh sách sản phẩm</h3>
@@ -1195,14 +934,12 @@
           <div class="summary-row shipping">
             <span>Phí vận chuyển:</span>
             <span class="${shippingFee === 0 ? "text-success" : ""}">
-              ${
-                shippingFee === 0 ? "Miễn phí ✓" : formatter.format(shippingFee)
-              }
+              ${shippingFee === 0 ? "Miễn phí ✓" : formatter.format(shippingFee)}
             </span>
           </div>
           <div class="summary-row total">
             <span>Tổng cộng:</span>
-            <span>${formatter.format(order.total)}</span>
+            <span>${formatter.format(order.totalAmount)}</span>
           </div>
         </div>
       `;
@@ -1214,64 +951,57 @@
       document.getElementById("orderModal").classList.remove("active");
     }
 
-    function reorder(orderId) {
-      const order = allOrders.find((o) => o.id === orderId);
-      if (!order) {
-        alert("Không tìm thấy đơn hàng!");
-        return;
-      }
+    // Logic Mua Lại (Reorder) KẾT NỐI VỚI BACKEND PHP
+    async function reorder(orderId) {
+      const orderDataInput = document.getElementById('order-data-' + orderId);
+      if (!orderDataInput) return;
 
-      if (
-        confirm(
-          `Bạn có muốn mua lại ${order.items.length} sản phẩm từ đơn hàng #${orderId}?`
-        )
-      ) {
-        const cart = JSON.parse(localStorage.getItem("bs_cart") || "[]");
+      const order = JSON.parse(orderDataInput.value);
 
-        order.items.forEach((item) => {
-          const existingItem = cart.find((c) => c.id === item.id);
-          if (existingItem) {
-            existingItem.qty += item.qty;
-          } else {
-            cart.push({
-              id: item.id,
-              qty: item.qty
-            });
-          }
-        });
+      if (confirm(`Bạn có muốn mua lại ${order.items.length} sản phẩm từ đơn hàng #${orderId}?`)) {
+        try {
+          // Lấy giỏ hàng PHP hiện tại
+          const res = await fetch('../api/cart.php');
+          const data = await res.json();
+          let cart = data.cart || [];
 
-        localStorage.setItem("bs_cart", JSON.stringify(cart));
+          // Trộn sản phẩm vào giỏ
+          order.items.forEach((item) => {
+            const existingItem = cart.find((c) => c.id === item.product_id);
+            if (existingItem) {
+              existingItem.qty += item.qty;
+            } else {
+              cart.push({
+                id: item.product_id,
+                qty: item.qty
+              });
+            }
+          });
 
-        if (typeof updateCartCount === "function") {
-          updateCartCount();
+          // Lưu giỏ hàng lên server
+          await fetch('../api/cart.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              action: 'save',
+              cart: cart
+            })
+          });
+
+          alert("✅ Đã thêm tất cả sản phẩm vào giỏ hàng!");
+          window.location.href = "cart.php";
+        } catch (error) {
+          alert("Lỗi kết nối máy chủ: " + error.message);
         }
-
-        alert("✅ Đã thêm tất cả sản phẩm vào giỏ hàng!");
-        window.location.href = "cart.php";
       }
     }
 
-    document
-      .getElementById("orderModal")
-      .addEventListener("click", function(e) {
-        if (e.target === this) {
-          closeOrderModal();
-        }
-      });
-
-    document.addEventListener("DOMContentLoaded", function() {
-      const user = localStorage.getItem("bs_user");
-      if (!user) {
-        alert("Vui lòng đăng nhập để xem lịch sử mua hàng!");
-        window.location.href = "index.php";
-        return;
+    document.getElementById("orderModal").addEventListener("click", function(e) {
+      if (e.target === this) {
+        closeOrderModal();
       }
-
-      renderOrders();
-
-      if (typeof updateCartCount === "function") updateCartCount();
-      if (typeof updateAuthUI === "function") updateAuthUI();
-      if (typeof loadSearchQuery === "function") loadSearchQuery();
     });
   </script>
 </body>

@@ -333,24 +333,27 @@ function checkoutCart() {
     return;
   }
 
-  const buyerName = document.getElementById("buyerName")?.value?.trim();
-  const buyerEmail = document.getElementById("buyerEmail")?.value?.trim();
-  const buyerPhone = document.getElementById("buyerPhone")?.value?.trim();
+  const buyerName    = document.getElementById("buyerName")?.value?.trim();
+  const buyerEmail   = document.getElementById("buyerEmail")?.value?.trim();
+  const buyerPhone   = document.getElementById("buyerPhone")?.value?.trim();
   const buyerAddress = document.getElementById("buyerAddress")?.value?.trim();
-  const buyerNote = document.getElementById("buyerNote")?.value?.trim();
+  const buyerNote    = document.getElementById("buyerNote")?.value?.trim();
 
-  if (!buyerName || !buyerEmail || !buyerPhone || !buyerAddress) {
+  const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value || 'Tiền mặt'; 
+
+  if (paymentMethod === 'Trực tuyến') {
+    alert("Hệ thống thanh toán trực tuyến đang được bảo trì. Vui lòng chọn Tiền mặt hoặc Chuyển khoản!");
+    return; // Dừng lại ngay lập tức, không gửi API
+  }
+
+  if (!buyerName || !buyerPhone || !buyerAddress) {
     alert("Vui lòng điền đầy đủ thông tin giao hàng!");
     return;
   }
 
-  const buyerInfo = {
-    name: buyerName,
-    email: buyerEmail,
-    phone: buyerPhone,
-    address: buyerAddress,
-    note: buyerNote,
-  };
+  const buyerInfo = { name: buyerName, email: buyerEmail, phone: buyerPhone, address: buyerAddress, note: buyerNote, paymentMethod: paymentMethod};
+
+  if (!confirm("Bạn có chắc muốn đặt hàng không?")) return;
 
   apiFetchJson(resolveApiUrl("checkout.php"), {
     method: "POST",
@@ -358,17 +361,132 @@ function checkoutCart() {
   })
     .then((result) => {
       if (result.success) {
-        alert("Đặt hàng thành công! Mã đơn hàng: " + result.orderId);
         saveCart([]);
-        window.location.href = "index.php";
+        showOrderSummaryModal({ orderId: result.orderId, cart, buyerInfo });
       } else {
         alert("Lỗi đặt hàng: " + (result.error || "Không xác định"));
       }
     })
     .catch((err) => {
-      console.error(err);
       alert("Lỗi thanh toán: " + err.message);
     });
+}
+
+// Hiển thị modal tóm tắt đơn hàng SAU KHI đặt thành công
+function showOrderSummaryModal({ orderId, cart, buyerInfo }) {
+  const bs = (bs_data && bs_data.products) || [];
+  let subtotal = 0;
+  let itemsHtml = '';
+
+  cart.forEach(item => {
+    const product = bs.find(p => p.id == item.id);
+    if (!product) return;
+    const lineTotal = product.price * item.qty;
+    subtotal += lineTotal;
+    itemsHtml += `
+      <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f0f0f0;font-size:0.95rem;">
+        <span style="flex:1;">${product.name} <span style="color:#4f9da6;">x${item.qty}</span></span>
+        <span style="font-weight:700;color:#e74c3c;white-space:nowrap;">${lineTotal.toLocaleString('vi-VN')}₫</span>
+      </div>`;
+  });
+
+  const total = subtotal; // Không còn cộng phí vận chuyển
+
+  const modal = document.createElement('div');
+  modal.id = 'orderSummaryModal';
+  modal.className = 'auth-modal show';
+  modal.innerHTML = `
+    <div class="auth-modal-overlay"></div>
+    <div class="auth-modal-content" style="max-width:520px;">
+      <div class="auth-modal-header">
+        <h2 style="color:#27ae60;">🎉 Đặt hàng thành công!</h2>
+        <p>Mã đơn hàng: <strong style="color:#4f9da6;">#${orderId}</strong></p>
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <h4 style="margin-bottom:0.5rem;color:#2c3e50;">📦 Sản phẩm đã đặt</h4>
+        ${itemsHtml}
+      </div>
+
+      <div style="margin-bottom:1rem;background:#f8f9fa;border-radius:8px;padding:1rem;">
+        <div style="display:flex;justify-content:space-between;font-size:1.2rem;font-weight:700;color:#e74c3c;margin-top:0.5rem;">
+          <span>Tổng thanh toán</span><span>${total.toLocaleString('vi-VN')}₫</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.5rem;background:#f0f8f7;border-radius:8px;padding:1rem;font-size:0.95rem;">
+        <h4 style="margin-bottom:0.5rem;color:#2c3e50;">👤 Thông tin giao hàng</h4>
+        <div><strong>Họ tên:</strong> ${buyerInfo.name}</div>
+        <div><strong>Điện thoại:</strong> ${buyerInfo.phone}</div>
+        <div><strong>Địa chỉ:</strong> ${buyerInfo.address}</div>
+        <div><strong>Hình thức:</strong> <span style="color:#e74c3c; font-weight:bold;">${buyerInfo.paymentMethod}</span></div>
+        ${buyerInfo.note ? `<div><strong>Ghi chú:</strong> ${buyerInfo.note}</div>` : ''}
+      </div>
+
+      <button onclick="document.getElementById('orderSummaryModal').remove(); window.location.href='index.php';"
+        style="width:100%;padding:1rem;background:linear-gradient(135deg,#4f9da6,#82c09a);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;">
+        🏠 Về trang chủ
+      </button>
+    </div>`;
+
+  document.body.appendChild(modal);
+}function showOrderSummaryModal({ orderId, cart, buyerInfo }) {
+  const bs = (bs_data && bs_data.products) || [];
+  let subtotal = 0;
+  let itemsHtml = '';
+
+  cart.forEach(item => {
+    const product = bs.find(p => p.id == item.id);
+    if (!product) return;
+    const lineTotal = product.price * item.qty;
+    subtotal += lineTotal;
+    itemsHtml += `
+      <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f0f0f0;font-size:0.95rem;">
+        <span style="flex:1;">${product.name} <span style="color:#4f9da6;">x${item.qty}</span></span>
+        <span style="font-weight:700;color:#e74c3c;white-space:nowrap;">${lineTotal.toLocaleString('vi-VN')}₫</span>
+      </div>`;
+  });
+
+  const total = subtotal; // Không còn cộng phí vận chuyển
+
+  const modal = document.createElement('div');
+  modal.id = 'orderSummaryModal';
+  modal.className = 'auth-modal show';
+  modal.innerHTML = `
+    <div class="auth-modal-overlay"></div>
+    <div class="auth-modal-content" style="max-width:520px;">
+      <div class="auth-modal-header">
+        <h2 style="color:#27ae60;">🎉 Đặt hàng thành công!</h2>
+        <p>Mã đơn hàng: <strong style="color:#4f9da6;">#${orderId}</strong></p>
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <h4 style="margin-bottom:0.5rem;color:#2c3e50;">📦 Sản phẩm đã đặt</h4>
+        ${itemsHtml}
+      </div>
+
+      <div style="margin-bottom:1rem;background:#f8f9fa;border-radius:8px;padding:1rem;">
+        <div style="display:flex;justify-content:space-between;font-size:1.2rem;font-weight:700;color:#e74c3c;margin-top:0.5rem;">
+          <span>Tổng thanh toán</span><span>${total.toLocaleString('vi-VN')}₫</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.5rem;background:#f0f8f7;border-radius:8px;padding:1rem;font-size:0.95rem;">
+        <h4 style="margin-bottom:0.5rem;color:#2c3e50;">👤 Thông tin giao hàng</h4>
+        <div><strong>Họ tên:</strong> ${buyerInfo.name}</div>
+        <div><strong>Điện thoại:</strong> ${buyerInfo.phone}</div>
+        <div><strong>Địa chỉ:</strong> ${buyerInfo.address}</div>
+        <div><strong>Hình thức:</strong> <span style="color:#e74c3c; font-weight:bold;">${buyerInfo.paymentMethod}</span></div>
+        ${buyerInfo.note ? `<div><strong>Ghi chú:</strong> ${buyerInfo.note}</div>` : ''}
+      </div>
+
+      <button onclick="document.getElementById('orderSummaryModal').remove(); window.location.href='index.php';"
+        style="width:100%;padding:1rem;background:linear-gradient(135deg,#4f9da6,#82c09a);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;">
+        🏠 Về trang chủ
+      </button>
+    </div>`;
+
+  document.body.appendChild(modal);
 }
 
 function openModal(modalId) {

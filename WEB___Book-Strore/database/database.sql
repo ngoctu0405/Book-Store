@@ -575,7 +575,7 @@ VALUES (
     'active',
     'Giáo Viên (Khách Hàng)',
     'khachhang1',
-    '123456',
+    '$2y$10$RNKTkguQtaY9RPJGIDp7S.9Bx/u9Z2lLBug.rET9TM.zJR98RZ8j6',
     'teacher@gmail.com',
     '0987654321',
     '123 Đường ABC, Q1, TPHCM',
@@ -587,12 +587,18 @@ CREATE TABLE orders (
   orderDate DATETIME,
   totalAmount INT,
   status VARCHAR(50),
+  buyer_name VARCHAR(255) NOT NULL,
+  buyer_phone VARCHAR(20) NOT NULL,
+  buyer_address TEXT NOT NULL,
+  buyer_note TEXT,
+  payment_method VARCHAR(50) DEFAULT 'Tiền mặt',
   FOREIGN KEY (userId) REFERENCES users(id)
 );
 CREATE TABLE order_items (
   id INT AUTO_INCREMENT PRIMARY KEY,
   order_id INT,
   product_id INT,
+  product_name VARCHAR(255) NOT NULL,
   qty INT,
   price INT,
   FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
