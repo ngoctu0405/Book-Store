@@ -1,113 +1,125 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bảng điều khiển Admin - Literary Haven</title>
 
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/admin_style.css">
-    <style>
-        /* Responsive cho thiết bị di động (max-width: 768px) */
-@media (max-width: 768px) {
-    /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
-    body {
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bảng điều khiển Admin - Literary Haven</title>
+
+  <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/admin_style.css">
+  <style>
+    /* Responsive cho thiết bị di động (max-width: 768px) */
+    @media (max-width: 768px) {
+
+      /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
+      body {
         display: flex !important;
-        flex-direction: column !important; /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
-        overflow-x: hidden; /* Tắt cuộn ngang vì đã xếp chồng */
-    }
+        flex-direction: column !important;
+        /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
+        overflow-x: hidden;
+        /* Tắt cuộn ngang vì đã xếp chồng */
+      }
 
-    /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
-    .sidebar {
-        width: 100% !important; 
+      /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
+      .sidebar {
+        width: 100% !important;
         /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
-        height: auto !important; 
+        height: auto !important;
         flex-shrink: 0;
         display: flex !important;
-        
+
         /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
-        overflow-x: auto; /* Cho phép menu cuộn ngang nếu có nhiều mục */
-        white-space: nowrap; /* Ngăn các mục menu xuống dòng */
-    }
-    
-    /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
-    .main-content {
+        overflow-x: auto;
+        /* Cho phép menu cuộn ngang nếu có nhiều mục */
+        white-space: nowrap;
+        /* Ngăn các mục menu xuống dòng */
+      }
+
+      /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
+      .main-content {
         width: 100%;
         min-width: auto;
-    }
-    
-    /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
-    .page-content {
-        padding: 15px !important;
-    }
+      }
 
-    .page-content h1 {
+      /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
+      .page-content {
+        padding: 15px !important;
+      }
+
+      .page-content h1 {
         font-size: 20px;
         margin-bottom: 15px;
-    }
+      }
 
-    /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
-    .table-responsive {
+      /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
+      .table-responsive {
         border: 1px solid var(--border-color);
         border-radius: 12px;
-        overflow-x: auto; 
+        overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-    }
+      }
 
-    .table {
-        min-width: 600px; /* Vẫn cần min-width cho bảng */
-    }
+      .table {
+        min-width: 600px;
+        /* Vẫn cần min-width cho bảng */
+      }
 
-    .table thead th, 
-    .table tbody td {
-        padding: 8px 6px; 
-        font-size: 12px; 
-    }
-    
-    .profit-input {
+      .table thead th,
+      .table tbody td {
+        padding: 8px 6px;
+        font-size: 12px;
+      }
+
+      .profit-input {
         width: 50px;
         padding: 4px 2px;
         font-size: 12px;
-    }
+      }
 
-    .btn-sm {
-        padding: 3px 6px; 
+      .btn-sm {
+        padding: 3px 6px;
         font-size: 10px;
-    }
-    
-    .table tbody td span.small {
-        display: none;
-    }
-}
+      }
 
-/* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
-@media (min-width: 769px) {
-    body {
-        display: flex !important; 
-        flex-direction: row !important; /* Khôi phục thành row trên desktop */
-        overflow-x: hidden; 
+      .table tbody td span.small {
+        display: none;
+      }
     }
-    .sidebar {
-        /* Giả sử chiều rộng desktop là 250px */
-        width: 250px !important; 
-        height: 100vh !important; /* Khôi phục vh-100 trên desktop */
+
+    /* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
+    @media (min-width: 769px) {
+      body {
         display: flex !important;
-    }
-    .main-content {
+        flex-direction: row !important;
+        /* Khôi phục thành row trên desktop */
+        overflow-x: hidden;
+      }
+
+      .sidebar {
+        /* Giả sử chiều rộng desktop là 250px */
+        width: 250px !important;
+        height: 100vh !important;
+        /* Khôi phục vh-100 trên desktop */
+        display: flex !important;
+      }
+
+      .main-content {
         width: 100%;
+      }
     }
-}
-    </style>
+  </style>
 </head>
+
 <body>
-    
-    <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
-    <link
-      rel="stylesheet"
-      href="../bootstrap-5.3.2-dist/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="../assets/css/admin_style.css" />
+
+  <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
+  <link
+    rel="stylesheet"
+    href="../bootstrap-5.3.2-dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../assets/css/admin_style.css" />
   </head>
+
   <body>
 
     <aside class="sidebar d-flex flex-column vh-100">
@@ -229,12 +241,9 @@
           <div class="col-lg-6">
             <div class="card h-100">
               <div
-                class="card-header d-flex justify-content-between align-items-center"
-              >
+                class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="h5 mb-0">Tồn kho thấp (Dưới 20)</h3>
-                <a href="inventory.php" class="btn btn-sm btn-primary"
-                  >Xem tất cả</a
-                >
+                <a href="inventory.php" class="btn btn-sm btn-primary">Xem tất cả</a>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -259,12 +268,9 @@
           <div class="col-lg-6">
             <div class="card h-100">
               <div
-                class="card-header d-flex justify-content-between align-items-center"
-              >
+                class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="h5 mb-0">Sản phẩm 0% lợi nhuận</h3>
-                <a href="pricing.php" class="btn btn-sm btn-primary"
-                  >Xem tất cả</a
-                >
+                <a href="pricing.php" class="btn btn-sm btn-primary">Xem tất cả</a>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -290,8 +296,7 @@
 
         <div class="card">
           <div
-            class="card-header d-flex justify-content-between align-items-center"
-          >
+            class="card-header d-flex justify-content-between align-items-center">
             <h3 class="h5 mb-0">Đơn hàng gần đây</h3>
             <a href="orders.php" class="btn btn-sm btn-primary">Xem tất cả</a>
           </div>
@@ -325,13 +330,15 @@
     <script src="../assets/js/admin_main.js"></script>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", function() {
         /**
          * Helper: Lấy dữ liệu sản phẩm (từ pricing.php & inventory.php)
          */
         function getProductData() {
           const storedData = localStorage.getItem("bs_data");
-          return storedData ? JSON.parse(storedData) : { products: [] };
+          return storedData ? JSON.parse(storedData) : {
+            products: []
+          };
         }
 
         /**
@@ -364,9 +371,9 @@
               };
               const statusClass = statusClassMap[order.status] || "pending";
               const customerName =
-                order.shippingAddress && order.shippingAddress.name
-                  ? order.shippingAddress.name
-                  : `User #${order.userId}`;
+                order.shippingAddress && order.shippingAddress.name ?
+                order.shippingAddress.name :
+                `User #${order.userId}`;
 
               return `
                         <tr>
@@ -401,8 +408,8 @@
           const lowStockItems = products
             .filter(
               (p) =>
-                (p.qty || 0) < LOW_STOCK_THRESHOLD &&
-                (p.status === "active" || p.status === undefined)
+              (p.qty || 0) < LOW_STOCK_THRESHOLD &&
+              (p.status === "active" || p.status === undefined)
             )
             .sort((a, b) => (a.qty || 0) - (b.qty || 0)) // Hiển thị số lượng ít nhất lên đầu
             .slice(0, 5); // Lấy 5 sản phẩm
@@ -443,8 +450,8 @@
           const zeroProfitItems = products
             .filter(
               (p) =>
-                (p.profitMargin || 0) === 0 &&
-                (p.status === "active" || p.status === undefined)
+              (p.profitMargin || 0) === 0 &&
+              (p.status === "active" || p.status === undefined)
             )
             .slice(0, 5); // Lấy 5 sản phẩm
 
@@ -482,9 +489,10 @@
       });
     </script>
     <a href="#" class="back-to-top" title="Lên đầu trang">
-    <i class="bi bi-chevron-up">
-      <img class="go-up" src="../images/muiten.svg" alt="Về trang chủ" />
-    </i>
-  </a>
+      <i class="bi bi-chevron-up">
+        <img class="go-up" src="../images/muiten.svg" alt="Về trang chủ" />
+      </i>
+    </a>
   </body>
+
 </html>

@@ -32,348 +32,293 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param('ssssi', $fullName, $email, $phone, $address, $userId);
 
     if ($stmt->execute()) {
-      $successMsg = "Cập nhật thông tin cá nhân thành công!";
-      // Tùy chọn: Chuyển hướng về trang chủ sau vài giây
-      // header("refresh:2;url=index.php"); 
+      $successMsg = "Cập nhật thông tin thành công!";
     } else {
-      $errorMsg = "Lỗi hệ thống, không thể cập nhật: " . $conn->error;
+      $errorMsg = "Lỗi hệ thống khi cập nhật: " . $conn->error;
     }
   }
 }
 
-// 3. Lấy thông tin user từ CSDL để hiển thị ra Form
-$stmt = $conn->prepare("SELECT fullName, username, email, phone, address FROM users WHERE id = ?");
-$stmt->bind_param('i', $userId);
-$stmt->execute();
-$userResult = $stmt->get_result();
-
-if ($userResult->num_rows === 0) {
-  // Nếu lỗi không tìm thấy user, đá về trang chủ
-  header("Location: index.php");
-  exit;
+// 3. Lấy thông tin hiện tại của người dùng để hiển thị ra form
+$userCurrentInfo = [];
+$stmtInfo = $conn->prepare("SELECT username, fullName, email, phone, address FROM users WHERE id = ?");
+$stmtInfo->bind_param('i', $userId);
+$stmtInfo->execute();
+$resInfo = $stmtInfo->get_result();
+if ($resInfo && $resInfo->num_rows > 0) {
+  $userCurrentInfo = $resInfo->fetch_assoc();
 }
-$userData = $userResult->fetch_assoc();
 
 function h($str)
 {
   return htmlspecialchars((string)$str, ENT_QUOTES, 'UTF-8');
 }
+
+// ==================== CHUẨN BỊ GIAO DIỆN ====================
+$pageTitle = "Thông tin tài khoản - Literary Haven";
+
+// Gói CSS riêng của trang
+ob_start();
 ?>
-<!DOCTYPE html>
-<html lang="vi">
+<style>
+  body {
+    background: linear-gradient(135deg, #f5f2e8 0%, #e8d5b7 50%, #7fb3d3 100%);
+    color: #2c3e50;
+    min-height: 100vh;
+  }
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cập nhật thông tin cá nhân - Literary Haven</title>
-  <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css" />
-  <style>
-    body {
-      background: linear-gradient(135deg, #f5f2e8 0%, #e8d5b7 50%, #7fb3d3 100%);
-      color: #2c3e50;
-      min-height: 100vh;
-    }
+  .container {
+    position: relative;
+    max-width: 1400px;
+    margin: 5rem auto;
+    margin-top: 8rem;
+  }
 
-    .container {
-      position: relative;
-      max-width: 1400px;
-      margin: 4rem auto;
-      padding: 0 2rem;
-    }
+  .page-heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-top: 20px;
+    margin-bottom: 2rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
 
-    .page-heading {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #2c3e50;
-      text-align: center;
-      margin-top: 5rem;
-      margin-bottom: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-    }
+  .history-container {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(79, 157, 166, 0.15);
+    border: 1px solid rgba(130, 192, 154, 0.2);
+    min-height: 400px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
 
-    .history-container {
-      background: white;
-      border-radius: 24px;
-      padding: 3rem;
-      box-shadow: 0 10px 40px rgba(79, 157, 166, 0.15);
-      border: 1px solid rgba(130, 192, 154, 0.2);
-      max-width: 800px;
-      margin: 0 auto;
-    }
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
 
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+  }
 
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #2c3e50;
-    }
+  .input-with-icon {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background: #f8f8f8;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
 
-    .input-with-icon {
-      display: flex !important;
-      align-items: center;
-      border: 2px solid #ddd;
-      border-radius: 12px;
-      background: #f8f8f8;
-      transition: all 0.3s ease;
-      width: 100%;
-      box-sizing: border-box;
-      overflow: hidden;
-      position: relative;
-    }
+  .input-with-icon:focus-within {
+    border-color: #4f9da6;
+    box-shadow: 0 0 0 3px rgba(79, 157, 166, 0.2);
+  }
 
-    .input-with-icon:focus-within {
-      border-color: #4f9da6;
-      box-shadow: 0 0 0 3px rgba(79, 157, 166, 0.2);
-    }
+  .input-icon {
+    padding: 0.8rem 1rem;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    background: transparent;
+  }
 
-    .input-icon {
-      position: static !important;
-      padding: 0.8rem 1rem;
-      font-size: 1.2rem;
-      color: #7f8c8d;
-      flex-shrink: 0;
-      display: flex !important;
-      align-items: center;
-      justify-content: center;
-    }
+  .input-with-icon input {
+    border: none;
+    outline: none;
+    padding: 0.8rem 1rem 0.8rem 0;
+    flex: 1;
+    background: transparent;
+    font-size: 1rem;
+  }
 
-    .input-with-icon input {
-      position: static !important;
-      border: none !important;
-      outline: none;
-      padding: 0.8rem 1rem 0.8rem 0 !important;
-      flex: 1 !important;
-      background: transparent !important;
-      font-size: 1rem;
-      min-width: 0;
-      width: auto !important;
-      box-sizing: border-box;
-      margin: 0 !important;
-    }
+  .input-with-icon input:read-only {
+    color: #7f8c8d;
+    cursor: not-allowed;
+  }
 
-    .input-with-icon input[readonly],
-    .input-with-icon input[disabled] {
-      background: #eee;
-      cursor: not-allowed;
-      color: #666;
-    }
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
 
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
+  .btn-action {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+  }
 
-    .btn-action {
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      text-decoration: none;
-      justify-content: center;
-    }
+  .btn-detail {
+    background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
+    color: white;
+  }
 
-    .btn-reorder {
-      background: linear-gradient(135deg, #ff7f50 0%, #ff4500 100%);
-      color: white;
-    }
+  .btn-detail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(79, 157, 166, 0.4);
+    color: white;
+  }
 
-    .btn-detail {
-      background: linear-gradient(135deg, #82c09a 0%, #4f9da6 100%);
-      color: white;
-    }
+  .btn-reorder {
+    background: linear-gradient(135deg, #ff7f50 0%, #ff4500 100%);
+    color: white;
+  }
 
-    .btn-action:hover {
-      transform: scale(1.02);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      color: white;
-    }
-  </style>
-</head>
+  .btn-reorder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 99, 71, 0.4);
+    color: white;
+  }
 
-<body>
-  <header class="topbar">
-    <div class="logo">
-      <a href="index.php">
-        <img class="Logo" src="../images/Logo_removebg.png" alt="Logo" />
-        <img class="Word" src="../images/Logo_word_removebg.png" alt="Literary Haven" />
-      </a>
-    </div>
-    <div class="auth-cart">
-      <div id="authArea">
-        <button class="btn-auth" onclick="openLoginModal()">Đăng nhập</button>
-        <button class="btn-auth btn-signup" onclick="openRegisterModal()">Đăng ký</button>
+  /* Thêm style cho thẻ alert nếu chưa có */
+  .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+
+  .alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  }
+</style>
+<?php
+$extraCss = ob_get_clean();
+
+// Gọi Header chung
+include '../includes/header.php';
+?>
+
+<main class="container">
+  <h2 class="page-heading">
+    <i class="bi bi-person-lines-fill"></i> Thông tin tài khoản
+  </h2>
+
+  <div class="history-container">
+    <?php if ($successMsg): ?>
+      <div class="alert alert-success">
+        <i class="bi bi-check-circle-fill"></i> <?= h($successMsg) ?>
       </div>
-    </div>
-  </header>
+      <script>
+        // Cập nhật lại localStorage nếu sửa thành công (để UI phía trên header tự cập nhật Tên mới)
+        let userCache = JSON.parse(localStorage.getItem('bs_user') || '{}');
+        userCache.fullName = <?= json_encode($fullName ?? $userCurrentInfo['fullName']) ?>;
+        localStorage.setItem('bs_user', JSON.stringify(userCache));
+      </script>
+    <?php endif; ?>
 
-  <nav class="navbar" id="mainNav">
-    <ul class="menu" id="mainMenu">
-      <li><a href="index.php">Trang chủ</a></li>
-      <li><a href="about.php">Giới thiệu</a></li>
-      <div class="category-menu">
-        <button class="category-btn">Danh mục ▾</button>
-        <ul class="book-filter">
-        </ul>
+    <?php if ($errorMsg): ?>
+      <div class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle-fill"></i> <?= h($errorMsg) ?>
       </div>
-      <li><a href="news.php">Tin tức</a></li>
-    </ul>
-  </nav>
+    <?php endif; ?>
 
-  <div class="nav_2">
-    <div class="search-center">
-      <input id="topSearch" class="search-input" type="text" placeholder="Nhập tên cuốn sách bạn đang tìm ..." autocomplete="off" />
-      <button class="search-btn" type="button">Tìm kiếm</button>
-    </div>
-    <div class="cart-float" id="cartFloat">
-      <button id="cartBtnFloat" class="btn" onclick="goToCart(event)">
-        <span class="cart-icon">🛒</span>
-        <span id="cart-count" class="cart-count">0</span>
-      </button>
-    </div>
+    <form method="POST" action="update-profile.php">
+      <div class="form-group">
+        <label for="username">Tên đăng nhập (Không thể thay đổi)</label>
+        <div class="input-with-icon">
+          <span class="input-icon"><i class="bi bi-person-badge"></i></span>
+          <input type="text" id="username" value="<?= h($userCurrentInfo['username'] ?? '') ?>" readonly />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="fullname">Họ và Tên *</label>
+        <div class="input-with-icon">
+          <span class="input-icon"><i class="bi bi-person"></i></span>
+          <input type="text" id="fullname" name="fullname" value="<?= h($userCurrentInfo['fullName'] ?? '') ?>" placeholder="Nhập họ và tên đầy đủ" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <div class="input-with-icon">
+          <span class="input-icon"><i class="bi bi-envelope"></i></span>
+          <input type="email" id="email" name="email" value="<?= h($userCurrentInfo['email'] ?? '') ?>" placeholder="example@email.com" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Số điện thoại *</label>
+        <div class="input-with-icon">
+          <span class="input-icon"><i class="bi bi-telephone"></i></span>
+          <input type="tel" id="phone" name="phone" value="<?= h($userCurrentInfo['phone'] ?? '') ?>" placeholder="Nhập số điện thoại" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Địa chỉ giao hàng mặc định *</label>
+        <div class="input-with-icon">
+          <span class="input-icon"><i class="bi bi-geo-alt"></i></span>
+          <input type="text" id="address" name="address" value="<?= h($userCurrentInfo['address'] ?? '') ?>" placeholder="Số nhà, tên đường, phường/xã, quận/huyện..." required />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="change-password.php" class="btn-action btn-reorder">
+          <i class="bi bi-key"></i> Đổi mật khẩu
+        </a>
+        <button type="submit" class="btn-action btn-detail">
+          <i class="bi bi-save"></i> Cập nhật thông tin
+        </button>
+      </div>
+    </form>
   </div>
+</main>
 
-  <main class="container">
-    <h2 class="page-heading">
-      <i class="bi bi-gear-fill"></i> Cập nhật thông tin cá nhân
-    </h2>
-    <div class="history-container" id="updateProfileContainer">
+<?php
+// Gói Script xử lý Form vào $extraJs
+ob_start();
+?>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Validate số điện thoại khi submit form
+    const form = document.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        const phone = document.getElementById('phone').value.trim();
+        if (!/^[0-9]{10,11}$/.test(phone)) {
+          e.preventDefault();
+          alert('Số điện thoại không hợp lệ. Vui lòng nhập 10-11 chữ số.');
+        }
+      });
+    }
+  });
+</script>
+<?php
+$extraJs = ob_get_clean();
 
-      <?php if ($successMsg): ?>
-        <div class="alert alert-success text-center" style="border-radius: 12px; font-weight: 500;">
-          <?= h($successMsg) ?>
-        </div>
-      <?php endif; ?>
-
-      <?php if ($errorMsg): ?>
-        <div class="alert alert-danger" style="border-radius: 12px; font-weight: 500;">
-          <?= h($errorMsg) ?>
-        </div>
-      <?php endif; ?>
-
-      <form method="POST" action="update-profile.php">
-        <div class="form-group">
-          <label>Họ và tên</label>
-          <div class="input-with-icon">
-            <span class="input-icon"><i class="bi bi-person-fill"></i></span>
-            <input type="text" name="fullname" value="<?= h($userData['fullName']) ?>" required />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Tài khoản (Không thể thay đổi)</label>
-          <div class="input-with-icon">
-            <span class="input-icon"><i class="bi bi-lock-fill"></i></span>
-            <input type="text" value="<?= h($userData['username']) ?>" readonly disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Email</label>
-          <div class="input-with-icon">
-            <span class="input-icon"><i class="bi bi-envelope-fill"></i></span>
-            <input type="email" name="email" value="<?= h($userData['email']) ?>" required />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Số điện thoại</label>
-          <div class="input-with-icon">
-            <span class="input-icon"><i class="bi bi-telephone-fill"></i></span>
-            <input type="tel" name="phone" value="<?= h($userData['phone']) ?>" required />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Địa chỉ giao hàng mặc định</label>
-          <div class="input-with-icon">
-            <span class="input-icon"><i class="bi bi-house-fill"></i></span>
-            <input type="text" name="address" value="<?= h($userData['address']) ?>" required />
-          </div>
-        </div>
-
-        <div class="form-actions">
-          <a href="index.php" class="btn-action btn-reorder">
-            <i class="bi bi-arrow-left"></i> Về trang chủ
-          </a>
-          <button type="submit" class="btn-action btn-detail">
-            <i class="bi bi-save"></i> Lưu thông tin
-          </button>
-        </div>
-      </form>
-
-      <p class="mt-4" style="text-align: center; color: #7f8c8d">
-        Bạn muốn đổi mật khẩu?
-        <a href="change-password.php" style="color: #4f9da6; font-weight: 600">Đổi mật khẩu tại đây</a>
-      </p>
-    </div>
-  </main>
-
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Về Chúng tôi</h3>
-        <ul>
-          <li><a href="about.php">Giới thiệu</a></li>
-          <li><a href="./news.php">Tin tức</a></li>
-          <li><a href="./privacy_policy.php">Chính sách bảo mật</a></li>
-          <li><a href="./terms-of-use.php">Điều khoản sử dụng</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Hỗ trợ khách hàng</h3>
-        <ul>
-          <li><a href="./shopping_guide.php">Hướng dẫn mua hàng</a></li>
-          <li><a href="./exchange-policy.php">Chính sách đổi trả</a></li>
-          <li><a href="./warranty-policy.php">Chính sách bảo hành</a></li>
-          <li><a href="./frequently-asked-questions.php">Câu hỏi thường gặp</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Chính sách</h3>
-        <ul>
-          <li><a href="./payment-policy.php">Chính sách thanh toán</a></li>
-          <li><a href="./shipping-policy.php">Chính sách vận chuyển</a></li>
-          <li><a href="./warranty-policy.php">Chính sách bảo hành</a></li>
-          <li><a href="./exchange-policy.php">Chính sách đổi trả</a></li>
-        </ul>
-      </div>
-      <div class="footer-section contact-info">
-        <h3>Liên hệ</h3>
-        <p>📍 123 Nguyễn Văn Linh, Q7, TP.HCM</p>
-        <p>📞 Hotline: 1900 xxxx</p>
-        <p>✉️ Email: support@bookstore.vn</p>
-        <p>🕐 Giờ làm việc: 8:00 - 22:00</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2025 Book Store. All rights reserved. | Designed with ❤️</p>
-    </div>
-  </footer>
-
-  <?php include '../includes/auth_modals.php'; ?>
-
-  <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/js/main.js?v=2"></script>
-</body>
-
-</html>
+// Gọi Footer chung
+include '../includes/footer.php';
+?>
