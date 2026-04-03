@@ -551,17 +551,20 @@ VALUES (
     100,
     0.1
   );
+-- BẢNG USERS ĐÃ ĐƯỢC BỔ SUNG CỘT ROLE
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  status VARCHAR(20),
+  status VARCHAR(20) DEFAULT 'active',
   fullName VARCHAR(255),
   username VARCHAR(100),
-  password VARCHAR(100),
+  password VARCHAR(255),
   email VARCHAR(255),
   phone VARCHAR(20),
   address VARCHAR(255),
+  role VARCHAR(20) DEFAULT 'user',
   createdAt DATETIME
 );
+-- CHÈN TÀI KHOẢN KHÁCH HÀNG VÀ TÀI KHOẢN ADMIN
 INSERT INTO users (
     status,
     fullName,
@@ -570,6 +573,7 @@ INSERT INTO users (
     email,
     phone,
     address,
+    role,
     createdAt
   )
 VALUES (
@@ -580,7 +584,14 @@ VALUES (
     'teacher@gmail.com',
     '0987654321',
     '123 Đường ABC, Q1, TPHCM',
+    'user',
     NOW()
+  );
+INSERT INTO users (username, password, role)
+VALUES (
+    'quanly1',
+    '$2y$10$RNKTkguQtaY9RPJGIDp7S.9Bx/u9Z2lLBug.rET9TM.zJR98RZ8j6',
+    'admin'
   );
 CREATE TABLE orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
