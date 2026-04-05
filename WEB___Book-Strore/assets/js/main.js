@@ -1,45 +1,35 @@
-// Kiểm tra trạng thái tài khoản từ server mỗi khi trang load (dùng session)
+let appCurrentUser = null;
+
+// HÀM BẢO MẬT: Chuyển đổi các ký tự đặc biệt thành text an toàn
+function escapeHtml(text) {
+  if (!text || typeof text !== 'string') return '';
+  return text.replace(/&amp;/g, '&').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+// TỰ ĐỘNG DỌN SẠCH RÁC LOCALSTORAGE CŨ
+const obsoleteKeys = ['bs_user', 'bs_cart', 'bs_buyer_profiles', 'bs_active_buyer_profile', 'bs_selected_address', 'bs_user_addresses'];
+obsoleteKeys.forEach(k => localStorage.removeItem(k));
+
+// Kiểm tra trạng thái tài khoản từ server mỗi khi trang load
 document.addEventListener("DOMContentLoaded", async function () {
   try {
-    const data = await apiFetchJson(resolveApiUrl("check-status.php"), {
-      method: "POST",
-      body: JSON.stringify({}), // session PHP tự xác định user
-    });
-
-    const user = data.user;
-    if (!user) return;
-
-    // Tài khoản bị khóa → đăng xuất
-    if (user.status === "locked") {
-      alert("🚫 Tài khoản của bạn đã bị khóa. Bạn sẽ được đăng xuất.");
-      await logoutViaApi();
-      localStorage.removeItem("bs_user");
-      await clearCart();
-      updateAuthUI();
-      return;
+    const data = await apiFetchJson(resolveApiUrl("check-status.php"), { method: "POST" });
+    if (data && data.user) {
+      // Tài khoản bị khóa → đăng xuất
+      if (data.user.status === "locked") {
+        alert("🚫 Tài khoản của bạn đã bị khóa. Bạn sẽ được đăng xuất.");
+        await logoutViaApi();
+        appCurrentUser = null;
+        await clearCart();
+        updateAuthUI();
+        return;
+      }
+      appCurrentUser = data.user; // Lưu dữ liệu an toàn vào RAM
     }
-
-    // Lưu thông tin tối thiểu vào localStorage chỉ để hiển thị UI
-    localStorage.setItem("bs_user", JSON.stringify({
-      id: user.id,
-      status: user.status,
-      username: user.username,
-      fullName: user.fullName,
-      email: user.email,
-      phone: user.phone,
-      address: user.address,
-    }));
-
     updateAuthUI();
-
   } catch (err) {
-    // Session không tồn tại hoặc hết hạn → xóa localStorage để đồng bộ
-    if (err.message && err.message.includes('Chưa đăng nhập')) {
-      localStorage.removeItem("bs_user");
-      updateAuthUI();
-    } else {
-      console.warn("Không thể kiểm tra trạng thái tài khoản:", err.message);
-    }
+    appCurrentUser = null;
+    updateAuthUI();
   }
 });
 
@@ -658,7 +648,7 @@ function increaseQty() {
 // Sửa lại hàm addToCart để yêu cầu đăng nhập trước khi thêm vào giỏ
 async function addToCart(id, qty = 1) {
   // LOGIC BẮT BUỘC ĐĂNG NHẬP
-  const user = localStorage.getItem("bs_user");
+  const user = getCurrentUser(); 
   if (!user) {
     openLoginModal();
     return;
@@ -915,7 +905,7 @@ async function addToCartDetail(productId) {
   const quantityToAdd = qtyInput ? parseInt(qtyInput.value) : 1;
   const product = findProductById(productId);
 
-  const user = localStorage.getItem("bs_user");
+  const user = getCurrentUser();
   if (!user) {
     openLoginModal();
     return;
@@ -950,7 +940,7 @@ async function buyNow(productId) {
   const qtyInput = document.getElementById("qty");
   const quantityToAdd = qtyInput ? parseInt(qtyInput.value) : 1;
 
-  const user = localStorage.getItem("bs_user");
+  const user = getCurrentUser(); // Thay dòng localStorage
   if (!user) {
     openLoginModal();
     return;
@@ -1053,12 +1043,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 /* Assistant added auth UI renderer */
 
 /* --- Auth UI rendering --- */
+/* --- Auth UI rendering --- */
 function getCurrentUser() {
-  try {
-    return JSON.parse(localStorage.getItem("bs_user"));
-  } catch (e) {
-    return null;
-  }
+  // Lấy dữ liệu an toàn từ biến RAM hoặc từ PHP Session truyền sang
+  return window.currentUserFromSession || appCurrentUser;
 }
 function renderAuth() {
   const authArea = document.getElementById("authArea");
@@ -1112,6 +1100,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /* Assistant added cart float click handler */
 
 // float cart click handler
+// float cart click handler
 document.addEventListener("DOMContentLoaded", function () {
   const cbtn =
     document.getElementById("cartBtnFloat") ||
@@ -1119,8 +1108,9 @@ document.addEventListener("DOMContentLoaded", function () {
   if (cbtn)
     cbtn.addEventListener("click", function (e) {
       e.preventDefault();
-      // Chặn lại và bật bảng đăng nhập ngay lập tức nếu chưa có user
-      if (!localStorage.getItem("bs_user")) {
+      
+      // Kiểm tra bằng hàm Backend thay vì localStorage
+      if (!getCurrentUser()) {
         openLoginModal();
       } else {
         window.location.href = "cart.php";
@@ -1152,7 +1142,91 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCategoryBreadcrumb();
 });
 
+// ==================== TÍCH HỢP ĐỊA CHỈ TỪ FILE LOCAL (JSON) ====================
+let localProvinces = null;
 
+async function getLocalProvinces() {
+    if (!localProvinces) {
+        const res = await fetch('../assets/data/provinces.json');
+        localProvinces = await res.json();
+    }
+    return localProvinces;
+}
+
+async function initAddressAPI(cityId, distId, wardId) {
+    const citySel = document.getElementById(cityId);
+    const distSel = document.getElementById(distId);
+    const wardSel = document.getElementById(wardId);
+    if (!citySel || !distSel || !wardSel) return;
+
+    const data = await getLocalProvinces();
+
+    citySel.innerHTML = '<option value="">Chọn Tỉnh/Thành phố</option>';
+    data.forEach(c => citySel.add(new Option(c.name, c.code)));
+
+    citySel.addEventListener('change', function() {
+        distSel.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+        wardSel.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+        distSel.disabled = true; wardSel.disabled = true;
+        if (this.value) {
+            const selectedCity = data.find(c => c.code == this.value);
+            if (selectedCity && selectedCity.districts) {
+                selectedCity.districts.forEach(d => distSel.add(new Option(d.name, d.code)));
+                distSel.disabled = false;
+            }
+        }
+    });
+
+    distSel.addEventListener('change', function() {
+        wardSel.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+        wardSel.disabled = true;
+        if (this.value) {
+            const selectedCity = data.find(c => c.code == citySel.value);
+            if (selectedCity) {
+                const selectedDist = selectedCity.districts.find(d => d.code == this.value);
+                if (selectedDist && selectedDist.wards) {
+                    selectedDist.wards.forEach(w => wardSel.add(new Option(w.name, w.code)));
+                    wardSel.disabled = false;
+                }
+            }
+        }
+    });
+}
+
+function getFormattedAddressFromSelects(cityId, distId, wardId, streetId) {
+    const city = document.getElementById(cityId);
+    const dist = document.getElementById(distId);
+    const ward = document.getElementById(wardId);
+    const street = document.getElementById(streetId).value.trim();
+
+    if(!city.value || !dist.value || !ward.value || !street) return null;
+
+    const cityName = city.options[city.selectedIndex].text;
+    const distName = dist.options[dist.selectedIndex].text;
+    const wardName = ward.options[ward.selectedIndex].text;
+
+    return `${wardName}, ${distName}, ${cityName} - ${street}`;
+}
+
+// Tự động tiêm 3 Dropdown vào form đăng ký thay cho ô Input cũ
+document.addEventListener("DOMContentLoaded", function() {
+    const regAddress = document.getElementById("reg-address");
+    if(regAddress) {
+        const parent = regAddress.parentElement;
+        parent.innerHTML = `
+            <label>Tỉnh/Thành phố *</label>
+            <select id="reg-city" required style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;"><option value="">Đang tải...</option></select>
+            <label>Quận/Huyện *</label>
+            <select id="reg-dist" required disabled style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;"><option value="">Chọn Quận/Huyện</option></select>
+            <label>Phường/Xã *</label>
+            <select id="reg-ward" required disabled style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;"><option value="">Chọn Phường/Xã</option></select>
+            <label>Số nhà, Tên đường *</label>
+            <input type="text" id="reg-street" required placeholder="VD: Số 123 Lê Lợi" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:5px;">
+            <input type="hidden" id="reg-address" value=""> 
+        `;
+        initAddressAPI('reg-city', 'reg-dist', 'reg-ward');
+    }
+});
 // ==================== MODAL FUNCTIONS ====================
 
 // Mở modal đăng nhập
@@ -1183,13 +1257,12 @@ function closeRegisterModal() {
 
 // Mở modal profile
 function openProfileModal() {
-  const userStr = localStorage.getItem("bs_user");
-  if (!userStr) {
+  const user = getCurrentUser(); // Thay thế localStorage ở đây
+  if (!user) {
     openLoginModal();
     return;
   }
 
-  const user = JSON.parse(userStr);
   document.getElementById("profile-fullname").textContent =
     "Xin chào, " + user.fullName + "!";
   document.getElementById("profile-name-value").textContent = user.fullName;
@@ -1249,8 +1322,65 @@ function validateEmail(email) {
 
 // Validate số điện thoại
 function validatePhone(phone) {
-  const re = /^[0-9]{10}$/;
+  const re = /^(0|84)(3|5|7|8|9)[0-9]{8}$/;
   return re.test(phone.replace(/\s/g, ""));
+}
+
+// Xử lý đăng ký
+function handleRegister(e) {
+  e.preventDefault();
+
+  const fullName = document.getElementById("reg-fullname").value.trim();
+  const username = document.getElementById("reg-username").value.trim();
+  const password = document.getElementById("reg-password").value;
+  const confirmPassword = document.getElementById("reg-confirm-password").value;
+  const email = document.getElementById("reg-email").value.trim();
+  const phone = document.getElementById("reg-phone").value.trim();
+  
+  // LẤY ĐỊA CHỈ TỪ 3 DROPDOWN VÀ Ô SỐ NHÀ
+  const address = getFormattedAddressFromSelects('reg-city', 'reg-dist', 'reg-ward', 'reg-street');
+
+  clearFormErrors();
+  let hasError = false;
+
+  if (!fullName) { document.getElementById("error-fullname").textContent = "Vui lòng nhập họ tên"; hasError = true; }
+  if (!username) { document.getElementById("error-username").textContent = "Vui lòng nhập tài khoản"; hasError = true; } 
+  else if (username.length < 4) { document.getElementById("error-username").textContent = "Tài khoản phải có ít nhất 4 ký tự"; hasError = true; }
+
+  if (!password) { document.getElementById("error-password").textContent = "Vui lòng nhập mật khẩu"; hasError = true; } 
+  else if (password.length < 6) { document.getElementById("error-password").textContent = "Mật khẩu phải có ít nhất 6 ký tự"; hasError = true; }
+
+  if (password !== confirmPassword) { document.getElementById("error-confirm-password").textContent = "Mật khẩu không khớp"; hasError = true; }
+
+  if (!email) { document.getElementById("error-email").textContent = "Vui lòng nhập email"; hasError = true; } 
+  else if (!validateEmail(email)) { document.getElementById("error-email").textContent = "Email không hợp lệ"; hasError = true; }
+
+  if (!phone) { document.getElementById("error-phone").textContent = "Vui lòng nhập số điện thoại"; hasError = true; } 
+  else if (!validatePhone(phone)) { document.getElementById("error-phone").textContent = "SĐT không hợp lệ (10 số, đầu 03,05,07,08,09)"; hasError = true; }
+
+  if (!address) {
+    // Vì ô input cũ đã bị ẩn đi, ta thông báo alert cho khách biết nếu họ quên chọn Phường/Xã
+    alert("Vui lòng chọn đầy đủ Tỉnh, Quận, Phường và nhập Số nhà/Tên đường!");
+    hasError = true;
+  }
+
+  if (hasError) return;
+
+  // Gửi dữ liệu đăng ký lên server
+  registerViaApi({ fullName, username, password, email, phone, address })
+    .then(() => {
+      closeRegisterModal();
+      alert("Đăng ký thành công! Vui lòng đăng nhập.");
+      setTimeout(() => openLoginModal(), 300);
+    })
+    .catch((err) => {
+      const msg = err.message || "Đăng ký thất bại";
+      if (msg.includes("Tài khoản đã tồn tại")) {
+        document.getElementById("error-username").textContent = msg;
+      } else {
+        alert(msg);
+      }
+    });
 }
 
 // Xử lý đăng nhập
@@ -1284,17 +1414,8 @@ function handleLogin(e) {
       const user = resp.user;
       if (!user) throw new Error("Không nhận được thông tin user từ server");
 
-      // Lưu vào localStorage chỉ để hiển thị UI (tên, avatar...)
-      // Xác thực thật sự dùng PHP session
-      localStorage.setItem("bs_user", JSON.stringify({
-        id: user.id,
-        status: user.status,
-        username: user.username,
-        fullName: user.fullName,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
-      }));
+      // ĐÃ SỬA Ở ĐÂY: Lưu dữ liệu vào biến RAM, tuyệt đối không dùng localStorage
+      appCurrentUser = user;
 
       closeLoginModal();
       updateAuthUI();
@@ -1306,97 +1427,6 @@ function handleLogin(e) {
         document.getElementById("error-login-username").textContent = msg;
       } else if (msg.includes("Mật khẩu")) {
         document.getElementById("error-login-password").textContent = msg;
-      } else {
-        alert(msg);
-      }
-    });
-}
-
-// Xử lý đăng ký
-function handleRegister(e) {
-  e.preventDefault();
-
-  const fullName = document.getElementById("reg-fullname").value.trim();
-  const username = document.getElementById("reg-username").value.trim();
-  const password = document.getElementById("reg-password").value;
-  const confirmPassword = document.getElementById("reg-confirm-password").value;
-  const email = document.getElementById("reg-email").value.trim();
-  const phone = document.getElementById("reg-phone").value.trim();
-  const address = document.getElementById("reg-address").value.trim();
-
-  clearFormErrors();
-
-  let hasError = false;
-
-  if (!fullName) {
-    document.getElementById("error-fullname").textContent =
-      "Vui lòng nhập họ tên";
-    hasError = true;
-  }
-
-  if (!username) {
-    document.getElementById("error-username").textContent =
-      "Vui lòng nhập tài khoản";
-    hasError = true;
-  } else if (username.length < 4) {
-    document.getElementById("error-username").textContent =
-      "Tài khoản phải có ít nhất 4 ký tự";
-    hasError = true;
-  }
-
-  if (!password) {
-    document.getElementById("error-password").textContent =
-      "Vui lòng nhập mật khẩu";
-    hasError = true;
-  } else if (password.length < 6) {
-    document.getElementById("error-password").textContent =
-      "Mật khẩu phải có ít nhất 6 ký tự";
-    hasError = true;
-  }
-
-  if (password !== confirmPassword) {
-    document.getElementById("error-confirm-password").textContent =
-      "Mật khẩu không khớp";
-    hasError = true;
-  }
-
-  if (!email) {
-    document.getElementById("error-email").textContent = "Vui lòng nhập email";
-    hasError = true;
-  } else if (!validateEmail(email)) {
-    document.getElementById("error-email").textContent = "Email không hợp lệ";
-    hasError = true;
-  }
-
-  if (!phone) {
-    document.getElementById("error-phone").textContent =
-      "Vui lòng nhập số điện thoại";
-    hasError = true;
-  } else if (!validatePhone(phone)) {
-    document.getElementById("error-phone").textContent =
-      "Số điện thoại phải có 10 chữ số";
-    hasError = true;
-  }
-
-  if (!address) {
-    document.getElementById("error-address").textContent =
-      "Vui lòng nhập địa chỉ";
-    hasError = true;
-  }
-
-  if (hasError) return;
-
-  // Gửi dữ liệu đăng ký lên server
-  registerViaApi({ fullName, username, password, email, phone, address })
-    .then(() => {
-      closeRegisterModal();
-      alert("Đăng ký thành công! Vui lòng đăng nhập.");
-      setTimeout(() => openLoginModal(), 300);
-    })
-    .catch((err) => {
-      const msg = err.message || "Đăng ký thất bại";
-      if (msg.includes("Tài khoản đã tồn tại")) {
-        document.getElementById("error-username").textContent = msg;
       } else {
         alert(msg);
       }
@@ -1418,63 +1448,32 @@ async function handleLogoutModal() {
 // ==========================================================
 
 // Cập nhật giao diện auth
-// CHỖ SỬA: Cập nhật hàm updateAuthUI() để hiển thị dropdown thay vì modal
 function updateAuthUI() {
   const authArea = document.getElementById("authArea");
   if (!authArea) return;
 
-  const userStr = localStorage.getItem("bs_user");
+  const user = getCurrentUser(); // Đã đổi: không dùng localStorage.getItem("bs_user") nữa
 
-  if (userStr) {
-    const user = JSON.parse(userStr);
-    // SỬA: Thay đổi HTML để tạo dropdown menu
+  if (user && user.fullName) {
     authArea.innerHTML = `
       <div class="user-profile-dropdown">
         <button class="user-profile-btn">
           <span class="dropdown-icon">👤</span>
-          <span>${user.fullName}</span>
+          <span>${escapeHtml(user.fullName)}</span>
           <span class="user-dropdown-icon">▼</span>
         </button>
         
         <ul class="user-dropdown-menu">
-          <li>
-            <a href="#" onclick="viewProfile(event)">
-              <span class="dropdown-icon"></span>
-              Thông tin cá nhân
-            </a>
-          </li>
-          <li>
-            <a href="#" onclick="viewOrderHistory(event)">
-              <span class="dropdown-icon"></span>
-               Lịch sử mua hàng
-            </a>
-          </li>
+          <li><a href="#" onclick="viewProfile(event)"><span class="dropdown-icon"></span>Thông tin cá nhân</a></li>
+          <li><a href="#" onclick="viewOrderHistory(event)"><span class="dropdown-icon"></span>Lịch sử mua hàng</a></li>
           <li class="user-submenu">
-            <div class="dropdown-item">
-              <span class="dropdown-icon"></span>
-              Tùy chọn
-            </div>
+            <div class="dropdown-item"><span class="dropdown-icon"></span>Tùy chọn</div>
             <ul class="user-submenu-content">
-              <li>
-                <a href="#" onclick="editProfile(event)">
-                  <span class="dropdown-icon"></span>
-                  Sửa thông tin cá nhân
-                </a>
-              </li>
-              <li>
-                <a href="#" onclick="changePassword(event)">
-                  <span class="dropdown-icon"></span>
-                  Đổi mật khẩu
-                </a>
-              </li>
+              <li><a href="#" onclick="editProfile(event)"><span class="dropdown-icon"></span>Sửa thông tin cá nhân</a></li>
+              <li><a href="#" onclick="changePassword(event)"><span class="dropdown-icon"></span>Đổi mật khẩu</a></li>
             </ul>
           </li>
-          <li>
-          <a href="#" onclick="handleLogoutDropdown(event)" class="logout-link">
-              <span class="dropdown-icon"></span>
-              Đăng xuất
-            </a>
-          </li>
+          <li><a href="#" onclick="handleLogoutDropdown(event)" class="logout-link"><span class="dropdown-icon"></span>Đăng xuất</a></li>
         </ul>
       </div>
     `;
@@ -1518,8 +1517,7 @@ async function handleLogoutDropdown(e) {
   if (e) e.preventDefault();
   if (confirm("Bạn có chắc muốn đăng xuất?")) {
     await logoutViaApi();
-    localStorage.removeItem("bs_user");
-    localStorage.setItem("bs_cart", JSON.stringify([]));
+    appCurrentUser = null; // Xóa khỏi RAM
     await clearCart();
     updateAuthUI();
     if (typeof updateCartCount === "function") updateCartCount();

@@ -16,7 +16,7 @@ $query = "
            c.name AS category, p.subcategory
     FROM products p
     JOIN categories c ON p.category_id = c.id
-    WHERE (p.qty IS NULL OR p.qty > 0)
+    WHERE (p.qty IS NULL OR p.qty > 0) AND c.status = 'active'
 ";
 
 if (!empty($categoryParam)) {

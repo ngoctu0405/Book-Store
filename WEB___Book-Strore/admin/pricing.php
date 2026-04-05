@@ -1,472 +1,331 @@
+<?php
+session_start();
+require_once __DIR__ . '/../api/db.php';
+
+// Bảo vệ trang Admin
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+  header("Location: index.php");
+  exit;
+}
+
+// --- XỬ LÝ AJAX LƯU LỢI NHUẬN (POST) ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $data = json_decode(file_get_contents('php://input'), true);
+
+  if (isset($data['action']) && $data['action'] === 'update_margin') {
+    $pId = (int)$data['product_id'];
+    $margin = (int)$data['profit_margin'];
+
+    // Lấy giá vốn hiện tại từ DB
+    $res = $conn->query("SELECT costPrice FROM products WHERE id = $pId");
+    if ($row = $res->fetch_assoc()) {
+      $costPrice = (int)$row['costPrice'];
+
+      // Tính toán Giá bán mới = Giá vốn * (100% + Lợi nhuận)
+      $newSalePrice = round($costPrice * (1 + ($margin / 100)));
+
+      // Cập nhật DB
+      $stmt = $conn->prepare("UPDATE products SET profitMargin = ?, price = ? WHERE id = ?");
+      $stmt->bind_param("iii", $margin, $newSalePrice, $pId);
+
+      if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'new_price' => number_format($newSalePrice) . 'đ']);
+        exit;
+      }
+    }
+    echo json_encode(['success' => false, 'message' => 'Lỗi cập nhật CSDL']);
+    exit;
+  }
+}
+
+// --- XỬ LÝ LỌC VÀ TÌM KIẾM (GET) ---
+$search = $_GET['search'] ?? '';
+$cat_id = $_GET['category_id'] ?? '';
+
+$where = [];
+$params = [];
+$types = "";
+
+if ($search !== '') {
+  $where[] = "(p.name LIKE ? OR p.sku LIKE ?)";
+  $searchParam = "%$search%";
+  $params[] = $searchParam;
+  $params[] = $searchParam;
+  $types .= "ss";
+}
+if ($cat_id !== '') {
+  $where[] = "p.category_id = ?";
+  $params[] = (int)$cat_id;
+  $types .= "i";
+}
+
+$whereSql = count($where) > 0 ? "WHERE " . implode(" AND ", $where) : "";
+
+// Lấy danh sách sản phẩm
+$sql = "SELECT p.*, c.name as category_name 
+        FROM products p 
+        LEFT JOIN categories c ON p.category_id = c.id 
+        $whereSql 
+        ORDER BY p.name ASC";
+
+$stmt = $conn->prepare($sql);
+if ($types) {
+  $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$products = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+// Lấy danh mục để đưa vào Select
+$categories = $conn->query("SELECT id, name FROM categories WHERE status = 'active'")->fetch_all(MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý Giá bán</title>
 
-    <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/admin_style.css">\
-    <style>
-        /* Responsive cho thiết bị di động (max-width: 768px) */
-@media (max-width: 768px) {
-    /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
-    body {
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý Giá bán - Literary Haven</title>
+  <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
+  <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/admin_style.css">
+  <style>
+    /* CSS Responsive đồng bộ Sidebar */
+    @media (max-width: 768px) {
+      body {
         display: flex !important;
-        flex-direction: column !important; /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
-        overflow-x: hidden; /* Tắt cuộn ngang vì đã xếp chồng */
-    }
+        flex-direction: column !important;
+        overflow-x: hidden;
+      }
 
-    /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
-    .sidebar {
-        width: 100% !important; 
-        /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
-        height: auto !important; 
+      .sidebar {
+        width: 100% !important;
+        height: auto !important;
         flex-shrink: 0;
         display: flex !important;
-        
-        /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
-        overflow-x: auto; /* Cho phép menu cuộn ngang nếu có nhiều mục */
-        white-space: nowrap; /* Ngăn các mục menu xuống dòng */
-    }
-    
-    /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
-    .main-content {
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .main-content {
         width: 100%;
         min-width: auto;
-    }
-    
-    /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
-    .page-content {
+      }
+
+      .page-content {
         padding: 15px !important;
-    }
+      }
 
-    .page-content h1 {
-        font-size: 20px;
-        margin-bottom: 15px;
-    }
-
-    /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
-    .table-responsive {
+      .table-responsive {
         border: 1px solid var(--border-color);
         border-radius: 12px;
-        overflow-x: auto; 
+        overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-    }
+      }
 
-    .table {
-        min-width: 600px; /* Vẫn cần min-width cho bảng */
-    }
+      .table {
+        min-width: 600px;
+      }
 
-    .table thead th, 
-    .table tbody td {
-        padding: 8px 6px; 
-        font-size: 12px; 
-    }
-    
-    .profit-input {
-        width: 50px;
-        padding: 4px 2px;
+      .table thead th,
+      .table tbody td {
+        padding: 8px 6px;
         font-size: 12px;
-    }
+      }
 
-    .btn-sm {
-        padding: 3px 6px; 
+      .profit-input {
+        width: 60px !important;
+        text-align: center;
+      }
+
+      .btn-sm {
+        padding: 3px 6px;
         font-size: 10px;
+      }
     }
-    
-    .table tbody td span.small {
-        display: none;
-    }
-}
 
-/* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
-@media (min-width: 769px) {
-    body {
-        display: flex !important; 
-        flex-direction: row !important; /* Khôi phục thành row trên desktop */
-        overflow-x: hidden; 
-    }
-    .sidebar {
-        /* Giả sử chiều rộng desktop là 250px */
-        width: 250px !important; 
-        height: 100vh !important; /* Khôi phục vh-100 trên desktop */
+    @media (min-width: 769px) {
+      body {
         display: flex !important;
-    }
-    .main-content {
+        flex-direction: row !important;
+        overflow-x: hidden;
+      }
+
+      .sidebar {
+        width: 250px !important;
+        height: 100vh !important;
+        display: flex !important;
+      }
+
+      .main-content {
         width: 100%;
+      }
+
+      .profit-input {
+        width: 80px !important;
+        text-align: center;
+        margin: 0 auto;
+      }
     }
-}
-    </style>
+
+    .price-changed {
+      color: #28a745 !important;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+  </style>
 </head>
+
 <body>
-    
 
-    <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
-    <link
-      rel="stylesheet"
-      href="../bootstrap-5.3.2-dist/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" href="../assets/css/admin_style.css" />
-  </head>
-  <body>
+  <?php include 'admin_sidebar.php'; ?>
 
-    <aside class="sidebar d-flex flex-column vh-100">
-      <div class="sidebar-header">Literary Haven</div>
+  <main class="main-content">
+    <div class="page-content p-4">
+      <h1 class="mb-4">Quản lý Giá bán</h1>
 
-      <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-          <a href="dashboard.php" class="nav-link">
-            <span class="nav-icon">◈</span>
-            <span>Bảng điều khiển</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="users.php" class="nav-link">
-            <span class="nav-icon">◉</span>
-            <span>Khách hàng</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="categories.php" class="nav-link">
-            <span class="nav-icon">◫</span>
-            <span>Loại sản phẩm</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="products.php" class="nav-link">
-            <span class="nav-icon">◪</span>
-            <span>Sản phẩm</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="purchase-orders.php" class="nav-link">
-            <span class="nav-icon">◩</span>
-            <span>Nhập hàng</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="pricing.php" class="nav-link active">
-            <span class="nav-icon">◎</span>
-            <span>Quản lý giá</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="orders.php" class="nav-link">
-            <span class="nav-icon">◧</span>
-            <span>Đơn hàng</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="inventory.php" class="nav-link">
-            <span class="nav-icon">◨</span>
-            <span>Tồn kho</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="reports.php" class="nav-link">
-            <span class="nav-icon">◔</span>
-            <span>Báo cáo</span>
-          </a>
-        </li>
-      </ul>
-
-      <div class="mt-auto p-3">
-        <a href="index.php" class="logout-link">
-          <span>◀</span>
-          <span>Đăng xuất</span>
-        </a>
-      </div>
-    </aside>
-
-    <main class="main-content">
-      <div class="page-content p-4">
-        <h1 class="mb-4">Quản lý Giá bán</h1>
-
-        <div class="card">
-          <div
-            class="card-header d-flex justify-content-between align-items-center"
-          >
-            <h3 class="h5 mb-0">Tra cứu và Tinh chỉnh Giá bán</h3>
-          </div>
-          <div class="card-body">
-            <form id="search-pricing-form" class="row g-3 mb-3">
-              <div class="col-md-5">
-                <input
-                  type="text"
-                  id="search-query"
-                  class="form-control"
-                  placeholder="Tìm theo tên hoặc mã sản phẩm..."
-                />
-              </div>
-              <div class="col-md-5">
-                <select id="category-filter" class="form-select">
-                  <option value="" selected>Lọc theo loại sản phẩm</option>
-                </select>
-              </div>
-              <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">
-                  Tra cứu
-                </button>
-              </div>
-            </form>
-
-            <div class="table-responsive">
-              <table class="table table-hover align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Loại SP</th>
-                    <th class="text-end">Giá vốn</th>
-                    <th class="text-center">% Lợi nhuận</th>
-                    <th class="text-end">Giá bán</th>
-                    <th class="text-center">Hành động</th>
-                  </tr>
-                </thead>
-                <tbody id="pricing-table-body">
-                  <tr>
-                    <td colspan="6" class="text-center">Đang tải dữ liệu...</td>
-                  </tr>
-                </tbody>
-              </table>
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="h5 mb-0">Tra cứu và Tinh chỉnh Giá bán</h3>
+        </div>
+        <div class="card-body">
+          <form method="GET" action="pricing.php" class="row g-3 mb-4">
+            <div class="col-md-5">
+              <input type="text" name="search" class="form-control" placeholder="Tìm theo tên hoặc mã SKU..." value="<?= htmlspecialchars($search) ?>" />
             </div>
+            <div class="col-md-5">
+              <select name="category_id" class="form-select">
+                <option value="">Tất cả loại sản phẩm</option>
+                <?php foreach ($categories as $cat): ?>
+                  <option value="<?= $cat['id'] ?>" <?= $cat_id == $cat['id'] ? 'selected' : '' ?>><?= htmlspecialchars($cat['name']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-primary w-100">Tra cứu</button>
+            </div>
+          </form>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Tên sản phẩm</th>
+                  <th>Loại SP</th>
+                  <th class="text-end">Giá vốn</th>
+                  <th class="text-center">% Lợi nhuận</th>
+                  <th class="text-end">Giá bán dự kiến</th>
+                  <th class="text-center">Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php if (empty($products)): ?>
+                  <tr>
+                    <td colspan="6" class="text-center text-muted">Không tìm thấy sản phẩm nào.</td>
+                  </tr>
+                <?php else: ?>
+                  <?php foreach ($products as $p): ?>
+                    <tr id="row-<?= $p['id'] ?>">
+                      <td>
+                        <strong><?= htmlspecialchars($p['name']) ?></strong><br>
+                        <span class="text-muted small">SKU: <?= htmlspecialchars($p['sku']) ?></span>
+                      </td>
+                      <td><?= htmlspecialchars($p['category_name']) ?></td>
+                      <td class="text-end text-danger" id="cost-<?= $p['id'] ?>" data-cost="<?= $p['costPrice'] ?>">
+                        <?= number_format($p['costPrice']) ?>đ
+                      </td>
+                      <td class="text-center">
+                        <input type="number" class="form-control profit-input"
+                          id="profit-<?= $p['id'] ?>"
+                          value="<?= $p['profitMargin'] ?>"
+                          min="0" max="1000" step="1"
+                          oninput="previewSalePrice(<?= $p['id'] ?>)">
+                      </td>
+                      <td class="text-end">
+                        <span id="price-<?= $p['id'] ?>" class="fw-bold fs-6"><?= number_format($p['price']) ?>đ</span>
+                      </td>
+                      <td class="text-center">
+                        <button class="btn btn-sm btn-success mb-1 w-100" onclick="saveProductProfit(<?= $p['id'] ?>)">Lưu</button>
+                        <button class="btn btn-sm btn-secondary w-100" onclick="resetProductProfit(<?= $p['id'] ?>)">Đưa về 0%</button>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-    </main>
+    </div>
+  </main>
 
-    <script>
-      function getData() {
-        const storedData = localStorage.getItem("bs_data");
-        return storedData ? JSON.parse(storedData) : { products: [] };
+  <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // 1. Xem trước giá bán ngay khi gõ số (Client-side preview)
+    function previewSalePrice(productId) {
+      const costPrice = parseInt(document.getElementById(`cost-${productId}`).getAttribute('data-cost'));
+      const profitInput = document.getElementById(`profit-${productId}`);
+      const priceSpan = document.getElementById(`price-${productId}`);
+
+      let profitMargin = parseInt(profitInput.value);
+      if (isNaN(profitMargin) || profitMargin < 0) profitMargin = 0;
+
+      const newSalePrice = Math.round(costPrice * (1 + (profitMargin / 100)));
+      priceSpan.textContent = newSalePrice.toLocaleString('vi-VN') + 'đ';
+      priceSpan.classList.add('price-changed');
+    }
+
+    // 2. Lưu phần trăm lợi nhuận qua AJAX
+    function saveProductProfit(productId) {
+      const profitInput = document.getElementById(`profit-${productId}`);
+      let profitMargin = parseInt(profitInput.value);
+
+      if (isNaN(profitMargin) || profitMargin < 0) {
+        alert("Vui lòng nhập % lợi nhuận hợp lệ (Lớn hơn hoặc bằng 0)!");
+        return;
       }
 
-      function saveData(data) {
-        localStorage.setItem("bs_data", JSON.stringify(data));
-      }
-
-      function calculateSalePrice(costPrice, profitMargin) {
-        const salePrice = costPrice * (1 + profitMargin / 100);
-        return Math.round(salePrice / 1000) * 1000;
-      }
-
-      function formatPrice(price) {
-        return price.toLocaleString("vi-VN") + "đ";
-      }
-
-      function renderPricingTable(products) {
-        const tbody = document.getElementById("pricing-table-body");
-        if (!tbody) return;
-
-        if (products.length === 0) {
-          tbody.innerHTML =
-            '<tr><td colspan="6" class="text-center">Không tìm thấy sản phẩm nào.</td></tr>';
-          return;
-        }
-
-        tbody.innerHTML = products
-          .map((p) => {
-            const costPrice = p.costPrice || p.price;
-            const currentMargin =
-              p.profitMargin !== undefined ? p.profitMargin : 0;
-            const salePrice = calculateSalePrice(costPrice, currentMargin);
-
-            return `
-                    <tr data-id="${p.id}">
-                        <td>${p.name} <span class="text-muted small">(${
-              p.sku
-            })</span></td>
-                        <td>${p.category}</td>
-                        <td class="text-end text-danger">${formatPrice(
-                          costPrice
-                        )}</td>
-                        <td class="text-center">
-                            <input 
-                                type="number" 
-                                class="form-control profit-input" 
-                                id="profit-${p.id}" 
-                                value="${currentMargin}" 
-                                min="0" 
-                                max="200"
-                                step="0.5"
-                                oninput="updateSalePrice(${p.id})">
-                        </td>
-                        <td class="text-end">
-                            <span id="price-${
-                              p.id
-                            }" class="fw-bold">${formatPrice(salePrice)}</span>
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-success" onclick="saveProductProfit(${
-                              p.id
-                            })">Lưu</button>
-                            <button class="btn btn-sm btn-reset" onclick="resetProductProfit(${
-                              p.id
-                            })">Quay lại</button>
-                        </td>
-                    </tr>
-                `;
+      fetch('pricing.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'update_margin',
+            product_id: productId,
+            profit_margin: profitMargin
           })
-          .join("");
-      }
-
-      function updateSalePrice(productId) {
-        const profitInput = document.getElementById(`profit-${productId}`);
-        const priceSpan = document.getElementById(`price-${productId}`);
-        const product = getData().products.find((p) => p.id === productId);
-
-        if (!product || !profitInput || !priceSpan) return;
-
-        const costPrice = product.costPrice || product.price;
-        const profitMargin = Number(profitInput.value);
-
-        if (profitMargin < 0 || isNaN(profitMargin)) {
-          priceSpan.textContent = "Lỗi %";
-          priceSpan.classList.remove("price-changed");
-          return;
-        }
-
-        const newSalePrice = calculateSalePrice(costPrice, profitMargin);
-        priceSpan.textContent = formatPrice(newSalePrice);
-        priceSpan.classList.add("price-changed");
-      }
-
-      function saveProductProfit(productId) {
-        const profitInput = document.getElementById(`profit-${productId}`);
-        if (!profitInput) return;
-
-        const profitMargin = Number(profitInput.value);
-
-        if (profitMargin < 0 || isNaN(profitMargin)) {
-          alert("Vui lòng nhập tỉ lệ lợi nhuận hợp lệ (>= 0).");
-          return;
-        }
-
-        const data = getData();
-        const product = data.products.find((p) => p.id === productId);
-
-        if (!product) {
-          alert("Không tìm thấy sản phẩm!");
-          return;
-        }
-
-        product.profitMargin = profitMargin;
-        const costPrice = product.costPrice || product.price;
-        product.price = calculateSalePrice(costPrice, profitMargin);
-
-        saveData(data);
-
-        alert(
-          `✅ Đã lưu thành công ${profitMargin}% lợi nhuận cho sản phẩm "${product.name}"`
-        );
-
-        const priceSpan = document.getElementById(`price-${productId}`);
-        if (priceSpan) {
-          priceSpan.classList.remove("price-changed");
-        }
-      }
-
-      function resetProductProfit(productId) {
-        if (!confirm("Bạn có chắc muốn reset % lợi nhuận về 0?")) return;
-
-        const data = getData();
-        const product = data.products.find((p) => p.id === productId);
-
-        if (!product) return;
-
-        product.profitMargin = 0;
-        const costPrice = product.costPrice || product.price;
-        product.price = costPrice;
-
-        saveData(data);
-
-        const profitInput = document.getElementById(`profit-${productId}`);
-        const priceSpan = document.getElementById(`price-${productId}`);
-
-        if (profitInput) profitInput.value = 0;
-        if (priceSpan) {
-          priceSpan.textContent = formatPrice(costPrice);
-          priceSpan.classList.remove("price-changed");
-        }
-
-        alert("✅ Đã reset % lợi nhuận về 0%");
-      }
-
-      function filterAndSearchProducts() {
-        const query = document
-          .getElementById("search-query")
-          .value.trim()
-          .toLowerCase();
-        const category = document.getElementById("category-filter").value;
-
-        const allProducts = getData().products;
-
-        const filtered = allProducts.filter((p) => {
-          const matchesQuery =
-            !query ||
-            p.name.toLowerCase().includes(query) ||
-            p.sku.toLowerCase().includes(query);
-          const matchesCategory = !category || p.category === category;
-          return matchesQuery && matchesCategory;
-        });
-
-        renderPricingTable(filtered);
-      }
-
-      function renderCategoryFilter() {
-        const select = document.getElementById("category-filter");
-        if (!select) return;
-
-        const allProducts = getData().products;
-        const categories = [
-          ...new Set(allProducts.map((p) => p.category)),
-        ].sort();
-
-        categories.forEach((cat) => {
-          const option = document.createElement("option");
-          option.value = cat;
-          option.textContent = cat;
-          select.appendChild(option);
-        });
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        const data = getData();
-        let needsSave = false;
-
-        data.products.forEach((p) => {
-          if (!p.costPrice) {
-            p.costPrice = p.price;
-            needsSave = true;
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            const priceSpan = document.getElementById(`price-${productId}`);
+            priceSpan.textContent = data.new_price;
+            priceSpan.classList.remove('price-changed');
+            priceSpan.style.color = '#212529'; // Đổi lại màu chữ bình thường báo hiệu đã lưu
+            alert('Đã cập nhật giá bán thành công!');
+          } else {
+            alert('Lỗi: ' + data.message);
           }
-          if (p.profitMargin === undefined) {
-            p.profitMargin = 0;
-            needsSave = true;
-          }
-        });
+        })
+        .catch(err => alert('Lỗi kết nối tới máy chủ!'));
+    }
 
-        if (needsSave) {
-          saveData(data);
-        }
+    // 3. Nút Quay lại 0% (Reset)
+    function resetProductProfit(productId) {
+      if (!confirm("Bạn có chắc muốn đưa mức lợi nhuận của sản phẩm này về 0% ? (Giá bán sẽ bằng Giá vốn)")) return;
 
-        renderPricingTable(data.products);
-        renderCategoryFilter();
+      document.getElementById(`profit-${productId}`).value = 0;
+      previewSalePrice(productId); // Cập nhật số hiển thị
+      saveProductProfit(productId); // Gọi hàm lưu lên server luôn
+    }
+  </script>
 
-        const searchForm = document.getElementById("search-pricing-form");
-        if (searchForm) {
-          searchForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            filterAndSearchProducts();
-          });
-        }
-      });
-    </script>
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/admin_main.js"></script>
-        <a href="#" class="back-to-top" title="Lên đầu trang">
+  <a href="#" class="back-to-top" title="Lên đầu trang">
     <i class="bi bi-chevron-up">
       <img class="go-up" src="../images/muiten.svg" alt="Về trang chủ" />
     </i>
   </a>
-  </body>
+</body>
+
 </html>

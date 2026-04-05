@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $input = json_decode(file_get_contents('php://input'), true);
 
-$username = isset($input['username']) ? trim($input['username']) : '';
+// Ép username về chữ thường để không phân biệt hoa/thường
+$username = isset($input['username']) ? strtolower(trim($input['username'])) : '';
 $password = isset($input['password']) ? trim($input['password']) : '';
 
 if ($username === '' || $password === '') {
@@ -38,7 +39,6 @@ if (!$user) {
 }
 
 if (!password_verify($password, $user['password'])) {
-    // Fallback: kiểm tra plain text cho tài khoản cũ chưa hash
     if ($user['password'] !== $password) {
         http_response_code(401);
         echo json_encode(['error' => 'Mật khẩu không chính xác']);
@@ -52,12 +52,9 @@ if ($user['status'] === 'locked') {
     exit;
 }
 
-// ✅ Set session PHP
 $_SESSION['user_id'] = $user['id'];
 $_SESSION['user_username'] = $user['username'];
 $_SESSION['user_fullName'] = $user['fullName'];
 
-// Ẩn password khi trả về client
 unset($user['password']);
-
 echo json_encode(['user' => $user]);

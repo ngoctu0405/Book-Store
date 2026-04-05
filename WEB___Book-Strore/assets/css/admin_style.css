@@ -147,17 +147,6 @@ body {
   text-align: center;
 }
 
-.sidebar-header::after {
-  content: "ADMIN ";
-  display: block;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-lighter);
-  margin-top: 6px;
-  letter-spacing: 1.5px;
-  text-align: center;
-}
-
 /* Navigation Pills */
 .sidebar .nav-pills {
   padding: 15px 0;

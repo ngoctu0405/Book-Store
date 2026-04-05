@@ -2,7 +2,7 @@
 
 $host = 'localhost';
 $user = 'root';
-$pass = 'Gjfjgfjgcgj123456789@';
+$pass = '';
 $db   = 'bookstore';
 
 $conn = new mysqli($host, $user, $pass, $db);
@@ -12,5 +12,9 @@ if ($conn->connect_error) {
     echo json_encode(['error' => 'Không kết nối được database']);
     exit;
 }
+
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+$conn->query("SET time_zone = '+07:00'");
 
 $conn->set_charset('utf8mb4');

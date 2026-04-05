@@ -3,6 +3,12 @@ session_start();
 // Nhớ kiểm tra lại đường dẫn file db.php cho chuẩn với thư mục của bạn nhé
 require_once __DIR__ . '/../api/db.php';
 
+// Bảo vệ trang Admin
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+  header("Location: index.php");
+  exit;
+}
+
 // XỬ LÝ CÁC HÀNH ĐỘNG TỪ FORM (THÊM, SỬA, ẨN/HIỆN)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $action = $_POST['action'] ?? '';
@@ -33,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       if ($res) {
         // Đảo ngược trạng thái
-        $newStatus = ($res['status'] === 'active') ? 'hidden' : 'active';
+        $newStatus = ($res['status'] === 'active') ? 'inactive' : 'active';
         $updateStmt = $conn->prepare("UPDATE categories SET status = ? WHERE id = ?");
         $updateStmt->bind_param('si', $newStatus, $id);
         $updateStmt->execute();
@@ -65,13 +71,13 @@ if ($res) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quản lý Loại Sản phẩm</title>
+  <title>Quản lý Loại Sản phẩm - Literary Haven</title>
 
   <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
   <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/admin_style.css">
   <style>
-    /* BẢO LƯU CSS CŨ CỦA BẠN */
+    /* CSS Responsive */
     @media (max-width: 768px) {
       body {
         display: flex !important;
@@ -157,23 +163,7 @@ if ($res) {
 
 <body>
 
-  <aside class="sidebar d-flex flex-column vh-100">
-    <div class="sidebar-header">Literary Haven</div>
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item"><a href="dashboard.php" class="nav-link"><span class="nav-icon">◈</span><span>Bảng điều khiển</span></a></li>
-      <li class="nav-item"><a href="users.php" class="nav-link"><span class="nav-icon">◉</span><span>Khách hàng</span></a></li>
-      <li class="nav-item"><a href="categories.php" class="nav-link active"><span class="nav-icon">◫</span><span>Loại sản phẩm</span></a></li>
-      <li class="nav-item"><a href="products.php" class="nav-link"><span class="nav-icon">◪</span><span>Sản phẩm</span></a></li>
-      <li class="nav-item"><a href="purchase-orders.php" class="nav-link"><span class="nav-icon">◩</span><span>Nhập hàng</span></a></li>
-      <li class="nav-item"><a href="pricing.php" class="nav-link"><span class="nav-icon">◎</span><span>Quản lý giá</span></a></li>
-      <li class="nav-item"><a href="orders.php" class="nav-link"><span class="nav-icon">◧</span><span>Đơn hàng</span></a></li>
-      <li class="nav-item"><a href="inventory.php" class="nav-link"><span class="nav-icon">◨</span><span>Tồn kho</span></a></li>
-      <li class="nav-item"><a href="reports.php" class="nav-link"><span class="nav-icon">◔</span><span>Báo cáo</span></a></li>
-    </ul>
-    <div class="mt-auto p-3">
-      <a href="index.php" class="logout-link"><span>◀</span><span>Đăng xuất</span></a>
-    </div>
-  </aside>
+  <?php include 'admin_sidebar.php'; ?>
 
   <main class="main-content">
     <div class="page-content p-4">
@@ -181,7 +171,7 @@ if ($res) {
 
       <div class="row g-4">
         <div class="col-md-4">
-          <div class="form-container p-4">
+          <div class="form-container p-4 border rounded bg-white shadow-sm">
             <h3 class="h5 mb-3" id="category-form-title">Thêm loại mới</h3>
             <form method="POST" action="categories.php" id="categoryForm">
               <input type="hidden" name="action" id="form-action" value="add">
@@ -191,33 +181,33 @@ if ($res) {
                 <label for="category-name" class="form-label">Tên loại sản phẩm</label>
                 <input type="text" class="form-control" id="category-name" name="name" required />
               </div>
-              <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="resetForm()">Hủy</button>
-                <button type="submit" class="btn btn-primary ms-2" id="submit-btn">Lưu</button>
+              <div class="form-actions d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" onclick="resetForm()">Hủy</button>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Lưu</button>
               </div>
             </form>
           </div>
         </div>
 
         <div class="col-md-8">
-          <div class="card">
+          <div class="card shadow-sm">
             <div class="card-header">
               <h3 class="h5 mb-0">Danh sách loại sản phẩm</h3>
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover align-middle">
                   <thead>
                     <tr>
                       <th>Tên loại</th>
                       <th>Trạng thái</th>
-                      <th>Hành động</th>
+                      <th class="text-end">Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php if (empty($categories)): ?>
                       <tr>
-                        <td colspan="3" class="text-center">Chưa có danh mục nào.</td>
+                        <td colspan="3" class="text-center text-muted">Chưa có danh mục nào.</td>
                       </tr>
                     <?php else: ?>
                       <?php foreach ($categories as $cat): ?>
@@ -227,10 +217,10 @@ if ($res) {
                         $statusText = $isActive ? "Đang hiển thị" : "Đã ẩn";
                         ?>
                         <tr>
-                          <td><?= htmlspecialchars($cat['name']) ?></td>
+                          <td><strong><?= htmlspecialchars($cat['name']) ?></strong></td>
                           <td><span class="status <?= $statusClass ?>"><?= $statusText ?></span></td>
-                          <td>
-                            <button class="btn btn-sm btn-outline-primary"
+                          <td class="text-end">
+                            <button class="btn btn-sm btn-outline-primary me-1"
                               onclick="editCategory(<?= $cat['id'] ?>, '<?= htmlspecialchars($cat['name'], ENT_QUOTES) ?>')">Sửa</button>
 
                             <form method="POST" action="categories.php" style="display:inline-block; margin:0;">
@@ -259,7 +249,6 @@ if ($res) {
   <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // JS nhẹ nhàng để chuyển đổi giữa Thêm và Sửa ngay trên Form HTML
     function editCategory(id, name) {
       document.getElementById('form-action').value = 'edit';
       document.getElementById('form-id').value = id;
@@ -281,7 +270,7 @@ if ($res) {
 
   <a href="#" class="back-to-top" title="Lên đầu trang">
     <i class="bi bi-chevron-up">
-      <img class="go-up" src="../images/muiten.svg" alt="Về trang chủ" />
+      <img class="go-up" src="../images/muiten.svg" alt="Lên đầu trang" />
     </i>
   </a>
 </body>

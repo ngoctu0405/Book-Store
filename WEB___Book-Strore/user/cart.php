@@ -100,6 +100,12 @@ while ($row = $res->fetch_assoc()) {
 $totalAmount = $cartSubtotal;
 $hasCartItems = !empty($cartProducts);
 
+// Mặc định render profile 1, phía client sẽ khôi phục profile đang chọn bằng sessionStorage
+$activeProfileIndex = 1;
+
+// Lấy thông tin profile đang active để render
+$activeProfile = $buyerProfiles[$activeProfileIndex] ?? null;
+
 // ==================== CHUẨN BỊ GIAO DIỆN ====================
 $pageTitle = "Giỏ Hàng - Literary Haven";
 
@@ -601,7 +607,6 @@ ob_start();
     }
   }
 
-  /* Các style modal khác được giữ nguyên */
   .profile-card {
     border: 2px solid #e0e0e0;
     border-radius: 16px;
@@ -634,6 +639,21 @@ ob_start();
     display: flex;
     justify-content: space-between;
     gap: 0.75rem;
+  }
+
+  /* ---------------- CẬP NHẬT CSS MỚI: BÁO LỖI INLINE ---------------- */
+  .input-error {
+    border-color: #e74c3c !important;
+    background-color: #fdf0ed !important;
+    box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, .1) !important;
+  }
+
+  .error-msg-inline {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    display: none;
+    font-weight: 600;
   }
 </style>
 <?php
@@ -690,16 +710,16 @@ include '../includes/header.php';
         <div class="buyer-info-card cart-section" style="background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(79, 157, 166, 0.12); border: 1px solid rgba(130, 192, 154, 0.15);">
           <h4 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: #2c3e50;">👤 Thông tin người mua</h4>
           <div id="buyerInfoDisplay" class="info-grid">
-            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Họ tên:</strong> <span id="displayBuyerName"><?= h($buyerProfiles[1]['fullName'] ?? $userInfo['fullName'] ?: 'Chưa nhập') ?></span></div>
-            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Email:</strong> <span id="displayBuyerEmail"><?= h($buyerProfiles[1]['email'] ?? $userInfo['email'] ?: 'Chưa nhập') ?></span></div>
-            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Số điện thoại:</strong> <span id="displayBuyerPhone"><?= h($buyerProfiles[1]['phone'] ?? $userInfo['phone'] ?: 'Chưa nhập') ?></span></div>
-            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Địa chỉ:</strong> <span id="displayBuyerAddress"><?= h($buyerProfiles[1]['address'] ?? $userInfo['address'] ?: 'Chưa nhập') ?></span></div>
-            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Ghi chú:</strong> <span id="displayBuyerNote"><?= h($buyerProfiles[1]['note'] ?? 'Không có') ?></span></div>
+            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Họ tên:</strong> <span id="displayBuyerName"><?= h($activeProfile['fullName'] ?? $userInfo['fullName'] ?: 'Chưa nhập') ?></span></div>
+            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Email:</strong> <span id="displayBuyerEmail"><?= h($activeProfile['email'] ?? $userInfo['email'] ?: 'Chưa nhập') ?></span></div>
+            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Số điện thoại:</strong> <span id="displayBuyerPhone"><?= h($activeProfile['phone'] ?? $userInfo['phone'] ?: 'Chưa nhập') ?></span></div>
+            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Địa chỉ:</strong> <span id="displayBuyerAddress"><?= h($activeProfile['address'] ?? $userInfo['address'] ?: 'Chưa nhập') ?></span></div>
+            <div class="info-row" style="margin-bottom: 0.5rem;"><strong>Ghi chú:</strong> <span id="displayBuyerNote"><?= h($activeProfile['note'] ?? 'Không có') ?></span></div>
           </div>
 
-          <button class="btn-edit-info" type="button" onclick="openBuyerInfoModal()">➕ Thêm thông tin</button>
-          <button class="btn-edit-info" type="button" onclick="openChangeProfileModal()" style="margin-top:0.5rem;background:linear-gradient(135deg,#82c09a,#4f9da6);">🔄 Thay đổi thông tin</button>
-          <button class="btn-edit-info" type="button" onclick="resetBuyerInfoToDefault()" style="margin-top:0.5rem;background:#f8f9fa;color:#2c3e50;border:1px solid #d1d5db;">⚙️ Đặt mặc định</button>
+          <button class="btn-edit-info" type="button" onclick="openBuyerInfoModal()">➕ Thêm / Sửa địa chỉ</button>
+          <button class="btn-edit-info" type="button" onclick="openChangeProfileModal()" style="margin-top:0.5rem;background:linear-gradient(135deg,#82c09a,#4f9da6);">🔄 Chọn từ sổ địa chỉ</button>
+          <button class="btn-edit-info" type="button" onclick="resetBuyerInfoToDefault()" style="margin-top:0.5rem;background:#f8f9fa;color:#2c3e50;border:1px solid #d1d5db;">⚙️ Đặt về mặc định</button>
         </div>
 
         <div class="cart-summary">
@@ -754,15 +774,14 @@ include '../includes/header.php';
   <div class="auth-modal-content change-profile-modal">
     <button class="auth-modal-close" onclick="closeChangeProfileModal()">&times;</button>
     <div class="auth-modal-header">
-      <h2>Chọn mẫu thông tin</h2>
-      <p>Chọn mẫu bạn muốn dùng cho đơn hàng này</p>
+      <h2>Sổ địa chỉ của bạn</h2>
+      <p>Chọn thông tin bạn muốn dùng cho đơn hàng này</p>
     </div>
     <div style="display:flex;flex-direction:column;gap:1rem;padding:1rem 0;">
       <?php for ($i = 1; $i <= 3; $i++): ?>
         <div id="profileCard-<?= $i ?>" class="profile-card" onclick="switchProfile(<?= $i ?>); closeChangeProfileModal();">
           <div class="profile-card-header">
-            <strong style="color:#4f9da6;">Thông tin <?= $i ?></strong>
-            <span style="font-size:0.9rem;color:#6b7280;">Chọn thông tin</span>
+            <strong style="color:#4f9da6;">Sổ địa chỉ <?= $i ?></strong>
           </div>
           <div id="profileCardBody-<?= $i ?>" class="profile-card-body" style="<?= empty($buyerProfiles[$i]) ? 'display:none;' : '' ?>">
             <div><strong>Họ tên:</strong> <span><?= h($buyerProfiles[$i]['fullName'] ?? '') ?></span></div>
@@ -771,8 +790,8 @@ include '../includes/header.php';
             <div><strong>Địa chỉ:</strong> <span><?= h($buyerProfiles[$i]['address'] ?? '') ?></span></div>
             <div><strong>Ghi chú:</strong> <span><?= h($buyerProfiles[$i]['note'] ?? 'Không có') ?></span></div>
           </div>
-          <button type="button" class="btn-select-profile" onclick="event.stopPropagation(); switchProfile(<?= $i ?>); closeChangeProfileModal();" style="margin-top:1rem;padding:0.75rem 1rem;border:none;border-radius:12px;background:#4f9da6;color:white;cursor:pointer;width:100%;font-weight:600;">Chọn thông tin</button>
-          <p id="profileCardEmpty-<?= $i ?>" style="margin:0.3rem 0 0;color:#aaa;font-size:0.95rem;<?= empty($buyerProfiles[$i]) ? '' : 'display:none;' ?>">Chưa có thông tin</p>
+          <button type="button" class="btn-select-profile" onclick="event.stopPropagation(); switchProfile(<?= $i ?>); closeChangeProfileModal();" style="margin-top:1rem;padding:0.75rem 1rem;border:none;border-radius:12px;background:#4f9da6;color:white;cursor:pointer;width:100%;font-weight:600;">Sử dụng địa chỉ này</button>
+          <p id="profileCardEmpty-<?= $i ?>" style="margin:0.3rem 0 0;color:#aaa;font-size:0.95rem;<?= empty($buyerProfiles[$i]) ? '' : 'display:none;' ?>">Chưa thiết lập</p>
         </div>
       <?php endfor; ?>
     </div>
@@ -784,44 +803,69 @@ include '../includes/header.php';
   <div class="auth-modal-content buyer-modal-content" style="width:900px;max-width:100%;min-height:520px;">
     <button class="auth-modal-close" onclick="closeBuyerInfoModal()">&times;</button>
     <div class="auth-modal-header">
-      <h2>Thay đổi thông tin người mua</h2>
-      <p>Thông tin đã được điền sẵn, bạn có thể chỉnh lại mọi lúc</p>
+      <h2>Cập nhật thông tin giao hàng</h2>
     </div>
     <form id="buyerInfoForm" class="auth-modal-form">
       <div class="form-group buyer-modal-grid-full">
-        <label for="modalBuyerSaveTo">Lưu vào *</label>
+        <label for="modalBuyerSaveTo">Lưu đè vào Sổ địa chỉ số *</label>
         <select id="modalBuyerSaveTo" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
-          <option value="1">Thông tin 1</option>
-          <option value="2">Thông tin 2</option>
-          <option value="3">Thông tin 3</option>
+          <option value="1">Sổ địa chỉ 1</option>
+          <option value="2">Sổ địa chỉ 2</option>
+          <option value="3">Sổ địa chỉ 3</option>
         </select>
       </div>
       <div class="buyer-modal-grid-columns" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
         <div class="buyer-modal-column" style="display: flex; flex-direction: column; gap: 1rem;">
           <div class="form-group">
             <label>Họ tên *</label>
-            <input type="text" id="modalBuyerName" required placeholder="Nhập họ tên đầy đủ" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;" />
+            <input type="text" id="modalBuyerName" required placeholder="Nhập họ tên người nhận" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; transition: 0.3s;" />
           </div>
+
           <div class="form-group">
             <label>Số điện thoại *</label>
-            <input type="tel" id="modalBuyerPhone" required placeholder="0123456789" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;" />
+            <input type="tel" id="modalBuyerPhone" required placeholder="0123456789" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; transition: 0.3s;" />
+            <div id="err-modalBuyerPhone" class="error-msg-inline"></div>
           </div>
+
           <div class="form-group">
             <label>Email *</label>
-            <input type="email" id="modalBuyerEmail" required placeholder="example@email.com" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;" />
-          </div>
-        </div>
-        <div class="buyer-modal-column" style="display: flex; flex-direction: column; gap: 1rem;">
-          <div class="form-group">
-            <label>Địa chỉ *</label>
-            <input type="text" id="modalBuyerAddress" required placeholder="Số nhà, đường" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;" />
+            <input type="email" id="modalBuyerEmail" required placeholder="example@email.com" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; transition: 0.3s;" />
           </div>
           <div class="form-group">
             <label>Ghi chú (tùy chọn)</label>
-            <textarea id="modalBuyerNote" rows="3" placeholder="Ghi chú về đơn hàng..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;"></textarea>
+            <textarea id="modalBuyerNote" rows="3" placeholder="Ví dụ: Giao giờ hành chính..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;"></textarea>
           </div>
+        </div>
+        <div class="buyer-modal-column" style="display: flex; flex-direction: column; gap: 1rem;">
+
+          <div class="form-group">
+            <label>Tỉnh/Thành phố *</label>
+            <select id="modalBuyerCity" class="form-select" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; transition: 0.3s;">
+              <option value="">Đang tải...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Quận/Huyện *</label>
+            <select id="modalBuyerDistrict" class="form-select" required disabled style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; transition: 0.3s;">
+              <option value="">Chọn Quận/Huyện</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Phường/Xã *</label>
+            <select id="modalBuyerWard" class="form-select" required disabled style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; transition: 0.3s;">
+              <option value="">Chọn Phường/Xã</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Số nhà, Tên đường (Chi tiết) *</label>
+            <input type="text" id="modalBuyerStreet" required placeholder="VD: Số 10, Ngõ 20..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; transition: 0.3s;" />
+          </div>
+
+          <input type="hidden" id="modalBuyerAddress" value="" />
+          <div id="err-modalBuyerAddress" class="error-msg-inline"></div>
+
           <div class="form-group buyer-modal-action" style="margin-top: auto;">
-            <button type="submit" class="btn-auth-submit" style="width: 100%; padding: 12px; background: #4f9da6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Lưu mẫu</button>
+            <button type="submit" class="btn-auth-submit" style="width: 100%; padding: 12px; background: #4f9da6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:1.1rem;">Lưu và Áp dụng</button>
           </div>
         </div>
       </div>
@@ -830,17 +874,15 @@ include '../includes/header.php';
 </div>
 
 <?php
-// Gói tất cả Javascript riêng của giỏ hàng vào biến $extraJs để chèn xuống cuối footer
+// Gói tất cả Javascript riêng của giỏ hàng
 ob_start();
 ?>
 <script>
-  // JS Ẩn/Hiện ngân hàng
   function toggleBankInfo() {
     const method = document.querySelector('input[name="payment_method"]:checked').value;
     document.getElementById('bankInfoBox').style.display = (method === 'Chuyển khoản') ? 'block' : 'none';
   }
 
-  // Data từ PHP (single source of truth)
   window.currentUserFromSession = <?= json_encode([
                                     'id'       => $userId ?: null,
                                     'fullName' => $userInfo['fullName'] ?? '',
@@ -851,14 +893,63 @@ ob_start();
 
   window.buyerProfiles = <?= json_encode($buyerProfiles) ?>;
   window.currentProfileIndex = 1;
+  const profileIndexStorageKey = 'cartActiveProfileIndex:' + (window.currentUserFromSession?.id || 'guest');
+  const profileModeStorageKey = 'cartProfileMode:' + (window.currentUserFromSession?.id || 'guest');
+
+  function saveActiveProfileIndex(index) {
+    try {
+      sessionStorage.setItem(profileIndexStorageKey, String(index));
+    } catch (e) {}
+  }
+
+  function getStoredActiveProfileIndex(fallbackIndex) {
+    let restoredIndex = fallbackIndex;
+    try {
+      const savedIndex = parseInt(sessionStorage.getItem(profileIndexStorageKey) || '', 10);
+      if (savedIndex >= 1 && savedIndex <= 3) {
+        restoredIndex = savedIndex;
+      }
+    } catch (e) {}
+    return restoredIndex;
+  }
 
   function escapeHtml(text) {
     if (!text || typeof text !== 'string') return '';
     return text.replace(/&amp;/g, '&').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
   }
 
+  function applyAccountDefaultAddress() {
+    const user = window.currentUserFromSession || {};
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    };
+    set('buyerProfileIndex', 1);
+    set('buyerName', user.fullName || '');
+    set('buyerEmail', user.email || '');
+    set('buyerPhone', user.phone || '');
+    set('buyerAddress', user.address || '');
+    set('buyerNote', '');
+
+    const setText = (id, val, fallback) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val || fallback;
+    };
+    setText('displayBuyerName', user.fullName, 'Chưa nhập');
+    setText('displayBuyerEmail', user.email, 'Chưa nhập');
+    setText('displayBuyerPhone', user.phone, 'Chưa nhập');
+    setText('displayBuyerAddress', user.address, 'Chưa nhập');
+    setText('displayBuyerNote', '', 'Không có');
+
+    window.currentProfileIndex = 1;
+  }
+
   function switchProfile(index) {
     window.currentProfileIndex = index;
+    saveActiveProfileIndex(index);
+    try {
+      sessionStorage.setItem(profileModeStorageKey, 'profile');
+    } catch (e) {}
 
     const profile = window.buyerProfiles ? window.buyerProfiles[index] : null;
     const user = window.currentUserFromSession || {};
@@ -891,17 +982,133 @@ ob_start();
     setText('displayBuyerNote', note, 'Không có');
   }
 
-  function openBuyerInfoModal() {
+  // MỞ MODAL VÀ TẢI LOCAL JSON ĐỊA CHỈ
+  async function openBuyerInfoModal() {
     const index = window.currentProfileIndex;
     const profile = window.buyerProfiles ? window.buyerProfiles[index] : null;
     const user = window.currentUserFromSession || {};
 
     document.getElementById('modalBuyerSaveTo').value = index;
-    document.getElementById('modalBuyerName').value = (profile && profile.fullName) ? profile.fullName : (index === 1 ? user.fullName : '');
+    document.getElementById('modalBuyerName').value = (profile && (profile.fullName || profile.name)) ? (profile.fullName || profile.name) : (index === 1 ? user.fullName : '');
     document.getElementById('modalBuyerEmail').value = (profile && profile.email) ? profile.email : (index === 1 ? user.email : '');
     document.getElementById('modalBuyerPhone').value = (profile && profile.phone) ? profile.phone : (index === 1 ? user.phone : '');
-    document.getElementById('modalBuyerAddress').value = (profile && profile.address) ? profile.address : (index === 1 ? user.address : '');
     document.getElementById('modalBuyerNote').value = (profile && profile.note) ? profile.note : '';
+
+    // Xóa các lỗi cũ nếu có khi mở lại modal
+    document.querySelectorAll('.error-msg-inline').forEach(n => n.style.display = 'none');
+    document.querySelectorAll('.input-error').forEach(n => n.classList.remove('input-error'));
+
+    // Lấy chuỗi địa chỉ cũ
+    const fullAddress = (profile && profile.address) ? profile.address : (index === 1 ? user.address : '');
+
+    // Tách chuỗi địa chỉ cũ để nhét vào Dropdown
+    const citySel = document.getElementById('modalBuyerCity');
+    const distSel = document.getElementById('modalBuyerDistrict');
+    const wardSel = document.getElementById('modalBuyerWard');
+    const streetInp = document.getElementById('modalBuyerStreet');
+
+    let cityText = '',
+      distText = '',
+      wardText = '',
+      streetText = fullAddress;
+    if (fullAddress && fullAddress.includes(' - ')) {
+      const parts = fullAddress.split(' - ');
+      streetText = parts.pop();
+      const locs = parts.join(' - ').split(', ');
+      if (locs.length >= 3) {
+        wardText = locs[0].trim();
+        distText = locs[1].trim();
+        cityText = locs[2].trim();
+      } else {
+        streetText = fullAddress;
+      }
+    }
+    streetInp.value = streetText;
+
+    // Load Local JSON Data
+    try {
+      const res = await fetch('../assets/data/provinces.json');
+      const data = await res.json();
+
+      citySel.innerHTML = '<option value="">Chọn Tỉnh/Thành phố</option>';
+      let cityObj = null;
+
+      data.forEach(c => {
+        const opt = new Option(c.name, c.code);
+        if (c.name === cityText) {
+          opt.selected = true;
+          cityObj = c;
+        }
+        citySel.add(opt);
+      });
+
+      if (cityObj && cityObj.districts) {
+        distSel.disabled = false;
+        distSel.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+        let distObj = null;
+        cityObj.districts.forEach(d => {
+          const opt = new Option(d.name, d.code);
+          if (d.name === distText) {
+            opt.selected = true;
+            distObj = d;
+          }
+          distSel.add(opt);
+        });
+
+        if (distObj && distObj.wards) {
+          wardSel.disabled = false;
+          wardSel.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+          distObj.wards.forEach(w => {
+            const opt = new Option(w.name, w.code);
+            if (w.name === wardText) opt.selected = true;
+            wardSel.add(opt);
+          });
+        }
+      }
+
+      citySel.onchange = function() {
+        distSel.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+        wardSel.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+        distSel.disabled = true;
+        wardSel.disabled = true;
+        this.classList.remove('input-error'); // Xóa viền đỏ khi click
+        if (this.value) {
+          const c = data.find(item => item.code == this.value);
+          if (c && c.districts) {
+            c.districts.forEach(x => distSel.add(new Option(x.name, x.code)));
+            distSel.disabled = false;
+          }
+        }
+      };
+
+      distSel.onchange = function() {
+        wardSel.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+        wardSel.disabled = true;
+        this.classList.remove('input-error');
+        if (this.value) {
+          const c = data.find(item => item.code == citySel.value);
+          const d = c ? c.districts.find(item => item.code == this.value) : null;
+          if (d && d.wards) {
+            d.wards.forEach(w => wardSel.add(new Option(w.name, w.code)));
+            wardSel.disabled = false;
+          }
+        }
+      };
+
+      wardSel.onchange = function() {
+        this.classList.remove('input-error');
+      };
+      streetInp.oninput = function() {
+        this.classList.remove('input-error');
+      };
+      document.getElementById('modalBuyerPhone').oninput = function() {
+        this.classList.remove('input-error');
+        document.getElementById('err-modalBuyerPhone').style.display = 'none';
+      };
+
+    } catch (e) {
+      console.error("Lỗi tải file provinces.json", e);
+    }
 
     document.getElementById('buyerInfoModal').classList.add('show');
   }
@@ -911,26 +1118,11 @@ ob_start();
   }
 
   function resetBuyerInfoToDefault() {
-    const user = window.currentUserFromSession || {};
-    const set = (id, val) => {
-      const el = document.getElementById(id);
-      if (el) el.value = val;
-    };
-    set('buyerName', user.fullName || '');
-    set('buyerEmail', user.email || '');
-    set('buyerPhone', user.phone || '');
-    set('buyerAddress', user.address || '');
-    set('buyerNote', '');
-
-    const setText = (id, val, fallback) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = val || fallback;
-    };
-    setText('displayBuyerName', user.fullName, 'Chưa nhập');
-    setText('displayBuyerEmail', user.email, 'Chưa nhập');
-    setText('displayBuyerPhone', user.phone, 'Chưa nhập');
-    setText('displayBuyerAddress', user.address, 'Chưa nhập');
-    setText('displayBuyerNote', '', 'Không có');
+    applyAccountDefaultAddress();
+    saveActiveProfileIndex(1);
+    try {
+      sessionStorage.setItem(profileModeStorageKey, 'account-default');
+    } catch (e) {}
   }
 
   function refreshChangeProfileCards() {
@@ -964,30 +1156,84 @@ ob_start();
     document.getElementById('changeProfileModal').classList.remove('show');
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    switchProfile(1);
+  function initCartBuyerProfileState() {
+    const restoredIndex = getStoredActiveProfileIndex(<?= $activeProfileIndex ?>);
+    let useAccountDefault = false;
+    try {
+      useAccountDefault = sessionStorage.getItem(profileModeStorageKey) === 'account-default';
+    } catch (e) {}
+
+    if (useAccountDefault) {
+      applyAccountDefaultAddress();
+    } else {
+      window.currentProfileIndex = restoredIndex;
+      switchProfile(restoredIndex);
+    }
     refreshChangeProfileCards();
 
     const form = document.getElementById('buyerInfoForm');
-    if (form) {
+    if (form && !form.dataset.boundSubmit) {
+      form.dataset.boundSubmit = '1';
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        // 1. Dọn dẹp lỗi cũ trước khi kiểm tra
+        document.querySelectorAll('.error-msg-inline').forEach(n => n.style.display = 'none');
+        document.querySelectorAll('.input-error').forEach(n => n.classList.remove('input-error'));
+        let hasError = false;
+
+        // Hàm helper hiển thị lỗi
+        const showErrorInline = (inputId, msgId, message) => {
+          const input = document.getElementById(inputId);
+          const msgNode = document.getElementById(msgId);
+          if (input) input.classList.add('input-error');
+          if (msgNode) {
+            msgNode.textContent = message;
+            msgNode.style.display = 'block';
+          }
+          hasError = true;
+        };
+
         var userId = (window.currentUserFromSession && window.currentUserFromSession.id) ? window.currentUserFromSession.id : null;
         var index = parseInt(document.getElementById('modalBuyerSaveTo').value, 10) || window.currentProfileIndex || 1;
         var name = document.getElementById('modalBuyerName').value.trim();
         var email = document.getElementById('modalBuyerEmail').value.trim();
         var phone = document.getElementById('modalBuyerPhone').value.trim();
-        var address = document.getElementById('modalBuyerAddress').value.trim();
         var note = document.getElementById('modalBuyerNote').value.trim();
 
-        if (!name || !phone || !address) {
-          alert('⚠️ Vui lòng nhập đầy đủ Họ tên, SĐT, Địa chỉ');
-          return;
+        // 2. Kiểm tra Số điện thoại bằng Regex
+        if (!/^(0|84)(3|5|7|8|9)[0-9]{8}$/.test(phone)) {
+          showErrorInline('modalBuyerPhone', 'err-modalBuyerPhone', 'SĐT không hợp lệ (Cần 10 số bắt đầu bằng 03, 05, 07, 08, 09).');
         }
-        if (!/^[0-9]{9,11}$/.test(phone)) {
-          alert('⚠️ Số điện thoại không hợp lệ.');
-          return;
+
+        // 3. Kiểm tra cụm Địa chỉ
+        const city = document.getElementById('modalBuyerCity');
+        const dist = document.getElementById('modalBuyerDistrict');
+        const ward = document.getElementById('modalBuyerWard');
+        const street = document.getElementById('modalBuyerStreet');
+
+        if (!city.value || !dist.value || !ward.value || !street.value.trim()) {
+          if (!city.value) city.classList.add('input-error');
+          if (!dist.value) dist.classList.add('input-error');
+          if (!ward.value) ward.classList.add('input-error');
+          if (!street.value.trim()) street.classList.add('input-error');
+
+          const addressMsgNode = document.getElementById('err-modalBuyerAddress');
+          if (addressMsgNode) {
+            addressMsgNode.textContent = 'Vui lòng chọn đầy đủ cấp Tỉnh, Quận, Phường và nhập Số nhà/Tên đường!';
+            addressMsgNode.style.display = 'block';
+          }
+          hasError = true;
         }
+
+        // 4. Nếu có lỗi thì NGỪNG LẠI (không submit)
+        if (hasError) return;
+
+        // Nếu dữ liệu đã sạch, gộp địa chỉ lại
+        const cityName = city.options[city.selectedIndex].text;
+        const distName = dist.options[dist.selectedIndex].text;
+        const wardName = ward.options[ward.selectedIndex].text;
+        const address = `${wardName}, ${distName}, ${cityName} - ${street.value.trim()}`;
 
         var profile = {
           name,
@@ -1027,13 +1273,36 @@ ob_start();
           };
 
           refreshChangeProfileCards();
-          switchProfile(window.currentProfileIndex || 1);
+          switchProfile(index);
           closeBuyerInfoModal();
-          alert('✅ Đã lưu thông tin mẫu ' + index + ' thành công!');
+          alert('Đã lưu và áp dụng sổ địa chỉ ' + index + ' thành công!');
         } catch (err) {
-          alert('❌ Lỗi: ' + err.message);
+          alert('Lỗi: ' + err.message);
         }
       });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCartBuyerProfileState);
+  } else {
+    initCartBuyerProfileState();
+  }
+
+  window.addEventListener('pageshow', function() {
+    let useAccountDefault = false;
+    try {
+      useAccountDefault = sessionStorage.getItem(profileModeStorageKey) === 'account-default';
+    } catch (e) {}
+
+    if (useAccountDefault) {
+      applyAccountDefaultAddress();
+      return;
+    }
+
+    const restoredIndex = getStoredActiveProfileIndex(window.currentProfileIndex || 1);
+    if (restoredIndex !== window.currentProfileIndex) {
+      switchProfile(restoredIndex);
     }
   });
 </script>

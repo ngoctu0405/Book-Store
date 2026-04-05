@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $input = json_decode(file_get_contents('php://input'), true);
 
 $fullName = isset($input['fullName']) ? trim($input['fullName']) : '';
-$username = isset($input['username']) ? trim($input['username']) : '';
+// Ép username về chữ thường
+$username = isset($input['username']) ? strtolower(trim($input['username'])) : '';
 $password = isset($input['password']) ? trim($input['password']) : '';
 $email = isset($input['email']) ? trim($input['email']) : '';
 $phone = isset($input['phone']) ? trim($input['phone']) : '';
@@ -23,7 +24,13 @@ if ($fullName === '' || $username === '' || $password === '' || $email === '' ||
     exit;
 }
 
-// Kiểm tra trùng username
+// Validate SĐT chuẩn Việt Nam ở Backend cho an toàn tuyệt đối
+if (!preg_match('/^(0|84)(3|5|7|8|9)[0-9]{8}$/', $phone)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Số điện thoại không đúng định dạng VN']);
+    exit;
+}
+
 $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
 $stmt->bind_param('s', $username);
 $stmt->execute();
@@ -34,7 +41,6 @@ if ($res->fetch_assoc()) {
     exit;
 }
 
-// Chèn user mới
 $status = 'active';
 $now = date('Y-m-d H:i:s');
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -43,17 +49,7 @@ $stmt = $conn->prepare("
     INSERT INTO users (status, fullName, username, password, email, phone, address, createdAt)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 ");
-$stmt->bind_param(
-    'ssssssss',
-    $status,
-    $fullName,
-    $username,
-    $hashedPassword,
-    $email,
-    $phone,
-    $address,
-    $now
-);
+$stmt->bind_param('ssssssss', $status, $fullName, $username, $hashedPassword, $email, $phone, $address, $now);
 
 if (!$stmt->execute()) {
     http_response_code(500);
@@ -61,18 +57,4 @@ if (!$stmt->execute()) {
     exit;
 }
 
-$newId = $stmt->insert_id;
-
-// Không set session ở đây — người dùng cần đăng nhập thủ công
-echo json_encode([
-    'user' => [
-        'id' => $newId,
-        'status' => $status,
-        'fullName' => $fullName,
-        'username' => $username,
-        'email' => $email,
-        'phone' => $phone,
-        'address' => $address,
-        'createdAt' => $now,
-    ]
-]);
+echo json_encode(['user' => ['id' => $stmt->insert_id, 'username' => $username]]);

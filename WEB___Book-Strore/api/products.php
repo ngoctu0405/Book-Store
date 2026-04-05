@@ -11,7 +11,7 @@ $minPrice = isset($_GET['minPrice']) ? trim($_GET['minPrice']) : '';
 $maxPrice = isset($_GET['maxPrice']) ? trim($_GET['maxPrice']) : '';
 $minQty = isset($_GET['minQty']) ? trim($_GET['minQty']) : '';
 
-$conditions = [];
+$conditions = ["c.status = 'active'"];
 $params = [];
 $types = '';
 

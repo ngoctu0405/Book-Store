@@ -1,3 +1,73 @@
+<?php
+session_start();
+require_once __DIR__ . '/../api/db.php';
+
+// NGƯỜI BẢO VỆ: Nếu chưa đăng nhập, lập tức "đá" về trang index.php
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+  header("Location: index.php");
+  exit;
+}
+
+// Hàm hỗ trợ in HTML an toàn
+function h($str)
+{
+  return htmlspecialchars((string)$str, ENT_QUOTES, 'UTF-8');
+}
+
+// Hàm định dạng tiền tệ
+function formatCurrency($amount)
+{
+  return number_format((float)$amount, 0, ',', '.') . '₫';
+}
+
+// ==================== 1. LẤY THỐNG KÊ TỔNG QUAN ====================
+// Giả lập Lượt truy cập và Bình luận (Vì DB hiện tại chưa có bảng Tracking & Comments)
+$visitors = "1,504";
+$comments = "284";
+
+// Lấy Doanh số (Số đơn) và Doanh thu (Tổng tiền) từ những đơn hàng thành công
+$salesCount = 0;
+$totalRevenue = 0;
+$statSql = "SELECT COUNT(id) as total_orders, SUM(totalAmount) as total_revenue 
+            FROM orders 
+            WHERE status IN ('Đã xác nhận', 'Đã giao thành công', 'Đã xử lý')";
+$resStat = $conn->query($statSql);
+if ($resStat && $row = $resStat->fetch_assoc()) {
+  $salesCount = (int)$row['total_orders'];
+  $totalRevenue = (float)$row['total_revenue'];
+}
+
+// Làm gọn số tiền lớn (Ví dụ: 36,300,000 -> 36.3M)
+$displayRevenue = formatCurrency($totalRevenue);
+if ($totalRevenue >= 1000000) {
+  $displayRevenue = round($totalRevenue / 1000000, 1) . 'M₫';
+}
+
+// ==================== 2. TỒN KHO THẤP (< 20) ====================
+$lowStockProducts = [];
+$lowStockSql = "SELECT sku, name, qty FROM products WHERE qty < 20 AND status = 'active' ORDER BY qty ASC LIMIT 5";
+$resLowStock = $conn->query($lowStockSql);
+if ($resLowStock) {
+  $lowStockProducts = $resLowStock->fetch_all(MYSQLI_ASSOC);
+}
+
+// ==================== 3. SẢN PHẨM 0% LỢI NHUẬN ====================
+$zeroProfitProducts = [];
+$zeroProfitSql = "SELECT sku, name, costPrice, price FROM products WHERE profitMargin = 0 AND status = 'active' LIMIT 5";
+$resZeroProfit = $conn->query($zeroProfitSql);
+if ($resZeroProfit) {
+  $zeroProfitProducts = $resZeroProfit->fetch_all(MYSQLI_ASSOC);
+}
+
+// ==================== 4. ĐƠN HÀNG GẦN ĐÂY NHẤT ====================
+$recentOrders = [];
+$recentOrdersSql = "SELECT id, buyer_name, orderDate, totalAmount, status FROM orders ORDER BY id DESC LIMIT 5";
+$resRecentOrders = $conn->query($recentOrdersSql);
+if ($resRecentOrders) {
+  $recentOrders = $resRecentOrders->fetch_all(MYSQLI_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -5,44 +75,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bảng điều khiển Admin - Literary Haven</title>
-
+  <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
   <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/admin_style.css">
   <style>
-    /* Responsive cho thiết bị di động (max-width: 768px) */
     @media (max-width: 768px) {
-
-      /* 1. Body: Chuyển hướng Flexbox thành column để Sidebar và Main-Content xếp chồng */
       body {
         display: flex !important;
         flex-direction: column !important;
-        /* Quan trọng: Sidebar sẽ nằm trên Main-Content */
         overflow-x: hidden;
-        /* Tắt cuộn ngang vì đã xếp chồng */
       }
 
-      /* 2. Sidebar: Sidebar giờ chiếm toàn bộ chiều rộng (100%) */
       .sidebar {
         width: 100% !important;
-        /* Tắt vh-100 vì giờ nó nằm ngang, không cần chiều cao toàn màn hình */
         height: auto !important;
         flex-shrink: 0;
         display: flex !important;
-
-        /* Bổ sung: Điều chỉnh Sidebar để dễ sử dụng hơn khi nằm ngang */
         overflow-x: auto;
-        /* Cho phép menu cuộn ngang nếu có nhiều mục */
         white-space: nowrap;
-        /* Ngăn các mục menu xuống dòng */
       }
 
-      /* 3. Main Content: Đảm bảo nội dung chính chiếm toàn bộ chiều rộng */
       .main-content {
         width: 100%;
         min-width: auto;
       }
 
-      /* 4. Tinh chỉnh Padding và Kích thước (bên trong page-content) */
       .page-content {
         padding: 15px !important;
       }
@@ -52,7 +109,6 @@
         margin-bottom: 15px;
       }
 
-      /* 5. Điều chỉnh bảng (Đảm bảo bảng vẫn cuộn ngang nếu quá nhiều cột) */
       .table-responsive {
         border: 1px solid var(--border-color);
         border-radius: 12px;
@@ -62,7 +118,6 @@
 
       .table {
         min-width: 600px;
-        /* Vẫn cần min-width cho bảng */
       }
 
       .table thead th,
@@ -87,20 +142,16 @@
       }
     }
 
-    /* Kích hoạt lại bố cục Desktop (Sidebar nằm cạnh Main-Content) */
     @media (min-width: 769px) {
       body {
         display: flex !important;
         flex-direction: row !important;
-        /* Khôi phục thành row trên desktop */
         overflow-x: hidden;
       }
 
       .sidebar {
-        /* Giả sử chiều rộng desktop là 250px */
         width: 250px !important;
         height: 100vh !important;
-        /* Khôi phục vh-100 trên desktop */
         display: flex !important;
       }
 
@@ -113,386 +164,185 @@
 
 <body>
 
-  <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
-  <link
-    rel="stylesheet"
-    href="../bootstrap-5.3.2-dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="../assets/css/admin_style.css" />
-  </head>
+  <?php include 'admin_sidebar.php'; ?>
 
-  <body>
+  <main class="main-content">
+    <div class="page-content p-4">
 
-    <aside class="sidebar d-flex flex-column vh-100">
-      <div class="sidebar-header">Literary Haven</div>
+      <h1 class="mb-4">Bảng điều khiển</h1>
 
-      <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-          <a href="dashboard.php" class="nav-link">
-            <span class="nav-icon">◈</span>
-            <span>Bảng điều khiển</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="users.php" class="nav-link">
-            <span class="nav-icon">◉</span>
-            <span>Khách hàng</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="categories.php" class="nav-link">
-            <span class="nav-icon">◫</span>
-            <span>Loại sản phẩm</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="products.php" class="nav-link">
-            <span class="nav-icon">◪</span>
-            <span>Sản phẩm</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="purchase-orders.php" class="nav-link">
-            <span class="nav-icon">◩</span>
-            <span>Nhập hàng</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="pricing.php" class="nav-link">
-            <span class="nav-icon">◎</span>
-            <span>Quản lý giá</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="orders.php" class="nav-link">
-            <span class="nav-icon">◧</span>
-            <span>Đơn hàng</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="inventory.php" class="nav-link">
-            <span class="nav-icon">◨</span>
-            <span>Tồn kho</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="reports.php" class="nav-link">
-            <span class="nav-icon">◔</span>
-            <span>Báo cáo</span>
-          </a>
-        </li>
-      </ul>
-
-      <div class="mt-auto p-3">
-        <a href="index.php" class="logout-link">
-          <span>◀</span>
-          <span>Đăng xuất</span>
-        </a>
-      </div>
-    </aside>
-
-    <main class="main-content">
-      <div class="page-content p-4">
-        <h1>Bảng điều khiển</h1>
-
-        <div class="row g-4 mb-4">
-          <div class="col-xl-3 col-md-6">
-            <div class="card stat-card">
-              <div class="card-body">
-                <div>
-                  <h2>1,504</h2>
-                  <span>Lượt truy cập</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-md-6">
-            <div class="card stat-card dark">
-              <div class="card-body">
-                <div>
-                  <h2>80</h2>
-                  <span>Doanh số</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-md-6">
-            <div class="card stat-card">
-              <div class="card-body">
-                <div>
-                  <h2>284</h2>
-                  <span>Bình luận</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-md-6">
-            <div class="card stat-card">
-              <div class="card-body">
-                <div>
-                  <h2>36.3M₫</h2>
-                  <span>Doanh thu</span>
-                </div>
+      <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+          <div class="card stat-card">
+            <div class="card-body">
+              <div>
+                <h2><?= $visitors ?></h2>
+                <span>Lượt truy cập</span>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="row g-4 mb-4">
-          <div class="col-lg-6">
-            <div class="card h-100">
-              <div
-                class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="h5 mb-0">Tồn kho thấp (Dưới 20)</h3>
-                <a href="inventory.php" class="btn btn-sm btn-primary">Xem tất cả</a>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover mb-0">
-                    <thead>
-                      <tr>
-                        <th>Sản phẩm</th>
-                        <th class="text-center">Còn lại</th>
-                      </tr>
-                    </thead>
-                    <tbody id="low-stock-summary-body">
-                      <tr>
-                        <td colspan="2" class="text-center">Đang tải...</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="card h-100">
-              <div
-                class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="h5 mb-0">Sản phẩm 0% lợi nhuận</h3>
-                <a href="pricing.php" class="btn btn-sm btn-primary">Xem tất cả</a>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover mb-0">
-                    <thead>
-                      <tr>
-                        <th>Sản phẩm</th>
-                        <th class="text-end">Giá vốn</th>
-                        <th class="text-end">Giá bán</th>
-                      </tr>
-                    </thead>
-                    <tbody id="pricing-summary-body">
-                      <tr>
-                        <td colspan="3" class="text-center">Đang tải...</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+        <div class="col-xl-3 col-md-6">
+          <div class="card stat-card dark">
+            <div class="card-body">
+              <div>
+                <h2><?= number_format($salesCount) ?></h2>
+                <span>Doanh số (Đơn hoàn thành)</span>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="card">
-          <div
-            class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="h5 mb-0">Đơn hàng gần đây</h3>
-            <a href="orders.php" class="btn btn-sm btn-primary">Xem tất cả</a>
+        <div class="col-xl-3 col-md-6">
+          <div class="card stat-card">
+            <div class="card-body">
+              <div>
+                <h2><?= $comments ?></h2>
+                <span>Bình luận</span>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Mã ĐH</th>
-                    <th>Khách hàng</th>
-                    <th>Ngày đặt</th>
-                    <th class="text-end">Tổng tiền</th>
-                    <th>Trạng thái</th>
-                  </tr>
-                </thead>
-                <tbody id="recent-orders-body">
-                  <tr>
-                    <td colspan="5" class="text-center">
-                      Đang tải đơn hàng...
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+        </div>
+        <div class="col-xl-3 col-md-6">
+          <div class="card stat-card">
+            <div class="card-body">
+              <div>
+                <h2 title="<?= formatCurrency($totalRevenue) ?>"><?= $displayRevenue ?></h2>
+                <span>Doanh thu</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </main>
 
-    <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/admin_main.js"></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        /**
-         * Helper: Lấy dữ liệu sản phẩm (từ pricing.php & inventory.php)
-         */
-        function getProductData() {
-          const storedData = localStorage.getItem("bs_data");
-          return storedData ? JSON.parse(storedData) : {
-            products: []
-          };
-        }
-
-        /**
-         * 1. Tải Đơn hàng gần đây
-         */
-        function loadRecentOrders() {
-          const tbody = document.getElementById("recent-orders-body");
-          if (!tbody) return;
-
-          // db_get() được định nghĩa trong admin_main.js
-          const orders =
-            (typeof db_get === "function" ? db_get("bs_orders") : []) || [];
-
-          // Lấy 5 đơn hàng mới nhất
-          const recentOrders = orders.slice().reverse().slice(0, 5);
-
-          if (recentOrders.length === 0) {
-            tbody.innerHTML =
-              '<tr><td colspan="5" class="text-center">Không có đơn hàng nào.</td></tr>';
-            return;
-          }
-
-          tbody.innerHTML = recentOrders
-            .map((order) => {
-              const statusClassMap = {
-                "Chờ xử lý": "pending",
-                "Đã xử lý": "processed",
-                "Đã giao": "delivered",
-                "Đã hủy": "cancelled",
-              };
-              const statusClass = statusClassMap[order.status] || "pending";
-              const customerName =
-                order.shippingAddress && order.shippingAddress.name ?
-                order.shippingAddress.name :
-                `User #${order.userId}`;
-
-              return `
-                        <tr>
-                            <td>#${order.id}</td>
-                            <td>${customerName}</td>
-                            <td>${new Date(order.date).toLocaleDateString(
-                              "vi-VN"
-                            )}</td>
-                            <td class="text-end">${formatCurrency(
-                              order.total
-                            )}</td>
-                            <td><span class="status ${statusClass}">${
-                order.status
-              }</span></td>
-                        </tr>
-                    `;
-            })
-            .join("");
-        }
-
-        /**
-         * 2. Tải Tồn kho thấp
-         */
-        function loadLowStock() {
-          const tbody = document.getElementById("low-stock-summary-body");
-          if (!tbody) return;
-
-          const LOW_STOCK_THRESHOLD = 20; // Lấy từ inventory.php
-          const data = getProductData();
-          const products = data.products || [];
-
-          const lowStockItems = products
-            .filter(
-              (p) =>
-              (p.qty || 0) < LOW_STOCK_THRESHOLD &&
-              (p.status === "active" || p.status === undefined)
-            )
-            .sort((a, b) => (a.qty || 0) - (b.qty || 0)) // Hiển thị số lượng ít nhất lên đầu
-            .slice(0, 5); // Lấy 5 sản phẩm
-
-          if (lowStockItems.length === 0) {
-            tbody.innerHTML =
-              '<tr><td colspan="2" class="text-center">Không có sản phẩm nào sắp hết hàng.</td></tr>';
-            return;
-          }
-
-          // formatCurrency() được định nghĩa trong admin_main.js
-          tbody.innerHTML = lowStockItems
-            .map(
-              (p) => `
+      <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+          <div class="card h-100 shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h3 class="h5 mb-0">Tồn kho thấp (Dưới 20)</h3>
+              <a href="inventory.php" class="btn btn-sm btn-primary">Xem tất cả</a>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                  <thead class="table-light">
                     <tr>
-                        <td>${p.name} <span class="text-muted small">(${
-                p.sku
-              })</span></td>
-                        <td class="text-center text-danger fw-bold">${
-                          p.qty || 0
-                        }</td>
+                      <th class="ps-3">Sản phẩm</th>
+                      <th class="text-center pe-3">Còn lại</th>
                     </tr>
-                `
-            )
-            .join("");
-        }
-
-        /**
-         * 3. Tải tóm tắt Giá bán (0% lợi nhuận)
-         */
-        function loadPricingSummary() {
-          const tbody = document.getElementById("pricing-summary-body");
-          if (!tbody) return;
-
-          const data = getProductData();
-          const products = data.products || [];
-
-          const zeroProfitItems = products
-            .filter(
-              (p) =>
-              (p.profitMargin || 0) === 0 &&
-              (p.status === "active" || p.status === undefined)
-            )
-            .slice(0, 5); // Lấy 5 sản phẩm
-
-          if (zeroProfitItems.length === 0) {
-            tbody.innerHTML =
-              '<tr><td colspan="3" class="text-center">Không có sản phẩm nào 0% lợi nhuận.</td></tr>';
-            return;
-          }
-
-          tbody.innerHTML = zeroProfitItems
-            .map((p) => {
-              const costPrice = p.costPrice || p.price;
-              const salePrice = p.price;
-              return `
+                  </thead>
+                  <tbody>
+                    <?php if (empty($lowStockProducts)): ?>
+                      <tr>
+                        <td colspan="2" class="text-center py-3 text-success fw-bold">Không có sản phẩm nào sắp hết hàng.</td>
+                      </tr>
+                    <?php else: ?>
+                      <?php foreach ($lowStockProducts as $p): ?>
                         <tr>
-                            <td>${p.name} <span class="text-muted small">(${
-                p.sku
-              })</span></td>
-                            <td class="text-end text-danger">${formatCurrency(
-                              costPrice
-                            )}</td>
-                            <td class="text-end">${formatCurrency(
-                              salePrice
-                            )}</td>
+                          <td class="ps-3">
+                            <?= h($p['name']) ?> <br>
+                            <span class="text-muted small">Mã: <?= h($p['sku']) ?></span>
+                          </td>
+                          <td class="text-center text-danger fw-bold fs-5 pe-3"><?= $p['qty'] ?></td>
                         </tr>
-                    `;
-            })
-            .join("");
-        }
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        // Chạy tất cả các hàm tải dữ liệu
-        loadRecentOrders();
-        loadLowStock();
-        loadPricingSummary();
-      });
-    </script>
-    <a href="#" class="back-to-top" title="Lên đầu trang">
-      <i class="bi bi-chevron-up">
-        <img class="go-up" src="../images/muiten.svg" alt="Về trang chủ" />
-      </i>
-    </a>
-  </body>
+        <div class="col-lg-6">
+          <div class="card h-100 shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h3 class="h5 mb-0">Sản phẩm 0% lợi nhuận</h3>
+              <a href="pricing.php" class="btn btn-sm btn-primary">Xem tất cả</a>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th class="ps-3">Sản phẩm</th>
+                      <th class="text-end">Giá vốn</th>
+                      <th class="text-end pe-3">Giá bán</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if (empty($zeroProfitProducts)): ?>
+                      <tr>
+                        <td colspan="3" class="text-center py-3 text-success fw-bold">Mọi sản phẩm đều đang có lợi nhuận.</td>
+                      </tr>
+                    <?php else: ?>
+                      <?php foreach ($zeroProfitProducts as $p): ?>
+                        <tr>
+                          <td class="ps-3">
+                            <?= h($p['name']) ?> <br>
+                            <span class="text-muted small">Mã: <?= h($p['sku']) ?></span>
+                          </td>
+                          <td class="text-end text-danger fw-bold"><?= formatCurrency($p['costPrice']) ?></td>
+                          <td class="text-end text-primary fw-bold pe-3"><?= formatCurrency($p['price']) ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="h5 mb-0">Đơn hàng gần đây</h3>
+          <a href="orders.php" class="btn btn-sm btn-primary">Xem tất cả</a>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-3">Mã ĐH</th>
+                  <th>Khách hàng</th>
+                  <th>Ngày đặt</th>
+                  <th class="text-end">Tổng tiền</th>
+                  <th class="pe-3">Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php if (empty($recentOrders)): ?>
+                  <tr>
+                    <td colspan="5" class="text-center py-4">Chưa có đơn hàng nào được đặt.</td>
+                  </tr>
+                <?php else: ?>
+                  <?php foreach ($recentOrders as $o):
+                    $statusClass = 'pending';
+                    $st = $o['status'];
+                    if ($st === 'Đã xác nhận' || $st === 'Đã xử lý') $statusClass = 'processed';
+                    if ($st === 'Đã giao thành công' || $st === 'Đã giao') $statusClass = 'delivered';
+                    if ($st === 'Đã hủy') $statusClass = 'cancelled';
+                  ?>
+                    <tr>
+                      <td class="ps-3 fw-bold text-primary">#<?= $o['id'] ?></td>
+                      <td class="fw-bold"><?= h($o['buyer_name']) ?></td>
+                      <td><?= date('d/m/Y H:i', strtotime($o['orderDate'])) ?></td>
+                      <td class="text-end text-danger fw-bold"><?= formatCurrency($o['totalAmount']) ?></td>
+                      <td class="pe-3"><span class="status <?= $statusClass ?>"><?= h($st) ?></span></td>
+                    </tr>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
 </html>

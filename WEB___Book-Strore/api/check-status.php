@@ -38,9 +38,12 @@ if (!$user) {
     exit;
 }
 
-// Nếu bị khóa → xóa session luôn
+// Nếu bị khóa → CHỈ xóa session của Khách hàng, giữ nguyên Admin
 if ($user['status'] === 'locked') {
-    session_destroy();
+    unset($_SESSION['user_id']);
+    unset($_SESSION['user_username']);
+    unset($_SESSION['user_fullName']);
+    unset($_SESSION['cart']);
 }
 
 // ✅ Đồng bộ lại session với dữ liệu mới nhất từ DB
