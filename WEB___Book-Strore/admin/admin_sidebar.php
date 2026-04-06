@@ -7,7 +7,7 @@ require_once __DIR__ . '/../api/db.php';
 $adminName = 'Quản trị viên'; // Tên mặc định
 
 if (isset($_SESSION['admin_id'])) {
-    $adminId = (int)$_SESSION['admin_id'];
+    $adminId = (int) $_SESSION['admin_id'];
     $stmt = $conn->prepare("SELECT fullName, username FROM users WHERE id = ?");
     $stmt->bind_param("i", $adminId);
     $stmt->execute();
@@ -32,7 +32,8 @@ if (isset($_SESSION['admin_id'])) {
     <div class="sidebar-header" style="padding-bottom: 20px;">
         Literary Haven
         <div style="font-size: 14px; font-weight: 400; margin-top: 8px; color: #cfd8dc; text-transform: none;">
-            👋 Xin chào, <span style="color: #fff; font-weight: bold;"><?= htmlspecialchars($adminName, ENT_QUOTES, 'UTF-8') ?></span>
+            👋 Xin chào, <span
+                style="color: #fff; font-weight: bold;"><?= htmlspecialchars($adminName, ENT_QUOTES, 'UTF-8') ?></span>
         </div>
     </div>
 
@@ -62,7 +63,8 @@ if (isset($_SESSION['admin_id'])) {
             </a>
         </li>
         <li class="nav-item">
-            <a href="purchase-orders.php" class="nav-link <?= ($currentPage == 'purchase-orders.php') ? 'active' : '' ?>">
+            <a href="purchase-orders.php"
+                class="nav-link <?= ($currentPage == 'purchase-orders.php') ? 'active' : '' ?>">
                 <span class="nav-icon">◩</span>
                 <span>Nhập hàng</span>
             </a>
@@ -77,12 +79,6 @@ if (isset($_SESSION['admin_id'])) {
             <a href="orders.php" class="nav-link <?= ($currentPage == 'orders.php') ? 'active' : '' ?>">
                 <span class="nav-icon">◧</span>
                 <span>Đơn hàng</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="inventory.php" class="nav-link <?= ($currentPage == 'inventory.php') ? 'active' : '' ?>">
-                <span class="nav-icon">◨</span>
-                <span>Tồn kho</span>
             </a>
         </li>
         <li class="nav-item">
