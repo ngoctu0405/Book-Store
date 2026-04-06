@@ -96,13 +96,13 @@ foreach ($products as $p) {
   $imp_in = isset($imports[$pid]) ? (int)$imports[$pid]['import_in_period'] : 0;
   $imp_after = isset($imports[$pid]) ? (int)$imports[$pid]['import_after_period'] : 0;
 
-  // Tồn cuối kỳ = Tồn hiện tại tại kho - Nhập (sau kỳ) + Xuất (sau kỳ)
-  $final_stock = $current_qty - $imp_after + $exp_after;
-  $final_stock = max(0, $final_stock);
-
-  // Tồn đầu kỳ = Tồn cuối kỳ - Nhập (trong kỳ) + Xuất (trong kỳ)
-  $initial_stock = $final_stock - $imp_in + $exp_in;
+  // Tính tồn đầu kỳ từ tồn hiện tại bằng cách loại bỏ các phát sinh sau kỳ
+  $initial_stock = $current_qty - $imp_after + $exp_after;
   $initial_stock = max(0, $initial_stock);
+
+  // Tồn cuối kỳ = Tồn đầu kỳ + Nhập trong kỳ - Xuất trong kỳ
+  $final_stock = $initial_stock + $imp_in - $exp_in;
+  $final_stock = max(0, $final_stock);
 
   $reportData[] = [
     'sku' => $p['sku'],

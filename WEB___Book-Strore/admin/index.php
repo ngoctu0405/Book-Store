@@ -2,12 +2,12 @@
 session_start();
 require_once __DIR__ . '/../api/db.php';
 
-// Nếu Admin đã đăng nhập từ trước, chuyển hướng thẳng vào trong
-if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-  // Lưu ý: Đổi "dashboard.php" thành trang mặc định của Admin của bạn (vd: products.php)
-  header("Location: dashboard.php");
-  exit;
-}
+// Nếu Admin đã đăng nhập từ trước, vẫn giữ lại trang index để người dùng có thể truy cập trực tiếp
+// Nếu muốn tự động vào dashboard khi đã đăng nhập, mở lại dòng header() bên dưới.
+// if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+//   header("Location: dashboard.php");
+//   exit;
+// }
 
 $errorMsg = '';
 
