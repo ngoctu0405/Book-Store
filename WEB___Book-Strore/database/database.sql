@@ -314,7 +314,7 @@ VALUES -- NHÓM 1: VĂN HỌC (NXB TRẺ)
     1,
     'Tiểu thuyết',
     'Tập đầu tiên của loạt Harry Potter.',
-    '../images/harryPotter.jpg',
+    '../images/HarryPotter.jpg',
     100
   ),
   -- NHÓM 2: KINH TẾ (NXB TỔNG HỢP)
