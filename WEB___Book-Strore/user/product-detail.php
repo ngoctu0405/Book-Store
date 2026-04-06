@@ -10,7 +10,7 @@ if ($id > 0) {
                p.image AS img, p.qty
         FROM products p
         JOIN categories c ON p.category_id = c.id
-        WHERE p.id = ? AND (p.qty IS NULL OR p.qty >= 0)
+        WHERE p.id = ? AND (p.qty IS NULL OR p.qty >= 0) AND p.status = 'active' AND c.status = 'active'
         LIMIT 1
     ");
   $stmt->bind_param('i', $id);

@@ -1828,13 +1828,100 @@ footer {
   padding: 2.5rem;
   max-width: 480px;
   width: 90%;
-  max-height: auto;
+  max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   animation: slideUp 0.3s ease;
   z-index: 10000;
   box-sizing: border-box;
 }
+
+/* ========================================================
+   GIAO DIỆN BẢNG NGANG CHO ĐĂNG NHẬP / ĐĂNG KÝ
+======================================================== */
+
+#loginModal .auth-modal-content {
+  max-width: 800px;
+  padding: 3rem;
+}
+
+#registerModal .auth-modal-content {
+  max-width: 1200px; /* Bảng đăng ký rộng tối đa */
+  width: 95%; /* Cung cấp thêm diện tích */
+  padding: 2rem 3rem; /* Thu gọn khoảng trống trên/dưới để vừa màn hình */
+  max-height: unset; /* Xóa giới hạn chiều cao */
+  overflow: visible; /* Tắt hoàn toàn thanh cuộn */
+}
+
+/* Lưới cho form đăng nhập (ngang 2 cột) */
+#login-form.auth-modal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+#login-form.auth-modal-form .btn-auth-submit {
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}
+
+/* Lưới cho form đăng ký (3 cột cực thoáng, xóa thanh cuộn) */
+#register-form.auth-modal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem; /* Kéo gần khoảng cách để form lọt thỏm trong 1 màn hình */
+}
+
+/* Trường hợp Địa chỉ -> Cho nằm trọn 3 cột ngang */
+#register-form .form-group:nth-of-type(7) {
+  grid-column: 1 / -1;
+}
+
+#register-form.auth-modal-form .btn-auth-submit {
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}
+
+/* Tùy chỉnh thanh cuộn cho form đăng ký */
+#register-form.auth-modal-form::-webkit-scrollbar {
+  width: 6px;
+}
+#register-form.auth-modal-form::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 4px;
+}
+
+/* Grid responsive cho Laptop nhỏ và Tablet dọc */
+@media (max-width: 1024px) {
+  #registerModal .auth-modal-content {
+    padding: 2rem;
+  }
+  
+  #register-form.auth-modal-form {
+    grid-template-columns: 1fr 1fr; /* Trở về 2 cột trên màn hình vừa */
+  }
+}
+
+/* Grid responsive cho điện thoại */
+@media (max-width: 768px) {
+  #loginModal .auth-modal-content,
+  #registerModal .auth-modal-content {
+    max-width: 100%;
+    padding: 1.5rem;
+    border-radius: 15px; /* Giảm bo góc trên đt */
+    max-height: 85vh; /* Khởi tạo lại thanh cuộn cho màn hình nhỏ */
+    overflow-y: auto; 
+  }
+
+  #login-form.auth-modal-form,
+  #register-form.auth-modal-form {
+    grid-template-columns: 1fr; /* Trở lại 1 dọc */
+    gap: 1rem;
+    /* Loại bỏ unset để tuân theo khối cha (Modal) có thanh cuộn */
+  }
+}
+/* ======================================================== */
 
 .auth-modal-close {
   position: absolute;

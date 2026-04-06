@@ -59,6 +59,31 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Hide scrollbar globally but maintain functionality */
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  display: flex !important;
+  transition: var(--transition);
+}
+
+/* Responsive Layout Logic */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column !important;
+  }
+}
+
+@media (min-width: 769px) {
+  body {
+    flex-direction: row !important;
+  }
+}
+
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 /* Ghi đè Bootstrap */
@@ -116,8 +141,30 @@ body {
   );
   flex-shrink: 0;
   box-shadow: var(--shadow-xl);
-  position: relative;
-  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden !important;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100% !important;
+    height: auto !important;
+    flex-shrink: 0;
+    overflow-x: auto !important;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 769px) {
+  .sidebar {
+    width: 280px !important;
+    height: 100vh !important;
+    flex-shrink: 0;
+  }
 }
 
 .sidebar::before {
@@ -136,10 +183,10 @@ body {
 }
 
 .sidebar-header {
-  font-size: 1.9rem;
+  font-size: 1.7rem;
   font-weight: 700;
-  margin-bottom: 35px;
-  padding: 35px 24px 20px;
+  margin-bottom: 15px;
+  padding: 20px 24px 10px;
   color: var(--text-white);
   letter-spacing: -0.5px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -149,21 +196,36 @@ body {
 
 /* Navigation Pills */
 .sidebar .nav-pills {
-  padding: 15px 0;
+  flex: 1;
+  overflow: hidden !important;
+  padding: 10px 0;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Aggressively hide any potential scrollbar elements in the sidebar */
+.sidebar::-webkit-scrollbar, 
+.sidebar *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
 .sidebar .nav-item {
-  margin: 4px 0;
+  margin: 1px 0;
 }
 
 .sidebar .nav-link {
   display: flex;
   align-items: center;
   color: var(--text-lighter);
-  padding: 14px 24px;
+  padding: 10px 24px;
   border-radius: 12px;
   margin: 0 16px;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 500;
   transition: var(--transition);
   position: relative;

@@ -91,12 +91,11 @@ if (isset($_SESSION['admin_id'])) {
                 <span>Báo cáo</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="logout.php" class="logout-link" style="margin-top: 15px; margin-left:16px; margin-right:16px;">
+                <span>◀</span>
+                <span>Đăng xuất</span>
+            </a>
+        </li>
     </ul>
-
-    <div class="mt-auto p-3">
-        <a href="logout.php" class="logout-link">
-            <span>◀</span>
-            <span>Đăng xuất</span>
-        </a>
-    </div>
 </aside>

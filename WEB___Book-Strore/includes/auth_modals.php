@@ -63,10 +63,7 @@
             <p>Tạo tài khoản mới của bạn</p>
         </div>
 
-        <form
-            id="register-form"
-            class="auth-modal-form"
-            style="max-height: 450px; overflow-y: auto">
+        <form id="register-form" class="auth-modal-form">
             <div class="form-group">
                 <label for="reg-fullname">Họ và tên</label>
                 <div class="input-with-icon">

@@ -113,68 +113,42 @@ if ($res) {
   <title>Quản lý Khách hàng - Literary Haven</title>
   <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
   <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/admin_style.css">
   <style>
-    /* Responsive cho thiết bị di động (max-width: 768px) */
-    @media (max-width: 768px) {
-      body {
-        display: flex !important;
-        flex-direction: column !important;
-        overflow-x: hidden;
-      }
 
-      .sidebar {
-        width: 100% !important;
-        height: auto !important;
-        flex-shrink: 0;
-        display: flex !important;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
 
-      .main-content {
-        width: 100%;
-        min-width: auto;
-      }
-
-      .page-content {
-        padding: 15px !important;
-      }
-
-      .table-responsive {
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .table {
-        min-width: 600px;
-      }
-
-      .table thead th,
-      .table tbody td {
-        padding: 8px 6px;
-        font-size: 12px;
-      }
+    /* Tùy chỉnh select địa chỉ */
+    .custom-select-addr {
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 0.6rem;
+      font-size: 0.95rem;
+      width: 100%;
+      margin-bottom: 10px;
+      outline: none;
+      transition: border-color 0.3s;
     }
-
-    @media (min-width: 769px) {
-      body {
-        display: flex !important;
-        flex-direction: row !important;
-        overflow-x: hidden;
-      }
-
-      .sidebar {
-        width: 250px !important;
-        height: 100vh !important;
-        display: flex !important;
-      }
-
-      .main-content {
-        width: 100%;
-      }
+    .custom-select-addr:focus {
+      border-color: #007bff;
+    }
+    .addr-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .addr-input-wrapper i {
+      padding: 0 10px;
+      color: #7f8c8d;
+    }
+    .addr-input-wrapper input {
+      border: none;
+      outline: none;
+      padding: 8px;
+      flex: 1;
     }
   </style>
 </head>
@@ -238,7 +212,7 @@ if ($res) {
                       <td><?= htmlspecialchars($u['email']) ?></td>
                       <td><span class="status <?= $statusClass ?>"><?= $statusText ?></span></td>
                       <td>
-                        <button class="btn btn-sm btn-outline-warning" onclick="promptResetPassword(<?= $u['id'] ?>)">Đổi MK</button>
+                        <button class="btn btn-sm" style="border: 2px solid #ff9800; color: #d39e00; font-weight: 600; border-radius: 6px; background-color: transparent;" onmouseover="this.style.backgroundColor='#ff9800'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#d39e00';" onclick="promptResetPassword(<?= $u['id'] ?>)">Đổi Mật Khẩu</button>
 
                         <form method="POST" action="users.php" style="display:inline-block; margin:0;">
                           <input type="hidden" name="action" value="toggle_status">
@@ -268,7 +242,7 @@ if ($res) {
           <input type="hidden" name="action" value="add_user">
 
           <div class="modal-header">
-            <h5 class="modal-title">Tạo tài khoản khách hàng mới</h5>
+            <h5 class="modal-title"><i class="bi bi-person-plus-fill me-2"></i>Tạo tài khoản khách hàng mới</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
@@ -295,8 +269,29 @@ if ($res) {
               <input type="tel" class="form-control" name="phone" />
             </div>
             <div class="mb-3">
-              <label class="form-label">Địa chỉ</label>
-              <input type="text" class="form-control" name="address" />
+              <label class="form-label fw-bold">📍 Địa chỉ giao hàng *</label>
+              <div class="address-selector">
+                <select id="sel-city" class="custom-select-addr" required>
+                  <option value="">Chọn Tỉnh/Thành phố</option>
+                </select>
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <select id="sel-dist" class="custom-select-addr" required disabled>
+                      <option value="">Chọn Quận/Huyện</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <select id="sel-ward" class="custom-select-addr" required disabled>
+                      <option value="">Chọn Phường/Xã</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="addr-input-wrapper mt-1">
+                  <i class="bi bi-house-door"></i>
+                  <input type="text" id="inp-street" placeholder="Số nhà, tên đường, hẻm..." required />
+                </div>
+                <input type="hidden" name="address" id="hidden-full-address">
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -316,6 +311,69 @@ if ($res) {
 
   <script src="../bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // --- XỬ LÝ ĐỊA CHỈ 4 CẤP ---
+    document.addEventListener("DOMContentLoaded", async function() {
+      const citySel = document.getElementById('sel-city');
+      const distSel = document.getElementById('sel-dist');
+      const wardSel = document.getElementById('sel-ward');
+      const streetInp = document.getElementById('inp-street');
+      const hiddenAddress = document.getElementById('hidden-full-address');
+
+      try {
+        const res = await fetch('../assets/data/provinces.json');
+        const data = await res.json();
+
+        // Load Tỉnh/Thành
+        data.forEach(c => {
+          citySel.add(new Option(c.name, c.code));
+        });
+
+        // Event: Chọn Tỉnh
+        citySel.addEventListener('change', function() {
+          distSel.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+          wardSel.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+          distSel.disabled = true;
+          wardSel.disabled = true;
+
+          if (this.value) {
+            const city = data.find(c => c.code == this.value);
+            if (city && city.districts) {
+              city.districts.forEach(d => distSel.add(new Option(d.name, d.code)));
+              distSel.disabled = false;
+            }
+          }
+        });
+
+        // Event: Chọn Huyện
+        distSel.addEventListener('change', function() {
+          wardSel.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+          wardSel.disabled = true;
+
+          if (this.value) {
+            const city = data.find(c => c.code == citySel.value);
+            const dist = city.districts.find(d => d.code == this.value);
+            if (dist && dist.wards) {
+              dist.wards.forEach(w => wardSel.add(new Option(w.name, w.code)));
+              wardSel.disabled = false;
+            }
+          }
+        });
+      } catch (err) {
+        console.error("Lỗi tải provinces.json:", err);
+      }
+
+      // Trước khi submit, ghép chuỗi địa chỉ
+      const userForm = document.querySelector('#addUserModal form');
+      userForm.addEventListener('submit', function() {
+        const cityTxt = citySel.options[citySel.selectedIndex].text;
+        const distTxt = distSel.options[distSel.selectedIndex].text;
+        const wardTxt = wardSel.options[wardSel.selectedIndex].text;
+        const streetTxt = streetInp.value.trim();
+
+        hiddenAddress.value = `${wardTxt}, ${distTxt}, ${cityTxt} - ${streetTxt}`;
+      });
+    });
+
     // Hàm gọi hộp thoại nhập mật khẩu và đẩy vào form PHP ẩn
     function promptResetPassword(userId) {
       const pwd = prompt("Nhập mật khẩu mới cho khách hàng này (ít nhất 6 ký tự):");

@@ -245,8 +245,7 @@ $categories = $conn->query("SELECT id, name FROM categories WHERE status = 'acti
                         <span id="price-<?= $p['id'] ?>" class="fw-bold fs-6"><?= number_format($p['price']) ?>đ</span>
                       </td>
                       <td class="text-center">
-                        <button class="btn btn-sm btn-success mb-1 w-100" onclick="saveProductProfit(<?= $p['id'] ?>)">Lưu</button>
-                        <button class="btn btn-sm btn-secondary w-100" onclick="resetProductProfit(<?= $p['id'] ?>)">Đưa về 0%</button>
+                        <button class="btn btn-sm btn-success w-100" onclick="saveProductProfit(<?= $p['id'] ?>)">Lưu</button>
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -311,14 +310,7 @@ $categories = $conn->query("SELECT id, name FROM categories WHERE status = 'acti
         .catch(err => alert('Lỗi kết nối tới máy chủ!'));
     }
 
-    // 3. Nút Quay lại 0% (Reset)
-    function resetProductProfit(productId) {
-      if (!confirm("Bạn có chắc muốn đưa mức lợi nhuận của sản phẩm này về 0% ? (Giá bán sẽ bằng Giá vốn)")) return;
 
-      document.getElementById(`profit-${productId}`).value = 0;
-      previewSalePrice(productId); // Cập nhật số hiển thị
-      saveProductProfit(productId); // Gọi hàm lưu lên server luôn
-    }
   </script>
 
   <a href="#" class="back-to-top" title="Lên đầu trang">

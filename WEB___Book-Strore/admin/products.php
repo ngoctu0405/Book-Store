@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
   $sku          = trim($_POST['sku']);
   $name         = trim($_POST['name']);
   $author       = trim($_POST['author']);
-  $supplier     = trim($_POST['supplier'] ?? ''); // Thêm biến Nhà cung cấp
+  $supplier     = trim($_POST['supplier'] ?? '');
   $category_id  = (int)$_POST['category_id'];
   $subcategory  = trim($_POST['subcategory']);
   $unit         = trim($_POST['unit']);
@@ -28,7 +28,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
   $qty          = (int)$_POST['qty'];
   $status       = $_POST['status'];
   $description  = trim($_POST['description']);
-  $image        = trim($_POST['image']);
+  
+  // LOGIC XỬ LÝ ẢNH (UPLOAD FILE)
+  $image = trim($_POST['old_image'] ?? ''); // Mặc định dùng ảnh cũ nếu có
+
+  if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
+    $fileTmpPath = $_FILES['product_image']['tmp_name'];
+    $fileName = $_FILES['product_image']['name'];
+    $fileSize = $_FILES['product_image']['size'];
+    $fileType = $_FILES['product_image']['type'];
+    $fileNameCmps = explode(".", $fileName);
+    $fileExtension = strtolower(end($fileNameCmps));
+
+    // Các định dạng an toàn
+    $allowedfileExtensions = ['jpg', 'gif', 'png', 'jpeg', 'webp'];
+    if (in_array($fileExtension, $allowedfileExtensions)) {
+      // Đổi tên file để tránh trùng lặp
+      $newFileName = time() . '_' . md5($fileName) . '.' . $fileExtension;
+      $uploadFileDir = __DIR__ . '/../images/';
+      if (!is_dir($uploadFileDir)) mkdir($uploadFileDir, 0777, true);
+      $dest_path = $uploadFileDir . $newFileName;
+
+      if (move_uploaded_file($fileTmpPath, $dest_path)) {
+        $image = '../images/' . $newFileName; // Đường dẫn lưu vào DB
+      }
+    }
+  }
 
   if ($id) {
     // Cập nhật - Thêm biến supplier (Tổng cộng 15 biến: ssssiiiissssisi)
@@ -97,63 +122,7 @@ $categories = $conn->query("SELECT id, name FROM categories WHERE status = 'acti
   <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
   <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/admin_style.css">
-  <style>
-    @media (max-width: 768px) {
-      body {
-        display: flex !important;
-        flex-direction: column !important;
-        overflow-x: hidden;
-      }
 
-      .sidebar {
-        width: 100% !important;
-        height: auto !important;
-        flex-shrink: 0;
-        display: flex !important;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
-
-      .main-content {
-        width: 100%;
-        min-width: auto;
-      }
-
-      .page-content {
-        padding: 15px !important;
-      }
-
-      .table-responsive {
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        overflow-x: auto;
-      }
-
-      .table {
-        min-width: 800px;
-      }
-
-      /* Mở rộng thêm xíu cho đủ chỗ 2 cột mới trên mobile */
-    }
-
-    @media (min-width: 769px) {
-      body {
-        display: flex !important;
-        flex-direction: row !important;
-        overflow-x: hidden;
-      }
-
-      .sidebar {
-        width: 250px !important;
-        height: 100vh !important;
-        display: flex !important;
-      }
-
-      .main-content {
-        width: 100%;
-      }
-    }
-  </style>
 </head>
 
 <body>
@@ -224,7 +193,7 @@ $categories = $conn->query("SELECT id, name FROM categories WHERE status = 'acti
 
   <div class="modal fade" id="productModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
-      <form action="products.php" method="POST" class="modal-content">
+      <form action="products.php" method="POST" enctype="multipart/form-data" class="modal-content">
         <input type="hidden" name="action" value="save_product">
         <input type="hidden" name="id" id="form-id">
         <div class="modal-header">
@@ -283,8 +252,17 @@ $categories = $conn->query("SELECT id, name FROM categories WHERE status = 'acti
           </div>
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label class="form-label">Ảnh (Đường dẫn)</label>
-              <input type="text" name="image" id="form-image" class="form-control">
+              <label class="form-label">Hình ảnh sản phẩm</label>
+              <div class="d-flex align-items-start gap-3">
+                <div id="image-preview-container" class="border rounded bg-light d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; overflow: hidden; flex-shrink: 0;">
+                  <img id="img-preview" src="../images/placeholder.jpg" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='../images/placeholder.jpg'">
+                </div>
+                <div class="flex-grow-1">
+                  <input type="file" name="product_image" id="form-image-file" class="form-control" accept="image/*" onchange="previewSelectedImage(this)">
+                  <input type="hidden" name="old_image" id="form-old-image">
+                  <small class="text-muted mt-1 d-block">Định dạng hỗ trợ: JPG, PNG, WEBP. Kích thước tối ưu: 600x600px.</small>
+                </div>
+              </div>
             </div>
             <div class="col-md-3 mb-3">
               <label class="form-label">Số lượng kho</label>
@@ -340,7 +318,19 @@ $categories = $conn->query("SELECT id, name FROM categories WHERE status = 'acti
       document.querySelector('#productModal form').reset();
       document.getElementById('form-id').value = "";
       document.getElementById('form-unit').value = "Quyển";
+      document.getElementById('form-old-image').value = "";
+      document.getElementById('img-preview').src = "../images/placeholder.jpg";
       modal.show();
+    }
+
+    function previewSelectedImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('img-preview').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
     }
 
     function editProduct(p) {
@@ -349,7 +339,7 @@ $categories = $conn->query("SELECT id, name FROM categories WHERE status = 'acti
       document.getElementById('form-sku').value = p.sku;
       document.getElementById('form-name').value = p.name;
       document.getElementById('form-author').value = p.author;
-      document.getElementById('form-supplier').value = p.supplier || ''; // NẠP DATA NHÀ CUNG CẤP
+      document.getElementById('form-supplier').value = p.supplier || '';
       document.getElementById('form-category').value = p.category_id;
       document.getElementById('form-sub').value = p.subcategory;
       document.getElementById('form-unit').value = p.unit;
@@ -358,7 +348,11 @@ $categories = $conn->query("SELECT id, name FROM categories WHERE status = 'acti
       document.getElementById('form-price').value = p.price;
       document.getElementById('form-qty').value = p.qty;
       document.getElementById('form-status').value = p.status;
-      document.getElementById('form-image').value = p.image;
+      
+      // Load ảnh cũ cho modal sửa
+      document.getElementById('form-old-image').value = p.image;
+      document.getElementById('img-preview').src = p.image ? p.image : "../images/placeholder.jpg";
+      
       document.getElementById('form-desc').value = p.description;
       modal.show();
     }

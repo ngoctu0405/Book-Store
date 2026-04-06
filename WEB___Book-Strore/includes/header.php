@@ -35,7 +35,7 @@ if ($catRes && $catRes->num_rows > 0) {
     <title><?= isset($pageTitle) ? $pageTitle : 'Literary Haven' ?></title>
 
     <link rel="icon" type="image/jpg" href="../images/Logo_pic_removebg.png" />
-    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?= time() ?>" />
     <link rel="stylesheet" href="../bootstrap-5.3.2-dist/css/bootstrap.min.css" />
 
     <?= isset($extraCss) ? $extraCss : '' ?>

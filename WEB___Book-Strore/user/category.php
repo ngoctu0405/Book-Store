@@ -5,10 +5,17 @@ require_once __DIR__ . '/../api/db.php';
 // ===== ĐỌC PARAMS TỪ URL =====
 $categoryParam     = isset($_GET['category'])     ? trim($_GET['category'])     : '';
 $subcategoryParam  = isset($_GET['subcategory'])  ? trim($_GET['subcategory'])  : '';
-$minPriceParam     = isset($_GET['minPrice'])     ? intval($_GET['minPrice'])   : null;
-$maxPriceParam     = isset($_GET['maxPrice'])     ? intval($_GET['maxPrice'])   : null;
+// Chỉ lấy giá trị nếu không phải chuỗi rỗng
+$minPriceParam     = (isset($_GET['minPrice']) && $_GET['minPrice'] !== '')     ? intval($_GET['minPrice'])   : null;
+$maxPriceParam     = (isset($_GET['maxPrice']) && $_GET['maxPrice'] !== '')     ? intval($_GET['maxPrice'])   : null;
 $searchNameParam   = isset($_GET['searchName'])   ? trim($_GET['searchName'])   : '';
 $searchAuthorParam = isset($_GET['searchAuthor']) ? trim($_GET['searchAuthor']) : '';
+
+// ===== PHÂN TRANG =====
+$limit = 8; // 8 sản phẩm mỗi trang (4 cột x 2 hàng)
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($page < 1) $page = 1;
+$offset = ($page - 1) * $limit;
 
 // ===== BUILD QUERY TÌM KIẾM =====
 $query = "
@@ -16,7 +23,7 @@ $query = "
            c.name AS category, p.subcategory
     FROM products p
     JOIN categories c ON p.category_id = c.id
-    WHERE (p.qty IS NULL OR p.qty > 0) AND c.status = 'active'
+    WHERE (p.qty IS NULL OR p.qty > 0) AND c.status = 'active' AND p.status = 'active'
 ";
 
 if (!empty($categoryParam)) {
@@ -25,10 +32,10 @@ if (!empty($categoryParam)) {
 if (!empty($subcategoryParam)) {
   $query .= " AND p.subcategory = '" . $conn->real_escape_string($subcategoryParam) . "'";
 }
-if (!empty($searchNameParam)) {
+if ($searchNameParam !== '') {
   $query .= " AND p.name LIKE '%" . $conn->real_escape_string($searchNameParam) . "%'";
 }
-if (!empty($searchAuthorParam)) {
+if ($searchAuthorParam !== '') {
   $query .= " AND p.author LIKE '%" . $conn->real_escape_string($searchAuthorParam) . "%'";
 }
 if ($minPriceParam !== null) {
@@ -37,7 +44,16 @@ if ($minPriceParam !== null) {
 if ($maxPriceParam !== null) {
   $query .= " AND p.price <= " . intval($maxPriceParam);
 }
-$query .= " ORDER BY p.name ASC";
+// Đếm tổng số bản ghi TRƯỚC KHI áp dụng LIMIT để phân trang
+$countQuery = str_replace("SELECT p.id, p.sku, p.name, p.author, p.price, p.image AS img, p.qty,
+           c.name AS category, p.subcategory", "SELECT COUNT(*) as total", $query);
+$totalRes = $conn->query($countQuery);
+$totalRow = $totalRes->fetch_assoc();
+$totalProducts = $totalRow['total'];
+$totalPages = ceil($totalProducts / $limit);
+
+// Áp dụng LIMIT/OFFSET
+$query .= " LIMIT " . intval($limit) . " OFFSET " . intval($offset);
 
 $categoryProducts = [];
 $res = $conn->query($query);
@@ -117,6 +133,30 @@ ob_start();
     color: #007bff;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.15);
+  }
+
+  .direct-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .direct-input:focus {
+    border-color: #007bff;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  }
+
+  .submit-search-btn:hover {
+    background-color: #0056b3 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3) !important;
   }
 
   .filter-dropdown {
@@ -327,6 +367,48 @@ ob_start();
       padding: 10px;
     }
   }
+
+  /* Phân trang */
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 40px 0 20px;
+  }
+
+  .page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .page-link:hover {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+    color: #007bff;
+  }
+
+  .page-link.active {
+    background: #007bff;
+    border-color: #007bff;
+    color: #fff;
+  }
+
+  .page-link.disabled {
+    color: #adb5bd;
+    pointer-events: none;
+    background: #f8f9fa;
+  }
 </style>
 <?php
 $extraCss = ob_get_clean();
@@ -348,84 +430,51 @@ include '../includes/header.php';
     </a>
   </div>
 
-  <div class="advanced-filters">
-    <div class="filter-item">
-      <button class="filter-btn">Theo thể loại ▾</button>
-      <ul class="filter-dropdown">
-        <?php foreach ($navCategories as $catName => $subs): ?>
-          <?php foreach ($subs as $sub):
-            $params = $_GET;
-            $params['category'] = $catName;
-            $params['subcategory'] = $sub;
-            $isActive = ($categoryParam === $catName && $subcategoryParam === $sub);
-          ?>
-            <li>
-              <a href="?<?= h(http_build_query($params)) ?>" class="<?= $isActive ? 'active-filter' : '' ?>">
-                <?= h($catName) ?> / <?= h($sub) ?><?= $isActive ? ' ✓' : '' ?>
-              </a>
-            </li>
+  <form method="GET" action="category.php" style="width: 100%;">
+    <?php /* Bỏ input hidden category/subcategory để thực hiện tìm kiếm toàn hệ thống khi nhấn submit form */ ?>
+    
+    <div class="advanced-filters">
+      <div class="filter-item">
+        <button type="button" class="filter-btn">Theo thể loại ▾</button>
+        <ul class="filter-dropdown">
+          <?php foreach ($navCategories as $catName => $subs): ?>
+            <?php foreach ($subs as $sub):
+              $params = $_GET;
+              $params['category'] = $catName;
+              $params['subcategory'] = $sub;
+              $isActive = ($categoryParam === $catName && $subcategoryParam === $sub);
+            ?>
+              <li>
+                <a href="?<?= h(http_build_query($params)) ?>" class="<?= $isActive ? 'active-filter' : '' ?>">
+                  <?= h($catName) ?> / <?= h($sub) ?><?= $isActive ? ' ✓' : '' ?>
+                </a>
+              </li>
+            <?php endforeach; ?>
           <?php endforeach; ?>
-        <?php endforeach; ?>
-      </ul>
-    </div>
-
-    <div class="filter-item">
-      <button class="filter-btn">Theo tên sách ▾</button>
-      <div class="filter-dropdown price-range-dropdown" style="padding:15px;min-width:250px;">
-        <form method="GET" action="category.php">
-          <?php if (!empty($categoryParam)):    ?><input type="hidden" name="category" value="<?= h($categoryParam) ?>"><?php endif; ?>
-          <?php if (!empty($subcategoryParam)): ?><input type="hidden" name="subcategory" value="<?= h($subcategoryParam) ?>"><?php endif; ?>
-          <?php if ($minPriceParam !== null):   ?><input type="hidden" name="minPrice" value="<?= h($minPriceParam) ?>"><?php endif; ?>
-          <?php if ($maxPriceParam !== null):   ?><input type="hidden" name="maxPrice" value="<?= h($maxPriceParam) ?>"><?php endif; ?>
-          <div style="margin-bottom:10px;">
-            <label style="display:block;font-size:14px;margin-bottom:5px;">Nhập tên sách</label>
-            <input type="text" name="searchName" value="<?= h($searchNameParam) ?>" placeholder="Ví dụ: Hoàng tử bé" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;" />
-          </div>
-          <button type="submit" style="width:100%;padding:10px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:600;">Áp dụng</button>
-        </form>
+        </ul>
       </div>
-    </div>
 
-    <div class="filter-item">
-      <button class="filter-btn">Theo tác giả ▾</button>
-      <div class="filter-dropdown price-range-dropdown" style="padding:15px;min-width:250px;">
-        <form method="GET" action="category.php">
-          <?php if (!empty($categoryParam)):    ?><input type="hidden" name="category" value="<?= h($categoryParam) ?>"><?php endif; ?>
-          <?php if (!empty($subcategoryParam)): ?><input type="hidden" name="subcategory" value="<?= h($subcategoryParam) ?>"><?php endif; ?>
-          <?php if ($minPriceParam !== null):   ?><input type="hidden" name="minPrice" value="<?= h($minPriceParam) ?>"><?php endif; ?>
-          <?php if ($maxPriceParam !== null):   ?><input type="hidden" name="maxPrice" value="<?= h($maxPriceParam) ?>"><?php endif; ?>
-          <div style="margin-bottom:10px;">
-            <label style="display:block;font-size:14px;margin-bottom:5px;">Nhập tên tác giả</label>
-            <input type="text" name="searchAuthor" value="<?= h($searchAuthorParam) ?>" placeholder="Ví dụ: Nguyễn Nhật Ánh" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;" />
-          </div>
-          <button type="submit" style="width:100%;padding:10px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:600;">Áp dụng</button>
-        </form>
+      <div class="filter-item filter-input-wrapper" style="flex: 1; min-width: 160px;">
+          <input type="text" name="searchName" value="<?= h($searchNameParam) ?>" placeholder="Nhập tên sách..." class="direct-input" />
       </div>
-    </div>
 
-    <div class="filter-item">
-      <button class="filter-btn">Theo giá (khoảng) ▾</button>
-      <div class="filter-dropdown price-range-dropdown" style="padding:15px;min-width:250px;">
-        <form method="GET" action="category.php">
-          <?php if (!empty($categoryParam)):     ?><input type="hidden" name="category" value="<?= h($categoryParam) ?>"><?php endif; ?>
-          <?php if (!empty($subcategoryParam)):  ?><input type="hidden" name="subcategory" value="<?= h($subcategoryParam) ?>"><?php endif; ?>
-          <?php if (!empty($searchNameParam)):   ?><input type="hidden" name="searchName" value="<?= h($searchNameParam) ?>"><?php endif; ?>
-          <?php if (!empty($searchAuthorParam)): ?><input type="hidden" name="searchAuthor" value="<?= h($searchAuthorParam) ?>"><?php endif; ?>
-          <div style="margin-bottom:10px;">
-            <label style="display:block;font-size:14px;margin-bottom:5px;">Giá Tối Thiểu (₫)</label>
-            <input type="number" name="minPrice" value="<?= h($minPriceParam ?? '') ?>" placeholder="Ví dụ: 50000" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;" />
-          </div>
-          <div style="margin-bottom:10px;">
-            <label style="display:block;font-size:14px;margin-bottom:5px;">Giá Tối Đa (₫)</label>
-            <input type="number" name="maxPrice" value="<?= h($maxPriceParam ?? '') ?>" placeholder="Ví dụ: 200000" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;" />
-          </div>
-          <button type="submit" style="width:100%;padding:10px;background:#007bff;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:600;">Áp dụng</button>
-        </form>
+      <div class="filter-item filter-input-wrapper" style="flex: 1; min-width: 160px;">
+          <input type="text" name="searchAuthor" value="<?= h($searchAuthorParam) ?>" placeholder="Nhập tên tác giả..." class="direct-input" />
       </div>
-    </div>
 
-    <a href="category.php" class="clear-filters-btn">Xóa tất cả bộ lọc</a>
-  </div>
+      <div class="filter-item filter-input-wrapper" style="flex: 1; min-width: 120px;">
+          <input type="number" name="minPrice" value="<?= h($minPriceParam ?? '') ?>" placeholder="Giá tối thiểu..." class="direct-input" />
+      </div>
+
+      <div class="filter-item filter-input-wrapper" style="flex: 1; min-width: 120px;">
+          <input type="number" name="maxPrice" value="<?= h($maxPriceParam ?? '') ?>" placeholder="Giá tối đa..." class="direct-input" />
+      </div>
+
+      <button type="submit" class="submit-search-btn" style="background:#007bff; color:white; font-weight:bold; padding: 12px 25px; border:none; border-radius:8px; cursor:pointer; font-size:15px; box-shadow: 0 4px 6px rgba(0,123,255,0.2); transition: 0.3s ease;">Tìm kiếm</button>
+
+      <a href="category.php" class="clear-filters-btn" style="min-width: auto;">Xóa lọc</a>
+    </div>
+  </form>
 
   <?php if ($hasFilter): ?>
     <div class="selected-filters">
@@ -477,6 +526,35 @@ include '../includes/header.php';
       </div>
     <?php endif; ?>
   </div>
+
+  <?php if ($totalPages > 1): ?>
+    <div class="pagination-container">
+      <?php 
+        $currentParams = $_GET;
+        
+        // Nút Trước
+        $paramsPrev = $currentParams;
+        $paramsPrev['page'] = $page - 1;
+      ?>
+      <a href="?<?= h(http_build_query($paramsPrev)) ?>" class="page-link <?= ($page <= 1) ? 'disabled' : '' ?>">❮ Trước</a>
+
+      <?php for ($i = 1; $i <= $totalPages; $i++): 
+          $paramsNum = $currentParams;
+          $paramsNum['page'] = $i;
+      ?>
+        <a href="?<?= h(http_build_query($paramsNum)) ?>" class="page-link <?= ($i === $page) ? 'active' : '' ?>">
+          <?= $i ?>
+        </a>
+      <?php endfor; ?>
+
+      <?php 
+        // Nút Sau
+        $paramsNext = $currentParams;
+        $paramsNext['page'] = $page + 1;
+      ?>
+      <a href="?<?= h(http_build_query($paramsNext)) ?>" class="page-link <?= ($page >= $totalPages) ? 'disabled' : '' ?>">Sau ❯</a>
+    </div>
+  <?php endif; ?>
 </main>
 
 <?php

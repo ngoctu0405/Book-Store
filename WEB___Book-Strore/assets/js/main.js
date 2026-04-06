@@ -1212,19 +1212,49 @@ function getFormattedAddressFromSelects(cityId, distId, wardId, streetId) {
 document.addEventListener("DOMContentLoaded", function() {
     const regAddress = document.getElementById("reg-address");
     if(regAddress) {
-        const parent = regAddress.parentElement;
+        // Fix: Use closest('.form-group') instead of parentElement to replace the whole block including the old "Địa chỉ" label
+        const parent = regAddress.closest('.form-group');
         parent.innerHTML = `
-            <label>Tỉnh/Thành phố *</label>
-            <select id="reg-city" required style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;"><option value="">Đang tải...</option></select>
-            <label>Quận/Huyện *</label>
-            <select id="reg-dist" required disabled style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;"><option value="">Chọn Quận/Huyện</option></select>
-            <label>Phường/Xã *</label>
-            <select id="reg-ward" required disabled style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;"><option value="">Chọn Phường/Xã</option></select>
-            <label>Số nhà, Tên đường *</label>
-            <input type="text" id="reg-street" required placeholder="VD: Số 123 Lê Lợi" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:5px;">
+            <label style="font-weight: 600; font-size: 0.95rem; color: #2c3e50;">Khu vực giao hàng *</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; margin-top: 5px;">
+                <div style="flex: 1 1 calc(33.333% - 10px); min-width: 140px;">
+                    <label style="font-size: 0.85rem; color: #7f8c8d; margin-bottom: 4px;">Tỉnh/Thành phố</label>
+                    <select id="reg-city" required style="width:100%; padding:0.8rem; border:2px solid #e0e0e0; border-radius:10px; background: #f8f9fa; font-size: 0.95rem; outline: none; transition: 0.3s;"><option value="">Đang tải...</option></select>
+                </div>
+                <div style="flex: 1 1 calc(33.333% - 10px); min-width: 140px;">
+                    <label style="font-size: 0.85rem; color: #7f8c8d; margin-bottom: 4px;">Quận/Huyện</label>
+                    <select id="reg-dist" required disabled style="width:100%; padding:0.8rem; border:2px solid #e0e0e0; border-radius:10px; background: #f8f9fa; font-size: 0.95rem; outline: none; transition: 0.3s;"><option value="">Chọn Quận/Huyện</option></select>
+                </div>
+                <div style="flex: 1 1 calc(33.333% - 10px); min-width: 140px;">
+                    <label style="font-size: 0.85rem; color: #7f8c8d; margin-bottom: 4px;">Phường/Xã</label>
+                    <select id="reg-ward" required disabled style="width:100%; padding:0.8rem; border:2px solid #e0e0e0; border-radius:10px; background: #f8f9fa; font-size: 0.95rem; outline: none; transition: 0.3s;"><option value="">Chọn Phường/Xã</option></select>
+                </div>
+            </div>
+            
+            <label style="font-weight: 600; font-size: 0.95rem; color: #2c3e50; margin-bottom: 5px; display: block;">Địa chỉ cụ thể *</label>
+            <div class="input-with-icon">
+                <span class="input-icon">📍</span>
+                <input type="text" id="reg-street" required placeholder="VD: Số 123 Lê Lợi..." style="width:100%; padding:0.9rem 1rem 0.9rem 3rem; border:2px solid #e0e0e0; border-radius:10px; background: #f8f9fa; font-size: 1rem; transition: 0.3s;">
+            </div>
             <input type="hidden" id="reg-address" value=""> 
+            <span id="error-address" class="error-msg"></span>
         `;
         initAddressAPI('reg-city', 'reg-dist', 'reg-ward');
+
+        // Add focus effects to match other inputs
+        const selects = ['reg-city', 'reg-dist', 'reg-ward'];
+        selects.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) {
+                el.addEventListener('focus', function() { this.style.borderColor = '#667eea'; this.style.background = 'white'; });
+                el.addEventListener('blur', function() { this.style.borderColor = '#e0e0e0'; this.style.background = '#f8f9fa'; });
+            }
+        });
+        const streetEl = document.getElementById('reg-street');
+        if(streetEl) {
+            streetEl.addEventListener('focus', function() { this.style.borderColor = '#667eea'; this.style.background = 'white'; });
+            streetEl.addEventListener('blur', function() { this.style.borderColor = '#e0e0e0'; this.style.background = '#f8f9fa'; });
+        }
     }
 });
 // ==================== MODAL FUNCTIONS ====================

@@ -719,12 +719,47 @@ include '../includes/header.php';
 
           <button class="btn-edit-info" type="button" onclick="openBuyerInfoModal()">➕ Thêm / Sửa địa chỉ</button>
           <button class="btn-edit-info" type="button" onclick="openChangeProfileModal()" style="margin-top:0.5rem;background:linear-gradient(135deg,#82c09a,#4f9da6);">🔄 Chọn từ sổ địa chỉ</button>
-          <button class="btn-edit-info" type="button" onclick="resetBuyerInfoToDefault()" style="margin-top:0.5rem;background:#f8f9fa;color:#2c3e50;border:1px solid #d1d5db;">⚙️ Đặt về mặc định</button>
         </div>
 
         <div class="cart-summary">
           <div class="summary-title">💳 Tóm tắt đơn hàng</div>
-          <div class="summary-row total" style="margin-top: 0; border-top: none; padding-top: 0;">
+          
+          <!-- Chi tiết từng sản phẩm đặt mua dưới dạng bảng -->
+          <div class="summary-table-wrapper" style="margin-bottom: 1rem; border-bottom: 1px solid #eee;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+              <thead>
+                <tr style="border-bottom: 2px solid #f0f0f0; text-align: left; color: #6c757d;">
+                  <th style="padding: 8px 5px; font-weight: 600;">Sản phẩm</th>
+                  <th style="padding: 8px 5px; font-weight: 600; text-align: center;">SL</th>
+                  <th style="padding: 8px 5px; font-weight: 600; text-align: right;">Thành tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($cartProducts as $item): ?>
+                  <tr style="border-bottom: 1px dashed #f0f0f0;">
+                    <td style="padding: 10px 5px; color: #2c3e50; vertical-align: middle;">
+                      <div style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="<?= h($item['name']) ?>">
+                        <?= h($item['name']) ?>
+                      </div>
+                    </td>
+                    <td style="padding: 10px 5px; text-align: center; font-weight: 700; color: #e74c3c;">
+                      <?= $item['qty'] ?>
+                    </td>
+                    <td style="padding: 10px 5px; text-align: right; font-weight: 600; color: #2c3e50;">
+                      <?= fmtPrice($item['lineTotal']) ?>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="summary-row" style="padding-top: 0.8rem; padding-bottom: 0.8rem;">
+            <span style="color: #6c757d;">Phí vận chuyển</span>
+            <span style="font-weight: 600; color: #28a745;">Miễn phí</span>
+          </div>
+
+          <div class="summary-row total">
             <span>Tổng thanh toán</span>
             <span><?= fmtPrice($totalAmount) ?></span>
           </div>
@@ -778,6 +813,9 @@ include '../includes/header.php';
       <p>Chọn thông tin bạn muốn dùng cho đơn hàng này</p>
     </div>
     <div style="display:flex;flex-direction:column;gap:1rem;padding:1rem 0;">
+      
+      <button class="btn-edit-info" type="button" onclick="resetBuyerInfoToDefault(); closeChangeProfileModal();" style="margin-top: 0; background: #f8f9fa; color: #2c3e50; border: 2px solid #e0e0e0; font-size: 1.05rem;">⚙️ Sử dụng địa chỉ Mặc định (Tài khoản)</button>
+      
       <?php for ($i = 1; $i <= 3; $i++): ?>
         <div id="profileCard-<?= $i ?>" class="profile-card" onclick="switchProfile(<?= $i ?>); closeChangeProfileModal();">
           <div class="profile-card-header">
@@ -954,10 +992,10 @@ ob_start();
     const profile = window.buyerProfiles ? window.buyerProfiles[index] : null;
     const user = window.currentUserFromSession || {};
 
-    const name = (profile && (profile.fullName || profile.name)) ? (profile.fullName || profile.name) : (index === 1 ? user.fullName : '');
-    const email = (profile && profile.email) ? profile.email : (index === 1 ? user.email : '');
-    const phone = (profile && profile.phone) ? profile.phone : (index === 1 ? user.phone : '');
-    const address = (profile && profile.address) ? profile.address : (index === 1 ? user.address : '');
+    const name = (profile && (profile.fullName || profile.name)) ? (profile.fullName || profile.name) : '';
+    const email = (profile && profile.email) ? profile.email : '';
+    const phone = (profile && profile.phone) ? profile.phone : '';
+    const address = (profile && profile.address) ? profile.address : '';
     const note = (profile && profile.note) ? profile.note : '';
 
     const set = (id, val) => {
@@ -989,9 +1027,9 @@ ob_start();
     const user = window.currentUserFromSession || {};
 
     document.getElementById('modalBuyerSaveTo').value = index;
-    document.getElementById('modalBuyerName').value = (profile && (profile.fullName || profile.name)) ? (profile.fullName || profile.name) : (index === 1 ? user.fullName : '');
-    document.getElementById('modalBuyerEmail').value = (profile && profile.email) ? profile.email : (index === 1 ? user.email : '');
-    document.getElementById('modalBuyerPhone').value = (profile && profile.phone) ? profile.phone : (index === 1 ? user.phone : '');
+    document.getElementById('modalBuyerName').value = (profile && (profile.fullName || profile.name)) ? (profile.fullName || profile.name) : '';
+    document.getElementById('modalBuyerEmail').value = (profile && profile.email) ? profile.email : '';
+    document.getElementById('modalBuyerPhone').value = (profile && profile.phone) ? profile.phone : '';
     document.getElementById('modalBuyerNote').value = (profile && profile.note) ? profile.note : '';
 
     // Xóa các lỗi cũ nếu có khi mở lại modal
@@ -999,7 +1037,7 @@ ob_start();
     document.querySelectorAll('.input-error').forEach(n => n.classList.remove('input-error'));
 
     // Lấy chuỗi địa chỉ cũ
-    const fullAddress = (profile && profile.address) ? profile.address : (index === 1 ? user.address : '');
+    const fullAddress = (profile && profile.address) ? profile.address : '';
 
     // Tách chuỗi địa chỉ cũ để nhét vào Dropdown
     const citySel = document.getElementById('modalBuyerCity');
@@ -1158,12 +1196,13 @@ ob_start();
 
   function initCartBuyerProfileState() {
     const restoredIndex = getStoredActiveProfileIndex(<?= $activeProfileIndex ?>);
-    let useAccountDefault = false;
+    let profileMode = 'account-default'; // Mặc định lần đầu vào trang web sẽ tải thông tin tk
     try {
-      useAccountDefault = sessionStorage.getItem(profileModeStorageKey) === 'account-default';
+      const savedMode = sessionStorage.getItem(profileModeStorageKey);
+      if (savedMode) profileMode = savedMode;
     } catch (e) {}
 
-    if (useAccountDefault) {
+    if (profileMode === 'account-default') {
       applyAccountDefaultAddress();
     } else {
       window.currentProfileIndex = restoredIndex;

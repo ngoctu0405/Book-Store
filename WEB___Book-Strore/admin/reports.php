@@ -170,9 +170,21 @@ foreach ($products as $p) {
     }
 
     .total-row {
-      font-weight: bold;
-      background-color: #e9ecef !important;
-      font-size: 1.1rem;
+      font-weight: 800;
+      background-color: #f1f3f5 !important;
+      font-size: 1.15rem;
+      border-top: 2px solid #4f9da6;
+    }
+
+    .total-row td {
+      padding: 1.25rem 0.5rem !important;
+      color: #2c3e50;
+    }
+
+    .total-label {
+      letter-spacing: 1px;
+      color: #4f9da6 !important;
+      text-transform: uppercase;
     }
 
     .warning-card {
@@ -390,12 +402,12 @@ foreach ($products as $p) {
                 <?php endif; ?>
               </tbody>
               <tfoot>
-                <tr class="total-row">
-                  <td colspan="2" class="text-end pe-4">TỔNG CỘNG:</td>
-                  <td class="text-center"><?= $totalInitial ?></td>
-                  <td class="text-center text-success">+<?= $totalImport ?></td>
-                  <td class="text-center text-danger">-<?= $totalExport ?></td>
-                  <td class="text-center text-primary"><?= $totalFinal ?></td>
+                <tr class="total-row shadow-sm">
+                  <td colspan="2" class="text-end pe-4 total-label">TỔNG CỘNG:</td>
+                  <td class="text-center"><?= number_format($totalInitial) ?></td>
+                  <td class="text-center text-success">+<?= number_format($totalImport) ?></td>
+                  <td class="text-center text-danger">-<?= number_format($totalExport) ?></td>
+                  <td class="text-center text-primary"><?= number_format($totalFinal) ?></td>
                 </tr>
               </tfoot>
             </table>

@@ -18,14 +18,13 @@ if ($keyword !== '') {
     $searchParam = '%' . $keyword . '%';
 
     // Đếm tổng số kết quả (chỉ đếm sách còn hàng qty > 0)
-    $countStmt = $conn->prepare("SELECT COUNT(p.id) as total FROM products p JOIN categories c ON p.category_id = c.id WHERE p.name LIKE ? AND p.qty > 0 AND c.status = 'active'");
-    $countStmt->bind_param('s', $searchParam);
+    $countStmt = $conn->prepare("SELECT COUNT(p.id) as total FROM products p JOIN categories c ON p.category_id = c.id WHERE p.name LIKE ? AND p.qty > 0 AND c.status = 'active' AND p.status = 'active'");
     $countStmt->execute();
     $countRes = $countStmt->get_result();
     $totalProducts = $countRes->fetch_assoc()['total'];
 
     // Lấy danh sách sản phẩm cho trang hiện tại
-    $stmt = $conn->prepare("SELECT p.* FROM products p JOIN categories c ON p.category_id = c.id WHERE p.name LIKE ? AND p.qty > 0 AND c.status = 'active' LIMIT ? OFFSET ?");
+    $stmt = $conn->prepare("SELECT p.*, c.name AS category, p.image AS img FROM products p JOIN categories c ON p.category_id = c.id WHERE p.name LIKE ? AND p.qty > 0 AND c.status = 'active' AND p.status = 'active' LIMIT ? OFFSET ?");
     $stmt->bind_param('sii', $searchParam, $limit, $offset);
     $stmt->execute();
     $res = $stmt->get_result();
