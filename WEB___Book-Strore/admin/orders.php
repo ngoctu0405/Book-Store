@@ -166,7 +166,7 @@ $orders = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
               <label class="form-label">Tình trạng</label>
               <select name="status" class="form-select">
                 <option value="" <?= $status === '' ? 'selected' : '' ?>>Tất cả</option>
-                <option value="Chờ xử lý" <?= $status === 'Chờ xử lý' ? 'selected' : '' ?>>Chờ xử lý</option>
+                <option value="Chờ xác nhận" <?= $status === 'Chờ xác nhận' ? 'selected' : '' ?>>Chờ xác nhận</option>
                 <option value="Đã xác nhận" <?= $status === 'Đã xác nhận' ? 'selected' : '' ?>>Đã xác nhận</option>
                 <option value="Đã giao thành công" <?= $status === 'Đã giao thành công' ? 'selected' : '' ?>>Đã giao thành công</option>
                 <option value="Đã hủy" <?= $status === 'Đã hủy' ? 'selected' : '' ?>>Đã hủy</option>

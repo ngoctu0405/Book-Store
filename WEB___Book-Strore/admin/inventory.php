@@ -59,6 +59,10 @@ if (isset($_SESSION['error'])) {
 $search   = $_GET['search'] ?? '';
 $category_id = $_GET['category_id'] ?? '';
 $status   = $_GET['status'] ?? '';
+$lookup_time = $_GET['lookup_time'] ?? ''; // Mốc thời gian tra cứu
+
+$is_historical = !empty($lookup_time);
+$datetime_sql = $is_historical ? $lookup_time : date('Y-m-d H:i:s');
 
 $whereConditions = ["1=1"];
 $params = [];
@@ -91,15 +95,28 @@ if ($status !== '') {
 
 $whereSql = "WHERE " . implode(" AND ", $whereConditions);
 
-$sql = "SELECT p.*, c.name AS category_name 
+// Nếu có tra cứu thời gian, ta cần tính: Qty(T) = Qty(Now) - (Imports After T) + (Sales After T)
+$sql = "SELECT p.*, c.name AS category_name,
+        (SELECT COALESCE(SUM(gi.qty), 0) FROM goodsReceipts_items gi 
+         JOIN goods_receipt gr ON gi.goods_receipt_id = gr.id 
+         WHERE gi.product_id = p.id AND gr.createdAt > ?) as imported_after,
+        (SELECT COALESCE(SUM(oi.qty), 0) FROM order_items oi 
+         JOIN orders o ON oi.order_id = o.id 
+         WHERE oi.product_id = p.id AND o.orderDate > ? AND o.status IN ('Đã xác nhận', 'Đã giao thành công')) as sold_after,
+        (SELECT MAX(gr.createdAt) FROM goodsReceipts_items gi 
+         JOIN goods_receipt gr ON gi.goods_receipt_id = gr.id 
+         WHERE gi.product_id = p.id) as last_imported_at
         FROM products p 
         LEFT JOIN categories c ON p.category_id = c.id 
         $whereSql 
         ORDER BY p.id DESC";
 
 $stmt = $conn->prepare($sql);
-if ($types) {
-  $stmt->bind_param($types, ...$params);
+$allParams = array_merge([$datetime_sql, $datetime_sql], $params);
+$allTypes = "ss" . $types;
+
+if ($allTypes) {
+  $stmt->bind_param($allTypes, ...$allParams);
 }
 $stmt->execute();
 $products = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -240,19 +257,30 @@ if ($catRes) {
               </select>
             </div>
             <div class="col-md-2">
-              <label class="form-label d-block">&nbsp;</label>
-              <button type="submit" class="btn btn-primary w-100"><span>🔍</span> Tra cứu</button>
+              <label class="form-label">Chọn thời điểm</label>
+              <input type="datetime-local" name="lookup_time" class="form-control" value="<?= h($lookup_time) ?>" />
             </div>
             <div class="col-md-2">
-              <label class="form-label d-block">&nbsp;</label>
-              <a href="inventory.php" class="btn btn-secondary w-100"><span>↺</span> Đặt lại</a>
+              <label class="form-label d-block text-white">Thao tác</label>
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" style="min-width: 100px;">Tra cứu</button>
+                <a href="inventory.php" class="btn btn-secondary w-100 py-2 fw-bold" style="min-width: 100px;">Đặt lại</a>
+              </div>
             </div>
           </form>
         </div>
       </div>
 
-      <div class="card card-inventory shadow-sm">
-        <div class="card-header card-header-inventory bg-dark text-white">Tồn Kho Hiện Tại (<?= count($products) ?> sản phẩm)</div>
+      <div class="card card-inventory shadow-sm border-0">
+        <div class="card-header card-header-inventory py-3 <?= $is_historical ? 'bg-primary' : 'bg-dark' ?> text-white d-flex justify-content-between align-items-center">
+            <span>
+              <i class="bi bi-box-seam me-2"></i>
+              <?= $is_historical ? "Tồn kho thời điểm: " . date('d/m/Y H:i', strtotime($lookup_time)) : "Tồn Kho Hiện Tại" ?> (<?= count($products) ?> sản phẩm)
+            </span>
+            <?php if($is_historical): ?>
+              <span class="badge bg-warning text-dark"><i class="bi bi-clock-history"></i> Đang xem lịch sử</span>
+            <?php endif; ?>
+        </div>
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table table-striped table-hover align-middle mb-0">
@@ -261,6 +289,7 @@ if ($catRes) {
                   <th scope="col" class="ps-3">Mã SP</th>
                   <th scope="col">Tên Sách</th>
                   <th scope="col" class="text-center">Loại</th>
+                  <th scope="col" class="text-center">Lần nhập cuối</th>
                   <th scope="col" class="text-center">SL Còn</th>
                   <th scope="col" class="text-center">Trạng Thái</th>
                   <th scope="col" class="text-center" style="min-width: 250px;">Hành động</th>
@@ -269,11 +298,17 @@ if ($catRes) {
               <tbody>
                 <?php if (empty($products)): ?>
                   <tr>
-                    <td colspan="6" class="text-center py-4 text-muted">Không tìm thấy dữ liệu tồn kho.</td>
+                    <td colspan="7" class="text-center py-4 text-muted">Không tìm thấy dữ liệu tồn kho.</td>
                   </tr>
                 <?php else: ?>
                   <?php foreach ($products as $p):
-                    $qty = (int)$p['qty'];
+                    // Tính toán số lượng tại thời điểm T
+                    $current_qty = (int)$p['qty'];
+                    $imp_after = (int)$p['imported_after'];
+                    $sold_after = (int)$p['sold_after'];
+                    
+                    $qty = $is_historical ? ($current_qty - $imp_after + $sold_after) : $current_qty;
+
                     $pStatus = $p['status'];
                     $rowClass = '';
                     $statusBadge = '';
@@ -302,10 +337,15 @@ if ($catRes) {
                         <div class="small text-muted"><i class="bi bi-person"></i> <?= h($p['author'] ?? '') ?></div>
                       </td>
                       <td class="text-center"><?= h($p['category_name'] ?? 'Chưa PL') ?></td>
+                      <td class="text-center small">
+                        <?= $p['last_imported_at'] ? date('d/m/Y H:i', strtotime($p['last_imported_at'])) : '<span class="text-muted italic">Chưa có dữ liệu</span>' ?>
+                      </td>
                       <td class="text-center <?= $qtyClass ?> fs-5"><?= $qty ?></td>
                       <td class="text-center"><?= $statusBadge ?></td>
-                      <td class="text-center">
-                        <?php if ($pStatus === 'inactive'): ?>
+                       <td class="text-center">
+                        <?php if ($is_historical): ?>
+                          <span class="text-muted small italic">Không hỗ trợ chỉnh sửa khi xem lịch sử</span>
+                        <?php elseif ($pStatus === 'inactive'): ?>
                           <form method="POST" style="display:inline-block;">
                             <input type="hidden" name="action" value="toggle_status">
                             <input type="hidden" name="product_id" value="<?= $p['id'] ?>">

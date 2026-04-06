@@ -236,67 +236,85 @@ if ($res) {
   </main>
 
   <div class="modal fade" id="addUserModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
+    <div class="modal-dialog" style="max-width: 750px;">
+      <div class="modal-content shadow-lg border-0">
         <form method="POST" action="users.php">
           <input type="hidden" name="action" value="add_user">
 
-          <div class="modal-header">
-            <h5 class="modal-title"><i class="bi bi-person-plus-fill me-2"></i>Tạo tài khoản khách hàng mới</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <div class="modal-header bg-light border-bottom-0 py-2">
+            <h5 class="modal-title fw-bold text-dark" style="font-size: 1rem;"><i class="bi bi-person-plus-fill me-2 text-primary"></i>Tạo tài khoản khách hàng mới</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" style="font-size: 0.8rem;"></button>
           </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Họ và tên</label>
-              <input type="text" class="form-control" name="fullName" required />
-            </div>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Tài khoản</label>
-                <input type="text" class="form-control" name="username" required />
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Mật khẩu (tối thiểu 6 ký tự)</label>
-                <input type="text" class="form-control" name="password" required minlength="6" />
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Email</label>
-              <input type="email" class="form-control" name="email" required />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Số điện thoại</label>
-              <input type="tel" class="form-control" name="phone" />
-            </div>
-            <div class="mb-3">
-              <label class="form-label fw-bold">📍 Địa chỉ giao hàng *</label>
-              <div class="address-selector">
-                <select id="sel-city" class="custom-select-addr" required>
-                  <option value="">Chọn Tỉnh/Thành phố</option>
-                </select>
-                <div class="row g-2">
-                  <div class="col-md-6">
-                    <select id="sel-dist" class="custom-select-addr" required disabled>
-                      <option value="">Chọn Quận/Huyện</option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <select id="sel-ward" class="custom-select-addr" required disabled>
-                      <option value="">Chọn Phường/Xã</option>
-                    </select>
-                  </div>
+          <div class="modal-body p-3">
+            <div class="row g-2">
+              <!-- Cột 1 & 2: Thông tin cá nhân & Tài khoản -->
+              <div class="col-md-6">
+                <div class="mb-2">
+                  <label class="form-label fw-semibold small">Họ và tên</label>
+                  <input type="text" class="form-control form-control-sm" name="fullName" placeholder="Nhập họ tên..." required />
                 </div>
-                <div class="addr-input-wrapper mt-1">
-                  <i class="bi bi-house-door"></i>
-                  <input type="text" id="inp-street" placeholder="Số nhà, tên đường, hẻm..." required />
+              </div>
+              <div class="col-md-6">
+                <div class="mb-2">
+                  <label class="form-label fw-semibold small">Email</label>
+                  <input type="email" class="form-control form-control-sm" name="email" placeholder="example@gmail.com..." required />
                 </div>
-                <input type="hidden" name="address" id="hidden-full-address">
+              </div>
+              
+              <div class="col-md-6">
+                <div class="mb-2">
+                  <label class="form-label fw-semibold small">Tài khoản</label>
+                  <input type="text" class="form-control form-control-sm" name="username" placeholder="Tên đăng nhập..." required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-2">
+                  <label class="form-label fw-semibold small">Số điện thoại</label>
+                  <input type="tel" class="form-control form-control-sm" name="phone" placeholder="Nhập số điện thoại..." />
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="mb-2">
+                  <label class="form-label fw-semibold small">Mật khẩu (tối thiểu 6 ký tự)</label>
+                  <input type="text" class="form-control form-control-sm" name="password" placeholder="Nhập mật khẩu..." required minlength="6" />
+                </div>
+              </div>
+
+              <!-- Hàng ngang: Địa chỉ -->
+              <div class="col-12">
+                <hr class="text-muted opacity-25 my-2">
+                <label class="form-label fw-bold text-primary small"><i class="bi bi-geo-alt-fill me-1"></i>Địa chỉ giao hàng *</label>
+                <div class="address-selector">
+                  <div class="row g-2">
+                    <div class="col-md-4">
+                      <select id="sel-city" class="custom-select-addr" required>
+                        <option value="">Chọn Tỉnh/Thành phố</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <select id="sel-dist" class="custom-select-addr" required disabled>
+                        <option value="">Chọn Quận/Huyện</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <select id="sel-ward" class="custom-select-addr" required disabled>
+                        <option value="">Chọn Phường/Xã</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="addr-input-wrapper mt-2">
+                    <i class="bi bi-house-door"></i>
+                    <input type="text" id="inp-street" placeholder="Số nhà, tên đường, hẻm..." required />
+                  </div>
+                  <input type="hidden" name="address" id="hidden-full-address">
+                </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            <button type="submit" class="btn btn-primary">Lưu tài khoản</button>
+          <div class="modal-footer bg-light border-top-0 py-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold">Lưu tài khoản</button>
           </div>
         </form>
       </div>
