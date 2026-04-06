@@ -1846,11 +1846,11 @@ footer {
 }
 
 #registerModal .auth-modal-content {
-  max-width: 1200px; /* Bảng đăng ký rộng tối đa */
-  width: 95%; /* Cung cấp thêm diện tích */
-  padding: 2rem 3rem; /* Thu gọn khoảng trống trên/dưới để vừa màn hình */
-  max-height: unset; /* Xóa giới hạn chiều cao */
-  overflow: visible; /* Tắt hoàn toàn thanh cuộn */
+  max-width: 900px; /* Thu nhỏ tiếp từ 1000px xuống 900px */
+  width: 90%; 
+  padding: 1.5rem 2rem; /* Giảm padding thêm nữa */
+  max-height: unset;
+  overflow: visible;
 }
 
 /* Lưới cho form đăng nhập (ngang 2 cột) */
@@ -1866,11 +1866,48 @@ footer {
   margin-top: 1rem;
 }
 
-/* Lưới cho form đăng ký (3 cột cực thoáng, xóa thanh cuộn) */
 #register-form.auth-modal-form {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem; /* Kéo gần khoảng cách để form lọt thỏm trong 1 màn hình */
+  gap: 0.6rem; /* Kéo gần thêm (0.8 -> 0.6) */
+}
+
+/* Tinh chỉnh nhỏ lại các thành phần bên trong Registration */
+#registerModal .auth-modal-header {
+  margin-bottom: 1rem;
+}
+#registerModal .auth-modal-header h2 {
+  font-size: 1.5rem; /* Cỡ chữ tiêu đề nhỏ hơn (1.6 -> 1.5) */
+}
+#registerModal .auth-modal-header p {
+  font-size: 0.85rem;
+}
+#registerModal .auth-modal-form .form-group label {
+  font-size: 0.8rem; /* Nhãn nhỏ hơn (0.85 -> 0.8) */
+  margin-bottom: 0.2rem;
+}
+#registerModal .auth-modal-form input,
+#registerModal .auth-modal-form select {
+  padding: 0.6rem 0.7rem 0.6rem 2.6rem; /* Thu hẹp chiều cao input */
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+#registerModal .input-icon {
+  font-size: 0.9rem;
+  left: 0.7rem;
+}
+#registerModal .password-toggle {
+  font-size: 1rem;
+  right: 0.7rem;
+}
+#registerModal .btn-auth-submit {
+  padding: 0.7rem;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+#registerModal .custom-select-addr {
+  padding: 0.4rem;
+  font-size: 0.8rem;
 }
 
 /* Trường hợp Địa chỉ -> Cho nằm trọn 3 cột ngang */
