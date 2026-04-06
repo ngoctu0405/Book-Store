@@ -39,5 +39,5 @@ document.addEventListener("DOMContentLoaded", function () {
   // Khởi chạy các hàm toàn cục
   initGlobal();
 
-  // Mọi logic dữ liệu (Orders, Inventory, Detail...) giờ đây đã được giao cho PHP & MySQL xử lý.
+ 
 });
