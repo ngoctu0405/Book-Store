@@ -1,9 +1,9 @@
 <?php
 
 $host = 'localhost';
-$user = 'root';
-$pass = 'Ngotrungtoan06@';
-$db   = 'bookstore';
+$user = 'c01_nhahodau';
+$pass = 'FWY6QuTquZcGYdQe';
+$db   = 'c01_nhahodau';
 
 $conn = new mysqli($host, $user, $pass, $db);
 

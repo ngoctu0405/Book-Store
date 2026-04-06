@@ -1,6 +1,6 @@
 -- Thiết lập Database
-CREATE DATABASE IF NOT EXISTS bookstore;
-USE bookstore;
+CREATE DATABASE IF NOT EXISTS c01_nhahodau;
+USE c01_nhahodau;
 -- Xóa các bảng cũ theo thứ tự để không bị lỗi khóa ngoại (Foreign Key)
 DROP TABLE IF EXISTS goodsReceipts_items;
 DROP TABLE IF EXISTS goods_receipt;
