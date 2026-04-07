@@ -94,7 +94,6 @@ if ($status !== '') {
 
 $whereSql = "WHERE " . implode(" AND ", $whereConditions);
 
-// Nếu có tra cứu thời gian, ta cần tính: Qty(T) = Qty(Now) - (Imports After T) + (Sales After T)
 $sql = "SELECT p.*, c.name AS category_name,
         (SELECT COALESCE(SUM(gi.qty), 0) FROM goodsReceipts_items gi 
          JOIN goods_receipt gr ON gi.goods_receipt_id = gr.id 

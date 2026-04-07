@@ -81,6 +81,12 @@ if (isset($_SESSION['admin_id'])) {
                 <span>Đơn hàng</span>
             </a>
         </li>
+         <li class="nav-item">
+            <a href="inventory.php" class="nav-link <?= ($currentPage == 'inventory.php') ? 'active' : '' ?>">
+                <span class="nav-icon">◨</span>
+                <span>Tồn kho</span>
+            </a>
+        </li>
         <li class="nav-item">
             <a href="reports.php" class="nav-link <?= ($currentPage == 'reports.php') ? 'active' : '' ?>">
                 <span class="nav-icon">◔</span>
